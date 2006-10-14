@@ -483,7 +483,10 @@ namespace ExpertSokoban
                 callbackOwner.Invoke(callbackDone, new object[] { numPossibilities >0 });
             }
         }
-        public bool pushValid (int pos, int posInDir) { return pushLength[4*pos+posInDir] > 0; }
+        public bool pushValid (int pos, int posInDir) {
+            int index = 4*pos+posInDir;
+            return index <= 0 || index >= pushLength.Length ? false : pushLength[4*pos+posInDir] > 0; 
+        }
         public bool pushValid (int pos)
         {
             return  pushValid (pos, 1) || pushValid (pos, 2) ||
@@ -509,6 +512,8 @@ namespace ExpertSokoban
         */
         public int[][] getMoves (int pos, int posInDir)
         {
+            if (pos < 0 || 4*pos+4 > pushLength.Length)
+                return null;
             int dir = 0;
 
             if ((posInDir > 0 && posInDir < 5) && pushLength[4*pos+posInDir] > 0)
