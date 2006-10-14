@@ -77,90 +77,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\wall2.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\blank2.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\canmove.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\canmove2.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\canmovet.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\canmovet2.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\canpush.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\canpush2.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\canpushs.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\canpushs2.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\canpushst.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\canpushst2.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\canpusht.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\canpusht2.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\piece.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\piece2.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\pieceot.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\pieceot2.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\piecesel.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\piecesel2.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\soko.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\soko2.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\sokot.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\sokot2.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\target.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\target2.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\wall.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\blank.bmp" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\leveldone.wav" />
   </ItemGroup>
   <ItemGroup>
@@ -171,6 +87,48 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\threaddone.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\wall2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\canmove2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\canmovet2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\canpush2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\canpushs2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\canpushst2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\canpusht2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\piece2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pieceot2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\piecesel2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\soko2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sokot2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\target2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\blank2.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

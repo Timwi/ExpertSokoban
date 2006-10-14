@@ -67,23 +67,9 @@ namespace ExpertSokoban.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap ImgBlank2 {
-            get {
-                object obj = ResourceManager.GetObject("ImgBlank2", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
         internal static System.Drawing.Bitmap ImgCanMove {
             get {
                 object obj = ResourceManager.GetObject("ImgCanMove", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap ImgCanMove2 {
-            get {
-                object obj = ResourceManager.GetObject("ImgCanMove2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -95,23 +81,9 @@ namespace ExpertSokoban.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap ImgCanMoveTarget2 {
-            get {
-                object obj = ResourceManager.GetObject("ImgCanMoveTarget2", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
         internal static System.Drawing.Bitmap ImgCanPush {
             get {
                 object obj = ResourceManager.GetObject("ImgCanPush", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap ImgCanPush2 {
-            get {
-                object obj = ResourceManager.GetObject("ImgCanPush2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -123,23 +95,9 @@ namespace ExpertSokoban.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap ImgCanPushSokoban2 {
-            get {
-                object obj = ResourceManager.GetObject("ImgCanPushSokoban2", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
         internal static System.Drawing.Bitmap ImgCanPushSokobanTarget {
             get {
                 object obj = ResourceManager.GetObject("ImgCanPushSokobanTarget", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap ImgCanPushSokobanTarget2 {
-            get {
-                object obj = ResourceManager.GetObject("ImgCanPushSokobanTarget2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -151,23 +109,9 @@ namespace ExpertSokoban.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap ImgCanPushTarget2 {
-            get {
-                object obj = ResourceManager.GetObject("ImgCanPushTarget2", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
         internal static System.Drawing.Bitmap ImgPiece {
             get {
                 object obj = ResourceManager.GetObject("ImgPiece", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap ImgPiece2 {
-            get {
-                object obj = ResourceManager.GetObject("ImgPiece2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -179,23 +123,9 @@ namespace ExpertSokoban.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap ImgPieceSelected2 {
-            get {
-                object obj = ResourceManager.GetObject("ImgPieceSelected2", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
         internal static System.Drawing.Bitmap ImgPieceTarget {
             get {
                 object obj = ResourceManager.GetObject("ImgPieceTarget", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap ImgPieceTarget2 {
-            get {
-                object obj = ResourceManager.GetObject("ImgPieceTarget2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -207,23 +137,9 @@ namespace ExpertSokoban.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap ImgSokoban2 {
-            get {
-                object obj = ResourceManager.GetObject("ImgSokoban2", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
         internal static System.Drawing.Bitmap ImgSokobanTarget {
             get {
                 object obj = ResourceManager.GetObject("ImgSokobanTarget", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap ImgSokobanTarget2 {
-            get {
-                object obj = ResourceManager.GetObject("ImgSokobanTarget2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -235,23 +151,9 @@ namespace ExpertSokoban.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap ImgTarget2 {
-            get {
-                object obj = ResourceManager.GetObject("ImgTarget2", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
         internal static System.Drawing.Bitmap ImgWall {
             get {
                 object obj = ResourceManager.GetObject("ImgWall", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap ImgWall2 {
-            get {
-                object obj = ResourceManager.GetObject("ImgWall2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
