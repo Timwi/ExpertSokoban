@@ -17,20 +17,20 @@ namespace ExpertSokoban
     public class SokobanLevel
     {
         public static string testLevelStr = 
-            "#####            #####"+
-            "#   ##############  @#"+
-            "#     $ #   $   $ $  #"+
-            "# $$#     $   $   $  #"+
-            "##  ###############$##"+
-            " #$   $.*.$   $  $  # "+
-            " #  #   #..$$$ $ # $# "+
-            " ## #####...   $ #  # "+
-            " # ..#  #....  $ #$ # "+
-            " # ..#  #.....   #  # "+
-            "###. #  #......$## $##"+
-            "# ## ##########  $   #"+
-            "# #              $   #"+
-            "#   ##############  ##"+
+            "#####            #####" +
+            "#   ##############  @#" +
+            "#     $ #   $   $ $  #" +
+            "# $$#     $   $   $  #" +
+            "##  ###############$##" +
+            " #$   $.*.$   $  $  # " +
+            " #  #   #..$$$ $ # $# " +
+            " ## #####...   $ #  # " +
+            " # ..#  #....  $ #$ # " +
+            " # ..#  #.....   #  # " +
+            "###. #  #......$## $##" +
+            "# ## ##########  $   #" +
+            "# #              $   #" +
+            "#   ##############  ##" +
             "#####            #####";
         public static SokobanLevel getTestLevel()
         {
@@ -77,7 +77,68 @@ namespace ExpertSokoban
         private SokobanSquare[] level;
         private int levelSizeX, levelSizeY, sokobanPos;
 
-        public SokobanLevel() { level = null; }
+        public SokobanLevel(string encodedForm)
+        {
+            levelSizeX = 0;
+            levelSizeY = 0;
+            sokobanPos = -1;
+            int curx = 0;
+            for (int i = 0; i < encodedForm.Length; i++)
+            {
+                if (encodedForm[i] == '\n')
+                {
+                    levelSizeY++;
+                    if (levelSizeX < curx)
+                        levelSizeX = curx;
+                    curx = 0;
+                }
+                else
+                    curx++;
+            }
+            level = new SokobanSquare[levelSizeX*levelSizeY];
+            curx = 0;
+            int cury = 0;
+            for (int i = 0; i < encodedForm.Length; i++)
+            {
+                if (encodedForm[i] == '\n')
+                    cury++;
+                else
+                {
+                    level[curx + levelSizeX*cury] = 
+                        encodedForm[i] == '#' ? SokobanSquare.WALL :
+                        encodedForm[i] == '$' ? SokobanSquare.PIECE :
+                        encodedForm[i] == '.' ? SokobanSquare.TARGET :
+                        encodedForm[i] == '*' ? SokobanSquare.PIECE_ON_TARGET :
+                                                SokobanSquare.BLANK;
+                    if (encodedForm[i] == '@')
+                        sokobanPos = (curx + levelSizeX*cury);
+                }
+            }
+
+            // If the level didn't specify a starting position, try to find one.
+            if (sokobanPos == -1)
+            {
+                bool done = false;
+                for (int i = 0; i < levelSizeX && !done; i++)
+                    for (int j = 0; j < levelSizeY && !done; j++)
+                    {
+                        bool xin = false, yin = false;
+                        for (int x = 0; x <= i; x++)
+                            if (level[j*levelSizeX + x] == SokobanSquare.WALL &&
+                            (x == 0 || level[j*levelSizeX + x-1] != SokobanSquare.WALL))
+                                xin = !xin;
+                        for (int y = 0; y <= j; y++)
+                            if (level[y*levelSizeX + i] == SokobanSquare.WALL &&
+                            (y == 0 || level[(y-1)*levelSizeX + i] != SokobanSquare.WALL))
+                                yin = !yin;
+                        if (xin && yin)
+                        {
+                            sokobanPos = j*levelSizeX+i;
+                            done = true;
+                        }
+                    }
+            }
+        }
         public SokobanLevel(int sizeX, int sizeY, SokobanSquare[] levelData, int sokPos)
         {
             levelSizeX = sizeX;

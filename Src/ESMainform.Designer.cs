@@ -38,8 +38,15 @@ namespace ExpertSokoban
             this.ToolOpen = new System.Windows.Forms.ToolStripButton();
             this.ToolEdit = new System.Windows.Forms.ToolStripButton();
             this.ToolExit = new System.Windows.Forms.ToolStripButton();
+            this.LevelListPanel = new System.Windows.Forms.Panel();
+            this.LevelList = new ExpertSokoban.ESLevelListBox();
+            this.LevelListToolStrip = new System.Windows.Forms.ToolStrip();
+            this.LevelListClose = new System.Windows.Forms.ToolStripButton();
+            this.LevelListSplitter = new System.Windows.Forms.Splitter();
             this.MainArea = new ExpertSokoban.ESMainArea();
             this.MainToolStrip.SuspendLayout();
+            this.LevelListPanel.SuspendLayout();
+            this.LevelListToolStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // MainToolStrip
@@ -105,6 +112,7 @@ namespace ExpertSokoban
             this.ToolOpen.Name = "ToolOpen";
             this.ToolOpen.Size = new System.Drawing.Size(112, 22);
             this.ToolOpen.Text = "&Open Level File...";
+            this.ToolOpen.Click += new System.EventHandler(this.ToolOpen_Click);
             // 
             // ToolEdit
             // 
@@ -113,6 +121,7 @@ namespace ExpertSokoban
             this.ToolEdit.Name = "ToolEdit";
             this.ToolEdit.Size = new System.Drawing.Size(85, 22);
             this.ToolEdit.Text = "&Edit Level...";
+            this.ToolEdit.Click += new System.EventHandler(this.ToolEdit_Click);
             // 
             // ToolExit
             // 
@@ -123,13 +132,66 @@ namespace ExpertSokoban
             this.ToolExit.Text = "E&xit";
             this.ToolExit.Click += new System.EventHandler(this.ToolExit_Click);
             // 
+            // LevelListPanel
+            // 
+            this.LevelListPanel.BackColor = System.Drawing.SystemColors.Control;
+            this.LevelListPanel.Controls.Add(this.LevelList);
+            this.LevelListPanel.Controls.Add(this.LevelListToolStrip);
+            this.LevelListPanel.Dock = System.Windows.Forms.DockStyle.Right;
+            this.LevelListPanel.Location = new System.Drawing.Point(455, 25);
+            this.LevelListPanel.Name = "LevelListPanel";
+            this.LevelListPanel.Size = new System.Drawing.Size(200, 421);
+            this.LevelListPanel.TabIndex = 6;
+            this.LevelListPanel.Visible = false;
+            // 
+            // LevelList
+            // 
+            this.LevelList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LevelList.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.LevelList.FormattingEnabled = true;
+            this.LevelList.IntegralHeight = false;
+            this.LevelList.Location = new System.Drawing.Point(0, 25);
+            this.LevelList.Name = "LevelList";
+            this.LevelList.Size = new System.Drawing.Size(200, 396);
+            this.LevelList.TabIndex = 2;
+            // 
+            // LevelListToolStrip
+            // 
+            this.LevelListToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.LevelListClose});
+            this.LevelListToolStrip.Location = new System.Drawing.Point(0, 0);
+            this.LevelListToolStrip.Name = "LevelListToolStrip";
+            this.LevelListToolStrip.Size = new System.Drawing.Size(200, 25);
+            this.LevelListToolStrip.TabIndex = 0;
+            this.LevelListToolStrip.Text = "toolStrip1";
+            // 
+            // LevelListClose
+            // 
+            this.LevelListClose.Image = ((System.Drawing.Image) (resources.GetObject("LevelListClose.Image")));
+            this.LevelListClose.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.LevelListClose.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.LevelListClose.Name = "LevelListClose";
+            this.LevelListClose.Size = new System.Drawing.Size(45, 22);
+            this.LevelListClose.Text = "&Close";
+            this.LevelListClose.Click += new System.EventHandler(this.LevelListClose_Click);
+            // 
+            // LevelListSplitter
+            // 
+            this.LevelListSplitter.Dock = System.Windows.Forms.DockStyle.Right;
+            this.LevelListSplitter.Location = new System.Drawing.Point(452, 25);
+            this.LevelListSplitter.Name = "LevelListSplitter";
+            this.LevelListSplitter.Size = new System.Drawing.Size(3, 421);
+            this.LevelListSplitter.TabIndex = 7;
+            this.LevelListSplitter.TabStop = false;
+            this.LevelListSplitter.Visible = false;
+            // 
             // MainArea
             // 
             this.MainArea.BackColor = System.Drawing.Color.FromArgb(((int) (((byte) (255)))), ((int) (((byte) (255)))), ((int) (((byte) (206)))));
             this.MainArea.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MainArea.Location = new System.Drawing.Point(0, 25);
             this.MainArea.Name = "MainArea";
-            this.MainArea.Size = new System.Drawing.Size(655, 421);
+            this.MainArea.Size = new System.Drawing.Size(452, 421);
             this.MainArea.TabIndex = 1;
             // 
             // ESMainform
@@ -138,11 +200,17 @@ namespace ExpertSokoban
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(655, 446);
             this.Controls.Add(this.MainArea);
+            this.Controls.Add(this.LevelListSplitter);
+            this.Controls.Add(this.LevelListPanel);
             this.Controls.Add(this.MainToolStrip);
             this.Name = "ESMainform";
             this.Text = "Expert Sokoban";
             this.MainToolStrip.ResumeLayout(false);
             this.MainToolStrip.PerformLayout();
+            this.LevelListPanel.ResumeLayout(false);
+            this.LevelListPanel.PerformLayout();
+            this.LevelListToolStrip.ResumeLayout(false);
+            this.LevelListToolStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -160,6 +228,11 @@ namespace ExpertSokoban
         private System.Windows.Forms.ToolStripButton ToolEdit;
         private System.Windows.Forms.ToolStripButton ToolExit;
         private ExpertSokoban.ESMainArea MainArea;
+        private System.Windows.Forms.Panel LevelListPanel;
+        private System.Windows.Forms.Splitter LevelListSplitter;
+        private ExpertSokoban.ESLevelListBox LevelList;
+        private System.Windows.Forms.ToolStrip LevelListToolStrip;
+        private System.Windows.Forms.ToolStripButton LevelListClose;
     }
 }
 

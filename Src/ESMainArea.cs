@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Media;
 using System.Threading;
+using System.Drawing.Drawing2D;
 
 namespace ExpertSokoban
 {
@@ -201,10 +202,10 @@ namespace ExpertSokoban
                                      (state == ESMainAreaState.STATE_EDITING) ? plainDisplay : moveDisplay, 0, 0);
                 if (state == ESMainAreaState.STATE_EDITING)
                 {
-                    e.Graphics.DrawImage(Properties.Resources.ImgWall, 1+toolbarX, mySizeY-squareSizeY-1);
-                    e.Graphics.DrawImage(Properties.Resources.ImgPiece, squareSizeX+3+toolbarX, mySizeY-squareSizeY-1);
-                    e.Graphics.DrawImage(Properties.Resources.ImgTarget, 2*squareSizeX+5+toolbarX, mySizeY-squareSizeY-1);
-                    e.Graphics.DrawImage(Properties.Resources.ImgSokoban, 3*squareSizeX+7+toolbarX, mySizeY-squareSizeY-1);
+                    e.Graphics.DrawImage(Properties.Resources.ImgWall, 1+toolbarX+originX, mySizeY-squareSizeY-1+originY);
+                    e.Graphics.DrawImage(Properties.Resources.ImgPiece, squareSizeX+3+toolbarX+originX, mySizeY-squareSizeY-1+originY);
+                    e.Graphics.DrawImage(Properties.Resources.ImgTarget, 2*squareSizeX+5+toolbarX+originX, mySizeY-squareSizeY-1+originY);
+                    e.Graphics.DrawImage(Properties.Resources.ImgSokoban, 3*squareSizeX+7+toolbarX+originX, mySizeY-squareSizeY-1+originY);
                     drawToolRect(e.Graphics, ToolRectColour);
                 }
             }
@@ -214,7 +215,10 @@ namespace ExpertSokoban
             int toolIndex = tool == ESMainAreaTool.TOOL_WALL ? 0 :
                             tool == ESMainAreaTool.TOOL_PIECE ? 1 :
                             tool == ESMainAreaTool.TOOL_TARGET ? 2 : 3;
-            g.DrawRectangle(new Pen(c), toolbarX + toolIndex*(squareSizeX+2), mySizeY-squareSizeY-2, squareSizeX+2, squareSizeY+2);
+            g.DrawRectangle(new Pen(c), 
+                toolbarX + toolIndex*(squareSizeX+2) + originX, 
+                mySizeY-squareSizeY-2+originY, 
+                squareSizeX+1, squareSizeY+1);
         }
 
         private void drawSquare(int pos, Graphics g)
@@ -230,7 +234,7 @@ namespace ExpertSokoban
         {
             return squareType == SokobanSquare.BLANK && withSokoban  ? Properties.Resources.ImgSokoban :
                    squareType == SokobanSquare.PIECE                 ? Properties.Resources.ImgPiece :
-                   squareType == SokobanSquare.PIECE_ON_TARGET       ? Properties.Resources.ImgPieceSelected :
+                   squareType == SokobanSquare.PIECE_ON_TARGET       ? Properties.Resources.ImgPieceTarget :
                    squareType == SokobanSquare.TARGET && withSokoban ? Properties.Resources.ImgSokobanTarget :
                    squareType == SokobanSquare.TARGET                ? Properties.Resources.ImgTarget :
                    squareType == SokobanSquare.WALL                  ? Properties.Resources.ImgWall :
@@ -302,9 +306,10 @@ namespace ExpertSokoban
                                 curSokPos += moves[i][j];
                                 int x = curPiecePos % currentLevel.getSizeX();
                                 int y = curPiecePos / currentLevel.getSizeX();
-                                cg.FillEllipse(b, 
-                                    squareSizeX*x + squareSizeX/2 + originX, 
-                                    squareSizeY*y + squareSizeY/2 + originY,
+                                cg.SmoothingMode = SmoothingMode.AntiAlias;
+                                cg.FillEllipse(b,
+                                    squareSizeX*x + squareSizeX/2 + originX - squareSizeX/6,
+                                    squareSizeY*y + squareSizeY/2 + originY - squareSizeY/6,
                                     squareSizeX/3, squareSizeY/3);
                             }
                             else
@@ -371,9 +376,9 @@ namespace ExpertSokoban
             {
                 Graphics g1 = Graphics.FromImage(plainDisplay);
                 Graphics g2 = CreateGraphics();
-                if (e.Y > mySizeY-squareSizeY-3)
+                if (e.Y-originY > mySizeY-squareSizeY-3)
                 {
-                    int clickedToolIndex = (e.X - toolbarX) / (squareSizeX+2);
+                    int clickedToolIndex = (e.X - toolbarX - originX) / (squareSizeX+2);
                     ESMainAreaTool clickedTool =
                             clickedToolIndex == 0 ? ESMainAreaTool.TOOL_WALL :
                             clickedToolIndex == 1 ? ESMainAreaTool.TOOL_PIECE :
@@ -572,8 +577,8 @@ namespace ExpertSokoban
             state = ESMainAreaState.STATE_SOLVED;
             Graphics g = Graphics.FromImage(moveDisplay);
             Brush b = new SolidBrush(Color.FromArgb(0, 0, 0xA0));
-            g.FillEllipse(b, getMyWidth()/2, getMyHeight()/2, 57, 20);
-            g.DrawEllipse(new Pen(Color.Black), getMyWidth()/2, getMyHeight()/2, 57, 20);
+            g.FillEllipse(b, getMyWidth()/2-28, getMyHeight()/2-10, 56, 20);
+            g.DrawEllipse(new Pen(Color.Black), getMyWidth()/2-28, getMyHeight()/2-10, 56, 20);
             g.DrawString("LEVEL SOLVED", Font, new SolidBrush(Color.White), getMyWidth()/2 - 41, getMyHeight()/2 - 8);
             cg.DrawImage(moveDisplay, 0, 0);
             sndLevelSolved.Play();

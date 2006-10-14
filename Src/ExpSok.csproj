@@ -43,6 +43,9 @@
     <Compile Include="ESMainArea.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="ESLevelListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="SokobanLevel.cs" />
     <Compile Include="ESMainform.cs">
       <SubType>Form</SubType>
