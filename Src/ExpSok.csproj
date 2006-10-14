@@ -1,0 +1,183 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{38275335-5BC2-4327-A70F-CFB48CECEBB1}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ExpertSokoban</RootNamespace>
+    <AssemblyName>ExpSok</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Builds\$(Configuration)</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Builds\$(Configuration)</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ESIntQueue.cs" />
+    <Compile Include="ESPackedBooleans.cs" />
+    <Compile Include="ESPushFinder.cs" />
+    <Compile Include="ESMoveFinder.cs" />
+    <Compile Include="ESMainArea.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SokobanLevel.cs" />
+    <Compile Include="ESMainform.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ESMainform.Designer.cs">
+      <DependentUpon>ESMainform.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="ESMainform.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ESMainform.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\wall2.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\blank2.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\canmove.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\canmove2.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\canmovet.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\canmovet2.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\canpush.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\canpush2.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\canpushs.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\canpushs2.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\canpushst.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\canpushst2.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\canpusht.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\canpusht2.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\piece.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\piece2.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pieceot.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pieceot2.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\piecesel.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\piecesel2.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\soko.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\soko2.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sokot.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sokot2.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\target.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\target2.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\wall.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\blank.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\leveldone.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\meep.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pieceplaced.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\threaddone.wav" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
