@@ -110,22 +110,32 @@ namespace ExpertSokoban
         {
             if (currentLevel != null)
             {
-                SquareW = 20;
-                SquareH = 20;
-                Rndr.SquareW = SquareW;
-                Rndr.SquareH = SquareH;
-                mySizeX = currentLevel.getSizeX() * SquareW;
-                mySizeY = currentLevel.getSizeY() * SquareH;
+                int border = Math.Max(ClientSize.Width / (currentLevel.getSizeX()+1),
+                                      ClientSize.Height / (currentLevel.getSizeY()+1));
+                int fieldW = ClientSize.Width - border;
+                int fieldH = ClientSize.Height - border;
+
                 if (editing)
                 {
-                    mySizeY += SquareH + 2;
+                    fieldH -= SquareH + 2;
                     state = ESMainAreaState.STATE_EDITING;
                     tool = ESMainAreaTool.TOOL_WALL;
-                    toolbarX = mySizeX/2 - (SquareW+2)*2;
                 }
-                else state = ESMainAreaState.STATE_MOVE;
+                else
+                {
+                    state = ESMainAreaState.STATE_MOVE;
+                }
+
+                SquareW = SquareH = Math.Min(fieldW / currentLevel.getSizeX(),
+                                             fieldH / currentLevel.getSizeY());
+                mySizeX = currentLevel.getSizeX() * SquareW;
+                mySizeY = currentLevel.getSizeY() * SquareH + (editing ? SquareH+2 : 0);
+                toolbarX = mySizeX/2 - (SquareW+2)*2;
                 OriginX = ClientSize.Width/2 - mySizeX/2;
                 OriginY = ClientSize.Height/2 - mySizeY/2;
+
+                Rndr.SquareW = SquareW;
+                Rndr.SquareH = SquareH;
                 Rndr.OriginX = OriginX;
                 Rndr.OriginY = OriginY;
                 updatePlain();
