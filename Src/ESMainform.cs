@@ -38,7 +38,8 @@ namespace ExpertSokoban
         private enum LevelReaderState
         {
             Comment, Empty, Level
-        };
+        }
+
         private void ToolOpen_Click(object sender, EventArgs e)
         {
             OpenFileDialog dlg = new OpenFileDialog();

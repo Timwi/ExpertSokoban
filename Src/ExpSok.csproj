@@ -46,6 +46,7 @@
     <Compile Include="ESLevelListBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="ESRenderer.cs" />
     <Compile Include="SokobanLevel.cs" />
     <Compile Include="ESMainform.cs">
       <SubType>Form</SubType>
@@ -132,6 +133,33 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\blank2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\new\brick.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\new\piece.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\new\piece-selected.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\new\piece-target.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\new\sokoban.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\RT.Util\Src\RT.Util.csproj">
+      <Project>{8D0FE79C-AD8D-475C-9E6F-9CAE85365B5D}</Project>
+      <Name>Util</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\new\target-under.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\new\target.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -32,6 +32,7 @@ namespace ExpertSokoban
             "# #              $   #" +
             "#   ##############  ##" +
             "#####            #####";
+
         public static SokobanLevel getTestLevel()
         {
             int sx = 22;
@@ -350,6 +351,16 @@ namespace ExpertSokoban
         {
             SokobanSquare[] newLevel = (SokobanSquare[]) level.Clone();
             return new SokobanLevel(levelSizeX, levelSizeY, newLevel, sokobanPos);
+        }
+
+        public int PosToX(int pos)
+        {
+            return pos % levelSizeX;
+        }
+
+        public int PosToY(int pos)
+        {
+            return pos / levelSizeX;
         }
     }
 }

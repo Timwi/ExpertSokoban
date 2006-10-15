@@ -60,6 +60,55 @@ namespace ExpertSokoban.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap img_piece {
+            get {
+                object obj = ResourceManager.GetObject("img_piece", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap img_piece_selected {
+            get {
+                object obj = ResourceManager.GetObject("img_piece_selected", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap img_piece_target {
+            get {
+                object obj = ResourceManager.GetObject("img_piece_target", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap img_sokoban {
+            get {
+                object obj = ResourceManager.GetObject("img_sokoban", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap img_target {
+            get {
+                object obj = ResourceManager.GetObject("img_target", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap img_target_under {
+            get {
+                object obj = ResourceManager.GetObject("img_target_under", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap img_wall {
+            get {
+                object obj = ResourceManager.GetObject("img_wall", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap ImgBlank {
             get {
                 object obj = ResourceManager.GetObject("ImgBlank", resourceCulture);
@@ -105,55 +154,6 @@ namespace ExpertSokoban.Properties {
         internal static System.Drawing.Bitmap ImgCanPushTarget {
             get {
                 object obj = ResourceManager.GetObject("ImgCanPushTarget", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap ImgPiece {
-            get {
-                object obj = ResourceManager.GetObject("ImgPiece", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap ImgPieceSelected {
-            get {
-                object obj = ResourceManager.GetObject("ImgPieceSelected", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap ImgPieceTarget {
-            get {
-                object obj = ResourceManager.GetObject("ImgPieceTarget", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap ImgSokoban {
-            get {
-                object obj = ResourceManager.GetObject("ImgSokoban", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap ImgSokobanTarget {
-            get {
-                object obj = ResourceManager.GetObject("ImgSokobanTarget", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap ImgTarget {
-            get {
-                object obj = ResourceManager.GetObject("ImgTarget", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap ImgWall {
-            get {
-                object obj = ResourceManager.GetObject("ImgWall", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
