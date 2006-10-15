@@ -34,7 +34,7 @@ namespace ExpertSokoban
 
         private int mySizeX, mySizeY, toolbarX,
                     selX, selY, origPenDown, clickedOnSquare,
-                                                                                   
+
                     // If, while state == STATE_PUSH, the user clicks somewhere
                     // where the pushFinder has not yet found a path to, but is
                     // still running, pleaseConsider (and pleaseConsiderDir) are
