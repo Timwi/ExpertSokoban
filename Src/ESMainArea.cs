@@ -4,7 +4,6 @@ using System.Text;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Media;
-using System.Threading;
 using System.Drawing.Drawing2D;
 
 namespace ExpertSokoban
@@ -20,29 +19,28 @@ namespace ExpertSokoban
 
     public class ESMainArea : Panel
     {
+        private Image LevelImage;
+        private SokobanLevel Level;
+        private ESRenderer Renderer;
+        private ESMoveFinder MoveFinder;
+        private ESPushFinder PushFinder;
+        private ESMainAreaState State;
+        private ESMainAreaTool Tool;
+
         private Color ToolRectColour = Color.FromArgb(0, 0x80, 0);
+        private Brush MoveBrush = new SolidBrush(Color.FromArgb(100, Color.LimeGreen));
+        private Brush PushBrush = new SolidBrush(Color.FromArgb(100, Color.LightBlue));
 
-        public Image plainDisplay, moveDisplay, pushDisplay;
-        private SokobanLevel currentLevel;
-        private ESRenderer Rndr = new ESRenderer();
-        private ESMoveFinder moveFinder;
-        private ESPushFinder pushFinder;
-        private ESMainAreaState state;
-        private ESMainAreaTool tool;
-        private int SquareW, SquareH;
-        private int OriginX, OriginY;
+        private int SelX, SelY, OrigMouseDown, ClickedOnCell,
 
-        private int mySizeX, mySizeY, toolbarX,
-                    selX, selY, origPenDown, clickedOnSquare,
-
-                    // If, while state == STATE_PUSH, the user clicks somewhere
-                    // where the pushFinder has not yet found a path to, but is
-                    // still running, pleaseConsider (and pleaseConsiderDir) are
-                    // set to the square clicked on. If the pushFinder encounters
-                    // the square stored in pleaseConsider, the sequence is
-                    // executed. For an explanation of pleaseConsiderDir, see
-                    // getOrigPenDownDir().
-                    pleaseConsider, pleaseConsiderDir;
+                    // If, while State == STATE_PUSH, the user clicks somewhere
+                    // where the PushFinder has not yet found a path to, but is
+                    // still running, PleaseConsider (and PleaseConsiderDir) are
+                    // set to the square clicked on. If the PushFinder encounters
+                    // the square stored in PleaseConsider, the sequence is
+                    // executed. For an explanation of PleaseConsiderDir, see
+                    // GetOrigMouseDownDir().
+                    PleaseConsider, PleaseConsiderDir;
 
         private SoundPlayer sndLevelSolved, sndMeep, sndPiecePlaced, sndThreadDone;
         private int[][] undoBuffer;
@@ -54,15 +52,18 @@ namespace ExpertSokoban
 
         public ESMainArea()
         {
-            currentLevel = null;
-            state = ESMainAreaState.STATE_NULL;
+            Level = null;
+            Renderer = null;
+            State = ESMainAreaState.STATE_NULL;
             Init(false);
         }
 
         public ESMainArea(SokobanLevel level, bool editing)
         {
-            currentLevel = level;
+            Level = level;
+            Renderer = new ESRenderer(Level, ClientSize);
             Init(editing);
+            RedrawLevelImage();
         }
 
         private void Init(bool editing)
@@ -71,13 +72,12 @@ namespace ExpertSokoban
             sndMeep = new SoundPlayer(Properties.Resources.SndMeep);
             sndPiecePlaced = new SoundPlayer(Properties.Resources.SndPiecePlaced);
             sndThreadDone = new SoundPlayer(Properties.Resources.SndThreadDone);
-            reinitSize(editing);
             this.MouseDown += new MouseEventHandler(ESMainArea_MouseDown);
             this.MouseMove += new MouseEventHandler(ESMainArea_MouseMove);
             this.MouseUp += new MouseEventHandler(ESMainArea_MouseUp);
             this.Paint += new PaintEventHandler(ESMainArea_Paint);
             this.Resize += new EventHandler(ESMainArea_Resize);
-            System.Windows.Forms.Timer t = new System.Windows.Forms.Timer();
+            Timer t = new Timer();
             t.Tick += new EventHandler(TimerTick);
             t.Interval = 1;
             t.Enabled = true;
@@ -85,87 +85,28 @@ namespace ExpertSokoban
 
         private void ESMainArea_Resize(object sender, EventArgs e)
         {
-            if (currentLevel != null)
-            {
-                OriginX = ClientSize.Width/2 - mySizeX/2;
-                OriginY = ClientSize.Height/2 - mySizeY/2;
-                updatePlain();
-                if (state == ESMainAreaState.STATE_MOVE || state == ESMainAreaState.STATE_PUSH)
-                    makeMoveDisplay();
-                if (state == ESMainAreaState.STATE_PUSH)
-                    makePushDisplay();
-                Refresh();
-            }
+            if (State == ESMainAreaState.STATE_NULL)
+                return;
+
+            Renderer = new ESRenderer(Level, ClientSize);
+            RedrawLevelImage();
+            Refresh();
         }
 
         private void TimerTick(object sender, EventArgs e)
         {
-            if (state == ESMainAreaState.STATE_MOVE && moveFinder != null && !moveFinder.isDone())
-                moveFinder.run();
-            if (state == ESMainAreaState.STATE_PUSH && pushFinder != null && !pushFinder.isDone())
-                pushFinder.run();
+            if (State == ESMainAreaState.STATE_MOVE && MoveFinder != null && !MoveFinder.isDone())
+                MoveFinder.SingleStep();
+            if (State == ESMainAreaState.STATE_PUSH && PushFinder != null && !PushFinder.isDone())
+                PushFinder.SingleStep();
         }
 
-        public void reinitSize(bool editing)
+        private void ReinitMoveFinder()
         {
-            if (currentLevel != null)
-            {
-                int border = Math.Max(ClientSize.Width / (currentLevel.getSizeX()+1),
-                                      ClientSize.Height / (currentLevel.getSizeY()+1));
-                int fieldW = ClientSize.Width - border;
-                int fieldH = ClientSize.Height - border;
-
-                if (editing)
-                {
-                    fieldH -= SquareH + 2;
-                    state = ESMainAreaState.STATE_EDITING;
-                    tool = ESMainAreaTool.TOOL_WALL;
-                }
-                else
-                {
-                    state = ESMainAreaState.STATE_MOVE;
-                }
-
-                SquareW = SquareH = Math.Min(fieldW / currentLevel.getSizeX(),
-                                             fieldH / currentLevel.getSizeY());
-                mySizeX = currentLevel.getSizeX() * SquareW;
-                mySizeY = currentLevel.getSizeY() * SquareH + (editing ? SquareH+2 : 0);
-                toolbarX = mySizeX/2 - (SquareW+2)*2;
-                OriginX = ClientSize.Width/2 - mySizeX/2;
-                OriginY = ClientSize.Height/2 - mySizeY/2;
-
-                Rndr.SquareW = SquareW;
-                Rndr.SquareH = SquareH;
-                Rndr.OriginX = OriginX;
-                Rndr.OriginY = OriginY;
-                updatePlain();
-                Refresh();
-            }
-        }
-
-        public void initialise()
-        {
-            updatePlain();
-            if (state != ESMainAreaState.STATE_EDITING)
-            {
-                undoBuffer = null;
-                moveDisplay = copyImage(plainDisplay);
-                reinitMoveFinder();
-            }
-        }
-
-        private void reinitMoveFinder()
-        {
-            moveFinder = new ESMoveFinder(currentLevel, false, this,
+            MoveFinder = new ESMoveFinder(Level, false, this,
                 new moveThreadFoundCallback(moveThreadFound),
                 new moveThreadDoneCallback(moveThreadDone));
-            moveDisplay = copyImage(plainDisplay);
         }
-
-        public int getMyWidth() { return mySizeX; }
-        public int getMyHeight() { return mySizeY; }
-        public int getSquareSizeX() { return SquareW; }
-        public int getSquareSizeY() { return SquareH; }
 
         private void addUndo(int prevSokPos, bool push, int fromPush, int toPush)
         {
@@ -186,12 +127,13 @@ namespace ExpertSokoban
             if (push) { newElem[1] = fromPush; newElem[2] = toPush; }
             undoBuffer[n] = newElem;
         }
+
         public void undo()
         {
             if (undoBuffer == null) return;
-            if (state == ESMainAreaState.STATE_EDITING || state == ESMainAreaState.STATE_SOLVED)
+            if (State == ESMainAreaState.STATE_EDITING || State == ESMainAreaState.STATE_SOLVED)
                 return;
-            if (currentLevel == null) return;
+            if (Level == null) return;
 
             int[] extr = undoBuffer[undoBuffer.Length-1];
             if (undoBuffer.Length == 1) undoBuffer = null;
@@ -204,98 +146,43 @@ namespace ExpertSokoban
             }
 
             bool push = extr.Length > 1;
-            currentLevel.setSokobanPos(extr[0]);
-            if (push) currentLevel.movePiece(extr[2], extr[1]);
+            Level.setSokobanPos(extr[0]);
+            if (push) Level.movePiece(extr[2], extr[1]);
 
-            pleaseConsider = 0;
-            pleaseConsiderDir = 0;
-            updatePlain();
-            moveDisplay = copyImage(plainDisplay);
-            reinitMoveFinder();
-            state = ESMainAreaState.STATE_MOVE;
+            PleaseConsider = 0;
+            PleaseConsiderDir = 0;
+            State = ESMainAreaState.STATE_MOVE;
+            RedrawLevelImage();
+            ReinitMoveFinder();
         }
 
         private void ESMainArea_Paint(object sender, PaintEventArgs e)
         {
-            if (currentLevel != null)
+            if (State != ESMainAreaState.STATE_NULL)
             {
-                e.Graphics.DrawImage((state == ESMainAreaState.STATE_PUSH) ? pushDisplay :
-                                     (state == ESMainAreaState.STATE_EDITING) ? plainDisplay : moveDisplay, 0, 0);
-                if (state == ESMainAreaState.STATE_EDITING)
-                {
-                    Rndr.DrawSquare(e.Graphics, 1+toolbarX+OriginX, mySizeY-SquareH-1+OriginY, SokobanImage.Wall);
-                    Rndr.DrawSquare(e.Graphics, SquareW+3+toolbarX+OriginX, mySizeY-SquareH-1+OriginY, SokobanImage.Piece);
-                    Rndr.DrawSquare(e.Graphics, 2*SquareW+5+toolbarX+OriginX, mySizeY-SquareH-1+OriginY, SokobanImage.Target);
-                    Rndr.DrawSquare(e.Graphics, 3*SquareW+7+toolbarX+OriginX, mySizeY-SquareH-1+OriginY, SokobanImage.Sokoban);
-                    drawToolRect(e.Graphics, ToolRectColour);
-                }
+                e.Graphics.DrawImage(LevelImage, 0, 0);
+                for (int i = 0; i < Level.getSizeX()*Level.getSizeY(); i++)
+                    if (PushFinder != null && PushFinder.pushValid(i) && State == ESMainAreaState.STATE_PUSH)
+                        e.Graphics.FillRectangle(PushBrush, Renderer.GetCellRect(i));
+                    else if (MoveFinder != null && MoveFinder.moveValid(i) &&
+                        (State == ESMainAreaState.STATE_MOVE || State == ESMainAreaState.STATE_PUSH))
+                        e.Graphics.FillRectangle(MoveBrush, Renderer.GetCellRect(i));
             }
         }
-        private void drawToolRect(Graphics g, Color c)
-        {
-            int toolIndex = tool == ESMainAreaTool.TOOL_WALL ? 0 :
-                            tool == ESMainAreaTool.TOOL_PIECE ? 1 :
-                            tool == ESMainAreaTool.TOOL_TARGET ? 2 : 3;
-            g.DrawRectangle(new Pen(c), 
-                toolbarX + toolIndex*(SquareW+2) + OriginX, 
-                mySizeY-SquareH-2+OriginY, 
-                SquareW+1, SquareH+1);
-        }
 
-        public void updatePlain()
+        public void RedrawLevelImage()
         {
-            plainDisplay = Rndr.RenderImage(ClientSize.Width, ClientSize.Height);
-        }
-
-        public void makeMoveDisplay()
-        {
-            moveDisplay = copyImage(plainDisplay);
-            Graphics cg = Graphics.FromImage(moveDisplay);
-            Brush moveBrush = new SolidBrush(Color.FromArgb(100, Color.LimeGreen));
-            for (int x = 0; x < currentLevel.getSizeX(); x++)
-                for (int y = 0; y < currentLevel.getSizeY(); y++)
-                    if (moveFinder.moveValid(y*currentLevel.getSizeX() + x))
-                    {
-                        cg.FillRectangle(moveBrush, Rndr.SquareRect(x, y));
-                        //bool isTarget = currentLevel.getCell(x, y) == SokobanSquare.TARGET;
-                        //bool isSokoban = currentLevel.getSokobanX() == x && currentLevel.getSokobanY() == y;
-                        //Rndr.
-                        //cg.DrawImage(isSokoban ? Properties.Resources.ImgSokoban :
-                        //             isTarget  ? Properties.Resources.ImgCanMoveTarget :
-                        //                         Properties.Resources.ImgCanMove,
-                        //    Rndr.SquareScrX(x), Rndr.SquareScrY(y));
-                    }
-        }
-
-        public void makePushDisplay()
-        {
-            pushDisplay = copyImage(moveDisplay);
-            Graphics cg = Graphics.FromImage(pushDisplay);
-            Brush moveBrush = new SolidBrush(Color.FromArgb(100, Color.LightBlue));
-            for (int x = 0; x < currentLevel.getSizeX(); x++)
-                for (int y = 0; y < currentLevel.getSizeY(); y++)
-                    if (pushFinder.pushValid(y*currentLevel.getSizeX() + x))
-                    {
-                        cg.FillRectangle(moveBrush, Rndr.SquareRect(x, y));
-                        //bool isTarget = currentLevel.getCell(x, y) == SokobanSquare.TARGET;
-                        //bool isSokoban = currentLevel.getSokobanX() == x && currentLevel.getSokobanY() == y;
-                        //cg.DrawImage(isTarget && isSokoban ? Properties.Resources.ImgCanPushSokobanTarget :
-                        //              isTarget  ? Properties.Resources.ImgCanPushTarget :
-                        //              isSokoban ? Properties.Resources.ImgCanPushSokoban :
-                        //                          Properties.Resources.ImgCanPush,
-                        //    Rndr.SquareScrX(x), Rndr.SquareScrY(y));
-                    }
-            //cg.DrawImage(Properties.Resources.ImgPieceSelected, selX*CellSizeX, selY*CellSizeY);
-            Rndr.DrawSquare(cg, selX, selY, SokobanImage.PieceSelected);
+            LevelImage = new Bitmap(ClientSize.Width, ClientSize.Height);
+            Renderer.Render(Graphics.FromImage(LevelImage));
         }
 
         private void drawPushPath(int square, int posInDir)
         {
             Graphics cg = CreateGraphics();
-            cg.DrawImage(pushDisplay, 0, 0);
-            int[][] moves = pushFinder.getMoves(square, posInDir);
-            int curSokPos = currentLevel.getSokobanPos();
-            int curPiecePos = selY * currentLevel.getSizeX() + selX;
+            cg.DrawImage(LevelImage, 0, 0);
+            int[][] moves = PushFinder.getMoves(square, posInDir);
+            int curSokPos = Level.getSokobanPos();
+            int curPiecePos = SelY * Level.getSizeX() + SelX;
             Brush b = new SolidBrush(Color.FromArgb(0, 0, 0x80));
 
             for (int i = 0; i < moves.Length; i++)
@@ -308,13 +195,15 @@ namespace ExpertSokoban
                                 // need to push
                                 curPiecePos += moves[i][j];
                                 curSokPos += moves[i][j];
-                                int x = curPiecePos % currentLevel.getSizeX();
-                                int y = curPiecePos / currentLevel.getSizeX();
+                                int x = curPiecePos % Level.getSizeX();
+                                int y = curPiecePos / Level.getSizeX();
+                                float SquareW = Renderer.CellWidth;
                                 cg.SmoothingMode = SmoothingMode.AntiAlias;
+                                RectangleF CellRect = Renderer.GetCellRect(x, y);
                                 cg.FillEllipse(b,
-                                    SquareW*x + SquareW/2 + OriginX - SquareW/6,
-                                    SquareH*y + SquareH/2 + OriginY - SquareH/6,
-                                    SquareW/3, SquareH/3);
+                                    CellRect.Left + Renderer.CellWidth/3,
+                                    CellRect.Top + Renderer.CellHeight/3,
+                                    Renderer.CellWidth/3, Renderer.CellHeight/3);
                             }
                             else
                                 // just move Sokoban
@@ -322,225 +211,198 @@ namespace ExpertSokoban
                         }
         }
 
-        // If you just tap a square to push a piece to, BSPushFinder will find
-        // the shortest pushpath regardless of where the Sokoban will end up.
-        // If you tap *next* to the square you want to push the piece to and then
-        // *drag* onto the square before releasing, then we will try to move the
-        // piece in such a way that the Sokoban will end up on the square you
-        // first tapped. getOrigPenDownDir() determines in which direction you
-        // dragged. This value is passed on to BSPushFinder.getMoves().
-        private int getOrigPenDownDir(int square)
+        // If you just click a cell to push a piece to, PushFinder will find
+        // the shortest push-path regardless of where the Sokoban will end up.
+        // If you mouse-down *next* to the cell you want to push the piece to and 
+        // then *drag* onto the cell before releasing, then we will try to move
+        // the piece in such a way that the Sokoban will end up on the cell you
+        // clicked first. GetOrigMouseDownDir() determines in which direction you
+        // dragged. This value is passed on to PushFinder.getMoves().
+        private int GetOrigMouseDownDir(int cell)
         {
-            int sx = currentLevel.getSizeX();
-            return (origPenDown == square-sx) ? 1 :
-                   (origPenDown == square- 1) ? 2 :
-                   (origPenDown == square+ 1) ? 3 :
-                   (origPenDown == square+sx) ? 4 : 0;
+            int sx = Level.getSizeX();
+            return (OrigMouseDown == cell-sx) ? 1 :
+                   (OrigMouseDown == cell- 1) ? 2 :
+                   (OrigMouseDown == cell+ 1) ? 3 :
+                   (OrigMouseDown == cell+sx) ? 4 : 0;
         }
 
         private void ESMainArea_MouseDown(object sender, MouseEventArgs e)
         {
-            if (state == ESMainAreaState.STATE_PUSH)
+            if (State == ESMainAreaState.STATE_PUSH)
             {
-                int clickedX = (e.X-OriginX) / SquareW;
-                int clickedY = (e.Y-OriginY) / SquareH;
-                int square = clickedY * currentLevel.getSizeX() + clickedX;
-                origPenDown = square;
-                clickedOnSquare = square;
-                if (pushFinder.pushValid(square))
-                    drawPushPath(square, getOrigPenDownDir(square));
-                else
-                    CreateGraphics().DrawImage(pushDisplay, 0, 0);
+                Point Clicked = Renderer.CellFromPixel(e.Location);
+                int Cell = Clicked.Y * Level.getSizeX() + Clicked.X;
+                OrigMouseDown = Cell;
+                ClickedOnCell = Cell;
+                if (PushFinder.pushValid(Cell))
+                    drawPushPath(Cell, GetOrigMouseDownDir(Cell));
             }
         }
 
         private void ESMainArea_MouseMove(object sender, MouseEventArgs e)
         {
-            if (state == ESMainAreaState.STATE_PUSH)
+            if (State == ESMainAreaState.STATE_PUSH)
             {
-                int clickedX = (e.X-OriginX) / SquareW;
-                int clickedY = (e.Y-OriginY) / SquareH;
-                int square = clickedY * currentLevel.getSizeX() + clickedX;
+                Point Clicked = Renderer.CellFromPixel(e.Location);
+                int Cell = Clicked.Y * Level.getSizeX() + Clicked.X;
 
-                if (square != clickedOnSquare)
+                if (Cell != ClickedOnCell)
                 {
-                    clickedOnSquare = square;
-                    if (pushFinder.pushValid(square))
-                        drawPushPath(square, getOrigPenDownDir(square));
-                    else
-                        CreateGraphics().DrawImage(pushDisplay, 0, 0);
+                    ClickedOnCell = Cell;
+                    if (PushFinder.pushValid(Cell))
+                        drawPushPath(Cell, GetOrigMouseDownDir(Cell));
                 }
             }
         }
 
         private void ESMainArea_MouseUp(object sender, MouseEventArgs e)
         {
-            int clickedX = (e.X-OriginX) / SquareW;
-            int clickedY = (e.Y-OriginY) / SquareH;
-            int square = clickedY * currentLevel.getSizeX() + clickedX;
+            Point Clicked = Renderer.CellFromPixel(e.Location);
+            int Cell = Clicked.Y * Level.getSizeX() + Clicked.X;
 
-            if (state == ESMainAreaState.STATE_EDITING)
+            if (State == ESMainAreaState.STATE_EDITING)
             {
-                Graphics g1 = Graphics.FromImage(plainDisplay);
+                Graphics g1 = Graphics.FromImage(LevelImage);
                 Graphics g2 = CreateGraphics();
-                if (e.Y-OriginY > mySizeY-SquareH-3)
+                SokobanCell CellType = Level.getCell(Cell);
+                if (Tool == ESMainAreaTool.TOOL_WALL)
                 {
-                    int clickedToolIndex = (e.X - toolbarX - OriginX) / (SquareW+2);
-                    ESMainAreaTool clickedTool =
-                            clickedToolIndex == 0 ? ESMainAreaTool.TOOL_WALL :
-                            clickedToolIndex == 1 ? ESMainAreaTool.TOOL_PIECE :
-                            clickedToolIndex == 2 ? ESMainAreaTool.TOOL_TARGET : ESMainAreaTool.TOOL_SOKOBAN;
-                    if (clickedTool != tool)
+                    if (Level.getSokobanX() != Clicked.X || Level.getSokobanY() != Clicked.Y)
                     {
-                        drawToolRect(g1, BackColor);
-                        drawToolRect(g2, BackColor);
-                        tool = clickedTool;
-                        drawToolRect(g1, ToolRectColour);
-                        drawToolRect(g2, ToolRectColour);
+                        Level.setCell(Clicked.X, Clicked.Y,
+                            CellType == SokobanCell.Wall ? SokobanCell.Blank : SokobanCell.Wall);
+                        Renderer.RenderCell(g1, Clicked.X, Clicked.Y);
+                        Renderer.RenderCell(g2, Clicked.X, Clicked.Y);
+                        sndThreadDone.Play();
                     }
+                    else sndMeep.Play();
                 }
-                else
+                else if (Tool == ESMainAreaTool.TOOL_PIECE)
                 {
-                    SokobanSquare cell = currentLevel.getCell(clickedX, clickedY);
-                    if (tool == ESMainAreaTool.TOOL_WALL)
+                    if ((Level.getSokobanX() != Clicked.X || Level.getSokobanY() != Clicked.Y)
+                                && CellType != SokobanCell.Wall)
                     {
-                        if (currentLevel.getSokobanX() != clickedX || currentLevel.getSokobanY() != clickedY)
-                        {
-                            currentLevel.setCell(clickedX, clickedY,
-                                cell == SokobanSquare.WALL ? SokobanSquare.BLANK : SokobanSquare.WALL);
-                            Rndr.RenderSquare(g1, clickedX, clickedY);
-                            Rndr.RenderSquare(g2, clickedX, clickedY);
-                            sndThreadDone.Play();
-                        }
-                        else sndMeep.Play();
+                        Level.setCell(Clicked.X, Clicked.Y,
+                            CellType == SokobanCell.PieceOnTarget ? SokobanCell.Target :
+                                    CellType == SokobanCell.Blank ? SokobanCell.Piece :
+                                    CellType == SokobanCell.Target ? SokobanCell.PieceOnTarget :
+                                        SokobanCell.Blank);
+                        Renderer.RenderCell(g1, Clicked.X, Clicked.Y);
+                        Renderer.RenderCell(g2, Clicked.X, Clicked.Y);
+                        sndPiecePlaced.Play();
                     }
-                    else if (tool == ESMainAreaTool.TOOL_PIECE)
-                    {
-                        if ((currentLevel.getSokobanX() != clickedX || currentLevel.getSokobanY() != clickedY)
-                                && cell != SokobanSquare.WALL)
-                        {
-                            currentLevel.setCell(clickedX, clickedY,
-                                cell == SokobanSquare.PIECE_ON_TARGET ? SokobanSquare.TARGET :
-                                    cell == SokobanSquare.BLANK ? SokobanSquare.PIECE :
-                                    cell == SokobanSquare.TARGET ? SokobanSquare.PIECE_ON_TARGET :
-                                        SokobanSquare.BLANK);
-                            Rndr.RenderSquare(g1, clickedX, clickedY);
-                            Rndr.RenderSquare(g2, clickedX, clickedY);
-                            sndPiecePlaced.Play();
-                        }
-                        else sndMeep.Play();
-                    }
-                    else if (tool == ESMainAreaTool.TOOL_TARGET)
-                    {
-                        if (cell != SokobanSquare.WALL)
-                        {
-                            currentLevel.setCell(clickedX, clickedY,
-                                cell == SokobanSquare.PIECE_ON_TARGET ? SokobanSquare.PIECE :
-                                    cell == SokobanSquare.BLANK ? SokobanSquare.TARGET :
-                                    cell == SokobanSquare.TARGET ? SokobanSquare.BLANK :
-                                        SokobanSquare.PIECE_ON_TARGET);
-                            Rndr.RenderSquare(g1, clickedX, clickedY);
-                            Rndr.RenderSquare(g2, clickedX, clickedY);
-                            sndPiecePlaced.Play();
-                        }
-                        else sndMeep.Play();
-                    }
-                    else if (tool == ESMainAreaTool.TOOL_SOKOBAN)
-                    {
-                        if (cell != SokobanSquare.WALL &&
-                                cell != SokobanSquare.PIECE &&
-                                cell != SokobanSquare.PIECE_ON_TARGET)
-                        {
-                            int oldSokobanPos = currentLevel.getSokobanPos();
-                            currentLevel.setSokobanPos(clickedX, clickedY);
-                            Rndr.RenderSquare(g1, oldSokobanPos);
-                            Rndr.RenderSquare(g2, oldSokobanPos);
-                            Rndr.RenderSquare(g1, clickedX, clickedY);
-                            Rndr.RenderSquare(g2, clickedX, clickedY);
-                            sndPiecePlaced.Play();
-                        }
-                        else sndMeep.Play();
-                    }
-                    int prevSizeX = currentLevel.getSizeX();
-                    int prevSizeY = currentLevel.getSizeY();
-                    currentLevel.ensureSpace(true);
-                    if (currentLevel.getSizeX() != prevSizeX ||
-                            currentLevel.getSizeY() != prevSizeY)
-                        reinitSize(true);
+                    else sndMeep.Play();
                 }
-            }
-            else if (currentLevel.isPiece(square) &&
-                         state != ESMainAreaState.STATE_SOLVED &&
-                         !(pushFinder != null &&
-                           getOrigPenDownDir(square) != 0 &&
-                           pushFinder.pushValid(square, getOrigPenDownDir(square))))
-            {
-                if (moveFinder != null && !moveFinder.isDone())
-                    moveFinder.runToCompletion(square);
+                else if (Tool == ESMainAreaTool.TOOL_TARGET)
+                {
+                    if (CellType != SokobanCell.Wall)
+                    {
+                        Level.setCell(Clicked.X, Clicked.Y,
+                            CellType == SokobanCell.PieceOnTarget ? SokobanCell.Piece :
+                                    CellType == SokobanCell.Blank ? SokobanCell.Target :
+                                    CellType == SokobanCell.Target ? SokobanCell.Blank :
+                                        SokobanCell.PieceOnTarget);
+                        Renderer.RenderCell(g1, Clicked.X, Clicked.Y);
+                        Renderer.RenderCell(g2, Clicked.X, Clicked.Y);
+                        sndPiecePlaced.Play();
+                    }
+                    else sndMeep.Play();
+                }
+                else if (Tool == ESMainAreaTool.TOOL_SOKOBAN)
+                {
+                    if (CellType != SokobanCell.Wall &&
+                                CellType != SokobanCell.Piece &&
+                                CellType != SokobanCell.PieceOnTarget)
+                    {
+                        int oldSokobanPos = Level.getSokobanPos();
+                        Level.setSokobanPos(Clicked.X, Clicked.Y);
+                        Renderer.RenderCell(g1, oldSokobanPos);
+                        Renderer.RenderCell(g2, oldSokobanPos);
+                        Renderer.RenderCell(g1, Clicked.X, Clicked.Y);
+                        Renderer.RenderCell(g2, Clicked.X, Clicked.Y);
+                        sndPiecePlaced.Play();
+                    }
+                    else sndMeep.Play();
+                }
+                int prevSizeX = Level.getSizeX();
+                int prevSizeY = Level.getSizeY();
+                Level.ensureSpace(true);
+                if (Level.getSizeX() != prevSizeX || Level.getSizeY() != prevSizeY)
+                    RedrawLevelImage();
 
-                if (moveFinder.moveValid(square + currentLevel.getSizeX()) ||
-                        moveFinder.moveValid(square - currentLevel.getSizeX()) ||
-                        moveFinder.moveValid(square + 1) ||
-                        moveFinder.moveValid(square - 1))
+            }
+            else if (Level.isPiece(Cell) &&
+                         State != ESMainAreaState.STATE_SOLVED &&
+                         !(PushFinder != null &&
+                           GetOrigMouseDownDir(Cell) != 0 &&
+                           PushFinder.pushValid(Cell, GetOrigMouseDownDir(Cell))))
+            {
+                if (MoveFinder != null && !MoveFinder.isDone())
+                    MoveFinder.RunToCompletion(Cell);
+
+                if (MoveFinder.moveValid(Cell + Level.getSizeX()) ||
+                        MoveFinder.moveValid(Cell - Level.getSizeX()) ||
+                        MoveFinder.moveValid(Cell + 1) ||
+                        MoveFinder.moveValid(Cell - 1))
                 {
-                    selX = clickedX;
-                    selY = clickedY;
-                    pushDisplay = copyImage(moveDisplay);
-                    Rndr.DrawSquare(Graphics.FromImage(pushDisplay), selX, selY, SokobanImage.PieceSelected);
-                    CreateGraphics().DrawImage(pushDisplay, 0, 0);
-                    pleaseConsider = 0;
-                    pushFinder = new ESPushFinder(currentLevel, selX, selY, this,
+                    SelX = Clicked.X;
+                    SelY = Clicked.Y;
+                    Renderer.DrawCell(Graphics.FromImage(LevelImage), SelX, SelY, SokobanImage.PieceSelected);
+                    CreateGraphics().DrawImage(LevelImage, 0, 0);
+                    PleaseConsider = 0;
+                    PushFinder = new ESPushFinder(Level, SelX, SelY, this,
                         new pushThreadFoundCallback(pushThreadFound),
                         new pushThreadDoneCallback(pushThreadDone),
-                        moveFinder);
-                    state = ESMainAreaState.STATE_PUSH;
+                        MoveFinder);
+                    State = ESMainAreaState.STATE_PUSH;
                 }
                 else sndMeep.Play();
             }
-            else if (state == ESMainAreaState.STATE_PUSH && pushFinder != null)
+            else if (State == ESMainAreaState.STATE_PUSH && PushFinder != null)
             {
-                if (!pushFinder.isDone() && !pushFinder.pushValid(square))
+                if (!PushFinder.isDone() && !PushFinder.pushValid(Cell))
                 {
-                    pleaseConsider = square;
-                    pleaseConsiderDir = getOrigPenDownDir(square);
+                    PleaseConsider = Cell;
+                    PleaseConsiderDir = GetOrigMouseDownDir(Cell);
                 }
                 else
-                    processPushClick(square, getOrigPenDownDir(square));
+                    processPushClick(Cell, GetOrigMouseDownDir(Cell));
             }
         }
 
         private void processPushClick(int square, int squareDir)
         {
-            if (!pushFinder.pushValid(square))
+            if (!PushFinder.pushValid(square))
             {
                 sndMeep.Play();
                 return;
             }
 
-            int[][] moves = pushFinder.getMoves(square, squareDir);
+            int[][] moves = PushFinder.getMoves(square, squareDir);
             Graphics cg = CreateGraphics();
-            cg.DrawImage(plainDisplay, 0, 0);
+            cg.DrawImage(LevelImage, 0, 0);
             bool everPushed = false;
             int origPushPos = -1;
             int lastPushPos = -1;
-            int origSokPos = currentLevel.getSokobanPos();
+            int origSokPos = Level.getSokobanPos();
             for (int i = 0; i < moves.Length; i++)
                 if (moves[i] != null)
                     for (int j = 0; j < moves[i].Length; j++)
                         if (moves[i][j] != 0)
                         {
-                            Thread.Sleep(20);
-                            if (currentLevel.isPiece(currentLevel.getSokobanPos() + moves[i][j]))
+                            System.Threading.Thread.Sleep(20);
+                            if (Level.isPiece(Level.getSokobanPos() + moves[i][j]))
                             {
                                 // need to push
-                                int prevSokPos = currentLevel.getSokobanPos();
+                                int prevSokPos = Level.getSokobanPos();
                                 int newSokPos = prevSokPos + moves[i][j];
                                 int pushTo = newSokPos + moves[i][j];
-                                currentLevel.movePiece(newSokPos, pushTo);
-                                currentLevel.setSokobanPos(newSokPos);
-                                Rndr.RenderSquare(cg, pushTo);
-                                Rndr.RenderSquare(cg, newSokPos);
-                                Rndr.RenderSquare(cg, prevSokPos);
+                                Level.movePiece(newSokPos, pushTo);
+                                Level.setSokobanPos(newSokPos);
+                                Renderer.RenderCell(cg, pushTo);
+                                Renderer.RenderCell(cg, newSokPos);
+                                Renderer.RenderCell(cg, prevSokPos);
                                 if (!everPushed)
                                 {
                                     origPushPos = newSokPos;
@@ -551,42 +413,49 @@ namespace ExpertSokoban
                             else
                             {
                                 // just move Sokoban
-                                int prevSokPos = currentLevel.getSokobanPos();
+                                int prevSokPos = Level.getSokobanPos();
                                 int newSokPos = prevSokPos + moves[i][j];
-                                currentLevel.setSokobanPos(newSokPos);
-                                Rndr.RenderSquare(cg, newSokPos);
-                                Rndr.RenderSquare(cg, prevSokPos);
+                                Level.setSokobanPos(newSokPos);
+                                Renderer.RenderCell(cg, newSokPos);
+                                Renderer.RenderCell(cg, prevSokPos);
                             }
                         }
-            // optimised version of updatePlain() :)
-            Graphics pg = Graphics.FromImage(plainDisplay);
-            Rndr.RenderSquare(pg, origSokPos);
-            Rndr.RenderSquare(pg, currentLevel.getSokobanPos());
-            if (origPushPos != -1) Rndr.RenderSquare(pg, origPushPos);
-            if (lastPushPos != -1) Rndr.RenderSquare(pg, lastPushPos);
-            moveDisplay = copyImage(plainDisplay);
 
-            if (currentLevel.solved())
-                levelSolved(cg);
+            Graphics pg = Graphics.FromImage(LevelImage);
+            Renderer.RenderCell(pg, origSokPos);
+            Renderer.RenderCell(pg, Level.getSokobanPos());
+            if (origPushPos != -1) Renderer.RenderCell(pg, origPushPos);
+            if (lastPushPos != -1) Renderer.RenderCell(pg, lastPushPos);
+
+            if (Level.solved())
+                LevelSolved(cg);
             else
             {
                 sndPiecePlaced.Play();
                 addUndo(origSokPos, origPushPos != -1, origPushPos, lastPushPos);
-                cg.DrawImage(moveDisplay, 0, 0);
-                reinitMoveFinder();
-                state = ESMainAreaState.STATE_MOVE;
+                cg.DrawImage(LevelImage, 0, 0);
+                State = ESMainAreaState.STATE_MOVE;
+                ReinitMoveFinder();
             }
         }
 
-        private void levelSolved(Graphics cg)
+        private void LevelSolved(Graphics cg)
         {
-            state = ESMainAreaState.STATE_SOLVED;
-            Graphics g = Graphics.FromImage(moveDisplay);
-            Brush b = new SolidBrush(Color.FromArgb(0, 0, 0xA0));
-            g.FillEllipse(b, getMyWidth()/2-28, getMyHeight()/2-10, 56, 20);
-            g.DrawEllipse(new Pen(Color.Black), getMyWidth()/2-28, getMyHeight()/2-10, 56, 20);
-            g.DrawString("LEVEL SOLVED", Font, new SolidBrush(Color.White), getMyWidth()/2 - 41, getMyHeight()/2 - 8);
-            cg.DrawImage(moveDisplay, 0, 0);
+            State = ESMainAreaState.STATE_SOLVED;
+            Graphics g = Graphics.FromImage(LevelImage);
+            g.InterpolationMode = InterpolationMode.HighQualityBilinear;
+            Image ImgLevelSolved = Properties.Resources.ImgLevelSolved;
+            if (LevelImage.Width < ImgLevelSolved.Width)
+                g.DrawImage(ImgLevelSolved, 
+                    0, 
+                    LevelImage.Height/2 - (LevelImage.Width * ImgLevelSolved.Height / LevelImage.Height)/2,
+                    LevelImage.Width,
+                    LevelImage.Width * ImgLevelSolved.Height / LevelImage.Height);
+            else
+                g.DrawImage (ImgLevelSolved,
+                    LevelImage.Width/2 - ImgLevelSolved.Width/2,
+                    LevelImage.Height/2 - ImgLevelSolved.Height/2);
+
             sndLevelSolved.Play();
         }
 
@@ -599,63 +468,45 @@ namespace ExpertSokoban
 
         public void moveThreadFound(int pos)
         {
-            if (pos == currentLevel.getSokobanPos()) return;
+            if (pos == Level.getSokobanPos()) return;
 
-            Image d = currentLevel.getCell(pos) == SokobanSquare.TARGET ? 
-                Properties.Resources.ImgCanMoveTarget : Properties.Resources.ImgCanMove;
-            Graphics.FromImage(moveDisplay).DrawImage(d,
-                OriginX + (pos % currentLevel.getSizeX())*SquareW, 
-                OriginY + (pos / currentLevel.getSizeX())*SquareH);
-
-            if (state == ESMainAreaState.STATE_PUSH && !pushFinder.pushValid(pos))
-            {
-                Graphics.FromImage(pushDisplay).DrawImage(d,
-                    OriginX + (pos % currentLevel.getSizeX())*SquareW, 
-                    OriginY + (pos / currentLevel.getSizeX())*SquareH);
-                CreateGraphics().DrawImage(pushDisplay, 0, 0);
-            }
-            else if (state == ESMainAreaState.STATE_MOVE)
-                CreateGraphics().DrawImage(moveDisplay, 0, 0);
+            if (State != ESMainAreaState.STATE_PUSH || !PushFinder.pushValid(pos))
+                Graphics.FromImage(LevelImage).FillRectangle(MoveBrush, Renderer.GetCellRect(pos));
+            CreateGraphics().DrawImage(LevelImage, 0, 0);
         }
 
         public void moveThreadDone()
         {
-            CreateGraphics().DrawImage(moveDisplay, 0, 0);
+            CreateGraphics().DrawImage(LevelImage, 0, 0);
         }
 
         public void pushThreadFound(int pos)
         {
-            if (pos == pleaseConsider)
-                processPushClick(pleaseConsider, pleaseConsiderDir);
-            else
+            if (pos == PleaseConsider)
+                processPushClick(PleaseConsider, PleaseConsiderDir);
+            else if (!Level.isPiece(pos))
             {
-                if (currentLevel.isPiece(pos)) return;
-                Image d = currentLevel.getSokobanPos() == pos 
-                    ? (currentLevel.getCell(pos) == SokobanSquare.TARGET ? Properties.Resources.ImgCanPushSokobanTarget
-                                                                         : Properties.Resources.ImgCanPushSokoban)
-                    : (currentLevel.getCell(pos) == SokobanSquare.TARGET ? Properties.Resources.ImgCanPushTarget
-                                                                         : Properties.Resources.ImgCanPush);
-                Graphics.FromImage(pushDisplay).DrawImage(d,
-                    OriginX + (pos % currentLevel.getSizeX())*SquareW,
-                    OriginY + (pos / currentLevel.getSizeX())*SquareH);
-                CreateGraphics().DrawImage(pushDisplay, 0, 0);
+                Graphics g = CreateGraphics();
+                Renderer.RenderCell(g, pos);
+                g.FillRectangle(PushBrush, Renderer.GetCellRect(pos));
             }
         }
 
         public void pushThreadDone(bool anythingPossible)
         {
-            if (!anythingPossible && pleaseConsider == 0)
+            if (!anythingPossible && PleaseConsider == 0)
                 sndMeep.Play();
-            else if (pleaseConsider != 0)
-                processPushClick(pleaseConsider, pleaseConsiderDir);
+            else if (PleaseConsider != 0)
+                processPushClick(PleaseConsider, PleaseConsiderDir);
         }
 
-        public void SetLevel(SokobanLevel sokobanLevel)
+        public void SetLevel(SokobanLevel NewLevel)
         {
-            currentLevel = sokobanLevel;
-            Rndr.Lvl = currentLevel;
-            reinitSize(false);
-            reinitMoveFinder();
+            Level = NewLevel;
+            Renderer = new ESRenderer(Level, ClientSize);
+            State = ESMainAreaState.STATE_MOVE;
+            RedrawLevelImage();
+            ReinitMoveFinder();
             Refresh();
         }
     }

@@ -154,6 +154,7 @@ namespace ExpertSokoban
             this.LevelList.Name = "LevelList";
             this.LevelList.Size = new System.Drawing.Size(200, 396);
             this.LevelList.TabIndex = 2;
+            this.LevelList.DoubleClick += new System.EventHandler(this.LevelList_DoubleClick);
             // 
             // LevelListToolStrip
             // 

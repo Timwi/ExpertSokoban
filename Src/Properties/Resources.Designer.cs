@@ -60,100 +60,58 @@ namespace ExpertSokoban.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap img_piece {
+        internal static System.Drawing.Bitmap ImgLevelSolved {
             get {
-                object obj = ResourceManager.GetObject("img_piece", resourceCulture);
+                object obj = ResourceManager.GetObject("ImgLevelSolved", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap img_piece_selected {
+        internal static System.Drawing.Bitmap ImgPiece {
             get {
-                object obj = ResourceManager.GetObject("img_piece_selected", resourceCulture);
+                object obj = ResourceManager.GetObject("ImgPiece", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap img_piece_target {
+        internal static System.Drawing.Bitmap ImgPieceSelected {
             get {
-                object obj = ResourceManager.GetObject("img_piece_target", resourceCulture);
+                object obj = ResourceManager.GetObject("ImgPieceSelected", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap img_sokoban {
+        internal static System.Drawing.Bitmap ImgPieceTarget {
             get {
-                object obj = ResourceManager.GetObject("img_sokoban", resourceCulture);
+                object obj = ResourceManager.GetObject("ImgPieceTarget", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap img_target {
+        internal static System.Drawing.Bitmap ImgSokoban {
             get {
-                object obj = ResourceManager.GetObject("img_target", resourceCulture);
+                object obj = ResourceManager.GetObject("ImgSokoban", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap img_target_under {
+        internal static System.Drawing.Bitmap ImgTarget {
             get {
-                object obj = ResourceManager.GetObject("img_target_under", resourceCulture);
+                object obj = ResourceManager.GetObject("ImgTarget", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap img_wall {
+        internal static System.Drawing.Bitmap ImgTargetUnder {
             get {
-                object obj = ResourceManager.GetObject("img_wall", resourceCulture);
+                object obj = ResourceManager.GetObject("ImgTargetUnder", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap ImgBlank {
+        internal static System.Drawing.Bitmap ImgWall {
             get {
-                object obj = ResourceManager.GetObject("ImgBlank", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap ImgCanMove {
-            get {
-                object obj = ResourceManager.GetObject("ImgCanMove", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap ImgCanMoveTarget {
-            get {
-                object obj = ResourceManager.GetObject("ImgCanMoveTarget", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap ImgCanPush {
-            get {
-                object obj = ResourceManager.GetObject("ImgCanPush", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap ImgCanPushSokoban {
-            get {
-                object obj = ResourceManager.GetObject("ImgCanPushSokoban", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap ImgCanPushSokobanTarget {
-            get {
-                object obj = ResourceManager.GetObject("ImgCanPushSokobanTarget", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap ImgCanPushTarget {
-            get {
-                object obj = ResourceManager.GetObject("ImgCanPushTarget", resourceCulture);
+                object obj = ResourceManager.GetObject("ImgWall", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

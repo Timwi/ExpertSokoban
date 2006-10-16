@@ -288,7 +288,7 @@ namespace ExpertSokoban
             initialMoveFinder = curMF;
         }
 
-        public void run()
+        public void SingleStep()
         {
             if (done) return;
 
@@ -366,7 +366,7 @@ namespace ExpertSokoban
                         // run the BSMoveFinder anyway.
                         {
                             ESMoveFinder mf = new ESMoveFinder(level, true, null, null, null, position);
-                            mf.run();
+                            mf.SingleStep();
 
                             // mf.getPath will return null if you can't walk to any of these
                             if (direction != 0) path[item][0] = mf.getPath (position - sx);

@@ -32,7 +32,6 @@ namespace ExpertSokoban
 
         private void ToolEdit_Click(object sender, EventArgs e)
         {
-            MainArea.reinitSize(true);
         }
 
         private enum LevelReaderState
@@ -45,6 +44,7 @@ namespace ExpertSokoban
             OpenFileDialog dlg = new OpenFileDialog();
             if (dlg.ShowDialog() == DialogResult.OK)
             {
+                LevelList.Items.Clear();
                 StreamReader streamReader = new StreamReader(dlg.FileName, Encoding.UTF8);
                 LevelReaderState state = LevelReaderState.Empty;
                 String line;
@@ -99,6 +99,19 @@ namespace ExpertSokoban
         {
             LevelListPanel.Visible = false;
             LevelListSplitter.Visible = false;
+        }
+
+        private void LevelList_DoubleClick(object sender, EventArgs e)
+        {
+            object curItem = LevelList.SelectedItem;
+            if (curItem is SokobanLevel)
+            {
+                if (MessageBox.Show("Are you sure you wish to give up the current level?",
+                    "Open level", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    MainArea.SetLevel(((SokobanLevel) curItem).Clone());
+                }
+            }
         }
     }
 }

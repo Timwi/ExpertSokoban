@@ -24,34 +24,56 @@ namespace ExpertSokoban
 
         private void ESLevelListBox_DrawItem(object sender, DrawItemEventArgs e)
         {
-            e.DrawBackground();
-            e.DrawFocusRectangle();
-
-            if (e.Index > -1 && e.Index < Items.Count && !DesignMode && Items[e.Index] is SokobanLevel)
+            if (e.Index > -1 && e.Index < Items.Count && !DesignMode)
             {
-                if ((e.State & DrawItemState.Selected) != DrawItemState.Selected)
-                    e.Graphics.FillRectangle(new LinearGradientBrush(e.Bounds, Color.White, Color.Silver, 90, false), e.Bounds);
-                e.Graphics.DrawString("(Level goes here)", Font, new SolidBrush(e.ForeColor), e.Bounds.Left + 5, e.Bounds.Top + 5);
-            }
-            else if (e.Index > -1 && e.Index < Items.Count && !DesignMode && Items[e.Index] is string)
-            {
-                string str = (string) Items[e.Index];
-                if ((e.State & DrawItemState.Selected) != DrawItemState.Selected)
-                    e.Graphics.FillRectangle(new LinearGradientBrush(e.Bounds, Color.White, Color.Silver, 90, false), e.Bounds);
-                e.Graphics.DrawString(str, Font, new SolidBrush(e.ForeColor), e.Bounds.Left + 5, e.Bounds.Top + 5);
+                if (Items[e.Index] is SokobanLevel)
+                {
+                    ESRenderer r = new ESRenderer((SokobanLevel) Items[e.Index], e.Bounds.Width-10, e.Bounds.Height-10);
+                    e.DrawBackground();
+                    e.DrawFocusRectangle();
+                    if ((e.State & DrawItemState.Selected) != DrawItemState.Selected)
+                        e.Graphics.FillRectangle(new LinearGradientBrush(e.Bounds, Color.White, Color.Silver, 90, false), e.Bounds);
+                    e.Graphics.TranslateTransform(5 + e.Bounds.Left, 5 + e.Bounds.Top);
+                    r.Render(e.Graphics);
+                }
+                else if (Items[e.Index] is string)
+                {
+                    e.DrawBackground();
+                    e.DrawFocusRectangle();
+                    string str = (string) Items[e.Index];
+                    if ((e.State & DrawItemState.Selected) != DrawItemState.Selected)
+                        e.Graphics.FillRectangle(new LinearGradientBrush(e.Bounds, Color.White, Color.Silver, 90, false), e.Bounds);
+                    e.Graphics.DrawString(str, Font, new SolidBrush(e.ForeColor), e.Bounds.Left + 5, e.Bounds.Top + 5);
+                }
+                else
+                {
+                    e.DrawBackground();
+                    e.DrawFocusRectangle();
+                    string str = Items[e.Index].ToString();
+                    if ((e.State & DrawItemState.Selected) != DrawItemState.Selected)
+                        e.Graphics.FillRectangle(new LinearGradientBrush(e.Bounds, Color.White, Color.Silver, 90, false), e.Bounds);
+                    e.Graphics.DrawString(str, Font, new SolidBrush(e.ForeColor), e.Bounds.Left + 5, e.Bounds.Top + 5);
+                }
             }
         }
 
         private void ESLevelListBox_MeasureItem(object sender, MeasureItemEventArgs e)
         {
-            if (e.Index > -1 && e.Index < Items.Count && !DesignMode && Items[e.Index] is SokobanLevel)
+            if (e.Index > -1 && e.Index < Items.Count && !DesignMode)
             {
-                SokobanLevel level = (SokobanLevel) Items[e.Index];
-                e.ItemHeight = (ClientSize.Width-10)*level.getSizeY()/level.getSizeX() + 10;
-            }
-            else if (e.Index > -1 && e.Index < Items.Count && !DesignMode && Items[e.Index] is string)
-            {
-                e.ItemHeight = (int) e.Graphics.MeasureString((string)Items[e.Index], Font).Height + 10;
+                if (Items[e.Index] is SokobanLevel)
+                {
+                    SokobanLevel level = (SokobanLevel) Items[e.Index];
+                    e.ItemHeight = (ClientSize.Width-10)*level.getSizeY()/level.getSizeX() + 10;
+                }
+                else if (Items[e.Index] is string)
+                {
+                    e.ItemHeight = (int) e.Graphics.MeasureString((string) Items[e.Index], Font).Height + 10;
+                }
+                else
+                {
+                    e.ItemHeight = (int) e.Graphics.MeasureString(Items[e.Index].ToString(), Font).Height + 10;
+                }
             }
         }
     }

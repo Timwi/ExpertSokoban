@@ -4,14 +4,14 @@ using System.Text;
 
 namespace ExpertSokoban
 {
-    public enum SokobanSquare
+    public enum SokobanCell
     {
-        INVALID,
-        BLANK,
-        WALL,
-        PIECE,
-        TARGET,
-        PIECE_ON_TARGET
+        Invalid,
+        Blank,
+        Wall,
+        Piece,
+        Target,
+        PieceOnTarget
     };
 
     public class SokobanLevel
@@ -38,14 +38,14 @@ namespace ExpertSokoban
             int sx = 22;
             int sy = 15;
             int sokPos = -1;
-            SokobanSquare[] levelData = new SokobanSquare[sx * sy];
+            SokobanCell[] levelData = new SokobanCell[sx * sy];
             for (int i = 0; i < testLevelStr.Length; i++)
             {
                 levelData[i] = 
-                    testLevelStr[i] == '#' ? SokobanSquare.WALL :
-                    testLevelStr[i] == '$' ? SokobanSquare.PIECE :
-                    testLevelStr[i] == '.' ? SokobanSquare.TARGET :
-                    testLevelStr[i] == '*' ? SokobanSquare.PIECE_ON_TARGET : SokobanSquare.BLANK;
+                    testLevelStr[i] == '#' ? SokobanCell.Wall :
+                    testLevelStr[i] == '$' ? SokobanCell.Piece :
+                    testLevelStr[i] == '.' ? SokobanCell.Target :
+                    testLevelStr[i] == '*' ? SokobanCell.PieceOnTarget : SokobanCell.Blank;
                 if (testLevelStr[i] == '@')
                     sokPos = i;
             }
@@ -58,12 +58,12 @@ namespace ExpertSokoban
                     {
                         bool xin = false, yin = false;
                         for (int x = 0; x <= i; x++)
-                            if (levelData[j*sx + x] == SokobanSquare.WALL &&
-                            (x == 0 || levelData[j*sx + x-1] != SokobanSquare.WALL))
+                            if (levelData[j*sx + x] == SokobanCell.Wall &&
+                            (x == 0 || levelData[j*sx + x-1] != SokobanCell.Wall))
                                 xin = !xin;
                         for (int y = 0; y <= j; y++)
-                            if (levelData[y*sx + i] == SokobanSquare.WALL &&
-                            (y == 0 || levelData[(y-1)*sx + i] != SokobanSquare.WALL))
+                            if (levelData[y*sx + i] == SokobanCell.Wall &&
+                            (y == 0 || levelData[(y-1)*sx + i] != SokobanCell.Wall))
                                 yin = !yin;
                         if (xin && yin)
                         {
@@ -75,7 +75,7 @@ namespace ExpertSokoban
             return new SokobanLevel(sx, sy, levelData, sokPos);
         }
 
-        private SokobanSquare[] level;
+        private SokobanCell[] level;
         private int levelSizeX, levelSizeY, sokobanPos;
 
         public SokobanLevel(string encodedForm)
@@ -96,23 +96,28 @@ namespace ExpertSokoban
                 else
                     curx++;
             }
-            level = new SokobanSquare[levelSizeX*levelSizeY];
+            level = new SokobanCell[levelSizeX*levelSizeY];
             curx = 0;
             int cury = 0;
             for (int i = 0; i < encodedForm.Length; i++)
             {
                 if (encodedForm[i] == '\n')
+                {
+                    curx = 0;
                     cury++;
+                }
                 else
                 {
                     level[curx + levelSizeX*cury] = 
-                        encodedForm[i] == '#' ? SokobanSquare.WALL :
-                        encodedForm[i] == '$' ? SokobanSquare.PIECE :
-                        encodedForm[i] == '.' ? SokobanSquare.TARGET :
-                        encodedForm[i] == '*' ? SokobanSquare.PIECE_ON_TARGET :
-                                                SokobanSquare.BLANK;
+                        encodedForm[i] == '#' ? SokobanCell.Wall :
+                        encodedForm[i] == '$' ? SokobanCell.Piece :
+                        encodedForm[i] == '.' ? SokobanCell.Target :
+                        encodedForm[i] == '*' ? SokobanCell.PieceOnTarget :
+                                                SokobanCell.Blank;
                     if (encodedForm[i] == '@')
                         sokobanPos = (curx + levelSizeX*cury);
+
+                    curx++;
                 }
             }
 
@@ -125,12 +130,12 @@ namespace ExpertSokoban
                     {
                         bool xin = false, yin = false;
                         for (int x = 0; x <= i; x++)
-                            if (level[j*levelSizeX + x] == SokobanSquare.WALL &&
-                            (x == 0 || level[j*levelSizeX + x-1] != SokobanSquare.WALL))
+                            if (level[j*levelSizeX + x] == SokobanCell.Wall &&
+                            (x == 0 || level[j*levelSizeX + x-1] != SokobanCell.Wall))
                                 xin = !xin;
                         for (int y = 0; y <= j; y++)
-                            if (level[y*levelSizeX + i] == SokobanSquare.WALL &&
-                            (y == 0 || level[(y-1)*levelSizeX + i] != SokobanSquare.WALL))
+                            if (level[y*levelSizeX + i] == SokobanCell.Wall &&
+                            (y == 0 || level[(y-1)*levelSizeX + i] != SokobanCell.Wall))
                                 yin = !yin;
                         if (xin && yin)
                         {
@@ -140,7 +145,7 @@ namespace ExpertSokoban
                     }
             }
         }
-        public SokobanLevel(int sizeX, int sizeY, SokobanSquare[] levelData, int sokPos)
+        public SokobanLevel(int sizeX, int sizeY, SokobanCell[] levelData, int sokPos)
         {
             levelSizeX = sizeX;
             levelSizeY = sizeY;
@@ -151,19 +156,19 @@ namespace ExpertSokoban
         {
             levelSizeX = sizeX;
             levelSizeY = sizeY;
-            level = new SokobanSquare[levelSizeX*levelSizeY];
+            level = new SokobanCell[levelSizeX*levelSizeY];
             for (int i = 0; i < levelSizeX * levelSizeY; i++)
-                level[i] = ((i+1) % levelSizeX < 2) ? SokobanSquare.WALL : SokobanSquare.BLANK;
+                level[i] = ((i+1) % levelSizeX < 2) ? SokobanCell.Wall : SokobanCell.Blank;
             sokobanPos = levelSizeX+1;
         }
-        public SokobanSquare getCell(int pos)
+        public SokobanCell getCell(int pos)
         {
             return getCell(pos % levelSizeX, pos / levelSizeX);
         }
-        public SokobanSquare getCell(int x, int y)
+        public SokobanCell getCell(int x, int y)
         {
             if (x < 0 || y < 0 || x >= getSizeX() || y >= getSizeY())
-                return SokobanSquare.INVALID;
+                return SokobanCell.Invalid;
             return level[y*levelSizeX + x];
         }
         public int getSizeX() { return levelSizeX; }
@@ -173,30 +178,30 @@ namespace ExpertSokoban
         public int getSokobanY() { return sokobanPos / levelSizeX; }
         public void setSokobanPos(int pos) { sokobanPos = pos; }
         public void setSokobanPos(int x, int y) { sokobanPos = y * levelSizeX + x; }
-        public void setCell(int x, int y, SokobanSquare c) { level[y*levelSizeX + x] = c; }
+        public void setCell(int x, int y, SokobanCell c) { level[y*levelSizeX + x] = c; }
         public bool isPiece(int pos)
         {
             if (pos < 0 || pos > level.Length) return false;
-            return level[pos] == SokobanSquare.PIECE || level[pos] == SokobanSquare.PIECE_ON_TARGET;
+            return level[pos] == SokobanCell.Piece || level[pos] == SokobanCell.PieceOnTarget;
         }
         public bool isPiece(int x, int y) { return isPiece(y*levelSizeX + x); }
-        public bool isFree(int pos) { return level[pos] == SokobanSquare.BLANK || level[pos] == SokobanSquare.TARGET; }
+        public bool isFree(int pos) { return level[pos] == SokobanCell.Blank || level[pos] == SokobanCell.Target; }
         public bool isFree(int x, int y) { return isFree(y*levelSizeX + x); }
         public void setPiece(int x, int y) { setPiece(y*levelSizeX + x); }
         public void setPiece(int pos)
         {
-            if (level[pos] == SokobanSquare.BLANK)
-                level[pos] = SokobanSquare.PIECE;
-            else if (level[pos] == SokobanSquare.TARGET)
-                level[pos] = SokobanSquare.PIECE_ON_TARGET;
+            if (level[pos] == SokobanCell.Blank)
+                level[pos] = SokobanCell.Piece;
+            else if (level[pos] == SokobanCell.Target)
+                level[pos] = SokobanCell.PieceOnTarget;
         }
         public void removePiece(int x, int y) { removePiece(y*levelSizeX + x); }
         public void removePiece(int pos)
         {
-            if (level[pos] == SokobanSquare.PIECE)
-                level[pos] = SokobanSquare.BLANK;
-            else if (level[pos] == SokobanSquare.PIECE_ON_TARGET)
-                level[pos] = SokobanSquare.TARGET;
+            if (level[pos] == SokobanCell.Piece)
+                level[pos] = SokobanCell.Blank;
+            else if (level[pos] == SokobanCell.PieceOnTarget)
+                level[pos] = SokobanCell.Target;
         }
         public void movePiece(int fromx, int fromy, int tox, int toy)
         {
@@ -210,8 +215,8 @@ namespace ExpertSokoban
         }
         public void setSize(int x, int y)
         {
-            SokobanSquare[] newLevel = new SokobanSquare[x*y];
-            for (int k = 0; k < x*y; k++) newLevel[k] = SokobanSquare.BLANK;
+            SokobanCell[] newLevel = new SokobanCell[x*y];
+            for (int k = 0; k < x*y; k++) newLevel[k] = SokobanCell.Blank;
             for (int i = 0; i < (levelSizeX < x ? levelSizeX : x); i++)
                 for (int j = 0; j < (levelSizeY < y ? levelSizeY : y); j++)
                     newLevel[j*x+i] = level[j*levelSizeX+i];
@@ -222,17 +227,9 @@ namespace ExpertSokoban
         public bool solved()
         {
             for (int i = 0; i < levelSizeX*levelSizeY; i++)
-                if (level[i] == SokobanSquare.TARGET || level[i] == SokobanSquare.PIECE)
+                if (level[i] == SokobanCell.Target || level[i] == SokobanCell.Piece)
                     return false;
             return true;
-        }
-        public SokobanLevel clone()
-        {
-            SokobanLevel newLevel = new SokobanLevel(levelSizeX, levelSizeY);
-            for (int i = 0; i < levelSizeX*levelSizeY; i++)
-                newLevel.setCell(i % levelSizeX, i / levelSizeX, level[i]);
-            newLevel.setSokobanPos(getSokobanX(), getSokobanY());
-            return newLevel;
         }
 
         /*
@@ -311,14 +308,14 @@ namespace ExpertSokoban
         private bool columnBlank(int x)
         {
             for (int y = 0; y < levelSizeY; y++)
-                if (level[y*levelSizeX + x] != SokobanSquare.BLANK)
+                if (level[y*levelSizeX + x] != SokobanCell.Blank)
                     return false;
             return true;
         }
         private bool rowBlank(int y)
         {
             for (int x = 0; x < levelSizeX; x++)
-                if (level[y*levelSizeX + x] != SokobanSquare.BLANK)
+                if (level[y*levelSizeX + x] != SokobanCell.Blank)
                     return false;
             return true;
         }
@@ -330,7 +327,7 @@ namespace ExpertSokoban
 
             int newSizeX = levelSizeX + amountX;
             int newSizeY = levelSizeY + amountY;
-            SokobanSquare[] newLevel = new SokobanSquare[newSizeX * newSizeY];
+            SokobanCell[] newLevel = new SokobanCell[newSizeX * newSizeY];
 
             for (int x = 0; x < (amountX < 0 ? newSizeX : levelSizeX); x++)
                 for (int y = 0; y < (amountY < 0 ? newSizeY : levelSizeY); y++)
@@ -349,7 +346,7 @@ namespace ExpertSokoban
 
         public SokobanLevel Clone()
         {
-            SokobanSquare[] newLevel = (SokobanSquare[]) level.Clone();
+            SokobanCell[] newLevel = (SokobanCell[]) level.Clone();
             return new SokobanLevel(levelSizeX, levelSizeY, newLevel, sokobanPos);
         }
 

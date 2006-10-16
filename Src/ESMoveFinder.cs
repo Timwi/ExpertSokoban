@@ -46,7 +46,7 @@ namespace ExpertSokoban
             queue.add(sp);
             pathLength[sp] = 1;
         }
-        public void runToCompletion (int square)
+        public void RunToCompletion (int square)
         {
             runningToCompletion = true;
             doAll = true;
@@ -60,9 +60,9 @@ namespace ExpertSokoban
             if (foundTop && foundLeft && foundRight && foundBottom)
                 done = true;
             else
-                run();
+                SingleStep();
         }
-        public void run()
+        public void SingleStep()
         {
             if (done) return;
             if (first && !doAll && callbackOwner != null)
@@ -75,8 +75,8 @@ namespace ExpertSokoban
             {
                 int item = queue.extract();
                 int cpos = item-level.getSizeX();
-                SokobanSquare c = level.getCell (cpos);
-                if ((c == SokobanSquare.BLANK || c == SokobanSquare.TARGET) && pathLength[cpos] == 0)
+                SokobanCell c = level.getCell (cpos);
+                if ((c == SokobanCell.Blank || c == SokobanCell.Target) && pathLength[cpos] == 0)
                 {
                     queue.add (cpos);
                     pathLength[cpos] = pathLength[item]+1;
@@ -93,7 +93,7 @@ namespace ExpertSokoban
                 }
                 cpos += level.getSizeX()-1;
                 c = level.getCell (cpos);
-                if ((c == SokobanSquare.BLANK || c == SokobanSquare.TARGET) && pathLength[cpos] == 0)
+                if ((c == SokobanCell.Blank || c == SokobanCell.Target) && pathLength[cpos] == 0)
                 {
                     queue.add (cpos);
                     pathLength[cpos] = pathLength[item]+1;
@@ -110,7 +110,7 @@ namespace ExpertSokoban
                 }
                 cpos += 2;
                 c = level.getCell (cpos);
-                if ((c == SokobanSquare.BLANK || c == SokobanSquare.TARGET) && pathLength[cpos] == 0)
+                if ((c == SokobanCell.Blank || c == SokobanCell.Target) && pathLength[cpos] == 0)
                 {
                     queue.add (cpos);
                     pathLength[cpos] = pathLength[item]+1;
@@ -127,7 +127,7 @@ namespace ExpertSokoban
                 }
                 cpos += level.getSizeX()-1;
                 c = level.getCell (cpos);
-                if ((c == SokobanSquare.BLANK || c == SokobanSquare.TARGET) && pathLength[cpos] == 0)
+                if ((c == SokobanCell.Blank || c == SokobanCell.Target) && pathLength[cpos] == 0)
                 {
                     queue.add (cpos);
                     pathLength[cpos] = pathLength[item]+1;

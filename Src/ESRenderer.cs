@@ -19,126 +19,147 @@ namespace ExpertSokoban
 
     public class ESRenderer
     {
-        public SokobanLevel Lvl;
-        public int OriginX, OriginY;
-        public int SquareW, SquareH;
+        private SokobanLevel FLevel;
+        private float FCellWidth, FCellHeight;
+        private int FClientWidth, FClientHeight;
+        private int FOriginX, FOriginY;
+        private Color FBackgroundColour = Color.FromArgb(240, 240, 240);
 
-        public Bitmap RenderImage(int Width, int Height)
+        public float CellWidth { get { return FCellWidth; } }
+        public float CellHeight { get { return FCellHeight; } }
+        public int OriginX { get { return FOriginX; } }
+        public int OriginY { get { return FOriginY; } }
+
+        public ESRenderer(SokobanLevel Level, Size ClientSize)
         {
-            Bitmap img = new Bitmap(Width, Height);
-            Graphics ig = Graphics.FromImage(img);
-
-            ig.Clear(Color.FromArgb(240, 240, 240));
-
-            for (int x = 0; x < Lvl.getSizeX(); x++)
-                for (int y = 0; y < Lvl.getSizeY(); y++)
-                    RenderSquare(ig, x, y);
-
-            return img;
+            Init(Level, ClientSize.Width, ClientSize.Height);
         }
 
-        public void RenderSquare(Graphics g, int pos)
+        public ESRenderer(SokobanLevel Level, int ClientWidth, int ClientHeight)
         {
-            RenderSquare(g, Lvl.PosToX(pos), Lvl.PosToY(pos));
+            Init(Level, ClientWidth, ClientHeight);
         }
 
-        public void RenderSquare(Graphics g, int x, int y)
+        private void Init(SokobanLevel Level, int ClientWidth, int ClientHeight)
+        {
+            FClientWidth = ClientWidth;
+            FClientHeight = ClientHeight;
+            FLevel = Level;
+            int IdealWidth = FClientHeight*Level.getSizeX()/Level.getSizeY();
+            FCellWidth = FCellHeight = FClientWidth > IdealWidth 
+                ? (float) FClientHeight/Level.getSizeY()
+                : (float) FClientWidth/Level.getSizeX();
+            FOriginX = (int) (FClientWidth > IdealWidth ? (FClientWidth/2 - FCellWidth*Level.getSizeX()/2) : 0);
+            FOriginY = (int) (FClientWidth > IdealWidth ? 0 : (FClientHeight/2 - FCellHeight*Level.getSizeY()/2));
+        }
+
+        public void Render(Graphics g)
+        {
+            g.FillRectangle(new SolidBrush(FBackgroundColour), new Rectangle(0, 0, FClientWidth, FClientHeight));
+            for (int x = 0; x < FLevel.getSizeX(); x++)
+                for (int y = 0; y < FLevel.getSizeY(); y++)
+                    RenderCell(g, x, y);
+        }
+
+        public Point CellFromPixel(Point pixel)
+        {
+            return new Point(
+                (int) ((pixel.X - FOriginX) / CellWidth),
+                (int) ((pixel.Y - FOriginY) / CellHeight));
+        }
+
+        public void RenderCell(Graphics g, int pos)
+        {
+            RenderCell(g, FLevel.PosToX(pos), FLevel.PosToY(pos), false);
+        }
+
+        public void RenderCell(Graphics g, int x, int y)
+        {
+            RenderCell(g, x, y, false);
+        }
+
+        public void RenderCell(Graphics g, int x, int y, bool drawBackground)
         {
             // Draw level
-            switch (Lvl.getCell(x, y))
+            switch (FLevel.getCell(x, y))
             {
-                case SokobanSquare.WALL:
-                    DrawSquare(g, x, y, SokobanImage.Wall);
+                case SokobanCell.Wall:
+                    DrawCell(g, x, y, SokobanImage.Wall);
                     break;
-                case SokobanSquare.TARGET:
-                    DrawSquare(g, x, y, SokobanImage.Target);
+                case SokobanCell.Target:
+                    DrawCell(g, x, y, SokobanImage.Target);
                     break;
-                case SokobanSquare.PIECE_ON_TARGET:
-                    DrawSquare(g, x, y, SokobanImage.TargetUnderPiece);
+                case SokobanCell.PieceOnTarget:
+                    DrawCell(g, x, y, SokobanImage.TargetUnderPiece);
                     break;
             }
             // Draw piece
-            switch (Lvl.getCell(x, y))
+            switch (FLevel.getCell(x, y))
             {
-                case SokobanSquare.PIECE:
-                    DrawSquare(g, x, y, SokobanImage.Piece);
+                case SokobanCell.Piece:
+                    DrawCell(g, x, y, SokobanImage.Piece);
                     break;
-                case SokobanSquare.PIECE_ON_TARGET:
-                    DrawSquare(g, x, y, SokobanImage.PieceOnTarget);
+                case SokobanCell.PieceOnTarget:
+                    DrawCell(g, x, y, SokobanImage.PieceOnTarget);
                     break;
             }
             // Draw Sokoban
-            if (x == Lvl.getSokobanX() && y == Lvl.getSokobanY())
-                DrawSquare(g, x, y, SokobanImage.Sokoban);
+            if (x == FLevel.getSokobanX() && y == FLevel.getSokobanY())
+                DrawCell(g, x, y, SokobanImage.Sokoban);
         }
 
-        public int SquareScrX(int CellX)
+        public void DrawCell(Graphics g, int pos, SokobanImage imageType)
         {
-            return CellX*SquareW + OriginX;
+            DrawCell(g, FLevel.PosToX(pos), FLevel.PosToY(pos), imageType);
         }
 
-        public int SquareScrY(int CellY)
+        public void DrawCell(Graphics g, int x, int y, SokobanImage imageType)
         {
-            return CellY*SquareH + OriginY;
+            g.DrawImage(GetImage(imageType), GetCellRectForImage(x, y));
         }
 
-        public Rectangle SquareRect(int CellX, int CellY)
+        public RectangleF GetCellRectForImage(int x, int y)
         {
-            Rectangle r = new Rectangle();
-            r.X = CellX*SquareW + OriginX;
-            r.Y = CellY*SquareH + OriginY;
-            r.Width = SquareW;
-            r.Height = SquareH;
-            return r;
+            RectangleF tmp = GetCellRect(x, y);
+            return new RectangleF(tmp.X, tmp.Y, tmp.Width*1.5f, tmp.Height*1.5f);
         }
 
-        public void DrawSquare(Graphics g, int pos, SokobanImage imageType)
+        public RectangleF GetCellRect(int pos)
         {
-            DrawSquare(g, Lvl.PosToX(pos), Lvl.PosToY(pos), imageType);
+            return GetCellRect(FLevel.PosToX(pos), FLevel.PosToY(pos));
         }
 
-        public void DrawSquare(Graphics g, int x, int y, SokobanImage imageType)
+        public RectangleF GetCellRect(int x, int y)
         {
-            Tuple2<Image, Size> tp = GetImage(imageType);
-            RectangleF destRect = new RectangleF();
-            destRect.X = SquareScrX(x);
-            destRect.Y = SquareScrY(y);
-            destRect.Width = (float)SquareW / tp.E2.Width * tp.E1.Width;
-            destRect.Height = (float)SquareH / tp.E2.Height * tp.E1.Height;
-            g.DrawImage(tp.E1, destRect);
+            RectangleF ret = new RectangleF();
+            ret.X = x*FCellWidth + FOriginX;
+            ret.Y = y*FCellHeight + FOriginY;
+            ret.Width = FCellWidth;
+            ret.Height = FCellHeight;
+            return ret;
         }
 
-        private Tuple2<Image, Size> GetImage(SokobanImage imageType)
+        private Image GetImage(SokobanImage imageType)
         {
-            Image img = null;
             switch (imageType)
             {
                 case SokobanImage.Piece:
-                    img = Properties.Resources.img_piece;
-                    break;
+                    return Properties.Resources.ImgPiece;
                 case SokobanImage.PieceOnTarget:
-                    img = Properties.Resources.img_piece_target;
-                    break;
+                    return Properties.Resources.ImgPieceTarget;
                 case SokobanImage.PieceSelected:
-                    img = Properties.Resources.img_piece_selected;
-                    break;
+                    return Properties.Resources.ImgPieceSelected;
                 case SokobanImage.Sokoban:
-                    img = Properties.Resources.img_sokoban;
-                    break;
+                    return Properties.Resources.ImgSokoban;
                 case SokobanImage.Wall:
-                    img = Properties.Resources.img_wall;
-                    break;
+                    return Properties.Resources.ImgWall;
                 case SokobanImage.Target:
-                    img = Properties.Resources.img_target;
-                    break;
+                    return Properties.Resources.ImgTarget;
                 case SokobanImage.TargetUnderPiece:
-                    img = Properties.Resources.img_target_under;
-                    break;
+                    return Properties.Resources.ImgTargetUnder;
                 default:
-                    throw new Exception("Unknown sokoban image type");
+                    throw new Exception("Unknown Sokoban image type");
             }
-            return new Tuple2<Image, Size>(img, new Size(100, 100));
         }
-
     }
 }
