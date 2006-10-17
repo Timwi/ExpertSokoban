@@ -70,7 +70,7 @@ namespace ExpertSokoban
             g.FillRectangle(FBackgroundBrush, new Rectangle(0, 0, FClientWidth, FClientHeight));
             for (int x = 0; x < FLevel.Width; x++)
                 for (int y = 0; y < FLevel.Height; y++)
-                    RenderCell(g, x, y);
+                    RenderCellAsPartOfCompleteRender(g, x, y);
         }
 
         public Point CellFromPixel(Point Pixel)
@@ -82,23 +82,27 @@ namespace ExpertSokoban
 
         public void RenderCell(Graphics g, int pos)
         {
-            RenderCell(g, FLevel.PosToX(pos), FLevel.PosToY(pos), false);
+            RenderCell(g, FLevel.PosToX(pos), FLevel.PosToY(pos));
         }
 
         public void RenderCell(Graphics g, int x, int y)
         {
-            RenderCell(g, x, y, false);
+            g.SetClip(GetMultiCellRect(x-1, y-1, x+1, y+1));
+            g.FillRectangle(FBackgroundBrush, 0, 0, FClientWidth, FClientHeight);
+            for (int i = x-1; i <= x+1; i++)
+                for (int j = y-1; j <= y+1; j++)
+                    RenderCellAsPartOfCompleteRender(g, i, j);
         }
 
-        public void RenderCell(Graphics g, int Pos, bool DrawBackground)
+        private void RenderCellAsPartOfCompleteRender(Graphics g, int pos)
         {
-            RenderCell(g, FLevel.PosToX(Pos), FLevel.PosToY(Pos), DrawBackground);
+            RenderCellAsPartOfCompleteRender(g, FLevel.PosToX(pos), FLevel.PosToY(pos));
         }
 
-        public void RenderCell(Graphics g, int x, int y, bool DrawBackground)
+        private void RenderCellAsPartOfCompleteRender(Graphics g, int x, int y)
         {
-            if (DrawBackground)
-                g.FillRectangle(FBackgroundBrush, GetCellRect(x, y));
+            if (x < 0 || x >= FLevel.Width || y < 0 || y >= FLevel.Height)
+                return;
 
             // Draw level
             switch (FLevel.Cell(x, y))
@@ -157,6 +161,12 @@ namespace ExpertSokoban
         public RectangleF GetCellRect(int x, int y)
         {
             return new RectangleF(x*FCellWidth + FOriginX, y*FCellHeight + FOriginY, FCellWidth, FCellHeight);
+        }
+
+        public RectangleF GetMultiCellRect(int FromX, int FromY, int ToX, int ToY)
+        {
+            return new RectangleF(FromX*FCellWidth + FOriginX, FromY*FCellHeight + FOriginY,
+                FCellWidth * (ToX-FromX+1), FCellHeight * (ToY-FromY+1));
         }
 
         private Image GetImage(SokobanImage ImageType)

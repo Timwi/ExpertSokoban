@@ -429,9 +429,12 @@ namespace ExpertSokoban
                 return;
             }
 
+            // Remove all the move and push colourings
+            CreateGraphics().DrawImage(Buffer, 0, 0);
+
+            // Move the Sokoban around visibly
             int[][] Moves = PushFinder.getMoves(Cell, Direction);
-            Graphics g = CreateGraphics();
-            g.DrawImage(Buffer, 0, 0);
+            Graphics g = Graphics.FromImage(Buffer);
             int OrigSokPos = FLevel.SokobanPos;
             int OrigPushPos = -1, LastPushPos = -1;
             bool EverPushed = false;
@@ -440,7 +443,7 @@ namespace ExpertSokoban
                     for (int j = 0; j < Moves[i].Length; j++)
                         if (Moves[i][j] != 0)
                         {
-                            System.Threading.Thread.Sleep(40);
+                            System.Threading.Thread.Sleep(20);
                             int PrevSokPos = FLevel.SokobanPos;
                             int NewSokPos = PrevSokPos + Moves[i][j];
                             if (FLevel.IsPiece(FLevel.SokobanPos + Moves[i][j]))
@@ -449,7 +452,7 @@ namespace ExpertSokoban
                                 int PushTo = NewSokPos + Moves[i][j];
                                 FLevel.MovePiece(NewSokPos, PushTo);
                                 FLevel.SetSokobanPos(NewSokPos);
-                                Renderer.RenderCell(g, PushTo, true);
+                                Renderer.RenderCell(g, PushTo);
                                 if (!EverPushed)
                                 {
                                     OrigPushPos = NewSokPos;
@@ -460,8 +463,9 @@ namespace ExpertSokoban
                             else
                                 // just move Sokoban
                                 FLevel.SetSokobanPos(NewSokPos);
-                            Renderer.RenderCell(g, NewSokPos, true);
-                            Renderer.RenderCell(g, PrevSokPos, true);
+                            Renderer.RenderCell(g, NewSokPos);
+                            Renderer.RenderCell(g, PrevSokPos);
+                            CreateGraphics().DrawImage(Buffer, 0, 0);
                         }
 
             if (FLevel.Solved)
