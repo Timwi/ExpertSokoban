@@ -121,7 +121,6 @@ namespace ExpertSokoban
             this.ToolEdit.Name = "ToolEdit";
             this.ToolEdit.Size = new System.Drawing.Size(85, 22);
             this.ToolEdit.Text = "&Edit Level...";
-            this.ToolEdit.Click += new System.EventHandler(this.ToolEdit_Click);
             // 
             // ToolExit
             // 

@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
+using RT.Util;
 
 namespace ExpertSokoban
 {
     public class ESPushFinder 
     {
-        private SokobanLevel level;
+        private SokobanLevel FLevel;
 
         // These arrays are layed out like this:
         // element #0 = virtual start node
@@ -17,124 +18,107 @@ namespace ExpertSokoban
         //                       +4 = below
         // The value "0" means "infinity" (so we don't need to initialise the arrays).
         // Values above zero mean "one less than this".
-        private int[] pushLength;
-        private int[] moveLength;
-        private int[] predecessor;
-        private ESPackedBooleans extracted;
-        private Control callbackOwner;
-        private Delegate callbackFound, callbackDone;
+        private int[] FPushLength;
+        private int[] FMoveLength;
+        private int[] FPredecessor;
+        private PackedBooleans FExtracted;
+        private Control FCallbackOwner;
+        private Delegate FCallbackFound, FCallbackDone;
 
         // For node a, path[a][b] is the sequence of moves to go from
         //  a = 4*(y*sizex+x)+d to 4*(y*sizex+x)+b+1.
-        private int[][][] path;
+        private int[][][] FPath;
 
         // For each node, the walking distance (plus one) to another side (above/right/below/left).
         // Not currently used. Should be used for performance optimisation later.
         // private int[][] edgeWeights;
 
-        private bool done, running;
-        private int selX, selY, selPos, // the original position of the piece we are actually pushing.
-                    sokPos, numPossibilities;
-        private ESMoveFinder initialMoveFinder;
+        private bool FDone;
+        private int FSelX, FSelY, FSelPos, // the original position of the piece we are actually pushing.
+                    FSokPos, FNumPossibilities;
+        private ESMoveFinder FMoveFinder;
 
         // predefinedPaths[d1][d2] contains several suggestions on how to get from dir d1 to dir d2
-        private int[][][][] predefinedPaths;
+        private int[][][][] FPredefinedPaths;
+
+        public bool Done { get { return FDone; } }
 
         class SpecialHeap
         {
             class ThreeIntegers
             {
-                private int index, pushLen, moveLen;
+                private int FIndex, FPushLen, FMoveLen;
                 public ThreeIntegers (int i, int p, int m)
-                { index = i; pushLen = p; moveLen = m; }
-                public int getIndex() { return index; }
-                public int getPushLen() { return pushLen; }
-                public int getMoveLen() { return moveLen; }
+                { FIndex = i; FPushLen = p; FMoveLen = m; }
+                public int Index { get { return FIndex; } }
+                public int PushLen { get { return FPushLen; } }
+                public int MoveLen { get { return FMoveLen; } }
             }
-            private ESPushFinder parent;
-            private ThreeIntegers[] element;
-            private int numElements;
+            private ESPushFinder FParent;
+            private ThreeIntegers[] FElement;
+            private int FNumElements;
 
-            public SpecialHeap(ESPushFinder par)
+            public bool Empty { get { return FNumElements == 0; } }
+
+            public SpecialHeap(ESPushFinder Parent)
             {
-                parent = par;
-                element = new ThreeIntegers[64];
-                numElements = 0;
+                FParent = Parent;
+                FElement = new ThreeIntegers[64];
+                FNumElements = 0;
             }
 
-            private String printify (ThreeIntegers[] arr, int num)
+            private int Compare (int POne, int PTwo)
             {
-                if (arr == null) return "null";
-                if (arr.Length < 1 || num < 1) return "[]";
-                String result = "[(" + arr[0].getIndex() + "/" + arr[0].getPushLen() + ")";
-                for (int i = 1; i < num; i++)
-                    result += ", (" + arr[i].getIndex() + "/" + arr[i].getPushLen() + ")";
-                return result + "]";
-            }
-            /*
-            private String printify2 (int[][] arr, int num)
-            {
-                if (arr == null) return "null";
-                if (arr.length < 1 || num < 1) return "[]";
-                String result = "[" + printify (arr[0]);
-                for (int i = 1; i < num; i++)
-                    result += ", " + printify (arr[i]);
-                return result + "]";
-            }
-            */
-
-            private int compare (int pOne, int pTwo)
-            {
-                ThreeIntegers one = element[pOne];
-                ThreeIntegers two = element[pTwo];
-                if (one.getPushLen() < two.getPushLen()) return -1;
-                if (one.getPushLen() > two.getPushLen()) return 1;
-                if (one.getMoveLen() < two.getMoveLen()) return -1;
-                if (one.getMoveLen() > two.getMoveLen()) return 1;
+                ThreeIntegers One = FElement[POne];
+                ThreeIntegers Two = FElement[PTwo];
+                if (One.PushLen < Two.PushLen) return -1;
+                if (One.PushLen > Two.PushLen) return 1;
+                if (One.MoveLen < Two.MoveLen) return -1;
+                if (One.MoveLen > Two.MoveLen) return 1;
                 return 0;
             }
 
-            private void swap (int one, int two)
+            private void Swap (int One, int Two)
             {
-                ThreeIntegers tmp = element[one];
-                element[one] = element[two];
-                element[two] = tmp;
+                ThreeIntegers tmp = FElement[One];
+                FElement[One] = FElement[Two];
+                FElement[Two] = tmp;
             }
-            private void reheapifyUp (int index)
+            private void ReheapifyUp (int Index)
             {
-                int parent = (index-1)/2;
-                while (index > 0 && compare (index, parent) < 0)
+                int Parent = (Index-1)/2;
+                while (Index > 0 && Compare (Index, Parent) < 0)
                 {
-                    swap (index, parent);
-                    index = parent;
-                    parent = (index-1)/2;
+                    Swap (Index, Parent);
+                    Index = Parent;
+                    Parent = (Index-1)/2;
                 }
             }
-            private void reheapifyDown (int index)
+            private void ReheapifyDown (int Index)
             {
-                while (index < numElements/2)
+                while (Index < FNumElements/2)
                 {
                     // special case: only one child
-                    if (numElements % 2 == 0 && index == numElements/2-1)
+                    if (FNumElements % 2 == 0 && Index == FNumElements/2-1)
                     {
-                        if (compare (index, numElements-1) > 0)
-                            swap (index, numElements-1);
+                        if (Compare (Index, FNumElements-1) > 0)
+                            Swap (Index, FNumElements-1);
                         return;
                     }
                     else
                     {
-                        int child1 = 2*index+1;
-                        int child2 = child1+1;
-                        int ccc = compare (child1, child2);
-                        if (compare (child1, index) < 0 && ccc <= 0)
+                        int Child1 = 2*Index+1;
+                        int Child2 = Child1+1;
+                        int ChildCompare = Compare (Child1, Child2);
+                        if (Compare (Child1, Index) < 0 && ChildCompare <= 0)
                         {
-                            swap (child1, index);
-                            index = child1;
+                            Swap (Child1, Index);
+                            Index = Child1;
                         }
-                        else if (compare (child2, index) < 0 && ccc >= 0)
+                        else if (Compare (Child2, Index) < 0 && ChildCompare >= 0)
                         {
-                            swap (child2, index);
-                            index = child2;
+                            Swap (Child2, Index);
+                            Index = Child2;
                         }
                         else return;
                     }
@@ -142,59 +126,58 @@ namespace ExpertSokoban
             }
 
             // This means: Add the node with the index i in the arrays "pushLength"/"moveLength".
-            public void add (int i)
+            public void Add (int i)
             {
-                if (numElements == element.Length)
+                if (FNumElements == FElement.Length)
                 {
-                    ThreeIntegers[] newArray = new ThreeIntegers [ 2*element.Length ];
-                    for (int j = 0; j < element.Length; j++)
-                        newArray[j] = element[j];
-                    element = newArray;
+                    ThreeIntegers[] NewArray = new ThreeIntegers [ 2*FElement.Length ];
+                    for (int j = 0; j < FElement.Length; j++)
+                        NewArray[j] = FElement[j];
+                    FElement = NewArray;
                 }
-                element [ numElements ] = new ThreeIntegers (i, parent.pushLength[i], parent.moveLength[i]);
-                numElements++;
-                reheapifyUp (numElements-1);
+                FElement [ FNumElements ] = new ThreeIntegers (i, FParent.FPushLength[i], FParent.FMoveLength[i]);
+                FNumElements++;
+                ReheapifyUp (FNumElements-1);
             }
-            public int extract()
+            public int Extract()
             {
-                if (numElements > 0)
+                if (FNumElements > 0)
                 {
-                    int ret = element[0].getIndex();
-                    numElements--;
-                    element[0] = element [ numElements ];
-                    reheapifyDown (0);
-                    return ret;
+                    int Result = FElement[0].Index;
+                    FNumElements--;
+                    FElement[0] = FElement [ FNumElements ];
+                    ReheapifyDown (0);
+                    return Result;
                 }
                 else return -1;
             }
-            public bool isEmpty() { return numElements == 0; }
         };
 
-        private SpecialHeap priorityQueue;
+        private SpecialHeap PriorityQueue;
 
-        public ESPushFinder(SokobanLevel l, int x, int y, Control Owner, Delegate FoundCallback, 
-            Delegate DoneCallback, ESMoveFinder curMF)
+        public ESPushFinder(SokobanLevel Level, int x, int y, Control Owner, Delegate FoundCallback, 
+            Delegate DoneCallback, ESMoveFinder MoveFinder)
         {
-            callbackOwner = Owner;
-            callbackFound = FoundCallback;
-            callbackDone = DoneCallback;
-            level = l;
-            selX = x;
-            selY = y;
-            int sx = l.getSizeX();
-            selPos = y*sx + x;
-            sokPos = l.getSokobanPos();
-            done = false;
-            priorityQueue = new SpecialHeap(this);
-            int array_size = 4 * sx * l.getSizeY();
-            pushLength = new int[array_size];
-            moveLength = new int[array_size];
-            predecessor = new int[array_size];
-            extracted = new ESPackedBooleans (array_size);
-            path = new int[array_size][][];
-            numPossibilities = 0;
+            FCallbackOwner = Owner;
+            FCallbackFound = FoundCallback;
+            FCallbackDone = DoneCallback;
+            FLevel = Level;
+            FSelX = x;
+            FSelY = y;
+            int sx = FLevel.Width;
+            FSelPos = y*sx + x;
+            FSokPos = FLevel.SokobanPos;
+            FDone = false;
+            PriorityQueue = new SpecialHeap(this);
+            int ArraySize = 4 * sx * Level.Height;
+            FPushLength = new int[ArraySize];
+            FMoveLength = new int[ArraySize];
+            FPredecessor = new int[ArraySize];
+            FExtracted = new PackedBooleans (ArraySize);
+            FPath = new int[ArraySize][][];
+            FNumPossibilities = 0;
 
-            predefinedPaths = new int[][][][]
+            FPredefinedPaths = new int[][][][]
             {
                 // from direction 0 ...
                 new int[][][]{
@@ -247,66 +230,66 @@ namespace ExpertSokoban
 
             // predecessor will already automatically be 0
 
-            if (curMF.moveValid (j))
+            if (MoveFinder.MoveValid (j))
             {
-                pushLength[i] = 1;
-                moveLength[i] = curMF.getPathLength (j)+1;
-                priorityQueue.add (i);
+                FPushLength[i] = 1;
+                FMoveLength[i] = MoveFinder.PathLength (j)+1;
+                PriorityQueue.Add (i);
             }
             i++;
             j += sx-1;
-            if (curMF.moveValid (j))
+            if (MoveFinder.MoveValid (j))
             {
-                pushLength[i] = 1;
-                moveLength[i] = curMF.getPathLength (j)+1;
-                priorityQueue.add (i);
+                FPushLength[i] = 1;
+                FMoveLength[i] = MoveFinder.PathLength (j)+1;
+                PriorityQueue.Add (i);
             }
             i++;
             j += 2;
-            if (curMF.moveValid (j))
+            if (MoveFinder.MoveValid (j))
             {
-                pushLength[i] = 1;
-                moveLength[i] = curMF.getPathLength (j)+1;
-                priorityQueue.add (i);
+                FPushLength[i] = 1;
+                FMoveLength[i] = MoveFinder.PathLength (j)+1;
+                PriorityQueue.Add (i);
             }
             i++;
             j += sx-1;
-            if (curMF.moveValid (j))
+            if (MoveFinder.MoveValid (j))
             {
-                pushLength[i] = 1;
-                moveLength[i] = curMF.getPathLength (j)+1;
-                priorityQueue.add (i);
+                FPushLength[i] = 1;
+                FMoveLength[i] = MoveFinder.PathLength (j)+1;
+                PriorityQueue.Add (i);
             }
 
-            pushLength[0] = 1;
-            if (priorityQueue.isEmpty())
+            FPushLength[0] = 1;
+            if (PriorityQueue.Empty)
             {
-                callbackOwner.Invoke(callbackDone, new object[] { false });
-                done = true;
+                FCallbackOwner.Invoke(FCallbackDone, new object[] { false });
+                FDone = true;
             }
 
-            initialMoveFinder = curMF;
+            FMoveFinder = MoveFinder;
         }
 
         public void SingleStep()
         {
-            if (done) return;
+            if (FDone) return;
 
             // extract the next item, filter out duplicates, quit if priority queue is empty
             int item;
             do
             {
-                if (priorityQueue.isEmpty())
+                if (PriorityQueue.Empty)
                 {
-                    done = true;
-                    callbackOwner.Invoke(callbackDone, new object[] { numPossibilities > 0 });
+                    FDone = true;
+                    FCallbackOwner.Invoke(FCallbackDone, new object[] { FNumPossibilities > 0 });
                     return;
                 }
-                item = priorityQueue.extract();
+                item = PriorityQueue.Extract();
             }
-            while (extracted.get (item));
+            while (FExtracted.Get (item));
 
-            extracted.set (item, true);
+            FExtracted.Set (item, true);
 
             // Dijkstra's algorithm: We extract a node from our priority queue and relax
             // all its outgoing edges. However, we might not yet know the length of those
@@ -316,20 +299,20 @@ namespace ExpertSokoban
             int direction = (item-1) % 4;
                 // 0 = Sokoban above piece, 1 = left, 2 = right, 3 = below
             int position = (item-1) / 4;
-            level.movePiece (selPos, position);
-            int sx = level.getSizeX();
+            FLevel.MovePiece (FSelPos, position);
+            int sx = FLevel.Width;
             int nSokPos = position +
                 ((direction == 0) ? -sx :
                  (direction == 1) ? -1:
                  (direction == 2) ? 1 : sx);
-            level.setSokobanPos (nSokPos);
+            FLevel.SetSokobanPos (nSokPos);
 
             // Now try to find out which of the other squares adjacent to the piece
             // the Sokoban can move to.  For optimisation, we first check if there
             // is a trivial path (one of the paths predefined in predefinedPaths).
             // If not, we will run a BSMoveFinder.
 
-            path[item] = new int[4][];
+            FPath[item] = new int[4][];
 
             bool stop = false;
             for (int consider_direction = 0; consider_direction < 4 && !stop; consider_direction++)
@@ -339,12 +322,12 @@ namespace ExpertSokoban
                     int consider_spot = position + ((consider_direction == 0) ? -sx :
                                                     (consider_direction == 1) ? -1:
                                                     (consider_direction == 2) ? 1 : sx);
-                    if (level.isFree (consider_spot))
+                    if (FLevel.IsFree (consider_spot))
                     {
                         bool found = false;
 
                         // now give each of the predefined paths a try.
-                        for (int predef = 0; predef < predefinedPaths[direction][consider_direction].Length && !found; predef++)
+                        for (int predef = 0; predef < FPredefinedPaths[direction][consider_direction].Length && !found; predef++)
                         {
                             int curPos = nSokPos;
 
@@ -353,26 +336,26 @@ namespace ExpertSokoban
                             // walk the entire path, "found" will still be true at the end, which is
                             // what we want, because it means we have found a path.
                             found = true;
-                            for (int i = 0; i < predefinedPaths[direction][consider_direction][predef].Length && found; i++)
+                            for (int i = 0; i < FPredefinedPaths[direction][consider_direction][predef].Length && found; i++)
                             {
-                                curPos += predefinedPaths[direction][consider_direction][predef][i];
-                                found = level.isFree (curPos);
+                                curPos += FPredefinedPaths[direction][consider_direction][predef][i];
+                                found = FLevel.IsFree (curPos);
                             }
                             if (found)  // We have found a path, so let's remember it.
-                                path[item][consider_direction] = predefinedPaths[direction][consider_direction][predef];
+                                FPath[item][consider_direction] = FPredefinedPaths[direction][consider_direction][predef];
                         }
                         if (!found)  // There is a free space, but we couldn't find a path to it.
                         // Hence, no matter what we find for the other directions, we will have to
                         // run the BSMoveFinder anyway.
                         {
-                            ESMoveFinder mf = new ESMoveFinder(level, true, null, null, null, position);
+                            ESMoveFinder mf = new ESMoveFinder(FLevel, true, null, null, null, position);
                             mf.SingleStep();
 
                             // mf.getPath will return null if you can't walk to any of these
-                            if (direction != 0) path[item][0] = mf.getPath (position - sx);
-                            if (direction != 1) path[item][1] = mf.getPath (position - 1);
-                            if (direction != 2) path[item][2] = mf.getPath (position + 1);
-                            if (direction != 3) path[item][3] = mf.getPath (position + sx);
+                            if (direction != 0) FPath[item][0] = mf.Path (position - sx);
+                            if (direction != 1) FPath[item][1] = mf.Path (position - 1);
+                            if (direction != 2) FPath[item][2] = mf.Path (position + 1);
+                            if (direction != 3) FPath[item][3] = mf.Path (position + sx);
                             stop = true;
                         }
                     }
@@ -382,63 +365,63 @@ namespace ExpertSokoban
             int index = 4*position + 1;
 
             // If we can move above the piece (this is automatically null if we are already there)
-            if (path[item][0] != null)
+            if (FPath[item][0] != null)
             {
                 // ... then consider the edge leading to that position.
-                if (pushLength[index] == 0
-                    || pushLength[index] > pushLength[item]
-                    || (pushLength[index] == pushLength[item]
-                        && moveLength[index] > moveLength[item] + path[item][0].Length))
+                if (FPushLength[index] == 0
+                    || FPushLength[index] > FPushLength[item]
+                    || (FPushLength[index] == FPushLength[item]
+                        && FMoveLength[index] > FMoveLength[item] + FPath[item][0].Length))
                 {
-                    pushLength[index] = pushLength[item];
-                    moveLength[index] = moveLength[item] + path[item][0].Length;
-                    predecessor[index] = item;
-                    priorityQueue.add (index);
+                    FPushLength[index] = FPushLength[item];
+                    FMoveLength[index] = FMoveLength[item] + FPath[item][0].Length;
+                    FPredecessor[index] = item;
+                    PriorityQueue.Add (index);
                 }
             }
             // Left...
             index++;
-            if (path[item][1] != null)
+            if (FPath[item][1] != null)
             {
-                if (pushLength[index] == 0
-                    || pushLength[index] > pushLength[item]
-                    || (pushLength[index] == pushLength[item]
-                        && moveLength[index] > moveLength[item] + path[item][1].Length))
+                if (FPushLength[index] == 0
+                    || FPushLength[index] > FPushLength[item]
+                    || (FPushLength[index] == FPushLength[item]
+                        && FMoveLength[index] > FMoveLength[item] + FPath[item][1].Length))
                 {
-                    pushLength[index] = pushLength[item];
-                    moveLength[index] = moveLength[item] + path[item][1].Length;
-                    predecessor[index] = item;
-                    priorityQueue.add (index);
+                    FPushLength[index] = FPushLength[item];
+                    FMoveLength[index] = FMoveLength[item] + FPath[item][1].Length;
+                    FPredecessor[index] = item;
+                    PriorityQueue.Add (index);
                 }
             }
             // Right...
             index++;
-            if (path[item][2] != null)
+            if (FPath[item][2] != null)
             {
-                if (pushLength[index] == 0
-                    || pushLength[index] > pushLength[item]
-                    || (pushLength[index] == pushLength[item]
-                        && moveLength[index] > moveLength[item] + path[item][2].Length))
+                if (FPushLength[index] == 0
+                    || FPushLength[index] > FPushLength[item]
+                    || (FPushLength[index] == FPushLength[item]
+                        && FMoveLength[index] > FMoveLength[item] + FPath[item][2].Length))
                 {
-                    pushLength[index] = pushLength[item];
-                    moveLength[index] = moveLength[item] + path[item][2].Length;
-                    predecessor[index] = item;
-                    priorityQueue.add (index);
+                    FPushLength[index] = FPushLength[item];
+                    FMoveLength[index] = FMoveLength[item] + FPath[item][2].Length;
+                    FPredecessor[index] = item;
+                    PriorityQueue.Add (index);
                 }
             }
             // Below...
             index++;
-            if (path[item][3] != null)
+            if (FPath[item][3] != null)
             {
-                if (pushLength[index] == 0
-                    || pushLength[index] > pushLength[item]
-                    || (pushLength[index] == pushLength[item]
-                        && moveLength[index] > moveLength[item] + path[item][3].Length))
+                if (FPushLength[index] == 0
+                    || FPushLength[index] > FPushLength[item]
+                    || (FPushLength[index] == FPushLength[item]
+                        && FMoveLength[index] > FMoveLength[item] + FPath[item][3].Length))
                 {
-                    pushLength[index] = pushLength[item];
-                    moveLength[index] = moveLength[item] + path[item][3].Length;
-                    predecessor[index] = item;
-                    priorityQueue.add (index);
+                    FPushLength[index] = FPushLength[item];
+                    FMoveLength[index] = FMoveLength[item] + FPath[item][3].Length;
+                    FPredecessor[index] = item;
+                    PriorityQueue.Add (index);
                 }
             }
 
@@ -448,18 +431,18 @@ namespace ExpertSokoban
                 ((direction == 0) ? sx :
                  (direction == 1) ? 1:
                  (direction == 2) ? -1 : -sx);
-            if (level.isFree (nPushTo))
+            if (FLevel.IsFree (nPushTo))
             {
                 index = 4*nPushTo + direction + 1;
-                if (pushLength[index] == 0
-                    || pushLength[index] > pushLength[item]+1
-                    || (pushLength[index] == pushLength[item]+1
-                        && moveLength[index] > moveLength[item]+1))
+                if (FPushLength[index] == 0
+                    || FPushLength[index] > FPushLength[item]+1
+                    || (FPushLength[index] == FPushLength[item]+1
+                        && FMoveLength[index] > FMoveLength[item]+1))
                 {
-                    pushLength[index] = pushLength[item]+1;
-                    moveLength[index] = moveLength[item]+1;
-                    predecessor[index] = item;
-                    priorityQueue.add (index);
+                    FPushLength[index] = FPushLength[item]+1;
+                    FMoveLength[index] = FMoveLength[item]+1;
+                    FPredecessor[index] = item;
+                    PriorityQueue.Add (index);
 
                     // We have to defer calling pushThreadFound because we
                     // have made changes to the level...
@@ -468,36 +451,32 @@ namespace ExpertSokoban
             }
 
             // restore the level as it was
-            level.movePiece (position, selPos);
-            level.setSokobanPos (sokPos);
+            FLevel.MovePiece (position, FSelPos);
+            FLevel.SetSokobanPos (FSokPos);
             // now we can call pushThreadFound
             if (aFound)
             {
-                callbackOwner.Invoke(callbackFound, new object[] { nPushTo });
-                numPossibilities++;
+                FCallbackOwner.Invoke(FCallbackFound, new object[] { nPushTo });
+                FNumPossibilities++;
             }
 
-            if (priorityQueue.isEmpty())
+            if (PriorityQueue.Empty)
             {
-                done = true;
-                callbackOwner.Invoke(callbackDone, new object[] { numPossibilities >0 });
+                FDone = true;
+                FCallbackOwner.Invoke(FCallbackDone, new object[] { FNumPossibilities >0 });
             }
         }
-        public bool pushValid (int pos, int posInDir) {
-            int index = 4*pos+posInDir;
-            return index <= 0 || index >= pushLength.Length ? false : pushLength[4*pos+posInDir] > 0; 
+        public bool PushValid (int Pos, int Direction) {
+            int index = 4*Pos+Direction;
+            return index <= 0 || index >= FPushLength.Length ? false : FPushLength[4*Pos+Direction] > 0; 
         }
-        public bool pushValid (int pos)
+        public bool PushValid (int Pos)
         {
-            return  pushValid (pos, 1) || pushValid (pos, 2) ||
-                    pushValid (pos, 3) || pushValid (pos, 4);
+            return  PushValid (Pos, 1) || PushValid (Pos, 2) ||
+                    PushValid (Pos, 3) || PushValid (Pos, 4);
         }
-        public int getMoveLength (int pos) { return pushLength[pos]; }
-        public int getPushLength (int pos) { return moveLength[pos]; }
-        public void started() { running = true; }
-        public void stopped() { running = false; }
-        public bool isRunning() { return running; }
-        public bool isDone() { return done; }
+        public int MoveLength (int Pos) { return FPushLength[Pos]; }
+        public int PushLength (int Pos) { return FMoveLength[Pos]; }
 
         /* - It's a bit weird to return an array of arrays here, but I think
              this is more efficient, because it means we don't have to glue
@@ -512,11 +491,11 @@ namespace ExpertSokoban
         */
         public int[][] getMoves (int pos, int posInDir)
         {
-            if (pos < 0 || 4*pos+4 > pushLength.Length)
+            if (pos < 0 || 4*pos+4 > FPushLength.Length || !PushValid(pos))
                 return null;
             int dir = 0;
 
-            if ((posInDir > 0 && posInDir < 5) && pushLength[4*pos+posInDir] > 0)
+            if ((posInDir > 0 && posInDir < 5) && FPushLength[4*pos+posInDir] > 0)
                 dir = posInDir;
             else
             {
@@ -524,25 +503,25 @@ namespace ExpertSokoban
                 // There are four nodes in the graph that can represent
                 // this position. If the user didn't specify one (or it's
                 // invalid), let's find the one that has the shortest path.
-                if (pushLength[4*pos+1] > 0) dir = 1; else
-                if (pushLength[4*pos+2] > 0) dir = 2; else
-                if (pushLength[4*pos+3] > 0) dir = 3; else
-                if (pushLength[4*pos+4] > 0) dir = 4; else return null;
+                if (FPushLength[4*pos+1] > 0) dir = 1; else
+                if (FPushLength[4*pos+2] > 0) dir = 2; else
+                if (FPushLength[4*pos+3] > 0) dir = 3; else
+                if (FPushLength[4*pos+4] > 0) dir = 4; else return null;
 
-                if (dir == 1 && pushLength[4*pos+2] > 0 &&
-                    (pushLength[4*pos+2] < pushLength[4*pos+1] ||
-                     (pushLength[4*pos+2] == pushLength[4*pos+1] &&
-                      moveLength[4*pos+2] < moveLength[4*pos+1])))
+                if (dir == 1 && FPushLength[4*pos+2] > 0 &&
+                    (FPushLength[4*pos+2] < FPushLength[4*pos+1] ||
+                     (FPushLength[4*pos+2] == FPushLength[4*pos+1] &&
+                      FMoveLength[4*pos+2] < FMoveLength[4*pos+1])))
                     dir = 2;
-                if (dir < 3 && pushLength[4*pos+3] > 0 &&
-                    (pushLength[4*pos+3] < pushLength[4*pos+dir] ||
-                     (pushLength[4*pos+3] == pushLength[4*pos+dir] &&
-                      moveLength[4*pos+3] < moveLength[4*pos+dir])))
+                if (dir < 3 && FPushLength[4*pos+3] > 0 &&
+                    (FPushLength[4*pos+3] < FPushLength[4*pos+dir] ||
+                     (FPushLength[4*pos+3] == FPushLength[4*pos+dir] &&
+                      FMoveLength[4*pos+3] < FMoveLength[4*pos+dir])))
                     dir = 3;
-                if (dir < 4 && pushLength[4*pos+4] > 0 &&
-                    (pushLength[4*pos+4] < pushLength[4*pos+dir] ||
-                     (pushLength[4*pos+4] == pushLength[4*pos+dir] &&
-                      moveLength[4*pos+4] < moveLength[4*pos+dir])))
+                if (dir < 4 && FPushLength[4*pos+4] > 0 &&
+                    (FPushLength[4*pos+4] < FPushLength[4*pos+dir] ||
+                     (FPushLength[4*pos+4] == FPushLength[4*pos+dir] &&
+                      FMoveLength[4*pos+4] < FMoveLength[4*pos+dir])))
                     dir = 4;
             }
 
@@ -551,14 +530,14 @@ namespace ExpertSokoban
             // It is probably more efficient to just allocate an array that
             // will be a little bit too large in most cases, than to glue
             // several arrays into one just to have the right size.
-            int[][] ret = new int [ moveLength[item] ][];
-            int index = moveLength[item]-1;
-            int pred = predecessor[item];
-            int sx = level.getSizeX();
+            int[][] ret = new int [ FMoveLength[item] ][];
+            int index = FMoveLength[item]-1;
+            int pred = FPredecessor[item];
+            int sx = FLevel.Width;
             while (pred != 0)
             {
                 if ((pred-1) / 4 == (item-1) / 4) // moving the Sokoban around
-                    ret[index] = path[pred][ (item-1) % 4 ];
+                    ret[index] = FPath[pred][ (item-1) % 4 ];
                 else    // pushing the piece
                 {
                     ret[index] = new int[1];
@@ -569,13 +548,13 @@ namespace ExpertSokoban
                 }
                 index--;
                 item = pred;
-                pred = predecessor[item];
+                pred = FPredecessor[item];
             }
             int idir = (item-1) % 4;
             int rpos = (item-1) / 4 + ((idir == 0) ? -sx :
                                        (idir == 1) ? -1 :
                                        (idir == 2) ? 1 : sx);
-            ret[index] = initialMoveFinder.getPath (rpos);
+            ret[index] = FMoveFinder.Path (rpos);
             return ret;
         }
     }

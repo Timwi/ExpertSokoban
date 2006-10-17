@@ -4,21 +4,26 @@ using System.Text;
 using System.Windows.Forms;
 using System.Drawing.Drawing2D;
 using System.Drawing;
+using System.Collections;
 
 namespace ExpertSokoban
 {
     public class ESLevelListBox : ListBox
     {
+        private Hashtable CachedRenderings;
+
         public ESLevelListBox()
         {
-            this.DrawMode = DrawMode.OwnerDrawVariable;
             this.MeasureItem += new MeasureItemEventHandler(ESLevelListBox_MeasureItem);
             this.DrawItem += new DrawItemEventHandler(ESLevelListBox_DrawItem);
             this.Resize += new EventHandler(ESLevelListBox_Resize);
+            CachedRenderings = new Hashtable();
+            this.DrawMode = DrawMode.OwnerDrawVariable;
         }
 
         private void ESLevelListBox_Resize(object sender, EventArgs e)
         {
+            CachedRenderings = new Hashtable();
             RefreshItems();
         }
 
@@ -28,33 +33,43 @@ namespace ExpertSokoban
             {
                 if (Items[e.Index] is SokobanLevel)
                 {
-                    ESRenderer r = new ESRenderer((SokobanLevel) Items[e.Index], e.Bounds.Width-10, e.Bounds.Height-10);
+                    Image rendering = GetRendering ((SokobanLevel) Items[e.Index], e.Bounds.Width-10, e.Bounds.Height-10);
                     e.DrawBackground();
                     e.DrawFocusRectangle();
                     if ((e.State & DrawItemState.Selected) != DrawItemState.Selected)
                         e.Graphics.FillRectangle(new LinearGradientBrush(e.Bounds, Color.White, Color.Silver, 90, false), e.Bounds);
-                    e.Graphics.TranslateTransform(5 + e.Bounds.Left, 5 + e.Bounds.Top);
-                    r.Render(e.Graphics);
+                    e.Graphics.DrawImage(rendering, e.Bounds.Left + 5, e.Bounds.Top + 5);
                 }
                 else if (Items[e.Index] is string)
                 {
                     e.DrawBackground();
                     e.DrawFocusRectangle();
-                    string str = (string) Items[e.Index];
+                    string Str = (string) Items[e.Index];
                     if ((e.State & DrawItemState.Selected) != DrawItemState.Selected)
                         e.Graphics.FillRectangle(new LinearGradientBrush(e.Bounds, Color.White, Color.Silver, 90, false), e.Bounds);
-                    e.Graphics.DrawString(str, Font, new SolidBrush(e.ForeColor), e.Bounds.Left + 5, e.Bounds.Top + 5);
+                    e.Graphics.DrawString(Str, Font, new SolidBrush(e.ForeColor), e.Bounds.Left + 5, e.Bounds.Top + 5);
                 }
                 else
                 {
                     e.DrawBackground();
                     e.DrawFocusRectangle();
-                    string str = Items[e.Index].ToString();
+                    string Str = Items[e.Index].ToString();
                     if ((e.State & DrawItemState.Selected) != DrawItemState.Selected)
                         e.Graphics.FillRectangle(new LinearGradientBrush(e.Bounds, Color.White, Color.Silver, 90, false), e.Bounds);
-                    e.Graphics.DrawString(str, Font, new SolidBrush(e.ForeColor), e.Bounds.Left + 5, e.Bounds.Top + 5);
+                    e.Graphics.DrawString(Str, Font, new SolidBrush(e.ForeColor), e.Bounds.Left + 5, e.Bounds.Top + 5);
                 }
             }
+        }
+
+        private Image GetRendering(SokobanLevel Level, int Width, int Height)
+        {
+            if (CachedRenderings.ContainsKey(Level))
+                return (Image) CachedRenderings[Level];
+
+            Image Rendering = new Bitmap(Width, Height);
+            new ESRenderer(Level, Width, Height, new SolidBrush(Color.Transparent)).Render(Graphics.FromImage(Rendering));
+            CachedRenderings[Level] = Rendering;
+            return Rendering;
         }
 
         private void ESLevelListBox_MeasureItem(object sender, MeasureItemEventArgs e)
@@ -63,17 +78,16 @@ namespace ExpertSokoban
             {
                 if (Items[e.Index] is SokobanLevel)
                 {
-                    SokobanLevel level = (SokobanLevel) Items[e.Index];
-                    e.ItemHeight = (ClientSize.Width-10)*level.getSizeY()/level.getSizeX() + 10;
+                    SokobanLevel Level = (SokobanLevel) Items[e.Index];
+                    e.ItemHeight = (ClientSize.Width-10)*Level.Height/Level.Width + 10;
                 }
                 else if (Items[e.Index] is string)
-                {
                     e.ItemHeight = (int) e.Graphics.MeasureString((string) Items[e.Index], Font).Height + 10;
-                }
                 else
-                {
                     e.ItemHeight = (int) e.Graphics.MeasureString(Items[e.Index].ToString(), Font).Height + 10;
-                }
+
+                if (e.ItemHeight > 255)
+                    e.ItemHeight = 255;
             }
         }
     }

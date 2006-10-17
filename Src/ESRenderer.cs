@@ -23,7 +23,7 @@ namespace ExpertSokoban
         private float FCellWidth, FCellHeight;
         private int FClientWidth, FClientHeight;
         private int FOriginX, FOriginY;
-        private Color FBackgroundColour = Color.FromArgb(240, 240, 240);
+        private Brush FBackgroundBrush = new SolidBrush(Color.FromArgb(240, 240, 240));
 
         public float CellWidth { get { return FCellWidth; } }
         public float CellHeight { get { return FCellHeight; } }
@@ -40,32 +40,44 @@ namespace ExpertSokoban
             Init(Level, ClientWidth, ClientHeight);
         }
 
+        public ESRenderer(SokobanLevel Level, Size ClientSize, Brush BackgroundBrush)
+        {
+            FBackgroundBrush = BackgroundBrush;
+            Init(Level, ClientSize.Width, ClientSize.Height);
+        }
+
+        public ESRenderer(SokobanLevel Level, int ClientWidth, int ClientHeight, Brush BackgroundBrush)
+        {
+            FBackgroundBrush = BackgroundBrush;
+            Init(Level, ClientWidth, ClientHeight);
+        }
+
         private void Init(SokobanLevel Level, int ClientWidth, int ClientHeight)
         {
             FClientWidth = ClientWidth;
             FClientHeight = ClientHeight;
             FLevel = Level;
-            int IdealWidth = FClientHeight*Level.getSizeX()/Level.getSizeY();
+            int IdealWidth = FClientHeight*Level.Width/Level.Height;
             FCellWidth = FCellHeight = FClientWidth > IdealWidth 
-                ? (float) FClientHeight/Level.getSizeY()
-                : (float) FClientWidth/Level.getSizeX();
-            FOriginX = (int) (FClientWidth > IdealWidth ? (FClientWidth/2 - FCellWidth*Level.getSizeX()/2) : 0);
-            FOriginY = (int) (FClientWidth > IdealWidth ? 0 : (FClientHeight/2 - FCellHeight*Level.getSizeY()/2));
+                ? (float) FClientHeight/Level.Height
+                : (float) FClientWidth/Level.Width;
+            FOriginX = (int) (FClientWidth > IdealWidth ? (FClientWidth/2 - FCellWidth*Level.Width/2) : 0);
+            FOriginY = (int) (FClientWidth > IdealWidth ? 0 : (FClientHeight/2 - FCellHeight*Level.Height/2));
         }
 
         public void Render(Graphics g)
         {
-            g.FillRectangle(new SolidBrush(FBackgroundColour), new Rectangle(0, 0, FClientWidth, FClientHeight));
-            for (int x = 0; x < FLevel.getSizeX(); x++)
-                for (int y = 0; y < FLevel.getSizeY(); y++)
+            g.FillRectangle(FBackgroundBrush, new Rectangle(0, 0, FClientWidth, FClientHeight));
+            for (int x = 0; x < FLevel.Width; x++)
+                for (int y = 0; y < FLevel.Height; y++)
                     RenderCell(g, x, y);
         }
 
-        public Point CellFromPixel(Point pixel)
+        public Point CellFromPixel(Point Pixel)
         {
             return new Point(
-                (int) ((pixel.X - FOriginX) / CellWidth),
-                (int) ((pixel.Y - FOriginY) / CellHeight));
+                (int) ((Pixel.X - FOriginX) / CellWidth),
+                (int) ((Pixel.Y - FOriginY) / CellHeight));
         }
 
         public void RenderCell(Graphics g, int pos)
@@ -78,10 +90,18 @@ namespace ExpertSokoban
             RenderCell(g, x, y, false);
         }
 
-        public void RenderCell(Graphics g, int x, int y, bool drawBackground)
+        public void RenderCell(Graphics g, int Pos, bool DrawBackground)
         {
+            RenderCell(g, FLevel.PosToX(Pos), FLevel.PosToY(Pos), DrawBackground);
+        }
+
+        public void RenderCell(Graphics g, int x, int y, bool DrawBackground)
+        {
+            if (DrawBackground)
+                g.FillRectangle(FBackgroundBrush, GetCellRect(x, y));
+
             // Draw level
-            switch (FLevel.getCell(x, y))
+            switch (FLevel.Cell(x, y))
             {
                 case SokobanCell.Wall:
                     DrawCell(g, x, y, SokobanImage.Wall);
@@ -94,7 +114,7 @@ namespace ExpertSokoban
                     break;
             }
             // Draw piece
-            switch (FLevel.getCell(x, y))
+            switch (FLevel.Cell(x, y))
             {
                 case SokobanCell.Piece:
                     DrawCell(g, x, y, SokobanImage.Piece);
@@ -104,44 +124,44 @@ namespace ExpertSokoban
                     break;
             }
             // Draw Sokoban
-            if (x == FLevel.getSokobanX() && y == FLevel.getSokobanY())
+            if (x == FLevel.SokobanX && y == FLevel.SokobanY)
                 DrawCell(g, x, y, SokobanImage.Sokoban);
         }
 
-        public void DrawCell(Graphics g, int pos, SokobanImage imageType)
+        public void DrawCell(Graphics g, int Pos, SokobanImage ImageType)
         {
-            DrawCell(g, FLevel.PosToX(pos), FLevel.PosToY(pos), imageType);
+            DrawCell(g, FLevel.PosToX(Pos), FLevel.PosToY(Pos), ImageType);
         }
 
-        public void DrawCell(Graphics g, int x, int y, SokobanImage imageType)
+        public void DrawCell(Graphics g, int x, int y, SokobanImage ImageType)
         {
-            g.DrawImage(GetImage(imageType), GetCellRectForImage(x, y));
+            g.DrawImage(GetImage(ImageType), GetCellRectForImage(x, y));
+        }
+
+        public RectangleF GetCellRectForImage(int Pos)
+        {
+            return GetCellRectForImage(FLevel.PosToX(Pos), FLevel.PosToY(Pos));
         }
 
         public RectangleF GetCellRectForImage(int x, int y)
         {
-            RectangleF tmp = GetCellRect(x, y);
-            return new RectangleF(tmp.X, tmp.Y, tmp.Width*1.5f, tmp.Height*1.5f);
+            RectangleF Src = GetCellRect(x, y);
+            return new RectangleF(Src.X, Src.Y, Src.Width*1.5f+1, Src.Height*1.5f+1);
         }
 
-        public RectangleF GetCellRect(int pos)
+        public RectangleF GetCellRect(int Pos)
         {
-            return GetCellRect(FLevel.PosToX(pos), FLevel.PosToY(pos));
+            return GetCellRect(FLevel.PosToX(Pos), FLevel.PosToY(Pos));
         }
 
         public RectangleF GetCellRect(int x, int y)
         {
-            RectangleF ret = new RectangleF();
-            ret.X = x*FCellWidth + FOriginX;
-            ret.Y = y*FCellHeight + FOriginY;
-            ret.Width = FCellWidth;
-            ret.Height = FCellHeight;
-            return ret;
+            return new RectangleF(x*FCellWidth + FOriginX, y*FCellHeight + FOriginY, FCellWidth, FCellHeight);
         }
 
-        private Image GetImage(SokobanImage imageType)
+        private Image GetImage(SokobanImage ImageType)
         {
-            switch (imageType)
+            switch (ImageType)
             {
                 case SokobanImage.Piece:
                     return Properties.Resources.ImgPiece;

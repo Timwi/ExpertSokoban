@@ -2,173 +2,174 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
+using RT.Util;
 
 namespace ExpertSokoban
 {
     public class ESMoveFinder
     {
-        private SokobanLevel level;
-        private int[] pathLength;
-        private int[] predecessor;
-        private ESIntQueue queue = new ESIntQueue();
-        private bool first, done, running, doAll, runningToCompletion, stopWhenFourSides,
-                     foundTop, foundLeft, foundRight, foundBottom;
-        private int swfsPos;
-        private Control callbackOwner;
-        private Delegate callbackFound, callbackDone;
+        private SokobanLevel FLevel;
+        private int[] FPathLength;
+        private int[] FPredecessor;
+        private IntQueue FQueue = new IntQueue();
+        private bool FFirst, FDone, FDoAll, FRunningToCompletion, FStopWhenFourSides,
+                     FFoundTop, FFoundLeft, FFoundRight, FFoundBottom;
+        private int StopIfFoundPos;
+        private Control FCallbackOwner;
+        private Delegate FCallbackFound, FCallbackDone;
 
-        public ESMoveFinder(SokobanLevel l, bool optDoAll, Control Owner, Delegate FoundCallback, Delegate DoneCallback, int swfs)
+        public bool Done { get { return FDone; } }
+
+        public ESMoveFinder(SokobanLevel Level, bool DoAll, Control Owner, Delegate FoundCallback, Delegate DoneCallback, int StopIfFound)
         {
-            Init (l, optDoAll, Owner, FoundCallback, DoneCallback);
-            stopWhenFourSides = true;
-            swfsPos = swfs;
-            foundTop    = !l.isFree (swfs - l.getSizeX());
-            foundLeft   = !l.isFree (swfs - 1);
-            foundRight  = !l.isFree (swfs + 1);
-            foundBottom = !l.isFree (swfs + l.getSizeX());
+            Init (Level, DoAll, Owner, FoundCallback, DoneCallback);
+            FStopWhenFourSides = true;
+            StopIfFoundPos = StopIfFound;
+            FFoundTop    = !Level.IsFree (StopIfFound - Level.Width);
+            FFoundLeft   = !Level.IsFree (StopIfFound - 1);
+            FFoundRight  = !Level.IsFree (StopIfFound + 1);
+            FFoundBottom = !Level.IsFree (StopIfFound + Level.Width);
         }
-        public ESMoveFinder(SokobanLevel l, bool optDoAll, Control Owner, Delegate FoundCallback, Delegate DoneCallback)
+        public ESMoveFinder(SokobanLevel Level, bool DoAll, Control Owner, Delegate FoundCallback, Delegate DoneCallback)
         {
-            Init(l, optDoAll, Owner, FoundCallback, DoneCallback);
+            Init(Level, DoAll, Owner, FoundCallback, DoneCallback);
         }
-        private void Init(SokobanLevel l, bool optDoAll, Control Owner, Delegate FoundCallback, Delegate DoneCallback)
+        private void Init(SokobanLevel Level, bool DoAll, Control Owner, Delegate FoundCallback, Delegate DoneCallback)
         {
-            callbackOwner = Owner;
-            callbackFound = FoundCallback;
-            callbackDone = DoneCallback;
-            level = l;
-            done = false;
-            first = true;
-            doAll = optDoAll;
-            pathLength = new int[level.getSizeX() * level.getSizeY()];
-            predecessor = new int[level.getSizeX() * level.getSizeY()];
-            int sp = level.getSokobanPos();
-            queue.add(sp);
-            pathLength[sp] = 1;
+            FCallbackOwner = Owner;
+            FCallbackFound = FoundCallback;
+            FCallbackDone = DoneCallback;
+            FLevel = Level;
+            FDone = false;
+            FFirst = true;
+            FDoAll = DoAll;
+            FPathLength = new int[FLevel.Width * FLevel.Height];
+            FPredecessor = new int[FLevel.Width * FLevel.Height];
+            FQueue.Add(FLevel.SokobanPos);
+            FPathLength[FLevel.SokobanPos] = 1;
         }
         public void RunToCompletion (int square)
         {
-            runningToCompletion = true;
-            doAll = true;
-            stopWhenFourSides = true;
-            swfsPos = square;
-            int sx = level.getSizeX();
-            foundTop    = !level.isFree (square-sx) || pathLength[square-sx] > 0;
-            foundLeft   = !level.isFree (square- 1) || pathLength[square- 1] > 0;
-            foundRight  = !level.isFree (square+ 1) || pathLength[square+ 1] > 0;
-            foundBottom = !level.isFree (square+sx) || pathLength[square+sx] > 0;
-            if (foundTop && foundLeft && foundRight && foundBottom)
-                done = true;
+            FRunningToCompletion = true;
+            FDoAll = true;
+            FStopWhenFourSides = true;
+            StopIfFoundPos = square;
+            FFoundTop    = !FLevel.IsFree (square-FLevel.Width) || FPathLength[square-FLevel.Width] > 0;
+            FFoundLeft   = !FLevel.IsFree (square-           1) || FPathLength[square-           1] > 0;
+            FFoundRight  = !FLevel.IsFree (square+           1) || FPathLength[square+           1] > 0;
+            FFoundBottom = !FLevel.IsFree (square+FLevel.Width) || FPathLength[square+FLevel.Width] > 0;
+            if (FFoundTop && FFoundLeft && FFoundRight && FFoundBottom)
+                FDone = true;
             else
                 SingleStep();
         }
         public void SingleStep()
         {
-            if (done) return;
-            if (first && !doAll && callbackOwner != null)
+            if (FDone) return;
+            if (FFirst && !FDoAll && FCallbackOwner != null)
             {
-                callbackOwner.Invoke(callbackFound, new object[] { level.getSokobanPos() });
-                first = false;
+                FCallbackOwner.Invoke(FCallbackFound, new object[] { FLevel.SokobanPos });
+                FFirst = false;
             }
 
             do
             {
-                int item = queue.extract();
-                int cpos = item-level.getSizeX();
-                SokobanCell c = level.getCell (cpos);
-                if ((c == SokobanCell.Blank || c == SokobanCell.Target) && pathLength[cpos] == 0)
+                int Pivot = FQueue.Extract();
+                // Look at the cell above the pivot...
+                int CellPos = Pivot-FLevel.Width;
+                SokobanCell Cell = FLevel.Cell (CellPos);
+                if ((Cell == SokobanCell.Blank || Cell == SokobanCell.Target) && FPathLength[CellPos] == 0)
                 {
-                    queue.add (cpos);
-                    pathLength[cpos] = pathLength[item]+1;
-                    predecessor[cpos] = item;
-                    if (stopWhenFourSides)
+                    FQueue.Add (CellPos);
+                    FPathLength[CellPos] = FPathLength[Pivot]+1;
+                    FPredecessor[CellPos] = Pivot;
+                    if (FStopWhenFourSides)
                     {
-                        if (cpos == swfsPos - level.getSizeX()) foundTop = true;
-                        if (cpos == swfsPos - 1               ) foundLeft = true;
-                        if (cpos == swfsPos + 1               ) foundRight = true;
-                        if (cpos == swfsPos + level.getSizeX()) foundBottom = true;
+                        if (CellPos == StopIfFoundPos - FLevel.Width) FFoundTop = true;
+                        if (CellPos == StopIfFoundPos - 1           ) FFoundLeft = true;
+                        if (CellPos == StopIfFoundPos + 1           ) FFoundRight = true;
+                        if (CellPos == StopIfFoundPos + FLevel.Width) FFoundBottom = true;
                     }
-                    if ((!doAll || runningToCompletion) && callbackOwner != null)
-                        callbackOwner.Invoke(callbackFound, new object[] { cpos });
+                    if ((!FDoAll || FRunningToCompletion) && FCallbackOwner != null)
+                        FCallbackOwner.Invoke(FCallbackFound, new object[] { CellPos });
                 }
-                cpos += level.getSizeX()-1;
-                c = level.getCell (cpos);
-                if ((c == SokobanCell.Blank || c == SokobanCell.Target) && pathLength[cpos] == 0)
+                // ... left of the pivot ...
+                CellPos += FLevel.Width-1;
+                Cell = FLevel.Cell (CellPos);
+                if ((Cell == SokobanCell.Blank || Cell == SokobanCell.Target) && FPathLength[CellPos] == 0)
                 {
-                    queue.add (cpos);
-                    pathLength[cpos] = pathLength[item]+1;
-                    predecessor[cpos] = item;
-                    if (stopWhenFourSides)
+                    FQueue.Add (CellPos);
+                    FPathLength[CellPos] = FPathLength[Pivot]+1;
+                    FPredecessor[CellPos] = Pivot;
+                    if (FStopWhenFourSides)
                     {
-                        if (cpos == swfsPos - level.getSizeX()) foundTop = true;
-                        if (cpos == swfsPos - 1               ) foundLeft = true;
-                        if (cpos == swfsPos + 1               ) foundRight = true;
-                        if (cpos == swfsPos + level.getSizeX()) foundBottom = true;
+                        if (CellPos == StopIfFoundPos - FLevel.Width) FFoundTop = true;
+                        if (CellPos == StopIfFoundPos - 1           ) FFoundLeft = true;
+                        if (CellPos == StopIfFoundPos + 1           ) FFoundRight = true;
+                        if (CellPos == StopIfFoundPos + FLevel.Width) FFoundBottom = true;
                     }
-                    if ((!doAll || runningToCompletion) && callbackOwner != null)
-                        callbackOwner.Invoke(callbackFound, new object[] { cpos });
+                    if ((!FDoAll || FRunningToCompletion) && FCallbackOwner != null)
+                        FCallbackOwner.Invoke(FCallbackFound, new object[] { CellPos });
                 }
-                cpos += 2;
-                c = level.getCell (cpos);
-                if ((c == SokobanCell.Blank || c == SokobanCell.Target) && pathLength[cpos] == 0)
+                // ... right of the pivot ...
+                CellPos += 2;
+                Cell = FLevel.Cell (CellPos);
+                if ((Cell == SokobanCell.Blank || Cell == SokobanCell.Target) && FPathLength[CellPos] == 0)
                 {
-                    queue.add (cpos);
-                    pathLength[cpos] = pathLength[item]+1;
-                    predecessor[cpos] = item;
-                    if (stopWhenFourSides)
+                    FQueue.Add (CellPos);
+                    FPathLength[CellPos] = FPathLength[Pivot]+1;
+                    FPredecessor[CellPos] = Pivot;
+                    if (FStopWhenFourSides)
                     {
-                        if (cpos == swfsPos - level.getSizeX()) foundTop = true;
-                        if (cpos == swfsPos - 1               ) foundLeft = true;
-                        if (cpos == swfsPos + 1               ) foundRight = true;
-                        if (cpos == swfsPos + level.getSizeX()) foundBottom = true;
+                        if (CellPos == StopIfFoundPos - FLevel.Width) FFoundTop = true;
+                        if (CellPos == StopIfFoundPos - 1           ) FFoundLeft = true;
+                        if (CellPos == StopIfFoundPos + 1           ) FFoundRight = true;
+                        if (CellPos == StopIfFoundPos + FLevel.Width) FFoundBottom = true;
                     }
-                    if ((!doAll || runningToCompletion) && callbackOwner != null)
-                        callbackOwner.Invoke(callbackFound, new object[] { cpos });
+                    if ((!FDoAll || FRunningToCompletion) && FCallbackOwner != null)
+                        FCallbackOwner.Invoke(FCallbackFound, new object[] { CellPos });
                 }
-                cpos += level.getSizeX()-1;
-                c = level.getCell (cpos);
-                if ((c == SokobanCell.Blank || c == SokobanCell.Target) && pathLength[cpos] == 0)
+                // ... and below the pivot
+                CellPos += FLevel.Width-1;
+                Cell = FLevel.Cell (CellPos);
+                if ((Cell == SokobanCell.Blank || Cell == SokobanCell.Target) && FPathLength[CellPos] == 0)
                 {
-                    queue.add (cpos);
-                    pathLength[cpos] = pathLength[item]+1;
-                    predecessor[cpos] = item;
-                    if (stopWhenFourSides)
+                    FQueue.Add (CellPos);
+                    FPathLength[CellPos] = FPathLength[Pivot]+1;
+                    FPredecessor[CellPos] = Pivot;
+                    if (FStopWhenFourSides)
                     {
-                        if (cpos == swfsPos - level.getSizeX()) foundTop = true;
-                        if (cpos == swfsPos - 1               ) foundLeft = true;
-                        if (cpos == swfsPos + 1               ) foundRight = true;
-                        if (cpos == swfsPos + level.getSizeX()) foundBottom = true;
+                        if (CellPos == StopIfFoundPos - FLevel.Width) FFoundTop = true;
+                        if (CellPos == StopIfFoundPos - 1           ) FFoundLeft = true;
+                        if (CellPos == StopIfFoundPos + 1           ) FFoundRight = true;
+                        if (CellPos == StopIfFoundPos + FLevel.Width) FFoundBottom = true;
                     }
-                    if ((!doAll || runningToCompletion) && callbackOwner != null)
-                        callbackOwner.Invoke(callbackFound, new object[] { cpos });
+                    if ((!FDoAll || FRunningToCompletion) && FCallbackOwner != null)
+                        FCallbackOwner.Invoke(FCallbackFound, new object[] { CellPos });
                 }
 
-                if (queue.isEmpty() || (stopWhenFourSides && foundTop && foundLeft && foundRight && foundBottom))
+                if (FQueue.Empty || (FStopWhenFourSides && FFoundTop && FFoundLeft && FFoundRight && FFoundBottom))
                 {
-                    done = true;
-                    if ((!doAll || runningToCompletion) && callbackOwner != null)
-                        callbackOwner.Invoke(callbackDone, new object[] { });
+                    FDone = true;
+                    if ((!FDoAll || FRunningToCompletion) && FCallbackOwner != null)
+                        FCallbackOwner.Invoke(FCallbackDone, new object[] { });
                 }
             }
-            while (doAll && !done);
+            while (FDoAll && !FDone);
         }
-        public bool moveValid (int pos) { return (pathLength[pos] > 0); }
-        public int getPathLength (int pos) { return pathLength[pos]-1; }
-        public void started() { running = true; }
-        public void stopped() { running = false; }
-        public bool isRunning() { return running; }
-        public bool isDone() { return done; }
-        public int[] getPath (int pos)
+        public bool MoveValid (int Pos) { return (FPathLength[Pos] > 0); }
+        public int PathLength (int Pos) { return FPathLength[Pos]-1; }
+        public int[] Path (int Pos)
         {
-            if (pathLength[pos] == 0) return null;
-            int[] ret = new int [ pathLength[pos]-1 ];
-            int curAt = pos;
-            for (int i = pathLength[pos]-2; i >= 0; i--)
+            if (FPathLength[Pos] == 0) return null;
+            int[] Result = new int [ FPathLength[Pos]-1 ];
+            int At = Pos;
+            for (int i = FPathLength[Pos]-2; i >= 0; i--)
             {
-                ret[i] = curAt - predecessor[curAt];
-                curAt = predecessor[curAt];
+                Result[i] = At - FPredecessor[At];
+                At = FPredecessor[At];
             }
-            return ret;
+            return Result;
         }
     }
 }
