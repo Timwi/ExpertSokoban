@@ -11,7 +11,7 @@ namespace ExpertSokoban
         private SokobanLevel FLevel;
         private int[] FPathLength;
         private int[] FPredecessor;
-        private IntQueue FQueue = new IntQueue();
+        private Queue<int> FQueue = new Queue<int>();
         private bool FFirst, FDone, FDoAll, FRunningToCompletion, FStopWhenFourSides,
                      FFoundTop, FFoundLeft, FFoundRight, FFoundBottom;
         private int StopIfFoundPos;
@@ -45,7 +45,7 @@ namespace ExpertSokoban
             FDoAll = DoAll;
             FPathLength = new int[FLevel.Width * FLevel.Height];
             FPredecessor = new int[FLevel.Width * FLevel.Height];
-            FQueue.Add(FLevel.SokobanPos);
+            FQueue.Enqueue(FLevel.SokobanPos);
             FPathLength[FLevel.SokobanPos] = 1;
         }
         public void RunToCompletion (int square)
@@ -74,13 +74,13 @@ namespace ExpertSokoban
 
             do
             {
-                int Pivot = FQueue.Extract();
+                int Pivot = FQueue.Dequeue();
                 // Look at the cell above the pivot...
                 int CellPos = Pivot-FLevel.Width;
                 SokobanCell Cell = FLevel.Cell (CellPos);
                 if ((Cell == SokobanCell.Blank || Cell == SokobanCell.Target) && FPathLength[CellPos] == 0)
                 {
-                    FQueue.Add (CellPos);
+                    FQueue.Enqueue(CellPos);
                     FPathLength[CellPos] = FPathLength[Pivot]+1;
                     FPredecessor[CellPos] = Pivot;
                     if (FStopWhenFourSides)
@@ -98,7 +98,7 @@ namespace ExpertSokoban
                 Cell = FLevel.Cell (CellPos);
                 if ((Cell == SokobanCell.Blank || Cell == SokobanCell.Target) && FPathLength[CellPos] == 0)
                 {
-                    FQueue.Add (CellPos);
+                    FQueue.Enqueue(CellPos);
                     FPathLength[CellPos] = FPathLength[Pivot]+1;
                     FPredecessor[CellPos] = Pivot;
                     if (FStopWhenFourSides)
@@ -116,7 +116,7 @@ namespace ExpertSokoban
                 Cell = FLevel.Cell (CellPos);
                 if ((Cell == SokobanCell.Blank || Cell == SokobanCell.Target) && FPathLength[CellPos] == 0)
                 {
-                    FQueue.Add (CellPos);
+                    FQueue.Enqueue(CellPos);
                     FPathLength[CellPos] = FPathLength[Pivot]+1;
                     FPredecessor[CellPos] = Pivot;
                     if (FStopWhenFourSides)
@@ -134,7 +134,7 @@ namespace ExpertSokoban
                 Cell = FLevel.Cell (CellPos);
                 if ((Cell == SokobanCell.Blank || Cell == SokobanCell.Target) && FPathLength[CellPos] == 0)
                 {
-                    FQueue.Add (CellPos);
+                    FQueue.Enqueue(CellPos);
                     FPathLength[CellPos] = FPathLength[Pivot]+1;
                     FPredecessor[CellPos] = Pivot;
                     if (FStopWhenFourSides)
@@ -148,7 +148,7 @@ namespace ExpertSokoban
                         FCallbackOwner.Invoke(FCallbackFound, new object[] { CellPos });
                 }
 
-                if (FQueue.Empty || (FStopWhenFourSides && FFoundTop && FFoundLeft && FFoundRight && FFoundBottom))
+                if (FQueue.Count==0 || (FStopWhenFourSides && FFoundTop && FFoundLeft && FFoundRight && FFoundBottom))
                 {
                     FDone = true;
                     if ((!FDoAll || FRunningToCompletion) && FCallbackOwner != null)

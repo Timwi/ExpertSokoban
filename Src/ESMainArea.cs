@@ -35,15 +35,14 @@ namespace ExpertSokoban
         private Brush PushBrush = new SolidBrush(Color.FromArgb(100, Color.LightBlue));
         private Brush PushPathBrush = new SolidBrush(Color.FromArgb(0, 0, 0x80));
 
-        private int SelX, SelY, OrigMouseDown, MouseOverCell,
+        private int SelX, SelY, OrigMouseDown, MouseOverCell;
 
-                    // If, while State == Push, the user clicks somewhere where
-                    // the PushFinder has not yet found a path to, but is still
-                    // running, Consider (and ConsiderDirection) are set to the
-                    // cell clicked on. If the PushFinder encounters the cell
-                    // stored in Consider, the sequence is executed. For an
-                    // explanation of ConsiderDir, see GetOrigMouseDownDir().
-                    Consider, ConsiderDirection;
+        /// If, while State == Push, the user clicks somewhere where the PushFinder has
+        /// not yet found a path to, but is still running, Consider (and ConsiderDirection)
+        /// are set to the cell clicked on. If the PushFinder encounters the cell stored
+        /// in Consider, the sequence is executed. For an explanation of ConsiderDir, see
+        /// GetOrigMouseDownDir().
+        private int Consider, ConsiderDirection;
 
         private SoundPlayer SndLevelSolved, SndMeep, SndPiecePlaced, SndThreadDone;
         private int[][] UndoBuffer;
