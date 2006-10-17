@@ -87,7 +87,9 @@ namespace ExpertSokoban
 
         public void RenderCell(Graphics g, int x, int y)
         {
-            g.SetClip(GetMultiCellRect(x-1, y-1, x+1, y+1));
+            RectangleF Rect = GetCellRect(x, y);
+            g.SetClip(new Rectangle((int) (Rect.Left-FCellWidth*0.25f), (int) (Rect.Top-FCellHeight*0.25f),
+                (int) (2*FCellWidth), (int) (2*FCellHeight)));
             g.FillRectangle(FBackgroundBrush, 0, 0, FClientWidth, FClientHeight);
             for (int i = x-1; i <= x+1; i++)
                 for (int j = y-1; j <= y+1; j++)

@@ -11,10 +11,13 @@ namespace ExpertSokoban
 {
     public partial class ESMainform : Form
     {
+        private bool EverMoved;
+
         public ESMainform()
         {
             InitializeComponent();
             MainArea.SetLevel(SokobanLevel.TestLevel());
+            EverMoved = false;
         }
 
         private void ToolExit_Click(object sender, EventArgs e)
@@ -37,6 +40,7 @@ namespace ExpertSokoban
             OpenFileDialog OpenDialog = new OpenFileDialog();
             if (OpenDialog.ShowDialog() == DialogResult.OK)
             {
+                LevelList.BeginUpdate();
                 LevelList.Items.Clear();
                 StreamReader StreamReader = new StreamReader(OpenDialog.FileName, Encoding.UTF8);
                 LevelReaderState State = LevelReaderState.Empty;
@@ -82,9 +86,11 @@ namespace ExpertSokoban
                     }
                 }
                 while (Line != null);
+                LevelList.EndUpdate();
                 StreamReader.Close();
                 LevelListSplitter.Visible = true;
                 LevelListPanel.Visible = true;
+                LevelList.Focus();
             }
         }
 
@@ -101,12 +107,19 @@ namespace ExpertSokoban
             {
                 if (MainArea.State == ESMainAreaState.Solved ||
                     MainArea.State == ESMainAreaState.Null ||
+                    !EverMoved ||
                     MessageBox.Show("Are you sure you wish to give up the current level?",
                     "Open level", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     MainArea.SetLevel(((SokobanLevel) Item).Clone());
+                    EverMoved = false;
                 }
             }
+        }
+
+        private void MainArea_MoveMade(object sender, EventArgs e)
+        {
+            EverMoved = true;
         }
     }
 }

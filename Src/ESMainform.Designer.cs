@@ -39,11 +39,11 @@ namespace ExpertSokoban
             this.ToolEdit = new System.Windows.Forms.ToolStripButton();
             this.ToolExit = new System.Windows.Forms.ToolStripButton();
             this.LevelListPanel = new System.Windows.Forms.Panel();
-            this.LevelList = new ExpertSokoban.ESLevelListBox();
             this.LevelListToolStrip = new System.Windows.Forms.ToolStrip();
             this.LevelListClose = new System.Windows.Forms.ToolStripButton();
             this.LevelListSplitter = new System.Windows.Forms.Splitter();
             this.MainArea = new ExpertSokoban.ESMainArea();
+            this.LevelList = new ExpertSokoban.ESLevelListBox();
             this.MainToolStrip.SuspendLayout();
             this.LevelListPanel.SuspendLayout();
             this.LevelListToolStrip.SuspendLayout();
@@ -143,18 +143,6 @@ namespace ExpertSokoban
             this.LevelListPanel.TabIndex = 6;
             this.LevelListPanel.Visible = false;
             // 
-            // LevelList
-            // 
-            this.LevelList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LevelList.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.LevelList.FormattingEnabled = true;
-            this.LevelList.IntegralHeight = false;
-            this.LevelList.Location = new System.Drawing.Point(0, 25);
-            this.LevelList.Name = "LevelList";
-            this.LevelList.Size = new System.Drawing.Size(200, 396);
-            this.LevelList.TabIndex = 2;
-            this.LevelList.DoubleClick += new System.EventHandler(this.LevelList_DoubleClick);
-            // 
             // LevelListToolStrip
             // 
             this.LevelListToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -193,6 +181,16 @@ namespace ExpertSokoban
             this.MainArea.Name = "MainArea";
             this.MainArea.Size = new System.Drawing.Size(452, 421);
             this.MainArea.TabIndex = 1;
+            this.MainArea.MoveMade += new System.EventHandler(this.MainArea_MoveMade);
+            // 
+            // LevelList
+            // 
+            this.LevelList.IntegralHeight = false;
+            this.LevelList.Location = new System.Drawing.Point(0, 25);
+            this.LevelList.Name = "LevelList";
+            this.LevelList.Size = new System.Drawing.Size(200, 396);
+            this.LevelList.TabIndex = 2;
+            this.LevelList.DoubleClick += new System.EventHandler(this.LevelList_DoubleClick);
             // 
             // ESMainform
             // 

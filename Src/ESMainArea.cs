@@ -21,6 +21,7 @@ namespace ExpertSokoban
     public class ESMainArea : DoubleBufferedPanel
     {
         public ESMainAreaState State { get { return FState; } }
+        public event EventHandler MoveMade;
 
         private SokobanLevel FLevel;
         private ESRenderer Renderer;
@@ -478,6 +479,8 @@ namespace ExpertSokoban
                 ReinitMoveFinder();
                 Refresh();
             }
+            if (MoveMade != null)
+                MoveMade(this, new EventArgs());
         }
 
         private void LevelSolved()
