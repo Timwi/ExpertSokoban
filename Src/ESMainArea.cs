@@ -34,26 +34,13 @@ namespace ExpertSokoban
         private Brush MoveBrush = new SolidBrush(Color.FromArgb(100, Color.LimeGreen));
         private Brush PushBrush = new SolidBrush(Color.FromArgb(100, Color.LightBlue));
         private Brush PushPathBrush = new SolidBrush(Color.FromArgb(0, 0, 0x80));
+        private SoundPlayer SndLevelSolved, SndMeep, SndPiecePlaced, SndThreadDone;
 
         private int SelX, SelY, OrigMouseDown, MouseOverCell;
-
-        /// If, while State == Push, the user clicks somewhere where the PushFinder has
-        /// not yet found a path to, but is still running, Consider (and ConsiderDirection)
-        /// are set to the cell clicked on. If the PushFinder encounters the cell stored
-        /// in Consider, the sequence is executed. For an explanation of ConsiderDir, see
-        /// GetOrigMouseDownDir().
-        private int Consider, ConsiderDirection;
-
-        private SoundPlayer SndLevelSolved, SndMeep, SndPiecePlaced, SndThreadDone;
         private int[][] UndoBuffer;
 
         // Push path, but encoded as a sequence of cell co-ordinates.
         private int[] PrevCellSequence;
-
-        private delegate void MoveFoundCallback(int Pos);
-        private delegate void MoveFinderDoneCallback();
-        private delegate void PushFoundCallback(int Pos);
-        private delegate void PushFinderDoneCallback(bool AnythingPossible);
 
         public ESMainArea()
         {
@@ -80,10 +67,6 @@ namespace ExpertSokoban
             this.MouseUp += new MouseEventHandler(ESMainArea_MouseUp);
             this.Paint += new PaintEventHandler(ESMainArea_Paint);
             this.PaintBuffer += new PaintEventHandler(ESMainArea_PaintBuffer);
-            Timer t = new Timer();
-            t.Tick += new EventHandler(TimerTick);
-            t.Interval = 1;
-            t.Enabled = true;
         }
 
         private void ESMainArea_PaintBuffer(object sender, PaintEventArgs e)
@@ -110,19 +93,9 @@ namespace ExpertSokoban
             }
         }
 
-        private void TimerTick(object sender, EventArgs e)
-        {
-            if ((FState == ESMainAreaState.Move || FState == ESMainAreaState.Push) && MoveFinder != null && !MoveFinder.Done)
-                MoveFinder.SingleStep();
-            if (FState == ESMainAreaState.Push && PushFinder != null && !PushFinder.Done)
-                PushFinder.SingleStep();
-        }
-
         private void ReinitMoveFinder()
         {
-            MoveFinder = new ESMoveFinder(FLevel, false, this,
-                new MoveFoundCallback(MoveFound),
-                new MoveFinderDoneCallback(MoveFinderDone));
+            MoveFinder = new ESMoveFinder(FLevel);
         }
 
         private void AddUndo(int prevSokPos, bool push, int fromPush, int toPush)
@@ -166,8 +139,6 @@ namespace ExpertSokoban
             FLevel.SetSokobanPos(Extracted[0]);
             if (Push) FLevel.MovePiece(Extracted[2], Extracted[1]);
 
-            Consider = 0;
-            ConsiderDirection = 0;
             FState = ESMainAreaState.Move;
             ReinitMoveFinder();
             Refresh();
@@ -202,7 +173,7 @@ namespace ExpertSokoban
             }
         }
 
-        private void UpdatePushPath(int[][] NewPushPath)
+        private void UpdatePushPath(List<int> NewPushPath)
         {
             if (NewPushPath == null)
             {
@@ -213,38 +184,33 @@ namespace ExpertSokoban
             int SokPos = FLevel.SokobanPos;
             int PiecePos = SelY * FLevel.Width + SelX;
 
-            int PathLength = 0;
+            // First determine the number of actual pushes in the path
+            int Pushes = 0;
+            foreach (int Elem in NewPushPath)
+            {
+                if (PiecePos == SokPos + Elem)
+                {
+                    Pushes++;
+                    PiecePos += Elem;
+                }
+                SokPos += Elem;
+            }
 
-            for (int i = 0; i < NewPushPath.Length; i++)
-                if (NewPushPath[i] != null)
-                    for (int j = 0; j < NewPushPath[i].Length; j++)
-                    {
-                        if (PiecePos == SokPos + NewPushPath[i][j])
-                        {
-                            PathLength++;
-                            PiecePos += NewPushPath[i][j];
-                        }
-                        SokPos += NewPushPath[i][j];
-                    }
-
+            // Now create the sequence of cells that make up the push path
             SokPos = FLevel.SokobanPos;
             PiecePos = SelY * FLevel.Width + SelX;
-            int[] CellSequence = new int[PathLength];
+            int[] CellSequence = new int[Pushes];
             int Index = 0;
-
-            for (int i = 0; i < NewPushPath.Length; i++)
-                if (NewPushPath[i] != null)
-                    for (int j = 0; j < NewPushPath[i].Length; j++)
-                    {
-                        if (PiecePos == SokPos + NewPushPath[i][j])
-                        {
-                            // need to push
-                            PiecePos += NewPushPath[i][j];
-                            CellSequence[Index] = PiecePos;
-                            Index++;
-                        }
-                        SokPos += NewPushPath[i][j];
-                    }
+            foreach (int Elem in NewPushPath)
+            {
+                if (PiecePos == SokPos + Elem)
+                {
+                    PiecePos += Elem;
+                    CellSequence[Index] = PiecePos;
+                    Index++;
+                }
+                SokPos += Elem;
+            }
 
             // Find the first index at which PrevCellSequence and CellSequence differ,
             // and invalidate the drawing area from there
@@ -308,7 +274,7 @@ namespace ExpertSokoban
                 if (Cell != MouseOverCell)
                 {
                     MouseOverCell = Cell;
-                    UpdatePushPath(PushFinder.getMoves(Cell, GetOrigMouseDownDir(Cell)));
+                    UpdatePushPath(PushFinder.Path(Cell, GetOrigMouseDownDir(Cell)));
                 }
             }
         }
@@ -381,15 +347,19 @@ namespace ExpertSokoban
                 else
                     Invalidate(RoundedRectangle(Renderer.GetCellRectForImage(Clicked.X, Clicked.Y)));
             }
+
+            // If the user clicked on a piece, initiate the PushFinder,
+            // even if we are already in State==Push (because we want to
+            // be able to select another piece).
+            // Special case: if the user dragged from next to a piece onto
+            // the piece, and this signifies a valid push according to the
+            // current PushFinder, then we want to execute the push instead.
             else if (FLevel.IsPiece(Cell) &&
                      FState != ESMainAreaState.Solved &&
                      !(PushFinder != null &&
                        GetOrigMouseDownDir(Cell) != 0 &&
                        PushFinder.PushValid(Cell, GetOrigMouseDownDir(Cell))))
             {
-                if (MoveFinder != null && !MoveFinder.Done)
-                    MoveFinder.RunToCompletion(Cell);
-
                 if (MoveFinder.MoveValid(Cell + FLevel.Width) ||
                     MoveFinder.MoveValid(Cell - FLevel.Width) ||
                     MoveFinder.MoveValid(Cell + 1) ||
@@ -397,125 +367,85 @@ namespace ExpertSokoban
                 {
                     SelX = Clicked.X;
                     SelY = Clicked.Y;
-                    Consider = 0;
                     MouseOverCell = 0;
                     PrevCellSequence = null;
-                    PushFinder = new ESPushFinder(FLevel, SelX, SelY, this,
-                        new PushFoundCallback(PushFound),
-                        new PushFinderDoneCallback(PushFinderDone),
-                        MoveFinder);
+                    PushFinder = new ESPushFinder(FLevel, SelX, SelY, MoveFinder);
                     FState = ESMainAreaState.Push;
                     Invalidate();
                 }
                 else SndMeep.Play();
             }
+
+            // If the user clicked a cell where the selected piece can't be pushed, meep
+            else if (FState == ESMainAreaState.Push && PushFinder != null && !PushFinder.PushValid(Cell))
+                SndMeep.Play();
+
+            // If the user clicked a cell where the selected piece *CAN* be pushed, execute the push
             else if (FState == ESMainAreaState.Push && PushFinder != null)
             {
-                if (!PushFinder.Done && !PushFinder.PushValid(Cell))
+                // Remove all the move and push colourings
+                CreateGraphics().DrawImage(Buffer, 0, 0);
+
+                // Move the Sokoban around visibly
+                Graphics g = Graphics.FromImage(Buffer);
+                int OrigSokPos = FLevel.SokobanPos;
+                int OrigPushPos = -1, LastPushPos = -1;
+                bool EverPushed = false;
+                foreach (int Move in PushFinder.Path(Cell, GetOrigMouseDownDir(Cell)))
                 {
-                    Consider = Cell;
-                    ConsiderDirection = GetOrigMouseDownDir(Cell);
+                    if (Move != 0)
+                    {
+                        System.Threading.Thread.Sleep(20);
+                        int PrevSokPos = FLevel.SokobanPos;
+                        int NewSokPos = PrevSokPos + Move;
+                        if (FLevel.IsPiece(FLevel.SokobanPos + Move))
+                        {
+                            // need to push
+                            int PushTo = NewSokPos + Move;
+                            FLevel.MovePiece(NewSokPos, PushTo);
+                            FLevel.SetSokobanPos(NewSokPos);
+                            Renderer.RenderCell(g, PushTo);
+                            if (!EverPushed)
+                            {
+                                OrigPushPos = NewSokPos;
+                                EverPushed = true;
+                            }
+                            LastPushPos = PushTo;
+                        }
+                        else
+                            // just move Sokoban
+                            FLevel.SetSokobanPos(NewSokPos);
+                        Renderer.RenderCell(g, NewSokPos);
+                        Renderer.RenderCell(g, PrevSokPos);
+                        CreateGraphics().DrawImage(Buffer, 0, 0);
+                    }
+                }
+
+                // Did this push solved the level?
+                if (FLevel.Solved)
+                {
+                    FState = ESMainAreaState.Solved;
+                    SndLevelSolved.Play();
+                    Refresh();
                 }
                 else
-                    ProcessPushClick(Cell, GetOrigMouseDownDir(Cell));
+                {
+                    // Make sure that selecting the same piece again is possible
+                    SelX = -1;
+                    SelY = -1;
+                    OrigMouseDown = -1;
+
+                    SndPiecePlaced.Play();
+                    AddUndo(OrigSokPos, OrigPushPos != -1, OrigPushPos, LastPushPos);
+                    FState = ESMainAreaState.Move;
+                    ReinitMoveFinder();
+                    Invalidate();
+                }
+
+                // Fire the MoveMade event
+                if (MoveMade != null)
+                    MoveMade(this, new EventArgs());
             }
-        }
-
-        private void ProcessPushClick(int Cell, int Direction)
-        {
-            if (!PushFinder.PushValid(Cell))
-            {
-                SndMeep.Play();
-                return;
-            }
-
-            // Remove all the move and push colourings
-            CreateGraphics().DrawImage(Buffer, 0, 0);
-
-            // Move the Sokoban around visibly
-            int[][] Moves = PushFinder.getMoves(Cell, Direction);
-            Graphics g = Graphics.FromImage(Buffer);
-            int OrigSokPos = FLevel.SokobanPos;
-            int OrigPushPos = -1, LastPushPos = -1;
-            bool EverPushed = false;
-            for (int i = 0; i < Moves.Length; i++)
-                if (Moves[i] != null)
-                    for (int j = 0; j < Moves[i].Length; j++)
-                        if (Moves[i][j] != 0)
-                        {
-                            System.Threading.Thread.Sleep(20);
-                            int PrevSokPos = FLevel.SokobanPos;
-                            int NewSokPos = PrevSokPos + Moves[i][j];
-                            if (FLevel.IsPiece(FLevel.SokobanPos + Moves[i][j]))
-                            {
-                                // need to push
-                                int PushTo = NewSokPos + Moves[i][j];
-                                FLevel.MovePiece(NewSokPos, PushTo);
-                                FLevel.SetSokobanPos(NewSokPos);
-                                Renderer.RenderCell(g, PushTo);
-                                if (!EverPushed)
-                                {
-                                    OrigPushPos = NewSokPos;
-                                    EverPushed = true;
-                                }
-                                LastPushPos = PushTo;
-                            }
-                            else
-                                // just move Sokoban
-                                FLevel.SetSokobanPos(NewSokPos);
-                            Renderer.RenderCell(g, NewSokPos);
-                            Renderer.RenderCell(g, PrevSokPos);
-                            CreateGraphics().DrawImage(Buffer, 0, 0);
-                        }
-
-            if (FLevel.Solved)
-                LevelSolved();
-            else
-            {
-                SndPiecePlaced.Play();
-                AddUndo(OrigSokPos, OrigPushPos != -1, OrigPushPos, LastPushPos);
-                FState = ESMainAreaState.Move;
-                ReinitMoveFinder();
-                Refresh();
-            }
-            if (MoveMade != null)
-                MoveMade(this, new EventArgs());
-        }
-
-        private void LevelSolved()
-        {
-            FState = ESMainAreaState.Solved;
-            SndLevelSolved.Play();
-            Refresh();
-        }
-
-        private void MoveFound(int Pos)
-        {
-            if (Pos == FLevel.SokobanPos) return;
-            if (FState != ESMainAreaState.Push || !PushFinder.PushValid(Pos))
-                CreateGraphics().FillRectangle(MoveBrush, Renderer.GetCellRect(Pos));
-        }
-
-        private void MoveFinderDone()
-        {
-        }
-
-        private void PushFound(int pos)
-        {
-            if (pos == Consider)
-                ProcessPushClick(Consider, ConsiderDirection);
-            else 
-                Invalidate(RoundedRectangle(Renderer.GetCellRect(pos)));
-        }
-
-        private void PushFinderDone(bool AnythingPossible)
-        {
-            if (!AnythingPossible && Consider == 0)
-                SndMeep.Play();
-            else if (Consider != 0)
-                ProcessPushClick(Consider, ConsiderDirection);
-            else
-                SndThreadDone.Play();
         }
 
         public void SetLevel(SokobanLevel Level)

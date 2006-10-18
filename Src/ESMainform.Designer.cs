@@ -185,12 +185,14 @@ namespace ExpertSokoban
             // 
             // LevelList
             // 
+            this.LevelList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.LevelList.IntegralHeight = false;
             this.LevelList.Location = new System.Drawing.Point(0, 25);
             this.LevelList.Name = "LevelList";
             this.LevelList.Size = new System.Drawing.Size(200, 396);
             this.LevelList.TabIndex = 2;
             this.LevelList.DoubleClick += new System.EventHandler(this.LevelList_DoubleClick);
+            this.LevelList.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LevelList_KeyPress);
             // 
             // ESMainform
             // 

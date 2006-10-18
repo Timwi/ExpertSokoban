@@ -11,6 +11,7 @@ namespace ExpertSokoban
     public class ESLevelListBox : ListBox
     {
         private Hashtable CachedRenderings;
+        private int LastWidth;
 
         public ESLevelListBox()
         {
@@ -19,12 +20,17 @@ namespace ExpertSokoban
             this.Resize += new EventHandler(ESLevelListBox_Resize);
             CachedRenderings = new Hashtable();
             this.DrawMode = DrawMode.OwnerDrawVariable;
+            LastWidth = ClientSize.Width;
         }
 
         private void ESLevelListBox_Resize(object sender, EventArgs e)
         {
-            CachedRenderings = new Hashtable();
-            RefreshItems();
+            if (ClientSize.Width != LastWidth)
+            {
+                LastWidth = ClientSize.Width;
+                CachedRenderings = new Hashtable();
+                RefreshItems();
+            }
         }
 
         private void ESLevelListBox_DrawItem(object sender, DrawItemEventArgs e)

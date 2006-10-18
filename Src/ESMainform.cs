@@ -20,6 +20,11 @@ namespace ExpertSokoban
             EverMoved = false;
         }
 
+        private void MainArea_MoveMade(object sender, EventArgs e)
+        {
+            EverMoved = true;
+        }
+
         private void ToolExit_Click(object sender, EventArgs e)
         {
             Application.Exit();
@@ -30,20 +35,21 @@ namespace ExpertSokoban
             MainArea.Undo();
         }
 
-        private enum LevelReaderState
-        {
-            Comment, Empty, Level
-        }
+        // Used only by ToolOpen_Click()
+        private enum ESMFLevelReaderState { Comment, Empty, Level }
 
         private void ToolOpen_Click(object sender, EventArgs e)
         {
             OpenFileDialog OpenDialog = new OpenFileDialog();
             if (OpenDialog.ShowDialog() == DialogResult.OK)
             {
+                LevelListSplitter.Visible = true;
+                LevelListPanel.Visible = true;
+                LevelList.Focus();
                 LevelList.BeginUpdate();
                 LevelList.Items.Clear();
                 StreamReader StreamReader = new StreamReader(OpenDialog.FileName, Encoding.UTF8);
-                LevelReaderState State = LevelReaderState.Empty;
+                ESMFLevelReaderState State = ESMFLevelReaderState.Empty;
                 String Line;
                 String Comment = "";
                 String LevelEncoded = "";
@@ -52,45 +58,42 @@ namespace ExpertSokoban
                     Line = StreamReader.ReadLine();
                     if (Line == null || Line.Length == 0)
                     {
-                        if (State == LevelReaderState.Comment)
+                        if (State == ESMFLevelReaderState.Comment)
                         {
                             LevelList.Items.Add(Comment);
                             Comment = "";
                         }
-                        else if (State == LevelReaderState.Level)
+                        else if (State == ESMFLevelReaderState.Level)
                         {
                             LevelList.Items.Add(new SokobanLevel(LevelEncoded));
                             LevelEncoded = "";
                         }
-                        State = LevelReaderState.Empty;
+                        State = ESMFLevelReaderState.Empty;
                     }
                     else if (Line[0] == ';')
                     {
-                        if (State == LevelReaderState.Level)
+                        if (State == ESMFLevelReaderState.Level)
                         {
                             LevelList.Items.Add(new SokobanLevel(LevelEncoded));
                             LevelEncoded = "";
                         }
                         Comment += Line.Substring(1) + "\n";
-                        State = LevelReaderState.Comment;
+                        State = ESMFLevelReaderState.Comment;
                     }
                     else
                     {
-                        if (State == LevelReaderState.Comment)
+                        if (State == ESMFLevelReaderState.Comment)
                         {
                             LevelList.Items.Add(Comment);
                             Comment = "";
                         }
                         LevelEncoded += Line + "\n";
-                        State = LevelReaderState.Level;
+                        State = ESMFLevelReaderState.Level;
                     }
                 }
                 while (Line != null);
                 LevelList.EndUpdate();
                 StreamReader.Close();
-                LevelListSplitter.Visible = true;
-                LevelListPanel.Visible = true;
-                LevelList.Focus();
             }
         }
 
@@ -100,26 +103,36 @@ namespace ExpertSokoban
             LevelListSplitter.Visible = false;
         }
 
-        private void LevelList_DoubleClick(object sender, EventArgs e)
+        private void TakeLevel()
         {
             object Item = LevelList.SelectedItem;
-            if (Item is SokobanLevel)
+            if (Item is SokobanLevel && MayDestroy())
             {
-                if (MainArea.State == ESMainAreaState.Solved ||
-                    MainArea.State == ESMainAreaState.Null ||
-                    !EverMoved ||
-                    MessageBox.Show("Are you sure you wish to give up the current level?",
-                    "Open level", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                {
-                    MainArea.SetLevel(((SokobanLevel) Item).Clone());
-                    EverMoved = false;
-                }
+                MainArea.SetLevel(((SokobanLevel) Item).Clone());
+                EverMoved = false;
             }
         }
 
-        private void MainArea_MoveMade(object sender, EventArgs e)
+        private bool MayDestroy()
         {
-            EverMoved = true;
+            if (MainArea.State == ESMainAreaState.Solved ||
+                MainArea.State == ESMainAreaState.Null ||
+                !EverMoved)
+                return true;
+
+            return MessageBox.Show("Are you sure you wish to give up the current level?",
+                "Open level", MessageBoxButtons.YesNo) == DialogResult.Yes;
+        }
+
+        private void LevelList_DoubleClick(object sender, EventArgs e)
+        {
+            TakeLevel();
+        }
+
+        private void LevelList_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == '\r')
+                TakeLevel();
         }
     }
 }
