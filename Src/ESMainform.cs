@@ -90,6 +90,7 @@ namespace ExpertSokoban
                 while (Line != null);
                 LevelList.EndUpdate();
                 StreamReader.Close();
+                LevelListEverShown = true;
             }
         }
 
