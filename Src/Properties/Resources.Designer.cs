@@ -60,6 +60,34 @@ namespace ExpertSokoban.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap ArrowDown {
+            get {
+                object obj = ResourceManager.GetObject("ArrowDown", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap ArrowLeft {
+            get {
+                object obj = ResourceManager.GetObject("ArrowLeft", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap ArrowRight {
+            get {
+                object obj = ResourceManager.GetObject("ArrowRight", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap ArrowUp {
+            get {
+                object obj = ResourceManager.GetObject("ArrowUp", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap ImgLevelSolved {
             get {
                 object obj = ResourceManager.GetObject("ImgLevelSolved", resourceCulture);
@@ -116,6 +144,12 @@ namespace ExpertSokoban.Properties {
             }
         }
         
+        internal static System.IO.UnmanagedMemoryStream SndEditorClick {
+            get {
+                return ResourceManager.GetStream("SndEditorClick", resourceCulture);
+            }
+        }
+        
         internal static System.IO.UnmanagedMemoryStream SndLevelDone {
             get {
                 return ResourceManager.GetStream("SndLevelDone", resourceCulture);
@@ -131,12 +165,6 @@ namespace ExpertSokoban.Properties {
         internal static System.IO.UnmanagedMemoryStream SndPiecePlaced {
             get {
                 return ResourceManager.GetStream("SndPiecePlaced", resourceCulture);
-            }
-        }
-        
-        internal static System.IO.UnmanagedMemoryStream SndThreadDone {
-            get {
-                return ResourceManager.GetStream("SndThreadDone", resourceCulture);
             }
         }
     }

@@ -91,61 +91,19 @@
     <None Include="Resources\threaddone.wav" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\wall2.png" />
+    <None Include="Resources\brick.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\canmove2.png" />
+    <None Include="Resources\piece.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\canmovet2.png" />
+    <None Include="Resources\piece-selected.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\canpush2.png" />
+    <None Include="Resources\piece-target.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\canpushs2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\canpushst2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\canpusht2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\piece2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\pieceot2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\piecesel2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\soko2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\sokot2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\target2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\blank2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\new\brick.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\new\piece.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\new\piece-selected.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\new\piece-target.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\new\sokoban.png" />
+    <None Include="Resources\sokoban.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\RT.Util\Src\Controls\Controls.csproj">
@@ -158,16 +116,28 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\new\target-under.png" />
+    <None Include="Resources\target-under.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\new\target.png" />
+    <None Include="Resources\target.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Level solved.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Arrow up.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Arrow left.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Arrow right.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Arrow down.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>

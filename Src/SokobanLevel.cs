@@ -70,9 +70,10 @@ namespace ExpertSokoban
                         EncodedForm[i] == '#' ? SokobanCell.Wall :
                         EncodedForm[i] == '$' ? SokobanCell.Piece :
                         EncodedForm[i] == '.' ? SokobanCell.Target :
+                        EncodedForm[i] == '+' ? SokobanCell.Target :
                         EncodedForm[i] == '*' ? SokobanCell.PieceOnTarget :
                                                 SokobanCell.Blank;
-                    if (EncodedForm[i] == '@')
+                    if (EncodedForm[i] == '@' || EncodedForm[i] == '+')
                         FSokobanPos = (CurX + FWidth*CurY);
 
                     CurX++;
@@ -234,63 +235,30 @@ namespace ExpertSokoban
             return pos / FWidth;
         }
 
-        public static string TestLevelEncoded = 
-            "#####            #####" +
-            "#   ##############  @#" +
-            "#     $ #   $   $ $  #" +
-            "# $$#     $   $   $  #" +
-            "##  ###############$##" +
-            " #$   $.*.$   $  $  # " +
-            " #  #   #..$$$ $ # $# " +
-            " ## #####...   $ #  # " +
-            " # ..#  #....  $ #$ # " +
-            " # ..#  #.....   #  # " +
-            "###. #  #......$## $##" +
-            "# ## ##########  $   #" +
-            "# #              $   #" +
-            "#   ##############  ##" +
-            "#####            #####";
-
         public static SokobanLevel TestLevel()
         {
-            int Width = 22;
-            int Height = 15;
-            int SokPos = -1;
-            SokobanCell[] LevelData = new SokobanCell[Width * Height];
-            for (int i = 0; i < TestLevelEncoded.Length; i++)
-            {
-                LevelData[i] = 
-                    TestLevelEncoded[i] == '#' ? SokobanCell.Wall :
-                    TestLevelEncoded[i] == '$' ? SokobanCell.Piece :
-                    TestLevelEncoded[i] == '.' ? SokobanCell.Target :
-                    TestLevelEncoded[i] == '*' ? SokobanCell.PieceOnTarget : SokobanCell.Blank;
-                if (TestLevelEncoded[i] == '@')
-                    SokPos = i;
-            }
-            // If the level didn't specify a starting position, try to find one.
-            if (SokPos == -1)
-            {
-                bool Done = false;
-                for (int i = 0; i < Width && !Done; i++)
-                    for (int j = 0; j < Height && !Done; j++)
-                    {
-                        bool xIn = false, yIn = false;
-                        for (int x = 0; x <= i; x++)
-                            if (LevelData[j*Width + x] == SokobanCell.Wall &&
-                            (x == 0 || LevelData[j*Width + x-1] != SokobanCell.Wall))
-                                xIn = !xIn;
-                        for (int y = 0; y <= j; y++)
-                            if (LevelData[y*Width + i] == SokobanCell.Wall &&
-                            (y == 0 || LevelData[(y-1)*Width + i] != SokobanCell.Wall))
-                                yIn = !yIn;
-                        if (xIn && yIn)
-                        {
-                            SokPos = j*Width+i;
-                            Done = true;
-                        }
-                    }
-            }
-            return new SokobanLevel(Width, Height, LevelData, SokPos);
+            return new SokobanLevel(
+                "#####            #####\n" +
+                "#   ##############  @#\n" +
+                "#     $ #   $   $ $  #\n" +
+                "# $$#     $   $   $  #\n" +
+                "##  ###############$##\n" +
+                " #$   $.*.$   $  $  # \n" +
+                " #  #   #..$$$ $ # $# \n" +
+                " ## #####...   $ #  # \n" +
+                " # ..#  #....  $ #$ # \n" +
+                " # ..#  #.....   #  # \n" +
+                "###. #  #......$## $##\n" +
+                "# ## ##########  $   #\n" +
+                "# #              $   #\n" +
+                "#   ##############  ##\n" +
+                "#####            #####\n"
+            );
+        }
+
+        public static SokobanLevel TrivialLvel()
+        {
+            return new SokobanLevel("#####\n#@$.#\n#####\n");
         }
     }
 }

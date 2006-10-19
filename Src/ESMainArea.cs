@@ -6,6 +6,8 @@ using System.Drawing;
 using System.Media;
 using System.Drawing.Drawing2D;
 using RT.Controls;
+using System.Drawing.Imaging;
+using RT.Util;
 
 namespace ExpertSokoban
 {
@@ -30,17 +32,16 @@ namespace ExpertSokoban
         private ESMainAreaState FState;
         private ESMainAreaTool Tool;
 
-        private Color ToolRectColour = Color.FromArgb(0, 0x80, 0);
-        private Brush MoveBrush = new SolidBrush(Color.FromArgb(100, Color.LimeGreen));
-        private Brush PushBrush = new SolidBrush(Color.FromArgb(100, Color.LightBlue));
-        private Brush PushPathBrush = new SolidBrush(Color.FromArgb(0, 0, 0x80));
-        private SoundPlayer SndLevelSolved, SndMeep, SndPiecePlaced, SndThreadDone;
+        private Brush MoveBrush = new SolidBrush(Color.FromArgb(32, 0, 255, 0));
+        private Brush PushBrush = new SolidBrush(Color.FromArgb(32, 0, 0, 255));
+        private SoundPlayer SndLevelSolved, SndMeep, SndPiecePlaced, SndEditorClick;
 
         private int SelX, SelY, OrigMouseDown, MouseOverCell;
         private int[][] UndoBuffer;
 
         // Push path, but encoded as a sequence of cell co-ordinates.
-        private int[] PrevCellSequence;
+        private int[] CellSequence;
+        private int CellSeqSokoban;
 
         public ESMainArea()
         {
@@ -61,7 +62,7 @@ namespace ExpertSokoban
             SndLevelSolved = new SoundPlayer(Properties.Resources.SndLevelDone);
             SndMeep = new SoundPlayer(Properties.Resources.SndMeep);
             SndPiecePlaced = new SoundPlayer(Properties.Resources.SndPiecePlaced);
-            SndThreadDone = new SoundPlayer(Properties.Resources.SndThreadDone);
+            SndEditorClick = new SoundPlayer(Properties.Resources.SndEditorClick);
             this.MouseDown += new MouseEventHandler(ESMainArea_MouseDown);
             this.MouseMove += new MouseEventHandler(ESMainArea_MouseMove);
             this.MouseUp += new MouseEventHandler(ESMainArea_MouseUp);
@@ -78,7 +79,6 @@ namespace ExpertSokoban
             }
             if (FState == ESMainAreaState.Solved)
             {
-                e.Graphics.InterpolationMode = InterpolationMode.HighQualityBilinear;
                 Image ImgLevelSolved = Properties.Resources.ImgLevelSolved;
                 if (ClientSize.Width < ImgLevelSolved.Width)
                     e.Graphics.DrawImage(ImgLevelSolved,
@@ -149,7 +149,7 @@ namespace ExpertSokoban
             if (FState != ESMainAreaState.Null)
             {
                 for (int i = 0; i < FLevel.Width*FLevel.Height; i++)
-                    if (i != FLevel.SokobanPos && PushFinder != null && PushFinder.PushValid(i) && FState == ESMainAreaState.Push)
+                    if (PushFinder != null && PushFinder.PushValid(i) && FState == ESMainAreaState.Push)
                         e.Graphics.FillRectangle(PushBrush, Renderer.GetCellRect(i));
                     else if (i != FLevel.SokobanPos && MoveFinder != null && MoveFinder.MoveValid(i) &&
                         (FState == ESMainAreaState.Move || FState == ESMainAreaState.Push))
@@ -157,16 +157,47 @@ namespace ExpertSokoban
                 if (FState == ESMainAreaState.Push)
                 {
                     Renderer.DrawCell(e.Graphics, SelX, SelY, SokobanImage.PieceSelected);
-                    if (PrevCellSequence != null)
+                    if (CellSequence != null)
                     {
-                        e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-                        for (int i = 0; i < PrevCellSequence.Length; i++)
+                        e.Graphics.InterpolationMode = InterpolationMode.HighQualityBilinear;
+
+                        // Draw would-be Sokoban
+                        BitmapUtil.DrawImageAlpha(e.Graphics, Properties.Resources.ImgSokoban,
+                            RoundedRectangle(Renderer.GetCellRectForImage(CellSeqSokoban)), 0.5f);
+                        // Draw piece end position
+                        if (CellSequence.Length > 0)
+                            BitmapUtil.DrawImageAlpha(e.Graphics,
+                                FLevel.Cell(CellSequence[CellSequence.Length-1]) == SokobanCell.Target
+                                ? Properties.Resources.ImgPieceTarget : Properties.Resources.ImgPiece,
+                                RoundedRectangle(Renderer.GetCellRectForImage(CellSequence[CellSequence.Length-1])), 0.5f);
+                        
+                        int PrevCell = SelX + FLevel.Width*SelY;
+                        for (int i = 0; i < CellSequence.Length; i++)
                         {
-                            RectangleF CellRect = Renderer.GetCellRect(PrevCellSequence[i]);
-                            e.Graphics.FillEllipse(PushPathBrush,
-                                CellRect.Left + Renderer.CellWidth/3,
-                                CellRect.Top + Renderer.CellHeight/3,
-                                Renderer.CellWidth/3, Renderer.CellHeight/3);
+                            RectangleF CellRect = Renderer.GetCellRect(CellSequence[i]);
+                            Image Image;
+                            if (PrevCell == CellSequence[i]-FLevel.Width)
+                            {
+                                CellRect.Offset(0, -Renderer.CellHeight/2);
+                                Image = Properties.Resources.ArrowDown;
+                            }
+                            else if (PrevCell == CellSequence[i]-1)
+                            {
+                                CellRect.Offset(-Renderer.CellWidth/2, 0);
+                                Image = Properties.Resources.ArrowRight;
+                            }
+                            else if (PrevCell == CellSequence[i]+1)
+                            {
+                                CellRect.Offset(Renderer.CellWidth/2, 0);
+                                Image = Properties.Resources.ArrowLeft;
+                            }
+                            else
+                            {
+                                CellRect.Offset(0, Renderer.CellHeight/2);
+                                Image = Properties.Resources.ArrowUp;
+                            }
+                            e.Graphics.DrawImage(Image, CellRect);
+                            PrevCell = CellSequence[i];
                         }
                     }
                 }
@@ -199,14 +230,14 @@ namespace ExpertSokoban
             // Now create the sequence of cells that make up the push path
             SokPos = FLevel.SokobanPos;
             PiecePos = SelY * FLevel.Width + SelX;
-            int[] CellSequence = new int[Pushes];
+            int[] NewCellSequence = new int[Pushes];
             int Index = 0;
             foreach (int Elem in NewPushPath)
             {
                 if (PiecePos == SokPos + Elem)
                 {
                     PiecePos += Elem;
-                    CellSequence[Index] = PiecePos;
+                    NewCellSequence[Index] = PiecePos;
                     Index++;
                 }
                 SokPos += Elem;
@@ -215,24 +246,38 @@ namespace ExpertSokoban
             // Find the first index at which PrevCellSequence and CellSequence differ,
             // and invalidate the drawing area from there
             int FirstDiff = 0;
-            if (PrevCellSequence != null)
+            if (CellSequence != null)
             {
-                while (FirstDiff < Math.Min(PrevCellSequence.Length, CellSequence.Length) && PrevCellSequence[FirstDiff] == CellSequence[FirstDiff])
+                while (FirstDiff < Math.Min(CellSequence.Length, NewCellSequence.Length) && CellSequence[FirstDiff] == NewCellSequence[FirstDiff])
                     FirstDiff++;
-                for (int j = FirstDiff; j < PrevCellSequence.Length; j++)
-                    Invalidate(RoundedRectangle(Renderer.GetCellRect(PrevCellSequence[j])));
+                for (int j = FirstDiff; j < CellSequence.Length; j++)
+                    Invalidate(RoundedRectangle(Renderer.GetCellRect(CellSequence[j])));
             }
-            for (int j = FirstDiff; j < CellSequence.Length; j++)
-                Invalidate(RoundedRectangle(Renderer.GetCellRect(CellSequence[j])));
-            PrevCellSequence = CellSequence;
+            if (FirstDiff > 0)
+                FirstDiff--;
+            else
+                Invalidate(RoundedRectangle(Renderer.GetCellRect(SelX, SelY)));
+            for (int j = FirstDiff; j < NewCellSequence.Length; j++)
+                Invalidate(RoundedRectangle(Renderer.GetCellRect(NewCellSequence[j])));
+
+            Invalidate(RoundedRectangle(Renderer.GetCellRectForImage(CellSeqSokoban)));
+            Invalidate(RoundedRectangle(Renderer.GetCellRectForImage(SokPos)));
+            
+            CellSequence = NewCellSequence;
+            CellSeqSokoban = SokPos;
         }
 
         private void ClearPushPath()
         {
-            if (PrevCellSequence != null)
-                for (int i = 0; i < PrevCellSequence.Length; i++)
-                    Invalidate(RoundedRectangle(Renderer.GetCellRect(PrevCellSequence[i])));
-            PrevCellSequence = null;
+            if (CellSequence != null)
+            {
+                Invalidate(RoundedRectangle(Renderer.GetCellRectForImage(SelX, SelY)));
+                Invalidate(RoundedRectangle(Renderer.GetCellRectForImage(CellSeqSokoban)));
+                if (CellSequence != null)
+                    for (int i = 0; i < CellSequence.Length; i++)
+                        Invalidate(RoundedRectangle(Renderer.GetCellRectForImage(CellSequence[i])));
+                CellSequence = null;
+            }
         }
 
         private Rectangle RoundedRectangle(RectangleF Src)
@@ -284,6 +329,8 @@ namespace ExpertSokoban
             if (FState == ESMainAreaState.Null)
                 return;
 
+            OrigMouseDown = -1;
+
             Point Clicked = Renderer.CellFromPixel(e.Location);
             int Cell = Clicked.Y * FLevel.Width + Clicked.X;
 
@@ -296,7 +343,7 @@ namespace ExpertSokoban
                     {
                         FLevel.SetCell(Clicked.X, Clicked.Y,
                             CellType == SokobanCell.Wall ? SokobanCell.Blank : SokobanCell.Wall);
-                        SndThreadDone.Play();
+                        SndEditorClick.Play();
                     }
                     else SndMeep.Play();
                 }
@@ -368,7 +415,7 @@ namespace ExpertSokoban
                     SelX = Clicked.X;
                     SelY = Clicked.Y;
                     MouseOverCell = 0;
-                    PrevCellSequence = null;
+                    CellSequence = null;
                     PushFinder = new ESPushFinder(FLevel, SelX, SelY, MoveFinder);
                     FState = ESMainAreaState.Push;
                     Invalidate();
@@ -377,8 +424,10 @@ namespace ExpertSokoban
             }
 
             // If the user clicked a cell where the selected piece can't be pushed, meep
-            else if (FState == ESMainAreaState.Push && PushFinder != null && !PushFinder.PushValid(Cell))
+            else if (FState == ESMainAreaState.Push && (PushFinder == null || !PushFinder.PushValid(Cell)))
+            {
                 SndMeep.Play();
+            }
 
             // If the user clicked a cell where the selected piece *CAN* be pushed, execute the push
             else if (FState == ESMainAreaState.Push && PushFinder != null)
@@ -450,7 +499,7 @@ namespace ExpertSokoban
 
         public void SetLevel(SokobanLevel Level)
         {
-            FLevel = Level;
+            FLevel = Level.Clone();
             FLevel.EnsureSpace();
             Renderer = new ESRenderer(FLevel, ClientSize);
             FState = ESMainAreaState.Move;

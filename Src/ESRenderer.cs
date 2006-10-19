@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
 using RT.Util;
+using System.Drawing.Drawing2D;
 
 namespace ExpertSokoban
 {
@@ -23,10 +24,11 @@ namespace ExpertSokoban
         private float FCellWidth, FCellHeight;
         private int FClientWidth, FClientHeight;
         private int FOriginX, FOriginY;
-        private Brush FBackgroundBrush = new SolidBrush(Color.FromArgb(240, 240, 240));
+        private Brush FBackgroundBrush = new SolidBrush(Color.FromArgb(255, 255, 192));
 
         public float CellWidth { get { return FCellWidth; } }
         public float CellHeight { get { return FCellHeight; } }
+        public SizeF CellSize { get { return new SizeF(FCellWidth, FCellHeight); } }
         public int OriginX { get { return FOriginX; } }
         public int OriginY { get { return FOriginY; } }
 
@@ -106,10 +108,14 @@ namespace ExpertSokoban
             if (x < 0 || x >= FLevel.Width || y < 0 || y >= FLevel.Height)
                 return;
 
+            if (FLevel.Cell(x, y) != SokobanCell.Wall)
+                g.InterpolationMode = InterpolationMode.High;
+
             // Draw level
             switch (FLevel.Cell(x, y))
             {
                 case SokobanCell.Wall:
+                    g.InterpolationMode = InterpolationMode.Default;
                     DrawCell(g, x, y, SokobanImage.Wall);
                     break;
                 case SokobanCell.Target:
