@@ -221,15 +221,196 @@ namespace ExpertSokoban
                     throw new Exception("Unknown Sokoban image type");
             }
         }
-        /*
-        public void DrawValidPolygon(Graphics g, ESFinder Finder)
+
+        public GraphicsPath ValidPath(ESFinder Finder)
         {
-            GraphicsPath Path = new GraphicsPath(,,
+            List<List<int>> ActiveSegments = new List<List<int>>();
+            List<List<int>> CompletedPaths = new List<List<int>>();
+            for (int y = 0; y < FLevel.Height-1; y++)
+            {
+                List<ESRendererPathEvent> Events = FindEvents(ActiveSegments, Finder, y);
+                for (int i = 0; i < Events.Count; i += 2)
+                {
+                    if (Events[i] is ESRendererPathEventSegment && Events[i+1] is ESRendererPathEventSegment)
+                    {
+                        int Index1 = ((ESRendererPathEventSegment) Events[i]).SegmentIndex;
+                        int Index2 = ((ESRendererPathEventSegment) Events[i+1]).SegmentIndex;
+                        bool Start = ((ESRendererPathEventSegment) Events[i]).StartOfSegment;
+                        if (Index1 == Index2 && Start)
+                        {
+                            // A segment becomes a closed path
+                            ActiveSegments[Index2].Add(Events[i+1].Pos);
+                            ActiveSegments[Index2].Add(Events[i].Pos);
+                            CompletedPaths.Add(ActiveSegments[Index2]);
+                        }
+                        else if (Index1 == Index2)
+                        {
+                            // A segment becomes a closed path
+                            ActiveSegments[Index2].Add(Events[i].Pos);
+                            ActiveSegments[Index2].Add(Events[i+1].Pos);
+                            CompletedPaths.Add(ActiveSegments[Index2]);
+                        }
+                        else if (Start)
+                        {
+                            // Two segments join up
+                            ActiveSegments[Index2].Add(Events[i+1].Pos);
+                            ActiveSegments[Index2].Add(Events[i].Pos);
+                            ActiveSegments[Index1].InsertRange(0, ActiveSegments[Index2]);
+                        }
+                        else
+                        {
+                            // Two segments join up
+                            ActiveSegments[Index1].Add(Events[i].Pos);
+                            ActiveSegments[Index1].Add(Events[i+1].Pos);
+                            ActiveSegments[Index1].AddRange(ActiveSegments[Index2]);
+                        }
+                        ActiveSegments.RemoveAt(Index2);
+                        for (int Correction = i+2; Correction < Events.Count; Correction++)
+                        {
+                            if (Events[Correction] is ESRendererPathEventSegment &&
+                                (Events[Correction] as ESRendererPathEventSegment).SegmentIndex == Index2)
+                                (Events[Correction] as ESRendererPathEventSegment).SegmentIndex = Index1;
+                            if (Events[Correction] is ESRendererPathEventSegment &&
+                                (Events[Correction] as ESRendererPathEventSegment).SegmentIndex > Index2)
+                                (Events[Correction] as ESRendererPathEventSegment).SegmentIndex--;
+                        }
+                    }
+                    else if (Events[i] is ESRendererPathEventValidityChange && Events[i+1] is ESRendererPathEventValidityChange)
+                    {
+                        // Both events are validity changes - create a new segment
+                        if (Finder.Valid(Events[i].Pos))
+                            ActiveSegments.Add(new List<int>(new int[] { Events[i].Pos, Events[i+1].Pos }));
+                        else
+                            ActiveSegments.Add(new List<int>(new int[] { Events[i+1].Pos, Events[i].Pos }));
+                    }
+                    else if (Events[i] is ESRendererPathEventSegment) // ... && Events[i+1] is ESRendererPathEventValidityChange
+                    {
+                        ESRendererPathEventSegment Ev = Events[i] as ESRendererPathEventSegment;
+                        if (Ev.StartOfSegment)
+                        {
+                            ActiveSegments[Ev.SegmentIndex].Insert(0, Ev.Pos);
+                            if (Ev.Pos != Events[i+1].Pos)
+                                ActiveSegments[Ev.SegmentIndex].Insert(0, Events[i+1].Pos);
+                        }
+                        else
+                        {
+                            ActiveSegments[Ev.SegmentIndex].Add(Ev.Pos);
+                            if (Ev.Pos != Events[i+1].Pos)
+                                ActiveSegments[Ev.SegmentIndex].Add(Events[i+1].Pos);
+                        }
+                    }
+                    else  // ... Events[i] is ESRendererPathEventValidityChange && Events[i+1] is ESRendererPathEventSegment
+                    {
+                        ESRendererPathEventSegment Ev = Events[i+1] as ESRendererPathEventSegment;
+                        if (Ev.StartOfSegment)
+                        {
+                            ActiveSegments[Ev.SegmentIndex].Insert(0, Ev.Pos);
+                            if (Ev.Pos != Events[i].Pos)
+                                ActiveSegments[Ev.SegmentIndex].Insert(0, Events[i].Pos);
+                        }
+                        else
+                        {
+                            ActiveSegments[Ev.SegmentIndex].Add(Ev.Pos);
+                            if (Ev.Pos != Events[i].Pos)
+                                ActiveSegments[Ev.SegmentIndex].Add(Events[i].Pos);
+                        }
+                    }
+                }
+            }
+
+            SizeF Margin = new SizeF (CellWidth/5, CellHeight/5);
+            SizeF ESize = new SizeF(CellWidth/2, CellHeight/2);
+            GraphicsPath Result = new GraphicsPath();
+            for (int i = 0; i < CompletedPaths.Count; i++)
+            {
+                Result.StartFigure();
+                for (int j = 0; j < CompletedPaths[i].Count; j++)
+                {
+                    int Pos1 = CompletedPaths[i][j];
+                    int Pos2 = CompletedPaths[i][(j+1) % CompletedPaths[i].Count];
+                    int Pos3 = CompletedPaths[i][(j+2) % CompletedPaths[i].Count];
+                    RectangleF CellRect = GetCellRect (Pos2);
+
+                    int Dir1 = GetDir(Pos1, Pos2);
+                    int Dir2 = GetDir(Pos2, Pos3);
+
+                    // Rounded corners ("outer" corners)
+                    if (Dir1 == 0 && Dir2 == 2 && Finder.Valid(Pos2)) // top left corner
+                        Result.AddArc(CellRect.X+Margin.Width, CellRect.Y+Margin.Height, ESize.Width, ESize.Height, 180, 90);
+                    else if (Dir1 == 2 && Dir2 == 3 && Finder.Valid(Pos2-1))  // top right corner
+                        Result.AddArc(CellRect.X-Margin.Width-ESize.Width, CellRect.Y+Margin.Height, ESize.Width, ESize.Height, 270, 90);
+                    else if (Dir1 == 3 && Dir2 == 1 && Finder.Valid (Pos2-1-FLevel.Width)) // bottom right corner
+                        Result.AddArc(CellRect.X-Margin.Width-ESize.Width, CellRect.Y-Margin.Height-ESize.Height, ESize.Width, ESize.Height, 0, 90);
+                    else if (Dir1 == 1 && Dir2 == 0 && Finder.Valid (Pos2-FLevel.Width)) // bottom left corner
+                        Result.AddArc(CellRect.X+Margin.Width, CellRect.Y-Margin.Height-ESize.Height, ESize.Width, ESize.Height, 90, 90);
+
+                    // Unrounded corners ("inner" corners)
+                    else if (Dir1 == 1 && Dir2 == 3) // top left corner
+                        Result.AddLine(CellRect.X-Margin.Width, CellRect.Y-Margin.Height, CellRect.X-Margin.Width, CellRect.Y-Margin.Height);
+                    else if (Dir1 == 0 && Dir2 == 1) // top right corner
+                        Result.AddLine(CellRect.X+Margin.Width, CellRect.Y-Margin.Height, CellRect.X+Margin.Width, CellRect.Y-Margin.Height);
+                    else if (Dir1 == 2 && Dir2 == 0) // bottom right corner
+                        Result.AddLine(CellRect.X+Margin.Width, CellRect.Y+Margin.Height, CellRect.X+Margin.Width, CellRect.Y+Margin.Height);
+                    else if (Dir1 == 3 && Dir2 == 2) // bottom left corner
+                        Result.AddLine(CellRect.X-Margin.Width, CellRect.Y+Margin.Height, CellRect.X-Margin.Width, CellRect.Y+Margin.Height);
+                }
+                Result.CloseFigure();
+            }
+            return Result;
         }
 
-        public PointF[] ValidPolygon(ESFinder Finder)
+        private int GetDir(int FromPos, int ToPos)
         {
+            if ((FromPos-ToPos) % FLevel.Width == 0)
+                return FromPos > ToPos ? 0 : 3;
+            return FromPos > ToPos ? 1 : 2;
         }
-        */
+
+        private List<ESRendererPathEvent> FindEvents(List<List<int>> ActiveSegments, ESFinder Finder, int y)
+        {
+            List<ESRendererPathEvent> Results = new List<ESRendererPathEvent>();
+
+            // First add all the validity change events in the correct order
+            for (int i = 1; i < FLevel.Width; i++)
+                if (Finder.Valid(y*FLevel.Width + i) != Finder.Valid(y*FLevel.Width + i - 1))
+                    Results.Add(new ESRendererPathEventValidityChange(y*FLevel.Width + i));
+
+            // Now insert the segment events in the right places
+            for (int i = 0; i < ActiveSegments.Count; i++)
+            {
+                int Index = 0;
+                while (Index < Results.Count && Results[Index].Pos <= ActiveSegments[i][0] + FLevel.Width)
+                    Index++;
+                Results.Insert(Index, new ESRendererPathEventSegment(i, true, ActiveSegments[i][0] + FLevel.Width));
+                Index = 0;
+                while (Index < Results.Count && Results[Index].Pos < ActiveSegments[i][ActiveSegments[i].Count-1] + FLevel.Width)
+                    Index++;
+                Results.Insert(Index, new ESRendererPathEventSegment(i, false, ActiveSegments[i][ActiveSegments[i].Count-1] + FLevel.Width));
+            }
+            return Results;
+        }
+
+        private abstract class ESRendererPathEvent
+        {
+            public int Pos;
+        }
+        private class ESRendererPathEventSegment : ESRendererPathEvent
+        {
+            public int SegmentIndex;
+            public bool StartOfSegment;
+            public ESRendererPathEventSegment(int Index, bool Start, int p)
+            {
+                SegmentIndex = Index;
+                StartOfSegment = Start;
+                Pos = p;
+            }
+        }
+        private class ESRendererPathEventValidityChange : ESRendererPathEvent
+        {
+            public ESRendererPathEventValidityChange(int p)
+            {
+                Pos = p;
+            }
+        }
     }
 }
