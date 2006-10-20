@@ -45,9 +45,6 @@ namespace ExpertSokoban
 
         public ESMainArea()
         {
-            FLevel = null;
-            Renderer = null;
-            FState = ESMainAreaState.Null;
             Init();
         }
 
@@ -59,6 +56,9 @@ namespace ExpertSokoban
 
         private void Init()
         {
+            FLevel = null;
+            Renderer = null;
+            FState = ESMainAreaState.Null;
             SndLevelSolved = new SoundPlayer(Properties.Resources.SndLevelDone);
             SndMeep = new SoundPlayer(Properties.Resources.SndMeep);
             SndPiecePlaced = new SoundPlayer(Properties.Resources.SndPiecePlaced);
@@ -82,10 +82,8 @@ namespace ExpertSokoban
                 Image ImgLevelSolved = Properties.Resources.ImgLevelSolved;
                 if (ClientSize.Width < ImgLevelSolved.Width)
                     e.Graphics.DrawImage(ImgLevelSolved,
-                        0,
-                        (ClientSize.Height - ClientSize.Width * ImgLevelSolved.Height / ImgLevelSolved.Width)/2,
-                        ClientSize.Width,
-                        ClientSize.Width * ImgLevelSolved.Height / ImgLevelSolved.Width);
+                        0, (ClientSize.Height - ClientSize.Width * ImgLevelSolved.Height / ImgLevelSolved.Width)/2,
+                        ClientSize.Width, ClientSize.Width * ImgLevelSolved.Height / ImgLevelSolved.Width);
                 else
                     e.Graphics.DrawImage(ImgLevelSolved,
                         ClientSize.Width/2 - ImgLevelSolved.Width/2,
@@ -149,11 +147,12 @@ namespace ExpertSokoban
             if (FState != ESMainAreaState.Null)
             {
                 for (int i = 0; i < FLevel.Width*FLevel.Height; i++)
-                    if (PushFinder != null && PushFinder.PushValid(i) && FState == ESMainAreaState.Push)
+                    if (PushFinder != null && PushFinder.Valid(i) && FState == ESMainAreaState.Push)
                         e.Graphics.FillRectangle(PushBrush, Renderer.GetCellRect(i));
-                    else if (i != FLevel.SokobanPos && MoveFinder != null && MoveFinder.MoveValid(i) &&
+                    else if (i != FLevel.SokobanPos && MoveFinder != null && MoveFinder.Valid(i) &&
                         (FState == ESMainAreaState.Move || FState == ESMainAreaState.Push))
                         e.Graphics.FillRectangle(MoveBrush, Renderer.GetCellRect(i));
+
                 if (FState == ESMainAreaState.Push)
                 {
                     Renderer.DrawCell(e.Graphics, SelX, SelY, SokobanImage.PieceSelected);
@@ -303,18 +302,14 @@ namespace ExpertSokoban
         private void ESMainArea_MouseDown(object sender, MouseEventArgs e)
         {
             if (FState == ESMainAreaState.Push)
-            {
-                Point MouseAt = Renderer.CellFromPixel(e.Location);
-                OrigMouseDown = MouseAt.Y * FLevel.Width + MouseAt.X;
-            }
+                OrigMouseDown = Renderer.CellFromPixel(e.Location);
         }
 
         private void ESMainArea_MouseMove(object sender, MouseEventArgs e)
         {
             if (FState == ESMainAreaState.Push)
             {
-                Point MouseAt = Renderer.CellFromPixel(e.Location);
-                int Cell = MouseAt.Y * FLevel.Width + MouseAt.X;
+                int Cell = Renderer.CellFromPixel(e.Location);
 
                 if (Cell != MouseOverCell)
                 {
@@ -331,28 +326,25 @@ namespace ExpertSokoban
 
             OrigMouseDown = -1;
 
-            Point Clicked = Renderer.CellFromPixel(e.Location);
-            int Cell = Clicked.Y * FLevel.Width + Clicked.X;
+            int Cell = Renderer.CellFromPixel(e.Location);
 
             if (FState == ESMainAreaState.Editing)
             {
                 SokobanCell CellType = FLevel.Cell(Cell);
                 if (Tool == ESMainAreaTool.Wall)
                 {
-                    if (FLevel.SokobanX != Clicked.X || FLevel.SokobanY != Clicked.Y)
+                    if (FLevel.SokobanPos != Cell)
                     {
-                        FLevel.SetCell(Clicked.X, Clicked.Y,
-                            CellType == SokobanCell.Wall ? SokobanCell.Blank : SokobanCell.Wall);
+                        FLevel.SetCell(Cell, CellType == SokobanCell.Wall ? SokobanCell.Blank : SokobanCell.Wall);
                         SndEditorClick.Play();
                     }
                     else SndMeep.Play();
                 }
                 else if (Tool == ESMainAreaTool.Piece)
                 {
-                    if ((FLevel.SokobanX != Clicked.X || FLevel.SokobanY != Clicked.Y)
-                                && CellType != SokobanCell.Wall)
+                    if (FLevel.SokobanPos != Cell && CellType != SokobanCell.Wall)
                     {
-                        FLevel.SetCell(Clicked.X, Clicked.Y,
+                        FLevel.SetCell(Cell,
                             CellType == SokobanCell.PieceOnTarget ? SokobanCell.Target :
                             CellType == SokobanCell.Blank         ? SokobanCell.Piece :
                             CellType == SokobanCell.Target        ? SokobanCell.PieceOnTarget :
@@ -365,7 +357,7 @@ namespace ExpertSokoban
                 {
                     if (CellType != SokobanCell.Wall)
                     {
-                        FLevel.SetCell(Clicked.X, Clicked.Y,
+                        FLevel.SetCell(Cell,
                             CellType == SokobanCell.PieceOnTarget ? SokobanCell.Piece :
                             CellType == SokobanCell.Blank         ? SokobanCell.Target :
                             CellType == SokobanCell.Target        ? SokobanCell.Blank :
@@ -381,7 +373,7 @@ namespace ExpertSokoban
                         CellType != SokobanCell.PieceOnTarget)
                     {
                         Invalidate(RoundedRectangle(Renderer.GetCellRectForImage(FLevel.SokobanPos)));
-                        FLevel.SetSokobanPos(Clicked.X, Clicked.Y);
+                        FLevel.SetSokobanPos(Cell);
                         SndPiecePlaced.Play();
                     }
                     else SndMeep.Play();
@@ -392,7 +384,7 @@ namespace ExpertSokoban
                 if (FLevel.Width != PrevSizeX || FLevel.Height != PrevSizeY)
                     Refresh();
                 else
-                    Invalidate(RoundedRectangle(Renderer.GetCellRectForImage(Clicked.X, Clicked.Y)));
+                    Invalidate(RoundedRectangle(Renderer.GetCellRectForImage(Cell)));
             }
 
             // If the user clicked on a piece, initiate the PushFinder,
@@ -405,15 +397,15 @@ namespace ExpertSokoban
                      FState != ESMainAreaState.Solved &&
                      !(PushFinder != null &&
                        GetOrigMouseDownDir(Cell) != 0 &&
-                       PushFinder.PushValid(Cell, GetOrigMouseDownDir(Cell))))
+                       PushFinder.Valid(Cell, GetOrigMouseDownDir(Cell))))
             {
-                if (MoveFinder.MoveValid(Cell + FLevel.Width) ||
-                    MoveFinder.MoveValid(Cell - FLevel.Width) ||
-                    MoveFinder.MoveValid(Cell + 1) ||
-                    MoveFinder.MoveValid(Cell - 1))
+                if (MoveFinder.Valid(Cell + FLevel.Width) ||
+                    MoveFinder.Valid(Cell - FLevel.Width) ||
+                    MoveFinder.Valid(Cell + 1) ||
+                    MoveFinder.Valid(Cell - 1))
                 {
-                    SelX = Clicked.X;
-                    SelY = Clicked.Y;
+                    SelX = Cell % FLevel.Width;
+                    SelY = Cell / FLevel.Width;
                     MouseOverCell = 0;
                     CellSequence = null;
                     PushFinder = new ESPushFinder(FLevel, SelX, SelY, MoveFinder);
@@ -424,7 +416,7 @@ namespace ExpertSokoban
             }
 
             // If the user clicked a cell where the selected piece can't be pushed, meep
-            else if (FState == ESMainAreaState.Push && (PushFinder == null || !PushFinder.PushValid(Cell)))
+            else if (FState == ESMainAreaState.Push && (PushFinder == null || !PushFinder.Valid(Cell)))
             {
                 SndMeep.Play();
             }
@@ -433,7 +425,7 @@ namespace ExpertSokoban
             else if (FState == ESMainAreaState.Push && PushFinder != null)
             {
                 // Remove all the move and push colourings
-                CreateGraphics().DrawImage(Buffer, 0, 0);
+                CreateGraphics().DrawImage(Buffer, 0, 0); 
 
                 // Move the Sokoban around visibly
                 Graphics g = Graphics.FromImage(Buffer);
@@ -449,7 +441,7 @@ namespace ExpertSokoban
                         int NewSokPos = PrevSokPos + Move;
                         if (FLevel.IsPiece(FLevel.SokobanPos + Move))
                         {
-                            // need to push
+                            // need to push a piece
                             int PushTo = NewSokPos + Move;
                             FLevel.MovePiece(NewSokPos, PushTo);
                             FLevel.SetSokobanPos(NewSokPos);

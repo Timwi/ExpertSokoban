@@ -75,11 +75,10 @@ namespace ExpertSokoban
                     RenderCellAsPartOfCompleteRender(g, x, y);
         }
 
-        public Point CellFromPixel(Point Pixel)
+        public int CellFromPixel(Point Pixel)
         {
-            return new Point(
-                (int) ((Pixel.X - FOriginX) / CellWidth),
-                (int) ((Pixel.Y - FOriginY) / CellHeight));
+            return (int) ((Pixel.X - FOriginX) / CellWidth) +
+                FLevel.Width * (int) ((Pixel.Y - FOriginY) / CellHeight);
         }
 
         public void RenderCell(Graphics g, int pos)
@@ -96,6 +95,29 @@ namespace ExpertSokoban
             for (int i = x-1; i <= x+1; i++)
                 for (int j = y-1; j <= y+1; j++)
                     RenderCellAsPartOfCompleteRender(g, i, j);
+        }
+
+        public void RenderCells(Graphics g, int RenderFrom, int RenderTo)
+        {
+            int FromX = Math.Min(RenderFrom % FLevel.Width, RenderTo % FLevel.Width),
+                FromY = Math.Min(RenderFrom / FLevel.Width, RenderTo / FLevel.Width),
+                ToX = Math.Max(RenderFrom % FLevel.Width, RenderTo % FLevel.Width),
+                ToY = Math.Max(RenderFrom / FLevel.Width, RenderTo / FLevel.Width);
+            g.SetClip(ClippingRectForCells(RenderFrom, RenderTo));
+            for (int i = FromX; i <= ToX; i++)
+                for (int j = FromY; j <= ToY; j++)
+                    RenderCellAsPartOfCompleteRender(g, i, j);
+        }
+
+        public RectangleF ClippingRectForCells(int CellFrom, int CellTo)
+        {
+            int FromX = Math.Min(CellFrom % FLevel.Width, CellTo % FLevel.Width),
+                FromY = Math.Min(CellFrom / FLevel.Width, CellTo / FLevel.Width),
+                ToX = Math.Max(CellFrom % FLevel.Width, CellTo % FLevel.Width),
+                ToY = Math.Max(CellFrom / FLevel.Width, CellTo / FLevel.Width);
+            RectangleF RectFrom = GetCellRectForImage(FromX, FromY);
+            RectangleF RectTo = GetCellRectForImage(ToX, ToY);
+            return new RectangleF(RectFrom.Left, RectTo.Top, RectTo.Right-RectFrom.Left, RectTo.Bottom-RectFrom.Top);
         }
 
         private void RenderCellAsPartOfCompleteRender(Graphics g, int pos)
@@ -199,5 +221,15 @@ namespace ExpertSokoban
                     throw new Exception("Unknown Sokoban image type");
             }
         }
+        /*
+        public void DrawValidPolygon(Graphics g, ESFinder Finder)
+        {
+            GraphicsPath Path = new GraphicsPath(,,
+        }
+
+        public PointF[] ValidPolygon(ESFinder Finder)
+        {
+        }
+        */
     }
 }

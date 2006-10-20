@@ -6,7 +6,7 @@ using RT.Util;
 
 namespace ExpertSokoban
 {
-    public class ESPushFinder
+    public class ESPushFinder : ESFinder
     {
         // FPushLength and FMoveLength are layed out like this:
         // element #0 = virtual start node
@@ -332,16 +332,16 @@ namespace ExpertSokoban
             }
         }
 
-        public bool PushValid(int Pos, int Direction)
+        public bool Valid(int Pos, int Direction)
         {
             int Index = 4*Pos+Direction;
             return Index <= 0 || Index >= FPushLength.Length ? false : FPushLength[Index] > 0;
         }
 
-        public bool PushValid(int Pos)
+        public override bool Valid(int Pos)
         {
-            return PushValid(Pos, 1) || PushValid(Pos, 2) ||
-                   PushValid(Pos, 3) || PushValid(Pos, 4);
+            return Valid(Pos, 1) || Valid(Pos, 2) ||
+                   Valid(Pos, 3) || Valid(Pos, 4);
         }
 
         // Returns the path (sequence of Sokoban movements) that lead from
@@ -353,7 +353,7 @@ namespace ExpertSokoban
         // that sequence is returned, otherwise the most push-efficient one.
         public List<int> Path(int Pos, int PreferDir)
         {
-            if (Pos < 0 || 4*Pos+4 > FPushLength.Length || !PushValid(Pos))
+            if (Pos < 0 || 4*Pos+4 > FPushLength.Length || !Valid(Pos))
                 return null;
 
             int Dir = 0;
@@ -416,7 +416,7 @@ namespace ExpertSokoban
         // beginning of the algorithm.
         private void AddIfValid(int ArrIndex, int Pos)
         {
-            if (FMoveFinder.MoveValid(Pos))
+            if (FMoveFinder.Valid(Pos))
             {
                 FPushLength[ArrIndex] = 1;
                 FMoveLength[ArrIndex] = FMoveFinder.PathLength(Pos)+1;

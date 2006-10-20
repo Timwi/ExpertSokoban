@@ -130,33 +130,40 @@ namespace ExpertSokoban
                 return SokobanCell.Invalid;
             return FLevel[y*FWidth + x];
         }
-        public void SetSokobanPos(int Pos) { FSokobanPos = Pos; }
-        public void SetSokobanPos(int x, int y) { FSokobanPos = y * FWidth + x; }
-        public void SetCell(int x, int y, SokobanCell c) { FLevel[y*FWidth + x] = c; }
+        public void SetSokobanPos(int Pos) { if (Pos >= 0 && Pos < FWidth*FHeight) FSokobanPos = Pos; }
+        public void SetSokobanPos(int x, int y) { SetSokobanPos(y * FWidth + x); }
+        public void SetCell(int Pos, SokobanCell c) { if (Pos >= 0 && Pos < FWidth*FHeight) FLevel[Pos] = c; }
+        public void SetCell(int x, int y, SokobanCell c) { SetCell(y*FWidth + x, c); }
         public bool IsPiece(int Pos)
         {
             if (Pos < 0 || Pos > FLevel.Length) return false;
             return FLevel[Pos] == SokobanCell.Piece || FLevel[Pos] == SokobanCell.PieceOnTarget;
         }
         public bool IsPiece(int x, int y) { return IsPiece(y*FWidth + x); }
-        public bool IsFree(int Pos) { return FLevel[Pos] == SokobanCell.Blank || FLevel[Pos] == SokobanCell.Target; }
+        public bool IsFree(int Pos) { return (Pos >= 0 && Pos < FWidth*FHeight) ? (FLevel[Pos] == SokobanCell.Blank || FLevel[Pos] == SokobanCell.Target) : false; }
         public bool IsFree(int x, int y) { return IsFree(y*FWidth + x); }
-        public void SetPiece(int x, int y) { SetPiece(y*FWidth + x); }
         public void SetPiece(int Pos)
         {
-            if (FLevel[Pos] == SokobanCell.Blank)
-                FLevel[Pos] = SokobanCell.Piece;
-            else if (FLevel[Pos] == SokobanCell.Target)
-                FLevel[Pos] = SokobanCell.PieceOnTarget;
+            if (Pos >= 0 && Pos < FWidth*FHeight)
+            {
+                if (FLevel[Pos] == SokobanCell.Blank)
+                    FLevel[Pos] = SokobanCell.Piece;
+                else if (FLevel[Pos] == SokobanCell.Target)
+                    FLevel[Pos] = SokobanCell.PieceOnTarget;
+            }
         }
-        public void RemovePiece(int x, int y) { RemovePiece(y*FWidth + x); }
+        public void SetPiece(int x, int y) { SetPiece(y*FWidth + x); }
         public void RemovePiece(int Pos)
         {
-            if (FLevel[Pos] == SokobanCell.Piece)
-                FLevel[Pos] = SokobanCell.Blank;
-            else if (FLevel[Pos] == SokobanCell.PieceOnTarget)
-                FLevel[Pos] = SokobanCell.Target;
+            if (Pos >= 0 && Pos < FWidth*FHeight)
+            {
+                if (FLevel[Pos] == SokobanCell.Piece)
+                    FLevel[Pos] = SokobanCell.Blank;
+                else if (FLevel[Pos] == SokobanCell.PieceOnTarget)
+                    FLevel[Pos] = SokobanCell.Target;
+            }
         }
+        public void RemovePiece(int x, int y) { RemovePiece(y*FWidth + x); }
         public void MovePiece(int FromX, int FromY, int ToX, int ToY)
         {
             RemovePiece(FromX, FromY);

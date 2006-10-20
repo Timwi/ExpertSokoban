@@ -6,7 +6,7 @@ using RT.Util;
 
 namespace ExpertSokoban
 {
-    public class ESMoveFinder
+    public class ESMoveFinder : ESFinder
     {
         private SokobanLevel FLevel;
         private int[] FPathLength;
@@ -56,12 +56,12 @@ namespace ExpertSokoban
             }
         }
 
-        public bool MoveValid (int Pos)
+        public override bool Valid(int Pos)
         {
             return (FPathLength[Pos] > 0);
         }
 
-        public int PathLength (int Pos)
+        public int PathLength(int Pos)
         {
             return FPathLength[Pos]-1;
         }
