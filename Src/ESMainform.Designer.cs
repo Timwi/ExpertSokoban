@@ -30,10 +30,13 @@ namespace ExpertSokoban
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ESMainform));
             this.LevelListPanel = new System.Windows.Forms.Panel();
+            this.LevelList = new ExpertSokoban.ESLevelListBox();
             this.LevelListToolStrip = new System.Windows.Forms.ToolStrip();
             this.LevelToolOpen = new System.Windows.Forms.ToolStripButton();
             this.LevelToolSep = new System.Windows.Forms.ToolStripSeparator();
+            this.LevelToolNewLevel = new System.Windows.Forms.ToolStripButton();
             this.LevelToolComment = new System.Windows.Forms.ToolStripButton();
+            this.LevelToolDelete = new System.Windows.Forms.ToolStripButton();
             this.LevelToolClear = new System.Windows.Forms.ToolStripButton();
             this.LevelToolClose = new System.Windows.Forms.ToolStripButton();
             this.LevelListSplitter = new System.Windows.Forms.Splitter();
@@ -50,10 +53,15 @@ namespace ExpertSokoban
             this.MenuRetry = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuSep2 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuExit = new System.Windows.Forms.ToolStripMenuItem();
-            this.LevelToolNewLevel = new System.Windows.Forms.ToolStripButton();
-            this.LevelToolDelete = new System.Windows.Forms.ToolStripButton();
+            this.ViewMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.ViewMoveNo = new System.Windows.Forms.ToolStripMenuItem();
+            this.ViewMoveLine = new System.Windows.Forms.ToolStripMenuItem();
+            this.ViewMoveArrows = new System.Windows.Forms.ToolStripMenuItem();
+            this.ViewSep = new System.Windows.Forms.ToolStripSeparator();
+            this.ViewPushNo = new System.Windows.Forms.ToolStripMenuItem();
+            this.ViewPushLine = new System.Windows.Forms.ToolStripMenuItem();
+            this.ViewPushArrows = new System.Windows.Forms.ToolStripMenuItem();
             this.MainArea = new ExpertSokoban.ESMainArea();
-            this.LevelList = new ExpertSokoban.ESLevelListBox();
             this.LevelListPanel.SuspendLayout();
             this.LevelListToolStrip.SuspendLayout();
             this.MainMenu.SuspendLayout();
@@ -70,6 +78,20 @@ namespace ExpertSokoban
             this.LevelListPanel.Size = new System.Drawing.Size(200, 464);
             this.LevelListPanel.TabIndex = 6;
             this.LevelListPanel.Visible = false;
+            // 
+            // LevelList
+            // 
+            this.LevelList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LevelList.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.LevelList.IntegralHeight = false;
+            this.LevelList.Location = new System.Drawing.Point(0, 25);
+            this.LevelList.Name = "LevelList";
+            this.LevelList.ScrollAlwaysVisible = true;
+            this.LevelList.Size = new System.Drawing.Size(200, 439);
+            this.LevelList.TabIndex = 2;
+            this.LevelList.DoubleClick += new System.EventHandler(this.LevelList_DoubleClick);
+            this.LevelList.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LevelList_KeyPress);
+            this.LevelList.KeyUp += new System.Windows.Forms.KeyEventHandler(this.LevelList_KeyUp);
             // 
             // LevelListToolStrip
             // 
@@ -102,6 +124,16 @@ namespace ExpertSokoban
             this.LevelToolSep.Name = "LevelToolSep";
             this.LevelToolSep.Size = new System.Drawing.Size(6, 25);
             // 
+            // LevelToolNewLevel
+            // 
+            this.LevelToolNewLevel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.LevelToolNewLevel.Image = ((System.Drawing.Image) (resources.GetObject("LevelToolNewLevel.Image")));
+            this.LevelToolNewLevel.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.LevelToolNewLevel.Name = "LevelToolNewLevel";
+            this.LevelToolNewLevel.Size = new System.Drawing.Size(23, 22);
+            this.LevelToolNewLevel.Text = "Create new level";
+            this.LevelToolNewLevel.Click += new System.EventHandler(this.MenuLevCreate_Click);
+            // 
             // LevelToolComment
             // 
             this.LevelToolComment.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -111,6 +143,16 @@ namespace ExpertSokoban
             this.LevelToolComment.Size = new System.Drawing.Size(23, 22);
             this.LevelToolComment.Text = "Add a comment...";
             this.LevelToolComment.Click += new System.EventHandler(this.MenuLevAddComment_Click);
+            // 
+            // LevelToolDelete
+            // 
+            this.LevelToolDelete.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.LevelToolDelete.Image = ((System.Drawing.Image) (resources.GetObject("LevelToolDelete.Image")));
+            this.LevelToolDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.LevelToolDelete.Name = "LevelToolDelete";
+            this.LevelToolDelete.Size = new System.Drawing.Size(23, 22);
+            this.LevelToolDelete.Text = "Delete selected item";
+            this.LevelToolDelete.Click += new System.EventHandler(this.LevelToolDelete_Click);
             // 
             // LevelToolClear
             // 
@@ -147,7 +189,8 @@ namespace ExpertSokoban
             // MainMenu
             // 
             this.MainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.GameMenu});
+            this.GameMenu,
+            this.ViewMenu});
             this.MainMenu.Location = new System.Drawing.Point(0, 0);
             this.MainMenu.Name = "MainMenu";
             this.MainMenu.Size = new System.Drawing.Size(830, 24);
@@ -252,25 +295,70 @@ namespace ExpertSokoban
             this.MenuExit.Text = "E&xit";
             this.MenuExit.Click += new System.EventHandler(this.MenuExit_Click);
             // 
-            // LevelToolNewLevel
+            // ViewMenu
             // 
-            this.LevelToolNewLevel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.LevelToolNewLevel.Image = ((System.Drawing.Image) (resources.GetObject("LevelToolNewLevel.Image")));
-            this.LevelToolNewLevel.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.LevelToolNewLevel.Name = "LevelToolNewLevel";
-            this.LevelToolNewLevel.Size = new System.Drawing.Size(23, 22);
-            this.LevelToolNewLevel.Text = "Create new level";
-            this.LevelToolNewLevel.Click += new System.EventHandler(this.MenuLevCreate_Click);
+            this.ViewMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ViewMoveNo,
+            this.ViewMoveLine,
+            this.ViewMoveArrows,
+            this.ViewSep,
+            this.ViewPushNo,
+            this.ViewPushLine,
+            this.ViewPushArrows});
+            this.ViewMenu.Name = "ViewMenu";
+            this.ViewMenu.Size = new System.Drawing.Size(41, 20);
+            this.ViewMenu.Text = "&View";
             // 
-            // LevelToolDelete
+            // ViewMoveNo
             // 
-            this.LevelToolDelete.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.LevelToolDelete.Image = ((System.Drawing.Image) (resources.GetObject("LevelToolDelete.Image")));
-            this.LevelToolDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.LevelToolDelete.Name = "LevelToolDelete";
-            this.LevelToolDelete.Size = new System.Drawing.Size(23, 22);
-            this.LevelToolDelete.Text = "Delete selected item";
-            this.LevelToolDelete.Click += new System.EventHandler(this.LevelToolDelete_Click);
+            this.ViewMoveNo.Name = "ViewMoveNo";
+            this.ViewMoveNo.Size = new System.Drawing.Size(212, 22);
+            this.ViewMoveNo.Text = "Don\'t display &move path";
+            this.ViewMoveNo.Click += new System.EventHandler(this.ViewMove_Click);
+            // 
+            // ViewMoveLine
+            // 
+            this.ViewMoveLine.Checked = true;
+            this.ViewMoveLine.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ViewMoveLine.Name = "ViewMoveLine";
+            this.ViewMoveLine.Size = new System.Drawing.Size(212, 22);
+            this.ViewMoveLine.Text = "Display move path as &line";
+            this.ViewMoveLine.Click += new System.EventHandler(this.ViewMove_Click);
+            // 
+            // ViewMoveArrows
+            // 
+            this.ViewMoveArrows.Name = "ViewMoveArrows";
+            this.ViewMoveArrows.Size = new System.Drawing.Size(212, 22);
+            this.ViewMoveArrows.Text = "Display move path as &arrows";
+            this.ViewMoveArrows.Click += new System.EventHandler(this.ViewMove_Click);
+            // 
+            // ViewSep
+            // 
+            this.ViewSep.Name = "ViewSep";
+            this.ViewSep.Size = new System.Drawing.Size(209, 6);
+            // 
+            // ViewPushNo
+            // 
+            this.ViewPushNo.Name = "ViewPushNo";
+            this.ViewPushNo.Size = new System.Drawing.Size(212, 22);
+            this.ViewPushNo.Text = "Don\'t display &push path";
+            this.ViewPushNo.Click += new System.EventHandler(this.ViewPush_Click);
+            // 
+            // ViewPushLine
+            // 
+            this.ViewPushLine.Name = "ViewPushLine";
+            this.ViewPushLine.Size = new System.Drawing.Size(212, 22);
+            this.ViewPushLine.Text = "&Display push path as line";
+            this.ViewPushLine.Click += new System.EventHandler(this.ViewPush_Click);
+            // 
+            // ViewPushArrows
+            // 
+            this.ViewPushArrows.Checked = true;
+            this.ViewPushArrows.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ViewPushArrows.Name = "ViewPushArrows";
+            this.ViewPushArrows.Size = new System.Drawing.Size(212, 22);
+            this.ViewPushArrows.Text = "Display push path as a&rrows";
+            this.ViewPushArrows.Click += new System.EventHandler(this.ViewPush_Click);
             // 
             // MainArea
             // 
@@ -281,20 +369,6 @@ namespace ExpertSokoban
             this.MainArea.Size = new System.Drawing.Size(627, 464);
             this.MainArea.TabIndex = 1;
             this.MainArea.MoveMade += new System.EventHandler(this.MainArea_MoveMade);
-            // 
-            // LevelList
-            // 
-            this.LevelList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LevelList.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.LevelList.IntegralHeight = false;
-            this.LevelList.Location = new System.Drawing.Point(0, 25);
-            this.LevelList.Name = "LevelList";
-            this.LevelList.ScrollAlwaysVisible = true;
-            this.LevelList.Size = new System.Drawing.Size(200, 439);
-            this.LevelList.TabIndex = 2;
-            this.LevelList.DoubleClick += new System.EventHandler(this.LevelList_DoubleClick);
-            this.LevelList.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LevelList_KeyPress);
-            this.LevelList.KeyUp += new System.Windows.Forms.KeyEventHandler(this.LevelList_KeyUp);
             // 
             // ESMainform
             // 
@@ -346,6 +420,14 @@ namespace ExpertSokoban
         private System.Windows.Forms.ToolStripMenuItem MenuLevClear;
         private System.Windows.Forms.ToolStripButton LevelToolNewLevel;
         private System.Windows.Forms.ToolStripButton LevelToolDelete;
+        private System.Windows.Forms.ToolStripMenuItem ViewMenu;
+        private System.Windows.Forms.ToolStripMenuItem ViewMoveNo;
+        private System.Windows.Forms.ToolStripMenuItem ViewMoveLine;
+        private System.Windows.Forms.ToolStripMenuItem ViewMoveArrows;
+        private System.Windows.Forms.ToolStripSeparator ViewSep;
+        private System.Windows.Forms.ToolStripMenuItem ViewPushNo;
+        private System.Windows.Forms.ToolStripMenuItem ViewPushLine;
+        private System.Windows.Forms.ToolStripMenuItem ViewPushArrows;
     }
 }
 

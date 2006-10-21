@@ -247,5 +247,25 @@ namespace ExpertSokoban
             if (e.KeyCode == Keys.Delete)
                 LevelToolDelete_Click(sender, new EventArgs());
         }
+
+        private void ViewMove_Click(object sender, EventArgs e)
+        {
+            ViewMoveNo.Checked = sender == ViewMoveNo;
+            ViewMoveLine.Checked = sender == ViewMoveLine;
+            ViewMoveArrows.Checked = sender == ViewMoveArrows;
+
+            MainArea.MoveDrawMode = sender == ViewMoveNo ? ESPathDrawMode.None :
+                sender == ViewMoveLine ? ESPathDrawMode.Line : ESPathDrawMode.Arrows;
+        }
+
+        private void ViewPush_Click(object sender, EventArgs e)
+        {
+            ViewPushNo.Checked = sender == ViewPushNo;
+            ViewPushLine.Checked = sender == ViewPushLine;
+            ViewPushArrows.Checked = sender == ViewPushArrows;
+
+            MainArea.PushDrawMode = sender == ViewPushNo ? ESPathDrawMode.None :
+                sender == ViewPushLine ? ESPathDrawMode.Line : ESPathDrawMode.Arrows;
+        }
     }
 }

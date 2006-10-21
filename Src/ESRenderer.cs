@@ -77,8 +77,8 @@ namespace ExpertSokoban
 
         public int CellFromPixel(Point Pixel)
         {
-            return (int) ((Pixel.X - FOriginX) / CellWidth) +
-                FLevel.Width * (int) ((Pixel.Y - FOriginY) / CellHeight);
+            return (int) ((Pixel.X - FOriginX) / FCellWidth) +
+                FLevel.Width * (int) ((Pixel.Y - FOriginY) / FCellHeight);
         }
 
         public void RenderCell(Graphics g, int pos)
@@ -88,7 +88,7 @@ namespace ExpertSokoban
 
         public void RenderCell(Graphics g, int x, int y)
         {
-            RectangleF Rect = GetCellRect(x, y);
+            RectangleF Rect = CellRect(x, y);
             g.SetClip(new Rectangle((int) (Rect.Left-FCellWidth*0.25f), (int) (Rect.Top-FCellHeight*0.25f),
                 (int) (2*FCellWidth), (int) (2*FCellHeight)));
             g.FillRectangle(FBackgroundBrush, 0, 0, FClientWidth, FClientHeight);
@@ -115,8 +115,8 @@ namespace ExpertSokoban
                 FromY = Math.Min(CellFrom / FLevel.Width, CellTo / FLevel.Width),
                 ToX = Math.Max(CellFrom % FLevel.Width, CellTo % FLevel.Width),
                 ToY = Math.Max(CellFrom / FLevel.Width, CellTo / FLevel.Width);
-            RectangleF RectFrom = GetCellRectForImage(FromX, FromY);
-            RectangleF RectTo = GetCellRectForImage(ToX, ToY);
+            RectangleF RectFrom = CellRectForImage(FromX, FromY);
+            RectangleF RectTo = CellRectForImage(ToX, ToY);
             return new RectangleF(RectFrom.Left, RectTo.Top, RectTo.Right-RectFrom.Left, RectTo.Bottom-RectFrom.Top);
         }
 
@@ -169,26 +169,26 @@ namespace ExpertSokoban
 
         public void DrawCell(Graphics g, int x, int y, SokobanImage ImageType)
         {
-            g.DrawImage(GetImage(ImageType), GetCellRectForImage(x, y));
+            g.DrawImage(GetImage(ImageType), CellRectForImage(x, y));
         }
 
-        public RectangleF GetCellRectForImage(int Pos)
+        public RectangleF CellRectForImage(int Pos)
         {
-            return GetCellRectForImage(FLevel.PosToX(Pos), FLevel.PosToY(Pos));
+            return CellRectForImage(FLevel.PosToX(Pos), FLevel.PosToY(Pos));
         }
 
-        public RectangleF GetCellRectForImage(int x, int y)
+        public RectangleF CellRectForImage(int x, int y)
         {
-            RectangleF Src = GetCellRect(x, y);
+            RectangleF Src = CellRect(x, y);
             return new RectangleF(Src.X, Src.Y, Src.Width*1.5f+1, Src.Height*1.5f+1);
         }
 
-        public RectangleF GetCellRect(int Pos)
+        public RectangleF CellRect(int Pos)
         {
-            return GetCellRect(FLevel.PosToX(Pos), FLevel.PosToY(Pos));
+            return CellRect(FLevel.PosToX(Pos), FLevel.PosToY(Pos));
         }
 
-        public RectangleF GetCellRect(int x, int y)
+        public RectangleF CellRect(int x, int y)
         {
             return new RectangleF(x*FCellWidth + FOriginX, y*FCellHeight + FOriginY, FCellWidth, FCellHeight);
         }
@@ -318,8 +318,8 @@ namespace ExpertSokoban
                 }
             }
 
-            SizeF Margin = new SizeF (CellWidth/5, CellHeight/5);
-            SizeF ESize = new SizeF(CellWidth/2, CellHeight/2);
+            SizeF Margin = new SizeF (FCellWidth/5, FCellHeight/5);
+            SizeF ESize = new SizeF(FCellWidth/2, FCellHeight/2);
             GraphicsPath Result = new GraphicsPath();
             for (int i = 0; i < CompletedPaths.Count; i++)
             {
@@ -329,30 +329,30 @@ namespace ExpertSokoban
                     int Pos1 = CompletedPaths[i][j];
                     int Pos2 = CompletedPaths[i][(j+1) % CompletedPaths[i].Count];
                     int Pos3 = CompletedPaths[i][(j+2) % CompletedPaths[i].Count];
-                    RectangleF CellRect = GetCellRect (Pos2);
+                    RectangleF Pos2Rect = CellRect(Pos2);
 
                     int Dir1 = GetDir(Pos1, Pos2);
                     int Dir2 = GetDir(Pos2, Pos3);
 
                     // Rounded corners ("outer" corners)
                     if (Dir1 == 0 && Dir2 == 2 && Finder.Valid(Pos2)) // top left corner
-                        Result.AddArc(CellRect.X+Margin.Width, CellRect.Y+Margin.Height, ESize.Width, ESize.Height, 180, 90);
+                        Result.AddArc(Pos2Rect.X+Margin.Width, Pos2Rect.Y+Margin.Height, ESize.Width, ESize.Height, 180, 90);
                     else if (Dir1 == 2 && Dir2 == 3 && Finder.Valid(Pos2-1))  // top right corner
-                        Result.AddArc(CellRect.X-Margin.Width-ESize.Width, CellRect.Y+Margin.Height, ESize.Width, ESize.Height, 270, 90);
+                        Result.AddArc(Pos2Rect.X-Margin.Width-ESize.Width, Pos2Rect.Y+Margin.Height, ESize.Width, ESize.Height, 270, 90);
                     else if (Dir1 == 3 && Dir2 == 1 && Finder.Valid (Pos2-1-FLevel.Width)) // bottom right corner
-                        Result.AddArc(CellRect.X-Margin.Width-ESize.Width, CellRect.Y-Margin.Height-ESize.Height, ESize.Width, ESize.Height, 0, 90);
+                        Result.AddArc(Pos2Rect.X-Margin.Width-ESize.Width, Pos2Rect.Y-Margin.Height-ESize.Height, ESize.Width, ESize.Height, 0, 90);
                     else if (Dir1 == 1 && Dir2 == 0 && Finder.Valid (Pos2-FLevel.Width)) // bottom left corner
-                        Result.AddArc(CellRect.X+Margin.Width, CellRect.Y-Margin.Height-ESize.Height, ESize.Width, ESize.Height, 90, 90);
+                        Result.AddArc(Pos2Rect.X+Margin.Width, Pos2Rect.Y-Margin.Height-ESize.Height, ESize.Width, ESize.Height, 90, 90);
 
                     // Unrounded corners ("inner" corners)
                     else if (Dir1 == 1 && Dir2 == 3) // top left corner
-                        Result.AddLine(CellRect.X-Margin.Width, CellRect.Y-Margin.Height, CellRect.X-Margin.Width, CellRect.Y-Margin.Height);
+                        Result.AddLine(Pos2Rect.X-Margin.Width, Pos2Rect.Y-Margin.Height, Pos2Rect.X-Margin.Width, Pos2Rect.Y-Margin.Height);
                     else if (Dir1 == 0 && Dir2 == 1) // top right corner
-                        Result.AddLine(CellRect.X+Margin.Width, CellRect.Y-Margin.Height, CellRect.X+Margin.Width, CellRect.Y-Margin.Height);
+                        Result.AddLine(Pos2Rect.X+Margin.Width, Pos2Rect.Y-Margin.Height, Pos2Rect.X+Margin.Width, Pos2Rect.Y-Margin.Height);
                     else if (Dir1 == 2 && Dir2 == 0) // bottom right corner
-                        Result.AddLine(CellRect.X+Margin.Width, CellRect.Y+Margin.Height, CellRect.X+Margin.Width, CellRect.Y+Margin.Height);
+                        Result.AddLine(Pos2Rect.X+Margin.Width, Pos2Rect.Y+Margin.Height, Pos2Rect.X+Margin.Width, Pos2Rect.Y+Margin.Height);
                     else if (Dir1 == 3 && Dir2 == 2) // bottom left corner
-                        Result.AddLine(CellRect.X-Margin.Width, CellRect.Y+Margin.Height, CellRect.X-Margin.Width, CellRect.Y+Margin.Height);
+                        Result.AddLine(Pos2Rect.X-Margin.Width, Pos2Rect.Y+Margin.Height, Pos2Rect.X-Margin.Width, Pos2Rect.Y+Margin.Height);
                 }
                 Result.CloseFigure();
             }
@@ -412,5 +412,56 @@ namespace ExpertSokoban
                 Pos = p;
             }
         }
+
+        public GraphicsPath LinePath(int StartPos, int[] CellSequence, float DiameterX, float DiameterY)
+        {
+            if (CellSequence.Length < 1)
+                return null;
+
+            GraphicsPath Result = new GraphicsPath();
+            RectangleF StartRect = CellRect(StartPos);
+            Result.AddLine(StartRect.X + FCellWidth/2, StartRect.Y + FCellHeight/2,
+                StartRect.X + FCellWidth/2, StartRect.Y + FCellHeight/2);
+            DiameterX *= FCellWidth;
+            DiameterY *= FCellHeight;
+            for (int i = -1; i < CellSequence.Length-2; i++)
+            {
+                int Pos1 = i == -1 ? StartPos : CellSequence[i];
+                int Pos2 = CellSequence[i+1];
+                int Pos3 = CellSequence[i+2];
+                RectangleF Pos2Rect = CellRect(Pos2);
+                PointF Center = new PointF(Pos2Rect.X + FCellWidth/2, Pos2Rect.Y + FCellHeight/2);
+
+                int Dir1 = GetDir(Pos1, Pos2);
+                int Dir2 = GetDir(Pos2, Pos3);
+
+                // Clockwise turns
+                if (Dir1 == 0 && Dir2 == 2) // top left corner
+                    Result.AddArc(Center.X, Center.Y, DiameterX, DiameterY, 180, 90);
+                else if (Dir1 == 2 && Dir2 == 3) // top right corner
+                    Result.AddArc(Center.X-DiameterX, Center.Y, DiameterX, DiameterY, 270, 90);
+                else if (Dir1 == 3 && Dir2 == 1) // bottom right corner
+                    Result.AddArc(Center.X-DiameterX, Center.Y-DiameterY, DiameterX, DiameterY, 0, 90);
+                else if (Dir1 == 1 && Dir2 == 0) // bottom left corner
+                    Result.AddArc(Center.X, Center.Y-DiameterY, DiameterX, DiameterY, 90, 90);
+                
+                // Anti-clockwise turns
+                else if (Dir1 == 1 && Dir2 == 3) // top left corner
+                    Result.AddArc(Center.X, Center.Y, DiameterX, DiameterY, 270, -90);
+                else if (Dir1 == 0 && Dir2 == 1) // top right corner
+                    Result.AddArc(Center.X-DiameterX, Center.Y, DiameterX, DiameterY, 360, -90);
+                else if (Dir1 == 2 && Dir2 == 0) // bottom right corner
+                    Result.AddArc(Center.X-DiameterX, Center.Y-DiameterY, DiameterX, DiameterY, 90, -90);
+                else if (Dir1 == 3 && Dir2 == 2) // bottom left corner
+                    Result.AddArc(Center.X, Center.Y-DiameterY, DiameterX, DiameterY, 180, -90);
+                else
+                    Result.AddLine(Center, Center);
+            }
+            RectangleF EndRect = CellRect(CellSequence[CellSequence.Length-1]);
+            Result.AddLine(EndRect.X + FCellWidth/2, EndRect.Y + FCellHeight/2,
+                EndRect.X + FCellWidth/2, EndRect.Y + FCellHeight/2);
+            return Result;
+        }
+
     }
 }
