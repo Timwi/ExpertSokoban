@@ -30,6 +30,7 @@ namespace ExpertSokoban
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ESMainform));
             this.LevelListPanel = new System.Windows.Forms.Panel();
+            this.LevelList = new ExpertSokoban.ESLevelListBox();
             this.LevelListToolStrip = new System.Windows.Forms.ToolStrip();
             this.LevelToolOpen = new System.Windows.Forms.ToolStripButton();
             this.LevelToolSep = new System.Windows.Forms.ToolStripSeparator();
@@ -65,7 +66,6 @@ namespace ExpertSokoban
             this.ViewSep2 = new System.Windows.Forms.ToolStripSeparator();
             this.ViewEndPos = new System.Windows.Forms.ToolStripMenuItem();
             this.MainArea = new ExpertSokoban.ESMainArea();
-            this.LevelList = new ExpertSokoban.ESLevelListBox();
             this.LevelListPanel.SuspendLayout();
             this.LevelListToolStrip.SuspendLayout();
             this.MainMenu.SuspendLayout();
@@ -82,6 +82,20 @@ namespace ExpertSokoban
             this.LevelListPanel.Size = new System.Drawing.Size(200, 464);
             this.LevelListPanel.TabIndex = 6;
             this.LevelListPanel.Visible = false;
+            // 
+            // LevelList
+            // 
+            this.LevelList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LevelList.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.LevelList.IntegralHeight = false;
+            this.LevelList.Location = new System.Drawing.Point(0, 25);
+            this.LevelList.Name = "LevelList";
+            this.LevelList.ScrollAlwaysVisible = true;
+            this.LevelList.Size = new System.Drawing.Size(200, 439);
+            this.LevelList.TabIndex = 2;
+            this.LevelList.DoubleClick += new System.EventHandler(this.LevelList_DoubleClick);
+            this.LevelList.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LevelList_KeyPress);
+            this.LevelList.KeyUp += new System.Windows.Forms.KeyEventHandler(this.LevelList_KeyUp);
             // 
             // LevelListToolStrip
             // 
@@ -395,20 +409,6 @@ namespace ExpertSokoban
             this.MainArea.TabIndex = 1;
             this.MainArea.MoveMade += new System.EventHandler(this.MainArea_MoveMade);
             // 
-            // LevelList
-            // 
-            this.LevelList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LevelList.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.LevelList.IntegralHeight = false;
-            this.LevelList.Location = new System.Drawing.Point(0, 25);
-            this.LevelList.Name = "LevelList";
-            this.LevelList.ScrollAlwaysVisible = true;
-            this.LevelList.Size = new System.Drawing.Size(200, 439);
-            this.LevelList.TabIndex = 2;
-            this.LevelList.DoubleClick += new System.EventHandler(this.LevelList_DoubleClick);
-            this.LevelList.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LevelList_KeyPress);
-            this.LevelList.KeyUp += new System.Windows.Forms.KeyEventHandler(this.LevelList_KeyUp);
-            // 
             // ESMainform
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -421,6 +421,7 @@ namespace ExpertSokoban
             this.MainMenuStrip = this.MainMenu;
             this.Name = "ESMainform";
             this.Text = "Expert Sokoban";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ESMainform_FormClosing);
             this.LevelListPanel.ResumeLayout(false);
             this.LevelListPanel.PerformLayout();
             this.LevelListToolStrip.ResumeLayout(false);

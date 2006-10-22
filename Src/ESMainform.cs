@@ -31,7 +31,7 @@ namespace ExpertSokoban
             EverMoved = true;
         }
 
-        // Used only by ToolOpen_Click()
+        // Used only by MenuOpen_Click()
         private enum ESMFLevelReaderState { Comment, Empty, Level }
 
         private void MenuOpen_Click(object sender, EventArgs e)
@@ -97,7 +97,7 @@ namespace ExpertSokoban
         private void TakeLevel()
         {
             object Item = LevelList.SelectedItem;
-            if (Item is SokobanLevel && MayDestroy())
+            if (Item is SokobanLevel && MayDestroy("Open level"))
             {
                 OrigLevel = (SokobanLevel) Item;
                 MainArea.SetLevel(OrigLevel);
@@ -105,7 +105,7 @@ namespace ExpertSokoban
             }
         }
 
-        private bool MayDestroy()
+        private bool MayDestroy(string Title)
         {
             if (MainArea.State == ESMainAreaState.Solved ||
                 MainArea.State == ESMainAreaState.Null ||
@@ -113,7 +113,7 @@ namespace ExpertSokoban
                 return true;
 
             return MessageBox.Show("Are you sure you wish to give up the current level?",
-                "Open level", MessageBoxButtons.YesNo) == DialogResult.Yes;
+                Title, MessageBoxButtons.YesNo) == DialogResult.Yes;
         }
 
         private void LevelList_DoubleClick(object sender, EventArgs e)
@@ -171,7 +171,7 @@ namespace ExpertSokoban
 
         private void MenuRetry_Click(object sender, EventArgs e)
         {
-            if (MayDestroy())
+            if (MayDestroy("Retry level"))
             {
                 MainArea.SetLevel(OrigLevel);
                 EverMoved = false;
@@ -278,6 +278,12 @@ namespace ExpertSokoban
         {
             ViewEndPos.Checked = !ViewEndPos.Checked;
             MainArea.ShowEndPos = ViewEndPos.Checked;
+        }
+
+        private void ESMainform_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (!MayDestroy("Exit Expert Sokoban"))
+                e.Cancel = true;
         }
     }
 }
