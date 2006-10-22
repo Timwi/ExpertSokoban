@@ -152,11 +152,11 @@ namespace ExpertSokoban
                         if (ShowEndPos)
                         {
                             // Draw would-be Sokoban
-                            BitmapUtil.DrawImageAlpha(e.Graphics, Properties.Resources.ImgSokoban,
+                            GraphicsUtil.DrawImageAlpha(e.Graphics, Properties.Resources.ImgSokoban,
                                 RoundedRectangle(Renderer.CellRectForImage(CellSeqSokoban)), 0.5f);
                             // Draw piece end position
                             if (PushCellSequence.Length > 0)
-                                BitmapUtil.DrawImageAlpha(e.Graphics,
+                                GraphicsUtil.DrawImageAlpha(e.Graphics,
                                     FLevel.Cell(PushCellSequence[PushCellSequence.Length-1]) == SokobanCell.Target
                                     ? Properties.Resources.ImgPieceTarget : Properties.Resources.ImgPiece,
                                     RoundedRectangle(Renderer.CellRectForImage(PushCellSequence[PushCellSequence.Length-1])), 0.5f);

@@ -223,7 +223,7 @@ namespace ExpertSokoban
 
         public GraphicsPath ValidPath(Virtual2DArray<bool> Finder)
         {
-            Point[][] Outlines = BitmapUtil.BoolsToPaths(Finder);
+            Point[][] Outlines = GraphicsUtil.BoolsToPaths(Finder);
             SizeF Margin = new SizeF(FCellWidth/5, FCellHeight/5);
             SizeF Diameter = new SizeF(FCellWidth/2, FCellHeight/2);
             GraphicsPath Result = new GraphicsPath();
