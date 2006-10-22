@@ -46,6 +46,7 @@ namespace ExpertSokoban
         public ESMainAreaState State { get { return FState; } }
         public ESPathDrawMode MoveDrawMode { get { return FMoveDrawMode; } set { FMoveDrawMode = value; Invalidate(); } }
         public ESPathDrawMode PushDrawMode { get { return FPushDrawMode; } set { FPushDrawMode = value; Invalidate(); } }
+        public bool ShowEndPos { get { return FShowEndPos; } set { FShowEndPos = value; Invalidate(); } }
         
         public event EventHandler MoveMade;
 
@@ -56,6 +57,7 @@ namespace ExpertSokoban
         private ESMainAreaState FState;
         private ESMainAreaTool Tool;
         private ESPathDrawMode FMoveDrawMode, FPushDrawMode;
+        private bool FShowEndPos;
 
         private Brush MoveBrush = new SolidBrush(Color.FromArgb(32, 0, 255, 0));
         private Brush PushBrush = new SolidBrush(Color.FromArgb(32, 0, 0, 255));
@@ -147,15 +149,18 @@ namespace ExpertSokoban
                     Renderer.DrawCell(e.Graphics, Sel.Value, SokobanImage.PieceSelected);
                     if (PushCellSequence != null)
                     {
-                        // Draw would-be Sokoban
-                        BitmapUtil.DrawImageAlpha(e.Graphics, Properties.Resources.ImgSokoban,
-                            RoundedRectangle(Renderer.CellRectForImage(CellSeqSokoban)), 0.5f);
-                        // Draw piece end position
-                        if (PushCellSequence.Length > 0)
-                            BitmapUtil.DrawImageAlpha(e.Graphics,
-                                FLevel.Cell(PushCellSequence[PushCellSequence.Length-1]) == SokobanCell.Target
-                                ? Properties.Resources.ImgPieceTarget : Properties.Resources.ImgPiece,
-                                RoundedRectangle(Renderer.CellRectForImage(PushCellSequence[PushCellSequence.Length-1])), 0.5f);
+                        if (ShowEndPos)
+                        {
+                            // Draw would-be Sokoban
+                            BitmapUtil.DrawImageAlpha(e.Graphics, Properties.Resources.ImgSokoban,
+                                RoundedRectangle(Renderer.CellRectForImage(CellSeqSokoban)), 0.5f);
+                            // Draw piece end position
+                            if (PushCellSequence.Length > 0)
+                                BitmapUtil.DrawImageAlpha(e.Graphics,
+                                    FLevel.Cell(PushCellSequence[PushCellSequence.Length-1]) == SokobanCell.Target
+                                    ? Properties.Resources.ImgPieceTarget : Properties.Resources.ImgPiece,
+                                    RoundedRectangle(Renderer.CellRectForImage(PushCellSequence[PushCellSequence.Length-1])), 0.5f);
+                        }
 
                         if (FMoveDrawMode == ESPathDrawMode.Arrows)
                             DrawArrowSequence(e.Graphics, FLevel.SokobanPos, MoveCellSequence,

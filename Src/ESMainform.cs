@@ -273,5 +273,11 @@ namespace ExpertSokoban
                 sender == ViewPushDots ? ESPathDrawMode.Dots :
                 sender == ViewPushArrows ? ESPathDrawMode.Arrows : ESPathDrawMode.None;
         }
+
+        private void ViewEndPos_Click(object sender, EventArgs e)
+        {
+            ViewEndPos.Checked = !ViewEndPos.Checked;
+            MainArea.ShowEndPos = ViewEndPos.Checked;
+        }
     }
 }
