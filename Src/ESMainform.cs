@@ -252,20 +252,26 @@ namespace ExpertSokoban
         {
             ViewMoveNo.Checked = sender == ViewMoveNo;
             ViewMoveLine.Checked = sender == ViewMoveLine;
+            ViewMoveDots.Checked = sender == ViewMoveDots;
             ViewMoveArrows.Checked = sender == ViewMoveArrows;
 
-            MainArea.MoveDrawMode = sender == ViewMoveNo ? ESPathDrawMode.None :
-                sender == ViewMoveLine ? ESPathDrawMode.Line : ESPathDrawMode.Arrows;
+            MainArea.MoveDrawMode =
+                sender == ViewMoveLine ? ESPathDrawMode.Line :
+                sender == ViewMoveDots ? ESPathDrawMode.Dots :
+                sender == ViewMoveArrows ? ESPathDrawMode.Arrows : ESPathDrawMode.None;
         }
 
         private void ViewPush_Click(object sender, EventArgs e)
         {
             ViewPushNo.Checked = sender == ViewPushNo;
             ViewPushLine.Checked = sender == ViewPushLine;
+            ViewPushDots.Checked = sender == ViewPushDots;
             ViewPushArrows.Checked = sender == ViewPushArrows;
 
-            MainArea.PushDrawMode = sender == ViewPushNo ? ESPathDrawMode.None :
-                sender == ViewPushLine ? ESPathDrawMode.Line : ESPathDrawMode.Arrows;
+            MainArea.PushDrawMode =
+                sender == ViewPushLine ? ESPathDrawMode.Line :
+                sender == ViewPushDots ? ESPathDrawMode.Dots :
+                sender == ViewPushArrows ? ESPathDrawMode.Arrows : ESPathDrawMode.None;
         }
     }
 }

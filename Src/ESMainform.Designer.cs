@@ -56,12 +56,14 @@ namespace ExpertSokoban
             this.ViewMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.ViewMoveNo = new System.Windows.Forms.ToolStripMenuItem();
             this.ViewMoveLine = new System.Windows.Forms.ToolStripMenuItem();
+            this.ViewMoveDots = new System.Windows.Forms.ToolStripMenuItem();
             this.ViewMoveArrows = new System.Windows.Forms.ToolStripMenuItem();
             this.ViewSep = new System.Windows.Forms.ToolStripSeparator();
             this.ViewPushNo = new System.Windows.Forms.ToolStripMenuItem();
             this.ViewPushLine = new System.Windows.Forms.ToolStripMenuItem();
             this.ViewPushArrows = new System.Windows.Forms.ToolStripMenuItem();
             this.MainArea = new ExpertSokoban.ESMainArea();
+            this.ViewPushDots = new System.Windows.Forms.ToolStripMenuItem();
             this.LevelListPanel.SuspendLayout();
             this.LevelListToolStrip.SuspendLayout();
             this.MainMenu.SuspendLayout();
@@ -300,10 +302,12 @@ namespace ExpertSokoban
             this.ViewMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ViewMoveNo,
             this.ViewMoveLine,
+            this.ViewMoveDots,
             this.ViewMoveArrows,
             this.ViewSep,
             this.ViewPushNo,
             this.ViewPushLine,
+            this.ViewPushDots,
             this.ViewPushArrows});
             this.ViewMenu.Name = "ViewMenu";
             this.ViewMenu.Size = new System.Drawing.Size(41, 20);
@@ -324,6 +328,13 @@ namespace ExpertSokoban
             this.ViewMoveLine.Size = new System.Drawing.Size(212, 22);
             this.ViewMoveLine.Text = "Display move path as &line";
             this.ViewMoveLine.Click += new System.EventHandler(this.ViewMove_Click);
+            // 
+            // ViewMoveDots
+            // 
+            this.ViewMoveDots.Name = "ViewMoveDots";
+            this.ViewMoveDots.Size = new System.Drawing.Size(212, 22);
+            this.ViewMoveDots.Text = "Display move path as &dots";
+            this.ViewMoveDots.Click += new System.EventHandler(this.ViewMove_Click);
             // 
             // ViewMoveArrows
             // 
@@ -348,7 +359,7 @@ namespace ExpertSokoban
             // 
             this.ViewPushLine.Name = "ViewPushLine";
             this.ViewPushLine.Size = new System.Drawing.Size(212, 22);
-            this.ViewPushLine.Text = "&Display push path as line";
+            this.ViewPushLine.Text = "Display push path as l&ine";
             this.ViewPushLine.Click += new System.EventHandler(this.ViewPush_Click);
             // 
             // ViewPushArrows
@@ -365,10 +376,19 @@ namespace ExpertSokoban
             this.MainArea.BackColor = System.Drawing.Color.FromArgb(((int) (((byte) (255)))), ((int) (((byte) (255)))), ((int) (((byte) (206)))));
             this.MainArea.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MainArea.Location = new System.Drawing.Point(0, 24);
+            this.MainArea.MoveDrawMode = ExpertSokoban.ESPathDrawMode.Line;
             this.MainArea.Name = "MainArea";
+            this.MainArea.PushDrawMode = ExpertSokoban.ESPathDrawMode.Arrows;
             this.MainArea.Size = new System.Drawing.Size(627, 464);
             this.MainArea.TabIndex = 1;
             this.MainArea.MoveMade += new System.EventHandler(this.MainArea_MoveMade);
+            // 
+            // ViewPushDots
+            // 
+            this.ViewPushDots.Name = "ViewPushDots";
+            this.ViewPushDots.Size = new System.Drawing.Size(212, 22);
+            this.ViewPushDots.Text = "Display push path as d&ots";
+            this.ViewPushDots.Click += new System.EventHandler(this.ViewPush_Click);
             // 
             // ESMainform
             // 
@@ -428,6 +448,8 @@ namespace ExpertSokoban
         private System.Windows.Forms.ToolStripMenuItem ViewPushNo;
         private System.Windows.Forms.ToolStripMenuItem ViewPushLine;
         private System.Windows.Forms.ToolStripMenuItem ViewPushArrows;
+        private System.Windows.Forms.ToolStripMenuItem ViewMoveDots;
+        private System.Windows.Forms.ToolStripMenuItem ViewPushDots;
     }
 }
 

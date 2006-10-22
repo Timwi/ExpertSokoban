@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Drawing;
 
 namespace ExpertSokoban
 {
@@ -17,13 +18,12 @@ namespace ExpertSokoban
     public class SokobanLevel
     {
         private SokobanCell[] FLevel;
-        private int FWidth, FHeight, FSokobanPos;
+        private int FWidth, FHeight;
+        private Point FSokobanPos;
 
         public int Width { get { return FWidth; } }
         public int Height { get { return FHeight; } }
-        public int SokobanPos { get { return FSokobanPos; } }
-        public int SokobanX { get { return FSokobanPos % Width; } }
-        public int SokobanY { get { return FSokobanPos / Width; } }
+        public Point SokobanPos { get { return FSokobanPos; } }
 
         public bool Solved
         {
@@ -40,7 +40,7 @@ namespace ExpertSokoban
         {
             FWidth = 0;
             FHeight = 0;
-            FSokobanPos = -1;
+            bool HaveSokobanPos = false;
             int CurX = 0;
             for (int i = 0; i < EncodedForm.Length; i++)
             {
@@ -74,14 +74,17 @@ namespace ExpertSokoban
                         EncodedForm[i] == '*' ? SokobanCell.PieceOnTarget :
                                                 SokobanCell.Blank;
                     if (EncodedForm[i] == '@' || EncodedForm[i] == '+')
-                        FSokobanPos = (CurX + FWidth*CurY);
+                    {
+                        FSokobanPos = new Point(CurX, CurY);
+                        HaveSokobanPos = true;
+                    }
 
                     CurX++;
                 }
             }
 
             // If the level didn't specify a starting position, try to find one.
-            if (FSokobanPos == -1)
+            if (!HaveSokobanPos)
             {
                 bool Done = false;
                 for (int i = 0; i < FWidth && !Done; i++)
@@ -98,31 +101,22 @@ namespace ExpertSokoban
                                 yIn = !yIn;
                         if (xIn && yIn)
                         {
-                            FSokobanPos = j*FWidth+i;
+                            FSokobanPos = new Point(i, j);
                             Done = true;
                         }
                     }
             }
         }
-        public SokobanLevel(int Width, int Height, SokobanCell[] LevelData, int SokobanPos)
+        public SokobanLevel(int Width, int Height, SokobanCell[] LevelData, Point SokobanPos)
         {
             FWidth = Width;
             FHeight = Height;
             FLevel = LevelData;
             FSokobanPos = SokobanPos;
         }
-        public SokobanLevel(int Width, int Height)
+        public SokobanCell Cell(Point Pos)
         {
-            FWidth = Width;
-            FHeight = Height;
-            FLevel = new SokobanCell[FWidth*FHeight];
-            for (int i = 0; i < FWidth * FHeight; i++)
-                FLevel[i] = ((i+1) % FWidth < 2) ? SokobanCell.Wall : SokobanCell.Blank;
-            FSokobanPos = FWidth+1;
-        }
-        public SokobanCell Cell(int Pos)
-        {
-            return Cell(Pos % FWidth, Pos / FWidth);
+            return Cell(Pos.X, Pos.Y);
         }
         public SokobanCell Cell(int x, int y)
         {
@@ -130,46 +124,55 @@ namespace ExpertSokoban
                 return SokobanCell.Invalid;
             return FLevel[y*FWidth + x];
         }
-        public void SetSokobanPos(int Pos) { if (Pos >= 0 && Pos < FWidth*FHeight) FSokobanPos = Pos; }
-        public void SetSokobanPos(int x, int y) { SetSokobanPos(y * FWidth + x); }
-        public void SetCell(int Pos, SokobanCell c) { if (Pos >= 0 && Pos < FWidth*FHeight) FLevel[Pos] = c; }
+        public void SetSokobanPos(Point Pos) { if (Pos.X >= 0 && Pos.Y >= 0 && Pos.X < FWidth && Pos.Y < FHeight) FSokobanPos = Pos; }
+        private void SetCell(int Index, SokobanCell c) { if (Index >= 0 && Index < FWidth*FHeight) FLevel[Index] = c; }
+        public void SetCell(Point Pos, SokobanCell c) { SetCell(Pos.Y*FWidth + Pos.X, c); }
         public void SetCell(int x, int y, SokobanCell c) { SetCell(y*FWidth + x, c); }
-        public bool IsPiece(int Pos)
+        private bool IsPiece(int Index)
         {
-            if (Pos < 0 || Pos > FLevel.Length) return false;
-            return FLevel[Pos] == SokobanCell.Piece || FLevel[Pos] == SokobanCell.PieceOnTarget;
+            if (Index < 0 || Index > FLevel.Length) return false;
+            return FLevel[Index] == SokobanCell.Piece || FLevel[Index] == SokobanCell.PieceOnTarget;
         }
+        public bool IsPiece(Point Pos) { return IsPiece(Pos.Y*FWidth + Pos.X); }
         public bool IsPiece(int x, int y) { return IsPiece(y*FWidth + x); }
-        public bool IsFree(int Pos) { return (Pos >= 0 && Pos < FWidth*FHeight) ? (FLevel[Pos] == SokobanCell.Blank || FLevel[Pos] == SokobanCell.Target) : false; }
+        private bool IsFree(int Index)
+        {
+            return (Index >= 0 && Index < FWidth*FHeight)
+                ? (FLevel[Index] == SokobanCell.Blank || FLevel[Index] == SokobanCell.Target)
+                : false;
+        }
+        public bool IsFree(Point Pos) { return IsFree(Pos.Y*FWidth + Pos.X); }
         public bool IsFree(int x, int y) { return IsFree(y*FWidth + x); }
-        public void SetPiece(int Pos)
+        private void SetPiece(int Index)
         {
-            if (Pos >= 0 && Pos < FWidth*FHeight)
+            if (Index >= 0 && Index < FWidth*FHeight)
             {
-                if (FLevel[Pos] == SokobanCell.Blank)
-                    FLevel[Pos] = SokobanCell.Piece;
-                else if (FLevel[Pos] == SokobanCell.Target)
-                    FLevel[Pos] = SokobanCell.PieceOnTarget;
+                if (FLevel[Index] == SokobanCell.Blank)
+                    FLevel[Index] = SokobanCell.Piece;
+                else if (FLevel[Index] == SokobanCell.Target)
+                    FLevel[Index] = SokobanCell.PieceOnTarget;
             }
         }
+        public void SetPiece(Point Pos) { SetPiece(Pos.Y*FWidth + Pos.X); }
         public void SetPiece(int x, int y) { SetPiece(y*FWidth + x); }
-        public void RemovePiece(int Pos)
+        private void RemovePiece(int Index)
         {
-            if (Pos >= 0 && Pos < FWidth*FHeight)
+            if (Index >= 0 && Index < FWidth*FHeight)
             {
-                if (FLevel[Pos] == SokobanCell.Piece)
-                    FLevel[Pos] = SokobanCell.Blank;
-                else if (FLevel[Pos] == SokobanCell.PieceOnTarget)
-                    FLevel[Pos] = SokobanCell.Target;
+                if (FLevel[Index] == SokobanCell.Piece)
+                    FLevel[Index] = SokobanCell.Blank;
+                else if (FLevel[Index] == SokobanCell.PieceOnTarget)
+                    FLevel[Index] = SokobanCell.Target;
             }
         }
+        public void RemovePiece(Point Pos) { RemovePiece(Pos.Y*FWidth + Pos.X); }
         public void RemovePiece(int x, int y) { RemovePiece(y*FWidth + x); }
         public void MovePiece(int FromX, int FromY, int ToX, int ToY)
         {
             RemovePiece(FromX, FromY);
             SetPiece(ToX, ToY);
         }
-        public void MovePiece(int FromPos, int ToPos)
+        public void MovePiece(Point FromPos, Point ToPos)
         {
             RemovePiece(FromPos);
             SetPiece(ToPos);
@@ -218,8 +221,7 @@ namespace ExpertSokoban
                     FLevel   [(AmountY < 0 ? y-ShiftY : y)*FWidth +
                              (AmountX < 0 ? x-ShiftX : x)];
 
-            FSokobanPos += (FSokobanPos / FWidth) * AmountX + ShiftX;
-            FSokobanPos += ShiftY * NewWidth;
+            FSokobanPos.Offset(ShiftX, ShiftY);
 
             FLevel = NewLevel;
             FWidth = NewWidth;
@@ -230,16 +232,6 @@ namespace ExpertSokoban
         {
             SokobanCell[] NewLevel = (SokobanCell[]) FLevel.Clone();
             return new SokobanLevel(FWidth, FHeight, NewLevel, FSokobanPos);
-        }
-
-        public int PosToX(int pos)
-        {
-            return pos % FWidth;
-        }
-
-        public int PosToY(int pos)
-        {
-            return pos / FWidth;
         }
 
         public static SokobanLevel TestLevel()

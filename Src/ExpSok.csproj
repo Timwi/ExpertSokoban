@@ -36,7 +36,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ESFinder.cs" />
     <Compile Include="ESPushFinder.cs" />
     <Compile Include="ESMoveFinder.cs" />
     <Compile Include="ESMainArea.cs">
