@@ -121,6 +121,14 @@
     <value>119, 17</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="LevelToolNew.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAERJREFUOE9jYBhs
+        4D/QQfgwQff+xwWQDMZrCF4DQJJQg3AaQowL8BqC0wBkCXyuGDUAmIiIAYM8EAnkBeR8QjBfEKUAAJdH
+        mHbcXwr9AAAAAElFTkSuQmCC
+</value>
+  </data>
   <data name="LevelToolOpen.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -128,6 +136,14 @@
         wCAI4/H+G2UOgorp0NNIiFFpLRWiPwU3sZpp3QL0ofv5PEW8qMlIXGqZmVpKWJ++CJIbWEmi9TUx7HNQ
         sCMBBF3+xzawB6UQo/SKhpcRUO7ndsz9E7C4+jCego3AzfpuBq5GN/z/Cj4v71ZFP3lqAAAAAElFTkSu
         QmCC
+</value>
+  </data>
+  <data name="LevelToolSave.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAFtJREFUOE9jYKAS
+        +A80hxwMt/5/SwvEgGPHjuHFMDVQC8kzAMm15BkAcy1y8JHkhUFsAJLTcEYpSA1OL8AkiaGxRiMxLgBp
+        xOsCXCkSlsAGrwGgREVRZiI7UwMAKUVpG6H2E04AAAAASUVORK5CYII=
 </value>
   </data>
   <data name="LevelToolNewLevel.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
@@ -154,13 +170,6 @@
         gCAIRPl4v83fsg4GCdqEttycW8Xx7kKiv1YjGrxbG+UepeL4cakYaEC0Io8N9NMWd1Fk8CI5Xk6IWz47
         ipOIF5jQ0VEtpQis+52F4vpnextG8HTznlVERXeBcgYQwMuMZ4j13u3PiIBMWip1LWZTYUpTBDPpIpAY
         mmWo3D3h0D7s8kWLBRcbFakUzoMoOgAAAABJRU5ErkJggg==
-</value>
-  </data>
-  <data name="LevelToolClear.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAACxJREFUOE9jYKAG
-        aGlp+U8OhtsN0kyqQ1D0jBrAwDAaBsMmDCjKTKRmJGT1AIgqhD0BH8TXAAAAAElFTkSuQmCC
 </value>
   </data>
   <data name="LevelToolClose.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">

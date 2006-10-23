@@ -15,6 +15,7 @@ namespace ExpertSokoban
         PieceOnTarget
     };
 
+    [Serializable]
     public class SokobanLevel
     {
         private SokobanCell[] FLevel;

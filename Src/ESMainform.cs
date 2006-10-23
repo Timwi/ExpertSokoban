@@ -15,7 +15,8 @@ namespace ExpertSokoban
     {
         private bool EverMoved;
         private SokobanLevel OrigLevel;
-        
+        private int EditingIndex;
+
         // For a bug workaround
         private bool LevelListEverShown = false;
 
@@ -26,6 +27,14 @@ namespace ExpertSokoban
             OrigLevel = SokobanLevel.TestLevel();
             MainArea.SetLevel(OrigLevel);
             EverMoved = false;
+
+            (MainArea.MoveDrawMode == ESPathDrawMode.Arrows ? ViewMoveArrows :
+                MainArea.MoveDrawMode == ESPathDrawMode.Dots ? ViewMoveDots :
+                MainArea.MoveDrawMode == ESPathDrawMode.Line ? ViewMoveLine : ViewMoveNo).Checked = true;
+            (MainArea.PushDrawMode == ESPathDrawMode.Arrows ? ViewPushArrows :
+                MainArea.PushDrawMode == ESPathDrawMode.Dots ? ViewPushDots :
+                MainArea.PushDrawMode == ESPathDrawMode.Line ? ViewPushLine : ViewPushNo).Checked = true;
+            ViewEndPos.Checked = MainArea.ShowEndPos;
         }
 
         /// <summary>
@@ -56,7 +65,7 @@ namespace ExpertSokoban
         // Used only by MenuOpen_Click()
         private enum ESMFLevelReaderState { Comment, Empty, Level }
 
-        private void MenuOpen_Click(object sender, EventArgs e)
+        private void LevelOpen_Click(object sender, EventArgs e)
         {
             OpenFileDialog OpenDialog = new OpenFileDialog();
             if (OpenDialog.ShowDialog() == DialogResult.OK)
@@ -148,7 +157,7 @@ namespace ExpertSokoban
                 TakeLevel();
             else
             {
-                string NewComment = InputBox.GetLine("Please enter the revised comment:", (string)Item);
+                string NewComment = InputBox.GetLine("Please enter the revised comment:", (string) Item);
                 if (NewComment != null)
                     LevelList.Items[LevelList.SelectedIndex] = NewComment;
             }
@@ -160,21 +169,21 @@ namespace ExpertSokoban
                 LevelList_DoubleClick(sender, new EventArgs());
         }
 
-        private void MenuShowList_Click(object sender, EventArgs e)
+        private void ViewLevelsList_Click(object sender, EventArgs e)
         {
             if (LevelListPanel.Visible)
             {
                 LevelListPanel.Visible = false;
                 LevelListSplitter.Visible = false;
-                MenuShowList.Checked = false;
-                MenuLevelsSub.Visible = false;
+                ViewLevelsList.Checked = false;
+                LevelMenu.Visible = false;
             }
             else
             {
                 LevelListSplitter.Visible = true;
                 LevelListPanel.Visible = true;
-                MenuShowList.Checked = true;
-                MenuLevelsSub.Visible = true;
+                ViewLevelsList.Checked = true;
+                LevelMenu.Visible = true;
                 if (!LevelListEverShown)
                 {
                     LevelList.Items.Add(OrigLevel);
@@ -186,12 +195,12 @@ namespace ExpertSokoban
             }
         }
 
-        private void MenuUndo_Click(object sender, EventArgs e)
+        private void GameUndo_Click(object sender, EventArgs e)
         {
             MainArea.Undo();
         }
 
-        private void MenuRetry_Click(object sender, EventArgs e)
+        private void GameRetry_Click(object sender, EventArgs e)
         {
             if (MayDestroy("Retry level"))
             {
@@ -200,13 +209,15 @@ namespace ExpertSokoban
             }
         }
 
-        private void MenuExit_Click(object sender, EventArgs e)
+        private void GameExit_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
-        private void MenuLevAddComment_Click(object sender, EventArgs e)
+        private void LevelAddComment_Click(object sender, EventArgs e)
         {
+            if (!LevelListPanel.Visible)
+                ViewLevelsList_Click(sender, e);
             string Comment = InputBox.GetLine("Please enter a comment:");
             if (Comment != null)
             {
@@ -223,15 +234,19 @@ namespace ExpertSokoban
             }
         }
 
-        private void MenuLevClear_Click(object sender, EventArgs e)
+        private void LevelNew_Click(object sender, EventArgs e)
         {
+            if (!LevelListPanel.Visible)
+                ViewLevelsList_Click(sender, e);
             if (MessageBox.Show("Are you sure you wish to delete all the levels in the levels list?",
                 "Expert Sokoban", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 LevelList.Items.Clear();
         }
 
-        private void MenuLevCreate_Click(object sender, EventArgs e)
+        private void LevelCreate_Click(object sender, EventArgs e)
         {
+            if (!LevelListPanel.Visible)
+                ViewLevelsList_Click(sender, e);
             SokobanLevel NewLevel = SokobanLevel.TrivialLvel();
             if (LevelList.SelectedIndex < 0)
             {
@@ -245,9 +260,9 @@ namespace ExpertSokoban
             }
         }
 
-        private void LevelToolDelete_Click(object sender, EventArgs e)
+        private void LevelDelete_Click(object sender, EventArgs e)
         {
-            if (LevelList.SelectedIndex < 0)
+            if (!LevelListPanel.Visible || LevelList.SelectedIndex < 0)
                 return;
 
             object Item = LevelList.Items[LevelList.SelectedIndex];
@@ -262,12 +277,6 @@ namespace ExpertSokoban
                 else if (LevelList.Items.Count > 0)
                     LevelList.SelectedIndex = LevelList.Items.Count-1;
             }
-        }
-
-        private void LevelList_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Delete)
-                LevelToolDelete_Click(sender, new EventArgs());
         }
 
         private void ViewMove_Click(object sender, EventArgs e)
@@ -306,6 +315,56 @@ namespace ExpertSokoban
         {
             if (!MayDestroy("Exit Expert Sokoban"))
                 e.Cancel = true;
+        }
+
+        private void LevelCopy_Click(object sender, EventArgs e)
+        {
+            if (!LevelListPanel.Visible || LevelList.SelectedIndex < 0)
+                return;
+            Clipboard.SetData("SokobanData", LevelList.Items[LevelList.SelectedIndex]);
+        }
+
+        private void LevelCut_Click(object sender, EventArgs e)
+        {
+            if (!LevelListPanel.Visible || LevelList.SelectedIndex < 0)
+                return;
+            LevelCopy_Click(sender, e);
+            int OldIndex = LevelList.SelectedIndex;
+            LevelList.Items.RemoveAt(OldIndex);
+            if (LevelList.Items.Count > 0 && OldIndex < LevelList.Items.Count)
+                LevelList.SelectedIndex = OldIndex;
+            else if (LevelList.Items.Count > 0)
+                LevelList.SelectedIndex = LevelList.Items.Count-1;
+        }
+
+        private void LevelPaste_Click(object sender, EventArgs e)
+        {
+            if (!LevelListPanel.Visible)
+                return;
+            if (Clipboard.ContainsData("SokobanData"))
+            {
+                if (LevelList.SelectedIndex < 0)
+                {
+                    LevelList.Items.Add(Clipboard.GetData("SokobanData"));
+                    LevelList.SelectedIndex = LevelList.Items.Count-1;
+                }
+                else
+                {
+                    LevelList.Items.Insert(LevelList.SelectedIndex, Clipboard.GetData("SokobanData"));
+                    LevelList.SelectedIndex -= 1;
+                }
+            }
+        }
+
+        private void LevelEdit_Click(object sender, EventArgs e)
+        {
+            if (LevelList.SelectedIndex < 0)
+                return;
+            EditingIndex = LevelList.SelectedIndex;
+            LevelListPanel.Visible = false;
+            LevelListSplitter.Visible = false;
+            LevelMenu.Visible = false;
+            EditMenu.Visible = true;
         }
 
         private void ESMainform_FormClosed(object sender, FormClosedEventArgs e)
