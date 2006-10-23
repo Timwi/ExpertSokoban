@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using RT.Util.Settings;
 
 namespace ExpertSokoban
 {
@@ -14,6 +15,7 @@ namespace ExpertSokoban
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            PrgSettings.Mode = SettingsMode.FileInAppDir;
             Application.Run(new ESMainform());
         }
     }

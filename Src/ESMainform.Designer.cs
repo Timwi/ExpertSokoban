@@ -116,7 +116,7 @@ namespace ExpertSokoban
             // LevelToolOpen
             // 
             this.LevelToolOpen.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.LevelToolOpen.Image = ((System.Drawing.Image) (resources.GetObject("LevelToolOpen.Image")));
+            this.LevelToolOpen.Image = ((System.Drawing.Image)(resources.GetObject("LevelToolOpen.Image")));
             this.LevelToolOpen.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.LevelToolOpen.Name = "LevelToolOpen";
             this.LevelToolOpen.Size = new System.Drawing.Size(23, 22);
@@ -131,7 +131,7 @@ namespace ExpertSokoban
             // LevelToolNewLevel
             // 
             this.LevelToolNewLevel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.LevelToolNewLevel.Image = ((System.Drawing.Image) (resources.GetObject("LevelToolNewLevel.Image")));
+            this.LevelToolNewLevel.Image = ((System.Drawing.Image)(resources.GetObject("LevelToolNewLevel.Image")));
             this.LevelToolNewLevel.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.LevelToolNewLevel.Name = "LevelToolNewLevel";
             this.LevelToolNewLevel.Size = new System.Drawing.Size(23, 22);
@@ -141,7 +141,7 @@ namespace ExpertSokoban
             // LevelToolComment
             // 
             this.LevelToolComment.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.LevelToolComment.Image = ((System.Drawing.Image) (resources.GetObject("LevelToolComment.Image")));
+            this.LevelToolComment.Image = ((System.Drawing.Image)(resources.GetObject("LevelToolComment.Image")));
             this.LevelToolComment.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.LevelToolComment.Name = "LevelToolComment";
             this.LevelToolComment.Size = new System.Drawing.Size(23, 22);
@@ -151,7 +151,7 @@ namespace ExpertSokoban
             // LevelToolDelete
             // 
             this.LevelToolDelete.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.LevelToolDelete.Image = ((System.Drawing.Image) (resources.GetObject("LevelToolDelete.Image")));
+            this.LevelToolDelete.Image = ((System.Drawing.Image)(resources.GetObject("LevelToolDelete.Image")));
             this.LevelToolDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.LevelToolDelete.Name = "LevelToolDelete";
             this.LevelToolDelete.Size = new System.Drawing.Size(23, 22);
@@ -161,7 +161,7 @@ namespace ExpertSokoban
             // LevelToolClear
             // 
             this.LevelToolClear.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.LevelToolClear.Image = ((System.Drawing.Image) (resources.GetObject("LevelToolClear.Image")));
+            this.LevelToolClear.Image = ((System.Drawing.Image)(resources.GetObject("LevelToolClear.Image")));
             this.LevelToolClear.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.LevelToolClear.Name = "LevelToolClear";
             this.LevelToolClear.Size = new System.Drawing.Size(23, 22);
@@ -172,7 +172,7 @@ namespace ExpertSokoban
             // 
             this.LevelToolClose.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.LevelToolClose.DoubleClickEnabled = true;
-            this.LevelToolClose.Image = ((System.Drawing.Image) (resources.GetObject("LevelToolClose.Image")));
+            this.LevelToolClose.Image = ((System.Drawing.Image)(resources.GetObject("LevelToolClose.Image")));
             this.LevelToolClose.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.LevelToolClose.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.LevelToolClose.Name = "LevelToolClose";
@@ -219,16 +219,16 @@ namespace ExpertSokoban
             // MenuOpen
             // 
             this.MenuOpen.Name = "MenuOpen";
-            this.MenuOpen.ShortcutKeys = ((System.Windows.Forms.Keys) ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.MenuOpen.Size = new System.Drawing.Size(194, 22);
+            this.MenuOpen.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.MenuOpen.Size = new System.Drawing.Size(205, 22);
             this.MenuOpen.Text = "&Open level file...";
             this.MenuOpen.Click += new System.EventHandler(this.MenuOpen_Click);
             // 
             // MenuShowList
             // 
             this.MenuShowList.Name = "MenuShowList";
-            this.MenuShowList.ShortcutKeys = ((System.Windows.Forms.Keys) ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
-            this.MenuShowList.Size = new System.Drawing.Size(194, 22);
+            this.MenuShowList.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
+            this.MenuShowList.Size = new System.Drawing.Size(205, 22);
             this.MenuShowList.Text = "Display &levels list";
             this.MenuShowList.Click += new System.EventHandler(this.MenuShowList_Click);
             // 
@@ -239,14 +239,14 @@ namespace ExpertSokoban
             this.MenuLevAddComment,
             this.MenuLevClear});
             this.MenuLevelsSub.Name = "MenuLevelsSub";
-            this.MenuLevelsSub.Size = new System.Drawing.Size(194, 22);
+            this.MenuLevelsSub.Size = new System.Drawing.Size(205, 22);
             this.MenuLevelsSub.Text = "Le&vels list";
             // 
             // MenuLevCreate
             // 
             this.MenuLevCreate.Name = "MenuLevCreate";
-            this.MenuLevCreate.ShortcutKeys = ((System.Windows.Forms.Keys) ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.MenuLevCreate.Size = new System.Drawing.Size(206, 22);
+            this.MenuLevCreate.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
+            this.MenuLevCreate.Size = new System.Drawing.Size(217, 22);
             this.MenuLevCreate.Text = "Create &new level...";
             this.MenuLevCreate.Click += new System.EventHandler(this.MenuLevCreate_Click);
             // 
@@ -254,48 +254,48 @@ namespace ExpertSokoban
             // 
             this.MenuLevAddComment.Name = "MenuLevAddComment";
             this.MenuLevAddComment.ShortcutKeyDisplayString = "";
-            this.MenuLevAddComment.ShortcutKeys = ((System.Windows.Forms.Keys) ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.M)));
-            this.MenuLevAddComment.Size = new System.Drawing.Size(206, 22);
+            this.MenuLevAddComment.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.M)));
+            this.MenuLevAddComment.Size = new System.Drawing.Size(217, 22);
             this.MenuLevAddComment.Text = "Add a co&mment...";
             this.MenuLevAddComment.Click += new System.EventHandler(this.MenuLevAddComment_Click);
             // 
             // MenuLevClear
             // 
             this.MenuLevClear.Name = "MenuLevClear";
-            this.MenuLevClear.Size = new System.Drawing.Size(206, 22);
+            this.MenuLevClear.Size = new System.Drawing.Size(217, 22);
             this.MenuLevClear.Text = "&Clear levels list";
             this.MenuLevClear.Click += new System.EventHandler(this.MenuLevClear_Click);
             // 
             // MenuSep1
             // 
             this.MenuSep1.Name = "MenuSep1";
-            this.MenuSep1.Size = new System.Drawing.Size(191, 6);
+            this.MenuSep1.Size = new System.Drawing.Size(202, 6);
             // 
             // MenuUndo
             // 
             this.MenuUndo.Name = "MenuUndo";
-            this.MenuUndo.ShortcutKeys = ((System.Windows.Forms.Keys) ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.MenuUndo.Size = new System.Drawing.Size(194, 22);
+            this.MenuUndo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
+            this.MenuUndo.Size = new System.Drawing.Size(205, 22);
             this.MenuUndo.Text = "&Undo";
             this.MenuUndo.Click += new System.EventHandler(this.MenuUndo_Click);
             // 
             // MenuRetry
             // 
             this.MenuRetry.Name = "MenuRetry";
-            this.MenuRetry.ShortcutKeys = ((System.Windows.Forms.Keys) ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
-            this.MenuRetry.Size = new System.Drawing.Size(194, 22);
+            this.MenuRetry.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
+            this.MenuRetry.Size = new System.Drawing.Size(205, 22);
             this.MenuRetry.Text = "&Retry level";
             this.MenuRetry.Click += new System.EventHandler(this.MenuRetry_Click);
             // 
             // MenuSep2
             // 
             this.MenuSep2.Name = "MenuSep2";
-            this.MenuSep2.Size = new System.Drawing.Size(191, 6);
+            this.MenuSep2.Size = new System.Drawing.Size(202, 6);
             // 
             // MenuExit
             // 
             this.MenuExit.Name = "MenuExit";
-            this.MenuExit.Size = new System.Drawing.Size(194, 22);
+            this.MenuExit.Size = new System.Drawing.Size(205, 22);
             this.MenuExit.Text = "E&xit";
             this.MenuExit.Click += new System.EventHandler(this.MenuExit_Click);
             // 
@@ -320,7 +320,7 @@ namespace ExpertSokoban
             // ViewMoveNo
             // 
             this.ViewMoveNo.Name = "ViewMoveNo";
-            this.ViewMoveNo.Size = new System.Drawing.Size(275, 22);
+            this.ViewMoveNo.Size = new System.Drawing.Size(286, 22);
             this.ViewMoveNo.Text = "Don\'t display &move path";
             this.ViewMoveNo.Click += new System.EventHandler(this.ViewMove_Click);
             // 
@@ -329,47 +329,47 @@ namespace ExpertSokoban
             this.ViewMoveLine.Checked = true;
             this.ViewMoveLine.CheckState = System.Windows.Forms.CheckState.Checked;
             this.ViewMoveLine.Name = "ViewMoveLine";
-            this.ViewMoveLine.Size = new System.Drawing.Size(275, 22);
+            this.ViewMoveLine.Size = new System.Drawing.Size(286, 22);
             this.ViewMoveLine.Text = "Display move path as &line";
             this.ViewMoveLine.Click += new System.EventHandler(this.ViewMove_Click);
             // 
             // ViewMoveDots
             // 
             this.ViewMoveDots.Name = "ViewMoveDots";
-            this.ViewMoveDots.Size = new System.Drawing.Size(275, 22);
+            this.ViewMoveDots.Size = new System.Drawing.Size(286, 22);
             this.ViewMoveDots.Text = "Display move path as &dots";
             this.ViewMoveDots.Click += new System.EventHandler(this.ViewMove_Click);
             // 
             // ViewMoveArrows
             // 
             this.ViewMoveArrows.Name = "ViewMoveArrows";
-            this.ViewMoveArrows.Size = new System.Drawing.Size(275, 22);
+            this.ViewMoveArrows.Size = new System.Drawing.Size(286, 22);
             this.ViewMoveArrows.Text = "Display move path as &arrows";
             this.ViewMoveArrows.Click += new System.EventHandler(this.ViewMove_Click);
             // 
             // ViewSep1
             // 
             this.ViewSep1.Name = "ViewSep1";
-            this.ViewSep1.Size = new System.Drawing.Size(272, 6);
+            this.ViewSep1.Size = new System.Drawing.Size(283, 6);
             // 
             // ViewPushNo
             // 
             this.ViewPushNo.Name = "ViewPushNo";
-            this.ViewPushNo.Size = new System.Drawing.Size(275, 22);
+            this.ViewPushNo.Size = new System.Drawing.Size(286, 22);
             this.ViewPushNo.Text = "Don\'t display &push path";
             this.ViewPushNo.Click += new System.EventHandler(this.ViewPush_Click);
             // 
             // ViewPushLine
             // 
             this.ViewPushLine.Name = "ViewPushLine";
-            this.ViewPushLine.Size = new System.Drawing.Size(275, 22);
+            this.ViewPushLine.Size = new System.Drawing.Size(286, 22);
             this.ViewPushLine.Text = "Display push path as l&ine";
             this.ViewPushLine.Click += new System.EventHandler(this.ViewPush_Click);
             // 
             // ViewPushDots
             // 
             this.ViewPushDots.Name = "ViewPushDots";
-            this.ViewPushDots.Size = new System.Drawing.Size(275, 22);
+            this.ViewPushDots.Size = new System.Drawing.Size(286, 22);
             this.ViewPushDots.Text = "Display push path as d&ots";
             this.ViewPushDots.Click += new System.EventHandler(this.ViewPush_Click);
             // 
@@ -378,27 +378,27 @@ namespace ExpertSokoban
             this.ViewPushArrows.Checked = true;
             this.ViewPushArrows.CheckState = System.Windows.Forms.CheckState.Checked;
             this.ViewPushArrows.Name = "ViewPushArrows";
-            this.ViewPushArrows.Size = new System.Drawing.Size(275, 22);
+            this.ViewPushArrows.Size = new System.Drawing.Size(286, 22);
             this.ViewPushArrows.Text = "Display push path as a&rrows";
             this.ViewPushArrows.Click += new System.EventHandler(this.ViewPush_Click);
             // 
             // ViewSep2
             // 
             this.ViewSep2.Name = "ViewSep2";
-            this.ViewSep2.Size = new System.Drawing.Size(272, 6);
+            this.ViewSep2.Size = new System.Drawing.Size(283, 6);
             // 
             // ViewEndPos
             // 
             this.ViewEndPos.Checked = true;
             this.ViewEndPos.CheckState = System.Windows.Forms.CheckState.Checked;
             this.ViewEndPos.Name = "ViewEndPos";
-            this.ViewEndPos.Size = new System.Drawing.Size(275, 22);
+            this.ViewEndPos.Size = new System.Drawing.Size(286, 22);
             this.ViewEndPos.Text = "Display &end position of Sokoban and piece";
             this.ViewEndPos.Click += new System.EventHandler(this.ViewEndPos_Click);
             // 
             // MainArea
             // 
-            this.MainArea.BackColor = System.Drawing.Color.FromArgb(((int) (((byte) (255)))), ((int) (((byte) (255)))), ((int) (((byte) (206)))));
+            this.MainArea.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(206)))));
             this.MainArea.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MainArea.Location = new System.Drawing.Point(0, 24);
             this.MainArea.MoveDrawMode = ExpertSokoban.ESPathDrawMode.Line;
@@ -420,7 +420,9 @@ namespace ExpertSokoban
             this.Controls.Add(this.MainMenu);
             this.MainMenuStrip = this.MainMenu;
             this.Name = "ESMainform";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Expert Sokoban";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ESMainform_FormClosed);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ESMainform_FormClosing);
             this.LevelListPanel.ResumeLayout(false);
             this.LevelListPanel.PerformLayout();

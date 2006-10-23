@@ -7,10 +7,11 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using RT.Util;
+using RT.Util.Settings;
 
 namespace ExpertSokoban
 {
-    public partial class ESMainform : Form
+    public partial class ESMainform : ManagedForm
     {
         private bool EverMoved;
         private SokobanLevel OrigLevel;
@@ -21,9 +22,30 @@ namespace ExpertSokoban
         public ESMainform()
         {
             InitializeComponent();
+            LoadPrgSettings();
             OrigLevel = SokobanLevel.TestLevel();
             MainArea.SetLevel(OrigLevel);
             EverMoved = false;
+        }
+
+        /// <summary>
+        /// Loads all program settings
+        /// </summary>
+        private void LoadPrgSettings()
+        {
+            PrgSettings.OpenForRead();
+            this.LoadSettings(PrgSettings.Store, "MainForm", "");
+            PrgSettings.Close();
+        }
+
+        /// <summary>
+        /// Saves all program settings
+        /// </summary>
+        private void SavePrgSettings()
+        {
+            PrgSettings.OpenForWrite(true);
+            this.SaveSettings(PrgSettings.Store, "MainForm", "");
+            PrgSettings.Close();
         }
 
         private void MainArea_MoveMade(object sender, EventArgs e)
@@ -284,6 +306,11 @@ namespace ExpertSokoban
         {
             if (!MayDestroy("Exit Expert Sokoban"))
                 e.Cancel = true;
+        }
+
+        private void ESMainform_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            SavePrgSettings();
         }
     }
 }
