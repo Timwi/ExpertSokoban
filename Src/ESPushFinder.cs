@@ -7,7 +7,7 @@ using System.Drawing;
 
 namespace ExpertSokoban
 {
-    public class ESPushFinder : Virtual2DArray<bool>
+    public class PushFinder : Virtual2DArray<bool>
     {
         // FPushLength and FMoveLength are layed out like this:
         // element #0 = virtual start node
@@ -39,13 +39,13 @@ namespace ExpertSokoban
                 public int PushLen { get { return FPushLen; } }
                 public int MoveLen { get { return FMoveLen; } }
             }
-            private ESPushFinder FParent;
+            private PushFinder FParent;
             private ThreeIntegers[] FElement;
             private int FNumElements;
 
             public bool Empty { get { return FNumElements == 0; } }
 
-            public SpecialHeap(ESPushFinder Parent)
+            public SpecialHeap(PushFinder Parent)
             {
                 FParent = Parent;
                 FElement = new ThreeIntegers[64];
@@ -141,7 +141,7 @@ namespace ExpertSokoban
 
         // This is the MoveFinder passed in the constructor, which is for the initial
         // level situation. We need it to construct the beginning of the path in Path().
-        private ESMoveFinder FMoveFinder;
+        private MoveFinder FMoveFinder;
 
         // The actual level we're working with. While Dijkstra's algorithm is running,
         // the level will be modified temporarily (we might want to run an ESMoveFinder
@@ -152,7 +152,7 @@ namespace ExpertSokoban
         public int Width { get { return FLevel.Width; } }
         public int Height { get { return FLevel.Height; } }
 
-        public ESPushFinder(SokobanLevel Level, Point Sel, ESMoveFinder MoveFinder)
+        public PushFinder(SokobanLevel Level, Point Sel, MoveFinder MoveFinder)
         {
             FLevel = Level;
             SpecialHeap PriorityQueue = new SpecialHeap(this);
@@ -223,7 +223,7 @@ namespace ExpertSokoban
                 // which of the other cells adjacent to the piece the Sokoban can move
                 // to. We do this by running an ESMoveFinder.
 
-                ESMoveFinder mf = new ESMoveFinder(FLevel, Position);
+                MoveFinder mf = new MoveFinder(FLevel, Position);
                 FPath[Node] = new Point[5][];
 
                 // For any of these cells, mf.Path() will return null if you can't walk to it

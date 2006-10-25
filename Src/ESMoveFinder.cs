@@ -7,7 +7,7 @@ using System.Drawing;
 
 namespace ExpertSokoban
 {
-    public class ESMoveFinder : Virtual2DArray<bool>
+    public class MoveFinder : Virtual2DArray<bool>
     {
         private SokobanLevel FLevel;
         private int[] FPathLength;
@@ -17,11 +17,11 @@ namespace ExpertSokoban
         public int Width { get { return FLevel.Width; } }
         public int Height { get { return FLevel.Height; } }
 
-        public ESMoveFinder(SokobanLevel Level)
+        public MoveFinder(SokobanLevel Level)
         {
             Run(Level, null);
         }
-        public ESMoveFinder(SokobanLevel Level, Point? StopIfFourSides)
+        public MoveFinder(SokobanLevel Level, Point? StopIfFourSides)
         {
             Run(Level, StopIfFourSides);
         }

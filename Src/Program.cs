@@ -16,7 +16,7 @@ namespace ExpertSokoban
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             PrgSettings.Mode = SettingsMode.FileInAppDir;
-            Application.Run(new ESMainform());
+            Application.Run(new Mainform());
         }
     }
 }

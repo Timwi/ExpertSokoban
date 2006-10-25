@@ -1,6 +1,6 @@
 namespace ExpertSokoban
 {
-    partial class ESMainform
+    partial class Mainform
     {
         /// <summary>
         /// Required designer variable.
@@ -28,9 +28,9 @@ namespace ExpertSokoban
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ESMainform));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Mainform));
             this.LevelListPanel = new System.Windows.Forms.Panel();
-            this.LevelList = new ExpertSokoban.ESLevelListBox();
+            this.LevelList = new ExpertSokoban.LevelListBox();
             this.LevelListToolStrip = new System.Windows.Forms.ToolStrip();
             this.LevelToolNew = new System.Windows.Forms.ToolStripButton();
             this.LevelToolOpen = new System.Windows.Forms.ToolStripButton();
@@ -76,7 +76,7 @@ namespace ExpertSokoban
             this.LevelDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.EditMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.MainToolStripContainer = new System.Windows.Forms.ToolStripContainer();
-            this.MainArea = new ExpertSokoban.ESMainArea();
+            this.MainArea = new ExpertSokoban.MainArea();
             this.LevelListSplitter = new System.Windows.Forms.Splitter();
             this.LevelListPanel.SuspendLayout();
             this.LevelListToolStrip.SuspendLayout();
@@ -132,7 +132,7 @@ namespace ExpertSokoban
             // LevelToolNew
             // 
             this.LevelToolNew.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.LevelToolNew.Image = ((System.Drawing.Image) (resources.GetObject("LevelToolNew.Image")));
+            this.LevelToolNew.Image = ((System.Drawing.Image)(resources.GetObject("LevelToolNew.Image")));
             this.LevelToolNew.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.LevelToolNew.Name = "LevelToolNew";
             this.LevelToolNew.Size = new System.Drawing.Size(23, 22);
@@ -142,7 +142,7 @@ namespace ExpertSokoban
             // LevelToolOpen
             // 
             this.LevelToolOpen.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.LevelToolOpen.Image = ((System.Drawing.Image) (resources.GetObject("LevelToolOpen.Image")));
+            this.LevelToolOpen.Image = ((System.Drawing.Image)(resources.GetObject("LevelToolOpen.Image")));
             this.LevelToolOpen.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.LevelToolOpen.Name = "LevelToolOpen";
             this.LevelToolOpen.Size = new System.Drawing.Size(23, 22);
@@ -153,7 +153,7 @@ namespace ExpertSokoban
             // 
             this.LevelToolSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.LevelToolSave.Enabled = false;
-            this.LevelToolSave.Image = ((System.Drawing.Image) (resources.GetObject("LevelToolSave.Image")));
+            this.LevelToolSave.Image = ((System.Drawing.Image)(resources.GetObject("LevelToolSave.Image")));
             this.LevelToolSave.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.LevelToolSave.Name = "LevelToolSave";
             this.LevelToolSave.Size = new System.Drawing.Size(23, 22);
@@ -167,7 +167,7 @@ namespace ExpertSokoban
             // LevelToolNewLevel
             // 
             this.LevelToolNewLevel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.LevelToolNewLevel.Image = ((System.Drawing.Image) (resources.GetObject("LevelToolNewLevel.Image")));
+            this.LevelToolNewLevel.Image = ((System.Drawing.Image)(resources.GetObject("LevelToolNewLevel.Image")));
             this.LevelToolNewLevel.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.LevelToolNewLevel.Name = "LevelToolNewLevel";
             this.LevelToolNewLevel.Size = new System.Drawing.Size(23, 22);
@@ -177,7 +177,7 @@ namespace ExpertSokoban
             // LevelToolComment
             // 
             this.LevelToolComment.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.LevelToolComment.Image = ((System.Drawing.Image) (resources.GetObject("LevelToolComment.Image")));
+            this.LevelToolComment.Image = ((System.Drawing.Image)(resources.GetObject("LevelToolComment.Image")));
             this.LevelToolComment.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.LevelToolComment.Name = "LevelToolComment";
             this.LevelToolComment.Size = new System.Drawing.Size(23, 22);
@@ -187,7 +187,7 @@ namespace ExpertSokoban
             // LevelToolDelete
             // 
             this.LevelToolDelete.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.LevelToolDelete.Image = ((System.Drawing.Image) (resources.GetObject("LevelToolDelete.Image")));
+            this.LevelToolDelete.Image = ((System.Drawing.Image)(resources.GetObject("LevelToolDelete.Image")));
             this.LevelToolDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.LevelToolDelete.Name = "LevelToolDelete";
             this.LevelToolDelete.Size = new System.Drawing.Size(23, 22);
@@ -203,7 +203,7 @@ namespace ExpertSokoban
             // 
             this.LevelToolClose.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.LevelToolClose.DoubleClickEnabled = true;
-            this.LevelToolClose.Image = ((System.Drawing.Image) (resources.GetObject("LevelToolClose.Image")));
+            this.LevelToolClose.Image = ((System.Drawing.Image)(resources.GetObject("LevelToolClose.Image")));
             this.LevelToolClose.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.LevelToolClose.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.LevelToolClose.Name = "LevelToolClose";
@@ -239,7 +239,7 @@ namespace ExpertSokoban
             // GameUndo
             // 
             this.GameUndo.Name = "GameUndo";
-            this.GameUndo.ShortcutKeys = ((System.Windows.Forms.Keys) ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
+            this.GameUndo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
             this.GameUndo.Size = new System.Drawing.Size(165, 22);
             this.GameUndo.Text = "&Undo";
             this.GameUndo.Click += new System.EventHandler(this.GameUndo_Click);
@@ -247,7 +247,7 @@ namespace ExpertSokoban
             // GameRetry
             // 
             this.GameRetry.Name = "GameRetry";
-            this.GameRetry.ShortcutKeys = ((System.Windows.Forms.Keys) ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
+            this.GameRetry.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
             this.GameRetry.Size = new System.Drawing.Size(165, 22);
             this.GameRetry.Text = "&Retry level";
             this.GameRetry.Click += new System.EventHandler(this.GameRetry_Click);
@@ -287,7 +287,7 @@ namespace ExpertSokoban
             // ViewLevelsList
             // 
             this.ViewLevelsList.Name = "ViewLevelsList";
-            this.ViewLevelsList.ShortcutKeys = ((System.Windows.Forms.Keys) ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
+            this.ViewLevelsList.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
             this.ViewLevelsList.Size = new System.Drawing.Size(275, 22);
             this.ViewLevelsList.Text = "Display &levels list";
             this.ViewLevelsList.Click += new System.EventHandler(this.ViewLevelsList_Click);
@@ -388,12 +388,11 @@ namespace ExpertSokoban
             this.LevelMenu.Name = "LevelMenu";
             this.LevelMenu.Size = new System.Drawing.Size(44, 20);
             this.LevelMenu.Text = "&Level";
-            this.LevelMenu.Visible = false;
             // 
             // LevelNew
             // 
             this.LevelNew.Name = "LevelNew";
-            this.LevelNew.ShortcutKeys = ((System.Windows.Forms.Keys) (((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            this.LevelNew.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.N)));
             this.LevelNew.Size = new System.Drawing.Size(206, 22);
             this.LevelNew.Text = "Ne&w level file";
@@ -402,7 +401,7 @@ namespace ExpertSokoban
             // LevelOpen
             // 
             this.LevelOpen.Name = "LevelOpen";
-            this.LevelOpen.ShortcutKeys = ((System.Windows.Forms.Keys) ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.LevelOpen.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
             this.LevelOpen.Size = new System.Drawing.Size(206, 22);
             this.LevelOpen.Text = "&Open level file...";
             this.LevelOpen.Click += new System.EventHandler(this.LevelOpen_Click);
@@ -411,7 +410,7 @@ namespace ExpertSokoban
             // 
             this.LevelSave.Enabled = false;
             this.LevelSave.Name = "LevelSave";
-            this.LevelSave.ShortcutKeys = ((System.Windows.Forms.Keys) ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.LevelSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
             this.LevelSave.Size = new System.Drawing.Size(206, 22);
             this.LevelSave.Text = "&Save level file";
             // 
@@ -422,8 +421,9 @@ namespace ExpertSokoban
             // 
             // LevelCreate
             // 
+            this.LevelCreate.Enabled = false;
             this.LevelCreate.Name = "LevelCreate";
-            this.LevelCreate.ShortcutKeys = ((System.Windows.Forms.Keys) ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
+            this.LevelCreate.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
             this.LevelCreate.Size = new System.Drawing.Size(206, 22);
             this.LevelCreate.Text = "Create &new level";
             this.LevelCreate.Click += new System.EventHandler(this.LevelCreate_Click);
@@ -432,16 +432,17 @@ namespace ExpertSokoban
             // 
             this.LevelEdit.Enabled = false;
             this.LevelEdit.Name = "LevelEdit";
-            this.LevelEdit.ShortcutKeys = ((System.Windows.Forms.Keys) ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
+            this.LevelEdit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
             this.LevelEdit.Size = new System.Drawing.Size(206, 22);
             this.LevelEdit.Text = "&Edit level";
             this.LevelEdit.Click += new System.EventHandler(this.LevelEdit_Click);
             // 
             // LevelAddComment
             // 
+            this.LevelAddComment.Enabled = false;
             this.LevelAddComment.Name = "LevelAddComment";
             this.LevelAddComment.ShortcutKeyDisplayString = "";
-            this.LevelAddComment.ShortcutKeys = ((System.Windows.Forms.Keys) ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.M)));
+            this.LevelAddComment.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.M)));
             this.LevelAddComment.Size = new System.Drawing.Size(206, 22);
             this.LevelAddComment.Text = "Add a co&mment...";
             this.LevelAddComment.Click += new System.EventHandler(this.LevelAddComment_Click);
@@ -453,30 +454,34 @@ namespace ExpertSokoban
             // 
             // LevelCut
             // 
+            this.LevelCut.Enabled = false;
             this.LevelCut.Name = "LevelCut";
-            this.LevelCut.ShortcutKeys = ((System.Windows.Forms.Keys) ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
+            this.LevelCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
             this.LevelCut.Size = new System.Drawing.Size(206, 22);
             this.LevelCut.Text = "C&ut";
             this.LevelCut.Click += new System.EventHandler(this.LevelCut_Click);
             // 
             // LevelCopy
             // 
+            this.LevelCopy.Enabled = false;
             this.LevelCopy.Name = "LevelCopy";
-            this.LevelCopy.ShortcutKeys = ((System.Windows.Forms.Keys) ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
+            this.LevelCopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
             this.LevelCopy.Size = new System.Drawing.Size(206, 22);
             this.LevelCopy.Text = "&Copy";
             this.LevelCopy.Click += new System.EventHandler(this.LevelCopy_Click);
             // 
             // LevelPaste
             // 
+            this.LevelPaste.Enabled = false;
             this.LevelPaste.Name = "LevelPaste";
-            this.LevelPaste.ShortcutKeys = ((System.Windows.Forms.Keys) ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
+            this.LevelPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
             this.LevelPaste.Size = new System.Drawing.Size(206, 22);
             this.LevelPaste.Text = "&Paste";
             this.LevelPaste.Click += new System.EventHandler(this.LevelPaste_Click);
             // 
             // LevelDelete
             // 
+            this.LevelDelete.Enabled = false;
             this.LevelDelete.Name = "LevelDelete";
             this.LevelDelete.ShortcutKeyDisplayString = "";
             this.LevelDelete.ShortcutKeys = System.Windows.Forms.Keys.Delete;
@@ -512,12 +517,12 @@ namespace ExpertSokoban
             // 
             // MainArea
             // 
-            this.MainArea.BackColor = System.Drawing.Color.FromArgb(((int) (((byte) (255)))), ((int) (((byte) (255)))), ((int) (((byte) (206)))));
+            this.MainArea.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(206)))));
             this.MainArea.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MainArea.Location = new System.Drawing.Point(0, 0);
-            this.MainArea.MoveDrawMode = ExpertSokoban.ESPathDrawMode.Line;
+            this.MainArea.MoveDrawMode = ExpertSokoban.PathDrawMode.Line;
             this.MainArea.Name = "MainArea";
-            this.MainArea.PushDrawMode = ExpertSokoban.ESPathDrawMode.Arrows;
+            this.MainArea.PushDrawMode = ExpertSokoban.PathDrawMode.Arrows;
             this.MainArea.ShowEndPos = false;
             this.MainArea.Size = new System.Drawing.Size(630, 464);
             this.MainArea.TabIndex = 1;
@@ -564,9 +569,9 @@ namespace ExpertSokoban
 
         #endregion
 
-        private ExpertSokoban.ESMainArea MainArea;
+        private ExpertSokoban.MainArea MainArea;
         private System.Windows.Forms.Panel LevelListPanel;
-        private ExpertSokoban.ESLevelListBox LevelList;
+        private ExpertSokoban.LevelListBox LevelList;
         private System.Windows.Forms.ToolStrip LevelListToolStrip;
         private System.Windows.Forms.ToolStripButton LevelToolClose;
         private System.Windows.Forms.ToolStripButton LevelToolOpen;

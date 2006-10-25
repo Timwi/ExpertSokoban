@@ -11,7 +11,7 @@ using RT.Util.Settings;
 
 namespace ExpertSokoban
 {
-    public partial class ESMainform : ManagedForm
+    public partial class Mainform : ManagedForm
     {
         private bool EverMoved;
         private SokobanLevel OrigLevel;
@@ -20,7 +20,7 @@ namespace ExpertSokoban
         // For a bug workaround
         private bool LevelListEverShown = false;
 
-        public ESMainform()
+        public Mainform()
         {
             InitializeComponent();
             LoadPrgSettings();
@@ -28,12 +28,12 @@ namespace ExpertSokoban
             MainArea.SetLevel(OrigLevel);
             EverMoved = false;
 
-            (MainArea.MoveDrawMode == ESPathDrawMode.Arrows ? ViewMoveArrows :
-                MainArea.MoveDrawMode == ESPathDrawMode.Dots ? ViewMoveDots :
-                MainArea.MoveDrawMode == ESPathDrawMode.Line ? ViewMoveLine : ViewMoveNo).Checked = true;
-            (MainArea.PushDrawMode == ESPathDrawMode.Arrows ? ViewPushArrows :
-                MainArea.PushDrawMode == ESPathDrawMode.Dots ? ViewPushDots :
-                MainArea.PushDrawMode == ESPathDrawMode.Line ? ViewPushLine : ViewPushNo).Checked = true;
+            (MainArea.MoveDrawMode == PathDrawMode.Arrows ? ViewMoveArrows :
+                MainArea.MoveDrawMode == PathDrawMode.Dots ? ViewMoveDots :
+                MainArea.MoveDrawMode == PathDrawMode.Line ? ViewMoveLine : ViewMoveNo).Checked = true;
+            (MainArea.PushDrawMode == PathDrawMode.Arrows ? ViewPushArrows :
+                MainArea.PushDrawMode == PathDrawMode.Dots ? ViewPushDots :
+                MainArea.PushDrawMode == PathDrawMode.Line ? ViewPushLine : ViewPushNo).Checked = true;
             ViewEndPos.Checked = MainArea.ShowEndPos;
         }
 
@@ -62,7 +62,7 @@ namespace ExpertSokoban
             EverMoved = true;
         }
 
-        // Used only by MenuOpen_Click()
+        // Used only by LevelOpen_Click()
         private enum ESMFLevelReaderState { Comment, Empty, Level }
 
         private void LevelOpen_Click(object sender, EventArgs e)
@@ -70,9 +70,7 @@ namespace ExpertSokoban
             OpenFileDialog OpenDialog = new OpenFileDialog();
             if (OpenDialog.ShowDialog() == DialogResult.OK)
             {
-                LevelListSplitter.Visible = true;
-                LevelListPanel.Visible = true;
-                LevelList.Focus();
+                ShowLevelList();
                 LevelList.BeginUpdate();
                 LevelList.Items.Clear();
                 StreamReader StreamReader = new StreamReader(OpenDialog.FileName, Encoding.UTF8);
@@ -130,7 +128,7 @@ namespace ExpertSokoban
             object Item = LevelList.SelectedItem;
             if (Item is SokobanLevel && MayDestroy("Open level"))
             {
-                OrigLevel = (SokobanLevel) Item;
+                OrigLevel = (SokobanLevel)Item;
                 MainArea.SetLevel(OrigLevel);
                 EverMoved = false;
             }
@@ -138,8 +136,8 @@ namespace ExpertSokoban
 
         private bool MayDestroy(string Title)
         {
-            if (MainArea.State == ESMainAreaState.Solved ||
-                MainArea.State == ESMainAreaState.Null ||
+            if (MainArea.State == MainAreaState.Solved ||
+                MainArea.State == MainAreaState.Null ||
                 !EverMoved)
                 return true;
 
@@ -157,7 +155,7 @@ namespace ExpertSokoban
                 TakeLevel();
             else
             {
-                string NewComment = InputBox.GetLine("Please enter the revised comment:", (string) Item);
+                string NewComment = InputBox.GetLine("Please enter the revised comment:", (string)Item);
                 if (NewComment != null)
                     LevelList.Items[LevelList.SelectedIndex] = NewComment;
             }
@@ -172,18 +170,10 @@ namespace ExpertSokoban
         private void ViewLevelsList_Click(object sender, EventArgs e)
         {
             if (LevelListPanel.Visible)
-            {
-                LevelListPanel.Visible = false;
-                LevelListSplitter.Visible = false;
-                ViewLevelsList.Checked = false;
-                LevelMenu.Visible = false;
-            }
+                HideLevelList();
             else
             {
-                LevelListSplitter.Visible = true;
-                LevelListPanel.Visible = true;
-                ViewLevelsList.Checked = true;
-                LevelMenu.Visible = true;
+                ShowLevelList();
                 if (!LevelListEverShown)
                 {
                     LevelList.Items.Add(OrigLevel);
@@ -287,9 +277,9 @@ namespace ExpertSokoban
             ViewMoveArrows.Checked = sender == ViewMoveArrows;
 
             MainArea.MoveDrawMode =
-                sender == ViewMoveLine ? ESPathDrawMode.Line :
-                sender == ViewMoveDots ? ESPathDrawMode.Dots :
-                sender == ViewMoveArrows ? ESPathDrawMode.Arrows : ESPathDrawMode.None;
+                sender == ViewMoveLine ? PathDrawMode.Line :
+                sender == ViewMoveDots ? PathDrawMode.Dots :
+                sender == ViewMoveArrows ? PathDrawMode.Arrows : PathDrawMode.None;
         }
 
         private void ViewPush_Click(object sender, EventArgs e)
@@ -300,9 +290,9 @@ namespace ExpertSokoban
             ViewPushArrows.Checked = sender == ViewPushArrows;
 
             MainArea.PushDrawMode =
-                sender == ViewPushLine ? ESPathDrawMode.Line :
-                sender == ViewPushDots ? ESPathDrawMode.Dots :
-                sender == ViewPushArrows ? ESPathDrawMode.Arrows : ESPathDrawMode.None;
+                sender == ViewPushLine ? PathDrawMode.Line :
+                sender == ViewPushDots ? PathDrawMode.Dots :
+                sender == ViewPushArrows ? PathDrawMode.Arrows : PathDrawMode.None;
         }
 
         private void ViewEndPos_Click(object sender, EventArgs e)
@@ -361,15 +351,39 @@ namespace ExpertSokoban
             if (LevelList.SelectedIndex < 0)
                 return;
             EditingIndex = LevelList.SelectedIndex;
-            LevelListPanel.Visible = false;
-            LevelListSplitter.Visible = false;
-            LevelMenu.Visible = false;
-            EditMenu.Visible = true;
         }
 
         private void ESMainform_FormClosed(object sender, FormClosedEventArgs e)
         {
             SavePrgSettings();
+        }
+
+        private void ShowLevelList()
+        {
+            LevelListPanel.Visible = true;
+            LevelListSplitter.Visible = true;
+            LevelCreate.Enabled = true;
+            LevelEdit.Enabled = true;
+            LevelAddComment.Enabled = true;
+            LevelCut.Enabled = true;
+            LevelCopy.Enabled = true;
+            LevelPaste.Enabled = true;
+            LevelDelete.Enabled = true;
+            LevelList.Focus();
+        }
+
+        private void HideLevelList()
+        {
+            LevelListPanel.Visible = false;
+            LevelListSplitter.Visible = false;
+            LevelCreate.Enabled = false;
+            LevelEdit.Enabled = false;
+            LevelAddComment.Enabled = false;
+            LevelCut.Enabled = false;
+            LevelCopy.Enabled = false;
+            LevelPaste.Enabled = false;
+            LevelDelete.Enabled = false;
+            LevelList.Focus();
         }
     }
 }

@@ -8,12 +8,12 @@ using System.Collections;
 
 namespace ExpertSokoban
 {
-    public class ESLevelListBox : ListBox
+    public class LevelListBox : ListBox
     {
         private Hashtable CachedRenderings;
         private int LastWidth;
 
-        public ESLevelListBox()
+        public LevelListBox()
         {
             this.MeasureItem += new MeasureItemEventHandler(ESLevelListBox_MeasureItem);
             this.DrawItem += new DrawItemEventHandler(ESLevelListBox_DrawItem);
@@ -73,7 +73,7 @@ namespace ExpertSokoban
                 return (Image) CachedRenderings[Level];
 
             Image Rendering = new Bitmap(Width, Height);
-            new ESRenderer(Level, Width, Height, new SolidBrush(Color.Transparent)).Render(Graphics.FromImage(Rendering));
+            new Renderer(Level, Width, Height, new SolidBrush(Color.Transparent)).Render(Graphics.FromImage(Rendering));
             CachedRenderings[Level] = Rendering;
             return Rendering;
         }

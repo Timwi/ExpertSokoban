@@ -18,7 +18,7 @@ namespace ExpertSokoban
         Sokoban
     }
 
-    public class ESRenderer
+    public class Renderer
     {
         private SokobanLevel FLevel;
         private float FCellWidth, FCellHeight;
@@ -32,23 +32,23 @@ namespace ExpertSokoban
         public int OriginX { get { return FOriginX; } }
         public int OriginY { get { return FOriginY; } }
 
-        public ESRenderer(SokobanLevel Level, Size ClientSize)
+        public Renderer(SokobanLevel Level, Size ClientSize)
         {
             Init(Level, ClientSize.Width, ClientSize.Height);
         }
 
-        public ESRenderer(SokobanLevel Level, int ClientWidth, int ClientHeight)
+        public Renderer(SokobanLevel Level, int ClientWidth, int ClientHeight)
         {
             Init(Level, ClientWidth, ClientHeight);
         }
 
-        public ESRenderer(SokobanLevel Level, Size ClientSize, Brush BackgroundBrush)
+        public Renderer(SokobanLevel Level, Size ClientSize, Brush BackgroundBrush)
         {
             FBackgroundBrush = BackgroundBrush;
             Init(Level, ClientSize.Width, ClientSize.Height);
         }
 
-        public ESRenderer(SokobanLevel Level, int ClientWidth, int ClientHeight, Brush BackgroundBrush)
+        public Renderer(SokobanLevel Level, int ClientWidth, int ClientHeight, Brush BackgroundBrush)
         {
             FBackgroundBrush = BackgroundBrush;
             Init(Level, ClientWidth, ClientHeight);
