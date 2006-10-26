@@ -7,13 +7,19 @@ namespace ExpertSokoban
 {
     public enum SokobanCell
     {
-        Invalid,
+        //Invalid,
         Blank,
         Wall,
         Piece,
         Target,
         PieceOnTarget
-    };
+    }
+    public enum SokobanLevelStatus
+    {
+        Valid,
+        NotEnclosed,
+        TargetsPiecesMismatch
+    }
 
     [Serializable]
     public class SokobanLevel
@@ -122,7 +128,7 @@ namespace ExpertSokoban
         public SokobanCell Cell(int x, int y)
         {
             if (x < 0 || y < 0 || x >= Width || y >= Height)
-                return SokobanCell.Invalid;
+                return SokobanCell.Blank;
             return FLevel[y*FWidth + x];
         }
         public void SetSokobanPos(Point Pos) { if (Pos.X >= 0 && Pos.Y >= 0 && Pos.X < FWidth && Pos.Y < FHeight) FSokobanPos = Pos; }
@@ -193,6 +199,8 @@ namespace ExpertSokoban
         }
         private bool ColumnBlank(int x)
         {
+            if (FSokobanPos.X == x)
+                return false;
             for (int y = 0; y < FHeight; y++)
                 if (FLevel[y*FWidth + x] != SokobanCell.Blank)
                     return false;
@@ -200,6 +208,8 @@ namespace ExpertSokoban
         }
         private bool RowBlank(int y)
         {
+            if (FSokobanPos.Y == y)
+                return false;
             for (int x = 0; x < FWidth; x++)
                 if (FLevel[y*FWidth + x] != SokobanCell.Blank)
                     return false;
@@ -233,6 +243,30 @@ namespace ExpertSokoban
         {
             SokobanCell[] NewLevel = (SokobanCell[]) FLevel.Clone();
             return new SokobanLevel(FWidth, FHeight, NewLevel, FSokobanPos);
+        }
+
+        public SokobanLevelStatus IsValid()
+        {
+            // Check if the number of pieces equals the number of targets
+            int Pieces = 0, Targets = 0;
+            for (int i = 0; i < FLevel.Length; i++)
+                if (FLevel[i] == SokobanCell.Piece)
+                    Pieces++;
+                else if (FLevel[i] == SokobanCell.Target)
+                    Targets++;
+            if (Pieces != Targets)
+                return SokobanLevelStatus.TargetsPiecesMismatch;
+
+            // Check if the level is properly enclosed
+            MoveFinder Finder = new MoveFinder(this, MoveFinderOption.IgnorePieces);
+            for (int i = 0; i < FWidth; i++)
+                if (Finder.Get(i, 0) || Finder.Get(i, FHeight-1))
+                    return SokobanLevelStatus.NotEnclosed;
+            for (int i = 0; i < FHeight; i++)
+                if (Finder.Get(0, i) || Finder.Get(FWidth-1, i))
+                    return SokobanLevelStatus.NotEnclosed;
+
+            return SokobanLevelStatus.Valid;
         }
 
         public static SokobanLevel TestLevel()

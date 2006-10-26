@@ -31,6 +31,11 @@ namespace ExpertSokoban
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Mainform));
             this.LevelListPanel = new System.Windows.Forms.Panel();
             this.LevelList = new ExpertSokoban.LevelListBox();
+            this.EditToolStrip = new System.Windows.Forms.ToolStrip();
+            this.EditToolWall = new System.Windows.Forms.ToolStripButton();
+            this.EditToolPiece = new System.Windows.Forms.ToolStripButton();
+            this.EditToolTarget = new System.Windows.Forms.ToolStripButton();
+            this.EditToolSokoban = new System.Windows.Forms.ToolStripButton();
             this.LevelListToolStrip = new System.Windows.Forms.ToolStrip();
             this.LevelToolNew = new System.Windows.Forms.ToolStripButton();
             this.LevelToolOpen = new System.Windows.Forms.ToolStripButton();
@@ -75,10 +80,21 @@ namespace ExpertSokoban
             this.LevelPaste = new System.Windows.Forms.ToolStripMenuItem();
             this.LevelDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.EditMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.EditWall = new System.Windows.Forms.ToolStripMenuItem();
+            this.EditPiece = new System.Windows.Forms.ToolStripMenuItem();
+            this.EditTarget = new System.Windows.Forms.ToolStripMenuItem();
+            this.EditSokoban = new System.Windows.Forms.ToolStripMenuItem();
             this.MainToolStripContainer = new System.Windows.Forms.ToolStripContainer();
             this.MainArea = new ExpertSokoban.MainArea();
             this.LevelListSplitter = new System.Windows.Forms.Splitter();
+            this.EditToolOK = new System.Windows.Forms.ToolStripButton();
+            this.EditToolSep = new System.Windows.Forms.ToolStripSeparator();
+            this.EditFinish = new System.Windows.Forms.ToolStripMenuItem();
+            this.EditSep = new System.Windows.Forms.ToolStripSeparator();
+            this.EditCancel = new System.Windows.Forms.ToolStripMenuItem();
+            this.EditToolCancel = new System.Windows.Forms.ToolStripButton();
             this.LevelListPanel.SuspendLayout();
+            this.EditToolStrip.SuspendLayout();
             this.LevelListToolStrip.SuspendLayout();
             this.MainMenu.SuspendLayout();
             this.MainToolStripContainer.ContentPanel.SuspendLayout();
@@ -90,6 +106,7 @@ namespace ExpertSokoban
             // 
             this.LevelListPanel.BackColor = System.Drawing.SystemColors.Control;
             this.LevelListPanel.Controls.Add(this.LevelList);
+            this.LevelListPanel.Controls.Add(this.EditToolStrip);
             this.LevelListPanel.Controls.Add(this.LevelListToolStrip);
             this.LevelListPanel.Dock = System.Windows.Forms.DockStyle.Right;
             this.LevelListPanel.Location = new System.Drawing.Point(630, 0);
@@ -111,6 +128,65 @@ namespace ExpertSokoban
             this.LevelList.DoubleClick += new System.EventHandler(this.LevelList_DoubleClick);
             this.LevelList.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LevelList_KeyPress);
             // 
+            // EditToolStrip
+            // 
+            this.EditToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.EditToolWall,
+            this.EditToolPiece,
+            this.EditToolTarget,
+            this.EditToolSokoban,
+            this.EditToolSep,
+            this.EditToolOK,
+            this.EditToolCancel});
+            this.EditToolStrip.Location = new System.Drawing.Point(0, 25);
+            this.EditToolStrip.Name = "EditToolStrip";
+            this.EditToolStrip.Size = new System.Drawing.Size(200, 25);
+            this.EditToolStrip.TabIndex = 3;
+            this.EditToolStrip.Text = "Edit toolbar";
+            this.EditToolStrip.Visible = false;
+            // 
+            // EditToolWall
+            // 
+            this.EditToolWall.Checked = true;
+            this.EditToolWall.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.EditToolWall.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.EditToolWall.Image = ((System.Drawing.Image)(resources.GetObject("EditToolWall.Image")));
+            this.EditToolWall.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.EditToolWall.Name = "EditToolWall";
+            this.EditToolWall.Size = new System.Drawing.Size(23, 22);
+            this.EditToolWall.Text = "Wall tool";
+            this.EditToolWall.Click += new System.EventHandler(this.EditTool_Click);
+            // 
+            // EditToolPiece
+            // 
+            this.EditToolPiece.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.EditToolPiece.Image = ((System.Drawing.Image)(resources.GetObject("EditToolPiece.Image")));
+            this.EditToolPiece.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.EditToolPiece.Name = "EditToolPiece";
+            this.EditToolPiece.Size = new System.Drawing.Size(23, 22);
+            this.EditToolPiece.Text = "Piece tool";
+            this.EditToolPiece.Click += new System.EventHandler(this.EditTool_Click);
+            // 
+            // EditToolTarget
+            // 
+            this.EditToolTarget.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.EditToolTarget.Image = ((System.Drawing.Image)(resources.GetObject("EditToolTarget.Image")));
+            this.EditToolTarget.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.EditToolTarget.Name = "EditToolTarget";
+            this.EditToolTarget.Size = new System.Drawing.Size(23, 22);
+            this.EditToolTarget.Text = "Target tool";
+            this.EditToolTarget.Click += new System.EventHandler(this.EditTool_Click);
+            // 
+            // EditToolSokoban
+            // 
+            this.EditToolSokoban.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.EditToolSokoban.Image = ((System.Drawing.Image)(resources.GetObject("EditToolSokoban.Image")));
+            this.EditToolSokoban.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.EditToolSokoban.Name = "EditToolSokoban";
+            this.EditToolSokoban.Size = new System.Drawing.Size(23, 22);
+            this.EditToolSokoban.Text = "Sokoban tool";
+            this.EditToolSokoban.Click += new System.EventHandler(this.EditTool_Click);
+            // 
             // LevelListToolStrip
             // 
             this.LevelListToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -127,7 +203,7 @@ namespace ExpertSokoban
             this.LevelListToolStrip.Name = "LevelListToolStrip";
             this.LevelListToolStrip.Size = new System.Drawing.Size(200, 25);
             this.LevelListToolStrip.TabIndex = 0;
-            this.LevelListToolStrip.Text = "toolStrip1";
+            this.LevelListToolStrip.Text = "Levels toolbar";
             // 
             // LevelToolNew
             // 
@@ -491,10 +567,56 @@ namespace ExpertSokoban
             // 
             // EditMenu
             // 
+            this.EditMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.EditFinish,
+            this.EditCancel,
+            this.EditSep,
+            this.EditWall,
+            this.EditPiece,
+            this.EditTarget,
+            this.EditSokoban});
             this.EditMenu.Name = "EditMenu";
             this.EditMenu.Size = new System.Drawing.Size(37, 20);
             this.EditMenu.Text = "&Edit";
             this.EditMenu.Visible = false;
+            // 
+            // EditWall
+            // 
+            this.EditWall.Checked = true;
+            this.EditWall.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.EditWall.Name = "EditWall";
+            this.EditWall.ShortcutKeyDisplayString = "";
+            this.EditWall.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
+            this.EditWall.Size = new System.Drawing.Size(194, 22);
+            this.EditWall.Text = "&Wall tool";
+            this.EditWall.Click += new System.EventHandler(this.EditTool_Click);
+            // 
+            // EditPiece
+            // 
+            this.EditPiece.Name = "EditPiece";
+            this.EditPiece.ShortcutKeyDisplayString = "";
+            this.EditPiece.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
+            this.EditPiece.Size = new System.Drawing.Size(194, 22);
+            this.EditPiece.Text = "&Piece tool";
+            this.EditPiece.Click += new System.EventHandler(this.EditTool_Click);
+            // 
+            // EditTarget
+            // 
+            this.EditTarget.Name = "EditTarget";
+            this.EditTarget.ShortcutKeyDisplayString = "";
+            this.EditTarget.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
+            this.EditTarget.Size = new System.Drawing.Size(194, 22);
+            this.EditTarget.Text = "&Target tool";
+            this.EditTarget.Click += new System.EventHandler(this.EditTool_Click);
+            // 
+            // EditSokoban
+            // 
+            this.EditSokoban.Name = "EditSokoban";
+            this.EditSokoban.ShortcutKeyDisplayString = "";
+            this.EditSokoban.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.K)));
+            this.EditSokoban.Size = new System.Drawing.Size(194, 22);
+            this.EditSokoban.Text = "&Sokoban tool";
+            this.EditSokoban.Click += new System.EventHandler(this.EditTool_Click);
             // 
             // MainToolStripContainer
             // 
@@ -526,6 +648,7 @@ namespace ExpertSokoban
             this.MainArea.ShowEndPos = false;
             this.MainArea.Size = new System.Drawing.Size(630, 464);
             this.MainArea.TabIndex = 1;
+            this.MainArea.Tool = ExpertSokoban.MainAreaTool.Wall;
             this.MainArea.MoveMade += new System.EventHandler(this.MainArea_MoveMade);
             // 
             // LevelListSplitter
@@ -538,7 +661,50 @@ namespace ExpertSokoban
             this.LevelListSplitter.TabStop = false;
             this.LevelListSplitter.Visible = false;
             // 
-            // ESMainform
+            // EditToolOK
+            // 
+            this.EditToolOK.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.EditToolOK.Image = ((System.Drawing.Image)(resources.GetObject("EditToolOK.Image")));
+            this.EditToolOK.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.EditToolOK.Name = "EditToolOK";
+            this.EditToolOK.Size = new System.Drawing.Size(23, 22);
+            this.EditToolOK.Text = "Finish editing";
+            // 
+            // EditToolSep
+            // 
+            this.EditToolSep.Name = "EditToolSep";
+            this.EditToolSep.Size = new System.Drawing.Size(6, 25);
+            // 
+            // EditFinish
+            // 
+            this.EditFinish.Name = "EditFinish";
+            this.EditFinish.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Return)));
+            this.EditFinish.Size = new System.Drawing.Size(194, 22);
+            this.EditFinish.Text = "&Finish editing";
+            // 
+            // EditSep
+            // 
+            this.EditSep.Name = "EditSep";
+            this.EditSep.Size = new System.Drawing.Size(191, 6);
+            // 
+            // EditCancel
+            // 
+            this.EditCancel.Name = "EditCancel";
+            this.EditCancel.ShortcutKeyDisplayString = "";
+            this.EditCancel.Size = new System.Drawing.Size(194, 22);
+            this.EditCancel.Text = "&Cancel editing";
+            this.EditCancel.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            // 
+            // EditToolCancel
+            // 
+            this.EditToolCancel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.EditToolCancel.Image = ((System.Drawing.Image)(resources.GetObject("EditToolCancel.Image")));
+            this.EditToolCancel.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.EditToolCancel.Name = "EditToolCancel";
+            this.EditToolCancel.Size = new System.Drawing.Size(23, 22);
+            this.EditToolCancel.Text = "Cancel editing";
+            // 
+            // Mainform
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -547,13 +713,15 @@ namespace ExpertSokoban
             this.Controls.Add(this.MainToolStripContainer);
             this.Controls.Add(this.LevelListPanel);
             this.MainMenuStrip = this.MainMenu;
-            this.Name = "ESMainform";
+            this.Name = "Mainform";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Expert Sokoban";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ESMainform_FormClosed);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ESMainform_FormClosing);
             this.LevelListPanel.ResumeLayout(false);
             this.LevelListPanel.PerformLayout();
+            this.EditToolStrip.ResumeLayout(false);
+            this.EditToolStrip.PerformLayout();
             this.LevelListToolStrip.ResumeLayout(false);
             this.LevelListToolStrip.PerformLayout();
             this.MainMenu.ResumeLayout(false);
@@ -618,6 +786,21 @@ namespace ExpertSokoban
         private System.Windows.Forms.ToolStripMenuItem LevelSave;
         private System.Windows.Forms.ToolStripContainer MainToolStripContainer;
         private System.Windows.Forms.Splitter LevelListSplitter;
+        private System.Windows.Forms.ToolStrip EditToolStrip;
+        private System.Windows.Forms.ToolStripButton EditToolWall;
+        private System.Windows.Forms.ToolStripButton EditToolPiece;
+        private System.Windows.Forms.ToolStripButton EditToolTarget;
+        private System.Windows.Forms.ToolStripButton EditToolSokoban;
+        private System.Windows.Forms.ToolStripMenuItem EditWall;
+        private System.Windows.Forms.ToolStripMenuItem EditPiece;
+        private System.Windows.Forms.ToolStripMenuItem EditTarget;
+        private System.Windows.Forms.ToolStripMenuItem EditSokoban;
+        private System.Windows.Forms.ToolStripButton EditToolOK;
+        private System.Windows.Forms.ToolStripSeparator EditToolSep;
+        private System.Windows.Forms.ToolStripMenuItem EditFinish;
+        private System.Windows.Forms.ToolStripMenuItem EditCancel;
+        private System.Windows.Forms.ToolStripSeparator EditSep;
+        private System.Windows.Forms.ToolStripButton EditToolCancel;
     }
 }
 

@@ -47,26 +47,30 @@ namespace ExpertSokoban
         public PathDrawMode MoveDrawMode { get { return FMoveDrawMode; } set { FMoveDrawMode = value; Invalidate(); } }
         public PathDrawMode PushDrawMode { get { return FPushDrawMode; } set { FPushDrawMode = value; Invalidate(); } }
         public bool ShowEndPos { get { return FShowEndPos; } set { FShowEndPos = value; Invalidate(); } }
+        public MainAreaTool Tool { get { return FTool; } set { FTool = value; } }
         
         public event EventHandler MoveMade;
+        public event EventHandler ToolChanged;
 
         private SokobanLevel FLevel;
         private Renderer Renderer;
         private MoveFinder MoveFinder;
         private PushFinder PushFinder;
         private MainAreaState FState;
-        private MainAreaTool Tool;
+        private MainAreaTool FTool;
         private PathDrawMode FMoveDrawMode, FPushDrawMode;
         private bool FShowEndPos;
 
         private Brush MoveBrush = new SolidBrush(Color.FromArgb(32, 0, 255, 0));
-        private Brush PushBrush = new SolidBrush(Color.FromArgb(32, 0, 0, 255));
         private Pen MovePen = new Pen(Color.FromArgb(128, 0, 255, 0), 1.5f);
+        private Brush PushBrush = new SolidBrush(Color.FromArgb(32, 0, 0, 255));
         private Pen PushPen = new Pen(Color.FromArgb(128, 0, 0, 255), 1.5f);
-        private Pen MovePathPen = new Pen(Color.FromArgb(255, 0, 192, 0), 2f);
-        private Pen PushPathPen = new Pen(Color.FromArgb(0, 0, 0x80), 3.5f);
+        private Brush EditInvalidBrush = new SolidBrush(Color.FromArgb(64, 255, 0, 0));
+        private Pen EditInvalidPen = new Pen(Color.FromArgb(255, 255, 0, 0), 1.5f);
         private Brush MovePathBrush = new SolidBrush(Color.FromArgb(0, 128, 0));
+        private Pen MovePathPen = new Pen(Color.FromArgb(255, 0, 192, 0), 2f);
         private Brush PushPathBrush = new SolidBrush(Color.FromArgb(0, 0, 128));
+        private Pen PushPathPen = new Pen(Color.FromArgb(0, 0, 0x80), 3.5f);
         private SoundPlayer SndLevelSolved, SndMeep, SndPiecePlaced, SndEditorClick;
 
         private Point? Sel, OrigMouseDown, MouseOverCell;
@@ -123,7 +127,9 @@ namespace ExpertSokoban
 
         private void ReinitMoveFinder()
         {
-            MoveFinder = new MoveFinder(FLevel);
+            MoveFinder = State == MainAreaState.Editing
+                ? new MoveFinderOutline(FLevel)
+                : new MoveFinder(FLevel);
         }
 
         private void ESMainArea_Paint(object sender, PaintEventArgs e)
@@ -143,6 +149,12 @@ namespace ExpertSokoban
                     GraphicsPath Path = Renderer.ValidPath(PushFinder);
                     e.Graphics.FillPath(PushBrush, Path);
                     e.Graphics.DrawPath(PushPen, Path);
+                }
+                if (FState == MainAreaState.Editing && MoveFinder != null)
+                {
+                    GraphicsPath Path = Renderer.ValidPath(MoveFinder);
+                    e.Graphics.FillPath(EditInvalidBrush, Path);
+                    e.Graphics.DrawPath(EditInvalidPen, Path);
                 }
                 if (FState == MainAreaState.Push)
                 {
@@ -334,7 +346,7 @@ namespace ExpertSokoban
             if (FState == MainAreaState.Editing)
             {
                 SokobanCell CellType = FLevel.Cell(Cell);
-                if (Tool == MainAreaTool.Wall)
+                if (FTool == MainAreaTool.Wall)
                 {
                     if (FLevel.SokobanPos != Cell)
                     {
@@ -343,7 +355,7 @@ namespace ExpertSokoban
                     }
                     else SndMeep.Play();
                 }
-                else if (Tool == MainAreaTool.Piece)
+                else if (FTool == MainAreaTool.Piece)
                 {
                     if (FLevel.SokobanPos != Cell && CellType != SokobanCell.Wall)
                     {
@@ -356,7 +368,7 @@ namespace ExpertSokoban
                     }
                     else SndMeep.Play();
                 }
-                else if (Tool == MainAreaTool.Target)
+                else if (FTool == MainAreaTool.Target)
                 {
                     if (CellType != SokobanCell.Wall)
                     {
@@ -369,14 +381,15 @@ namespace ExpertSokoban
                     }
                     else SndMeep.Play();
                 }
-                else if (Tool == MainAreaTool.Sokoban)
+                else if (FTool == MainAreaTool.Sokoban)
                 {
                     if (CellType != SokobanCell.Wall &&
                         CellType != SokobanCell.Piece &&
                         CellType != SokobanCell.PieceOnTarget)
                     {
-                        Invalidate(RoundedRectangle(Renderer.CellRectForImage(FLevel.SokobanPos)));
+                        Point PrevSokobanPos = FLevel.SokobanPos;
                         FLevel.SetSokobanPos(Cell);
+                        Renderer.RenderCell(Graphics.FromImage(Buffer), PrevSokobanPos);
                         SndPiecePlaced.Play();
                     }
                     else SndMeep.Play();
@@ -384,10 +397,14 @@ namespace ExpertSokoban
                 int PrevSizeX = FLevel.Width;
                 int PrevSizeY = FLevel.Height;
                 FLevel.EnsureSpace();
+                ReinitMoveFinder();
                 if (FLevel.Width != PrevSizeX || FLevel.Height != PrevSizeY)
                     Refresh();
                 else
-                    Invalidate(RoundedRectangle(Renderer.CellRectForImage(Cell)));
+                {
+                    Renderer.RenderCell(Graphics.FromImage(Buffer), Cell);
+                    Invalidate();
+                }
             }
 
             // If the user clicked on a piece, initiate the PushFinder,
@@ -488,14 +505,24 @@ namespace ExpertSokoban
             OrigMouseDown = null;
         }
 
-        public void SetLevel(SokobanLevel Level)
+        private void SetLevelDo(SokobanLevel Level, MainAreaState State)
         {
             FLevel = Level.Clone();
             FLevel.EnsureSpace();
             Renderer = new Renderer(FLevel, ClientSize);
-            FState = MainAreaState.Move;
+            FState = State;
             ReinitMoveFinder();
             Refresh();
+        }
+
+        public void SetLevel(SokobanLevel Level)
+        {
+            SetLevelDo(Level, MainAreaState.Move);
+        }
+
+        public void SetLevelEdit(SokobanLevel Level)
+        {
+            SetLevelDo(Level, MainAreaState.Editing);
         }
 
         public void Undo()

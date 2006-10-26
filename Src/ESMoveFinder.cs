@@ -7,9 +7,10 @@ using System.Drawing;
 
 namespace ExpertSokoban
 {
+    public enum MoveFinderOption { None, IgnorePieces }
     public class MoveFinder : Virtual2DArray<bool>
     {
-        private SokobanLevel FLevel;
+        protected SokobanLevel FLevel;
         private int[] FPathLength;
         private Point[] FPredecessor;
         private Queue<Point> FQueue = new Queue<Point>();
@@ -19,13 +20,17 @@ namespace ExpertSokoban
 
         public MoveFinder(SokobanLevel Level)
         {
-            Run(Level, null);
+            Run(Level, null, false);
         }
         public MoveFinder(SokobanLevel Level, Point? StopIfFourSides)
         {
-            Run(Level, StopIfFourSides);
+            Run(Level, StopIfFourSides, false);
         }
-        public void Run(SokobanLevel Level, Point? StopIfFourSides)
+        public MoveFinder(SokobanLevel Level, MoveFinderOption SpecialOption)
+        {
+            Run(Level, null, SpecialOption == MoveFinderOption.IgnorePieces);
+        }
+        public void Run(SokobanLevel Level, Point? StopIfFourSides, bool IgnorePieces)
         {
             FLevel = Level;
             FPathLength = new int[FLevel.Width * FLevel.Height];
@@ -36,10 +41,10 @@ namespace ExpertSokoban
             while (FQueue.Count > 0)
             {
                 Point Pivot = FQueue.Dequeue();
-                Examine(new Point(Pivot.X, Pivot.Y-1), Pivot);
-                Examine(new Point(Pivot.X-1, Pivot.Y), Pivot);
-                Examine(new Point(Pivot.X+1, Pivot.Y), Pivot);
-                Examine(new Point(Pivot.X, Pivot.Y+1), Pivot);
+                Examine(new Point(Pivot.X, Pivot.Y-1), Pivot, IgnorePieces);
+                Examine(new Point(Pivot.X-1, Pivot.Y), Pivot, IgnorePieces);
+                Examine(new Point(Pivot.X+1, Pivot.Y), Pivot, IgnorePieces);
+                Examine(new Point(Pivot.X, Pivot.Y+1), Pivot, IgnorePieces);
 
                 if (StopIfFourSides != null &&
                     FPathLength[StopIfFourSides.Value.Y*FLevel.Width + StopIfFourSides.Value.X - FLevel.Width] > 0 &&
@@ -50,24 +55,32 @@ namespace ExpertSokoban
             }
         }
 
-        private void Examine(Point Pos, Point Pivot)
+        private void Examine(Point Pos, Point Pivot, bool IgnorePieces)
         {
-            if (FLevel.IsFree(Pos) && FPathLength[Pos.Y*FLevel.Width + Pos.X] == 0)
+            if (Pos.X < 0 || Pos.X >= FLevel.Width || Pos.Y < 0 || Pos.Y >= FLevel.Height)
+                return;
+            if ((FLevel.IsFree(Pos) || (IgnorePieces && FLevel.Cell(Pos) != SokobanCell.Wall)) &&
+                FPathLength[Pos.Y*FLevel.Width + Pos.X] == 0)
             {
-                FQueue.Enqueue(Pos);
+                if (Pos.X > 0 && Pos.X < FLevel.Width-1 && Pos.Y > 0 && Pos.Y < FLevel.Height-1)
+                    FQueue.Enqueue(Pos);
                 FPathLength[Pos.Y*FLevel.Width + Pos.X] = FPathLength[Pivot.Y*FLevel.Width + Pivot.X]+1;
                 FPredecessor[Pos.Y*FLevel.Width + Pos.X] = Pivot;
             }
         }
 
-        public bool Get(Point Pos)
+        public virtual bool Get(Point Pos)
         {
+            if (Pos.X < 0 || Pos.X >= FLevel.Width || Pos.Y < 0 || Pos.Y >= FLevel.Height)
+                return false;
             int Index = Pos.Y*FLevel.Width + Pos.X;
             return Index < 0 || Index >= FPathLength.Length ? false : FPathLength[Index] > 0;
         }
 
-        public bool Get(int x, int y)
+        public virtual bool Get(int x, int y)
         {
+            if (x < 0 || x >= FLevel.Width || y < 0 || y >= FLevel.Height)
+                return false;
             int Index = y*FLevel.Width + x;
             return Index < 0 || Index >= FPathLength.Length ? false : FPathLength[Index] > 0;
         }
@@ -91,6 +104,28 @@ namespace ExpertSokoban
                 At = FPredecessor[At.Y*FLevel.Width + At.X];
             }
             return Result;
+        }
+    }
+
+    public class MoveFinderOutline : MoveFinder
+    {
+        public MoveFinderOutline(SokobanLevel Level)
+            : base(Level, MoveFinderOption.IgnorePieces)
+        {
+            // This space intentionally left blank
+            // (the base constructor calls Run())
+        }
+        public override bool Get(Point Pos)
+        {
+            return (Pos.X == 0 || Pos.X == FLevel.Width-1 ||
+                Pos.Y == 0 || Pos.Y == FLevel.Height-1)
+                && base.Get(Pos);
+        }
+        public override bool Get(int x, int y)
+        {
+            return (x == 0 || x == FLevel.Width-1 ||
+                y == 0 || y == FLevel.Height-1)
+                && base.Get(x, y);
         }
     }
 }

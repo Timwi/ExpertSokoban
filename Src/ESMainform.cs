@@ -128,13 +128,36 @@ namespace ExpertSokoban
             object Item = LevelList.SelectedItem;
             if (Item is SokobanLevel && MayDestroy("Open level"))
             {
-                OrigLevel = (SokobanLevel)Item;
-                MainArea.SetLevel(OrigLevel);
-                EverMoved = false;
+                OrigLevel = (SokobanLevel) Item;
+                SokobanLevelStatus Status = OrigLevel.IsValid();
+                if (Status == SokobanLevelStatus.Valid)
+                {
+                    MainArea.SetLevel(OrigLevel);
+                    EverMoved = false;
+                }
+                else
+                {
+                    String Problem = Status == SokobanLevelStatus.NotEnclosed
+                        ? "The level is not completely enclosed by a wall."
+                        : "The number of pieces does not match the number of targets.";
+                    MessageBox.Show("The level could not be opened because it is invalid.\n\n" + Problem +
+                        "\n\nPlease edit the level in order to address this issue, then try again.", "Expert Sokoban");
+                }
             }
         }
 
         private bool MayDestroy(string Title)
+        {
+            return MayDestroyPlay(Title) || MayDestroyLevelFile(Title);
+        }
+
+        private bool MayDestroyLevelFile(string Title)
+        {
+            // TODO
+            return true;
+        }
+
+        private bool MayDestroyPlay(string Title)
         {
             if (MainArea.State == MainAreaState.Solved ||
                 MainArea.State == MainAreaState.Null ||
@@ -155,7 +178,7 @@ namespace ExpertSokoban
                 TakeLevel();
             else
             {
-                string NewComment = InputBox.GetLine("Please enter the revised comment:", (string)Item);
+                string NewComment = InputBox.GetLine("Please enter the revised comment:", (string) Item);
                 if (NewComment != null)
                     LevelList.Items[LevelList.SelectedIndex] = NewComment;
             }
@@ -350,7 +373,15 @@ namespace ExpertSokoban
         {
             if (LevelList.SelectedIndex < 0)
                 return;
-            EditingIndex = LevelList.SelectedIndex;
+            if (!MayDestroyPlay("Edit level"))
+                return;
+            if (LevelList.Items[LevelList.SelectedIndex] is SokobanLevel)
+            {
+                EditingIndex = LevelList.SelectedIndex;
+                MainArea.SetLevelEdit(LevelList.Items[LevelList.SelectedIndex] as SokobanLevel);
+                EditToolStrip.Visible = true;
+                EditMenu.Visible = true;
+            }
         }
 
         private void ESMainform_FormClosed(object sender, FormClosedEventArgs e)
@@ -384,6 +415,33 @@ namespace ExpertSokoban
             LevelPaste.Enabled = false;
             LevelDelete.Enabled = false;
             LevelList.Focus();
+        }
+
+        private void EditTool_Click(object sender, EventArgs e)
+        {
+            MainArea.Tool =
+                sender == EditToolWall ? MainAreaTool.Wall :
+                sender == EditToolPiece ? MainAreaTool.Piece :
+                sender == EditToolTarget ? MainAreaTool.Target :
+                sender == EditToolSokoban ? MainAreaTool.Sokoban :
+                sender == EditWall ? MainAreaTool.Wall :
+                sender == EditPiece ? MainAreaTool.Piece :
+                sender == EditTarget ? MainAreaTool.Target :
+                MainAreaTool.Sokoban;
+
+            EditToolWall.Checked = (sender == EditToolWall || sender == EditWall);
+            EditToolPiece.Checked = (sender == EditToolPiece || sender == EditPiece);
+            EditToolTarget.Checked = (sender == EditToolTarget || sender == EditTarget);
+            EditToolSokoban.Checked = (sender == EditToolSokoban || sender == EditSokoban);
+            EditWall.Checked = (sender == EditToolWall || sender == EditWall);
+            EditPiece.Checked = (sender == EditToolPiece || sender == EditPiece);
+            EditTarget.Checked = (sender == EditToolTarget || sender == EditTarget);
+            EditSokoban.Checked = (sender == EditToolSokoban || sender == EditSokoban);
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
