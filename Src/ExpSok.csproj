@@ -97,10 +97,6 @@
     <None Include="Resources\sokoban.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\RT.Util\Src\Controls\Controls.csproj">
-      <Project>{40299E02-1D58-4E05-AFBE-DA1550ECC3DB}</Project>
-      <Name>Controls</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\RT.Util\Src\RT.Util.csproj">
       <Project>{8D0FE79C-AD8D-475C-9E6F-9CAE85365B5D}</Project>
       <Name>Util</Name>

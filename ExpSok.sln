@@ -5,7 +5,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpSok", "Src\ExpSok.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Util", "..\RT.Util\Src\RT.Util.csproj", "{8D0FE79C-AD8D-475C-9E6F-9CAE85365B5D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Controls", "..\RT.Util\Src\Controls\Controls.csproj", "{40299E02-1D58-4E05-AFBE-DA1550ECC3DB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Controls", "..\RT.Util\Src\RT.Util.csproj", "{40299E02-1D58-4E05-AFBE-DA1550ECC3DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
