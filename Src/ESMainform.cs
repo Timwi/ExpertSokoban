@@ -8,14 +8,17 @@ using System.Windows.Forms;
 using System.IO;
 using RT.Util;
 using RT.Util.Settings;
+using System.IO.Compression;
 
 namespace ExpertSokoban
 {
     public partial class Mainform : ManagedForm
     {
-        private bool EverMoved;
+        private bool EverMovedOrEdited;
+        private bool LevelFileChanged;
         private SokobanLevel OrigLevel;
         private int EditingIndex;
+        private String LevelFilename;
 
         // For a bug workaround
         private bool LevelListEverShown = false;
@@ -26,7 +29,9 @@ namespace ExpertSokoban
             LoadPrgSettings();
             OrigLevel = SokobanLevel.TestLevel();
             MainArea.SetLevel(OrigLevel);
-            EverMoved = false;
+            EverMovedOrEdited = false;
+            LevelFileChanged = false;
+            LevelFilename = null;
 
             (MainArea.MoveDrawMode == PathDrawMode.Arrows ? ViewMoveArrows :
                 MainArea.MoveDrawMode == PathDrawMode.Dots ? ViewMoveDots :
@@ -59,7 +64,7 @@ namespace ExpertSokoban
 
         private void MainArea_MoveMade(object sender, EventArgs e)
         {
-            EverMoved = true;
+            EverMovedOrEdited = true;
         }
 
         // Used only by LevelOpen_Click()
@@ -67,73 +72,80 @@ namespace ExpertSokoban
 
         private void LevelOpen_Click(object sender, EventArgs e)
         {
-            OpenFileDialog OpenDialog = new OpenFileDialog();
-            if (OpenDialog.ShowDialog() == DialogResult.OK)
+            if (MayDestroyLevelFile("Open level file"))
             {
-                ShowLevelList();
-                LevelList.BeginUpdate();
-                LevelList.Items.Clear();
-                StreamReader StreamReader = new StreamReader(OpenDialog.FileName, Encoding.UTF8);
-                ESMFLevelReaderState State = ESMFLevelReaderState.Empty;
-                String Line;
-                String Comment = "";
-                String LevelEncoded = "";
-                do
+                OpenFileDialog OpenDialog = new OpenFileDialog();
+                if (OpenDialog.ShowDialog() == DialogResult.OK)
                 {
-                    Line = StreamReader.ReadLine();
-                    if (Line == null || Line.Length == 0)
+                    ShowLevelList();
+                    LevelList.BeginUpdate();
+                    LevelList.Items.Clear();
+                    StreamReader StreamReader = new StreamReader(OpenDialog.FileName, Encoding.UTF8);
+                    ESMFLevelReaderState State = ESMFLevelReaderState.Empty;
+                    String Line;
+                    String Comment = "";
+                    String LevelEncoded = "";
+                    do
                     {
-                        if (State == ESMFLevelReaderState.Comment)
+                        Line = StreamReader.ReadLine();
+                        if (Line == null || Line.Length == 0)
                         {
-                            LevelList.Items.Add(Comment);
-                            Comment = "";
+                            if (State == ESMFLevelReaderState.Comment)
+                            {
+                                LevelList.Items.Add(Comment);
+                                Comment = "";
+                            }
+                            else if (State == ESMFLevelReaderState.Level)
+                            {
+                                LevelList.Items.Add(new SokobanLevel(LevelEncoded));
+                                LevelEncoded = "";
+                            }
+                            State = ESMFLevelReaderState.Empty;
                         }
-                        else if (State == ESMFLevelReaderState.Level)
+                        else if (Line[0] == ';')
                         {
-                            LevelList.Items.Add(new SokobanLevel(LevelEncoded));
-                            LevelEncoded = "";
+                            if (State == ESMFLevelReaderState.Level)
+                            {
+                                LevelList.Items.Add(new SokobanLevel(LevelEncoded));
+                                LevelEncoded = "";
+                            }
+                            Comment += Line.Substring(1) + "\n";
+                            State = ESMFLevelReaderState.Comment;
                         }
-                        State = ESMFLevelReaderState.Empty;
+                        else
+                        {
+                            if (State == ESMFLevelReaderState.Comment)
+                            {
+                                LevelList.Items.Add(Comment);
+                                Comment = "";
+                            }
+                            LevelEncoded += Line + "\n";
+                            State = ESMFLevelReaderState.Level;
+                        }
                     }
-                    else if (Line[0] == ';')
-                    {
-                        if (State == ESMFLevelReaderState.Level)
-                        {
-                            LevelList.Items.Add(new SokobanLevel(LevelEncoded));
-                            LevelEncoded = "";
-                        }
-                        Comment += Line.Substring(1) + "\n";
-                        State = ESMFLevelReaderState.Comment;
-                    }
-                    else
-                    {
-                        if (State == ESMFLevelReaderState.Comment)
-                        {
-                            LevelList.Items.Add(Comment);
-                            Comment = "";
-                        }
-                        LevelEncoded += Line + "\n";
-                        State = ESMFLevelReaderState.Level;
-                    }
+                    while (Line != null);
+                    LevelList.EndUpdate();
+                    StreamReader.Close();
+                    LevelListEverShown = true;
+                    LevelFileChanged = false;
+                    LevelFilename = OpenDialog.FileName;
                 }
-                while (Line != null);
-                LevelList.EndUpdate();
-                StreamReader.Close();
-                LevelListEverShown = true;
             }
         }
 
-        private void TakeLevel()
+        private void TakeLevel() { TakeLevel(LevelList.SelectedIndex); }
+        private void TakeLevel(int Index)
         {
-            object Item = LevelList.SelectedItem;
-            if (Item is SokobanLevel && MayDestroy("Open level"))
+            object Item = LevelList.Items[Index];
+            if (Item is SokobanLevel && MayDestroyMainAreaLevel("Open level"))
             {
-                OrigLevel = (SokobanLevel) Item;
+                OrigLevel = (SokobanLevel)Item;
                 SokobanLevelStatus Status = OrigLevel.IsValid();
                 if (Status == SokobanLevelStatus.Valid)
                 {
                     MainArea.SetLevel(OrigLevel);
-                    EverMoved = false;
+                    EverMovedOrEdited = false;
+                    LevelList.SelectedIndex = Index;
                 }
                 else
                 {
@@ -148,24 +160,39 @@ namespace ExpertSokoban
 
         private bool MayDestroy(string Title)
         {
-            return MayDestroyPlay(Title) || MayDestroyLevelFile(Title);
+            return MayDestroyMainAreaLevel(Title) && MayDestroyLevelFile(Title);
         }
 
         private bool MayDestroyLevelFile(string Title)
         {
-            // TODO
+            if (!LevelFileChanged)
+                return true;
+
+            DialogResult Result = MessageBox.Show("You have made changes to "
+                + (LevelFilename == null ? "(untitled)" : LevelFilename) +
+                ". Would you like to save those changes?", Title, MessageBoxButtons.YesNoCancel);
+            if (Result == DialogResult.Cancel)
+                return false;
+            if (Result == DialogResult.Yes)
+            {
+                if (SaveWithDialog() != DialogResult.OK)
+                    return false;
+            }
             return true;
         }
 
-        private bool MayDestroyPlay(string Title)
+        private bool MayDestroyMainAreaLevel(string Title)
         {
             if (MainArea.State == MainAreaState.Solved ||
                 MainArea.State == MainAreaState.Null ||
-                !EverMoved)
+                !EverMovedOrEdited)
                 return true;
 
-            return MessageBox.Show("Are you sure you wish to give up the current level?",
-                Title, MessageBoxButtons.YesNo) == DialogResult.Yes;
+            return MainArea.State == MainAreaState.Editing
+                ? MessageBox.Show("Are you sure you wish to discard your changes to the level you're editing?",
+                    Title, MessageBoxButtons.YesNo) == DialogResult.Yes
+                : MessageBox.Show("Are you sure you wish to give up the current level?",
+                    Title, MessageBoxButtons.YesNo) == DialogResult.Yes;
         }
 
         private void LevelList_DoubleClick(object sender, EventArgs e)
@@ -175,10 +202,13 @@ namespace ExpertSokoban
 
             object Item = LevelList.SelectedItem;
             if (Item is SokobanLevel)
-                TakeLevel();
+            {
+                if (MayDestroyMainAreaLevel("Open level"))
+                    TakeLevel();
+            }
             else
             {
-                string NewComment = InputBox.GetLine("Please enter the revised comment:", (string) Item);
+                string NewComment = InputBox.GetLine("Please enter the revised comment:", (string)Item);
                 if (NewComment != null)
                     LevelList.Items[LevelList.SelectedIndex] = NewComment;
             }
@@ -208,26 +238,26 @@ namespace ExpertSokoban
             }
         }
 
-        private void GameUndo_Click(object sender, EventArgs e)
+        private void LevelUndo_Click(object sender, EventArgs e)
         {
             MainArea.Undo();
         }
 
-        private void GameRetry_Click(object sender, EventArgs e)
+        private void LevelRetry_Click(object sender, EventArgs e)
         {
-            if (MayDestroy("Retry level"))
+            if (MayDestroyMainAreaLevel("Retry level"))
             {
                 MainArea.SetLevel(OrigLevel);
-                EverMoved = false;
+                EverMovedOrEdited = false;
             }
         }
 
-        private void GameExit_Click(object sender, EventArgs e)
+        private void LevelExit_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
-        private void LevelAddComment_Click(object sender, EventArgs e)
+        private void EditAddComment_Click(object sender, EventArgs e)
         {
             if (!LevelListPanel.Visible)
                 ViewLevelsList_Click(sender, e);
@@ -251,16 +281,18 @@ namespace ExpertSokoban
         {
             if (!LevelListPanel.Visible)
                 ViewLevelsList_Click(sender, e);
-            if (MessageBox.Show("Are you sure you wish to delete all the levels in the levels list?",
-                "Expert Sokoban", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (MayDestroyLevelFile("New level file"))
+            {
                 LevelList.Items.Clear();
+                LevelFilename = null;
+            }
         }
 
-        private void LevelCreate_Click(object sender, EventArgs e)
+        private void EditCreateLevel_Click(object sender, EventArgs e)
         {
             if (!LevelListPanel.Visible)
                 ViewLevelsList_Click(sender, e);
-            SokobanLevel NewLevel = SokobanLevel.TrivialLvel();
+            SokobanLevel NewLevel = SokobanLevel.TrivialLevel();
             if (LevelList.SelectedIndex < 0)
             {
                 LevelList.Items.Insert(0, NewLevel);
@@ -273,7 +305,7 @@ namespace ExpertSokoban
             }
         }
 
-        private void LevelDelete_Click(object sender, EventArgs e)
+        private void EditDelete_Click(object sender, EventArgs e)
         {
             if (!LevelListPanel.Visible || LevelList.SelectedIndex < 0)
                 return;
@@ -330,18 +362,18 @@ namespace ExpertSokoban
                 e.Cancel = true;
         }
 
-        private void LevelCopy_Click(object sender, EventArgs e)
+        private void EditCopy_Click(object sender, EventArgs e)
         {
             if (!LevelListPanel.Visible || LevelList.SelectedIndex < 0)
                 return;
             Clipboard.SetData("SokobanData", LevelList.Items[LevelList.SelectedIndex]);
         }
 
-        private void LevelCut_Click(object sender, EventArgs e)
+        private void EditCut_Click(object sender, EventArgs e)
         {
             if (!LevelListPanel.Visible || LevelList.SelectedIndex < 0)
                 return;
-            LevelCopy_Click(sender, e);
+            EditCopy_Click(sender, e);
             int OldIndex = LevelList.SelectedIndex;
             LevelList.Items.RemoveAt(OldIndex);
             if (LevelList.Items.Count > 0 && OldIndex < LevelList.Items.Count)
@@ -350,7 +382,7 @@ namespace ExpertSokoban
                 LevelList.SelectedIndex = LevelList.Items.Count-1;
         }
 
-        private void LevelPaste_Click(object sender, EventArgs e)
+        private void EditPaste_Click(object sender, EventArgs e)
         {
             if (!LevelListPanel.Visible)
                 return;
@@ -369,19 +401,12 @@ namespace ExpertSokoban
             }
         }
 
-        private void LevelEdit_Click(object sender, EventArgs e)
+        private void EditEdit_Click(object sender, EventArgs e)
         {
-            if (LevelList.SelectedIndex < 0)
-                return;
-            if (!MayDestroyPlay("Edit level"))
-                return;
-            if (LevelList.Items[LevelList.SelectedIndex] is SokobanLevel)
-            {
-                EditingIndex = LevelList.SelectedIndex;
-                MainArea.SetLevelEdit(LevelList.Items[LevelList.SelectedIndex] as SokobanLevel);
-                EditToolStrip.Visible = true;
-                EditMenu.Visible = true;
-            }
+            if (LevelList.SelectedIndex >= 0 &&
+                LevelList.Items[LevelList.SelectedIndex] is SokobanLevel &&
+                MayDestroyMainAreaLevel("Edit level"))
+                EnterEditingMode();
         }
 
         private void ESMainform_FormClosed(object sender, FormClosedEventArgs e)
@@ -393,13 +418,14 @@ namespace ExpertSokoban
         {
             LevelListPanel.Visible = true;
             LevelListSplitter.Visible = true;
-            LevelCreate.Enabled = true;
-            LevelEdit.Enabled = true;
-            LevelAddComment.Enabled = true;
-            LevelCut.Enabled = true;
-            LevelCopy.Enabled = true;
-            LevelPaste.Enabled = true;
-            LevelDelete.Enabled = true;
+            EditCreateLevel.Enabled = true;
+            EditEdit.Enabled = true;
+            EditAddComment.Enabled = true;
+            EditCut.Enabled = true;
+            EditCopy.Enabled = true;
+            EditPaste.Enabled = true;
+            EditDelete.Enabled = true;
+            LevelSave.Enabled = true;
             LevelList.Focus();
         }
 
@@ -407,13 +433,14 @@ namespace ExpertSokoban
         {
             LevelListPanel.Visible = false;
             LevelListSplitter.Visible = false;
-            LevelCreate.Enabled = false;
-            LevelEdit.Enabled = false;
-            LevelAddComment.Enabled = false;
-            LevelCut.Enabled = false;
-            LevelCopy.Enabled = false;
-            LevelPaste.Enabled = false;
-            LevelDelete.Enabled = false;
+            EditCreateLevel.Enabled = false;
+            EditEdit.Enabled = false;
+            EditAddComment.Enabled = false;
+            EditCut.Enabled = false;
+            EditCopy.Enabled = false;
+            EditPaste.Enabled = false;
+            EditDelete.Enabled = false;
+            LevelSave.Enabled = false;
             LevelList.Focus();
         }
 
@@ -439,9 +466,99 @@ namespace ExpertSokoban
             EditSokoban.Checked = (sender == EditToolSokoban || sender == EditSokoban);
         }
 
-        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        private void EditCancel_Click(object sender, EventArgs e)
         {
+            LeaveEditingMode();
+        }
 
+        private void EditOK_Click(object sender, EventArgs e)
+        {
+            if (MayDestroyMainAreaLevel("Finish editing"))
+            {
+                LevelList.Items[EditingIndex] = MainArea.Level.Clone();
+                LeaveEditingMode();
+            }
+        }
+
+        private void EnterEditingMode()
+        {
+            EditingIndex = LevelList.SelectedIndex;
+            MainArea.SetLevelEdit(LevelList.Items[LevelList.SelectedIndex] as SokobanLevel);
+            EverMovedOrEdited = false;
+            SwitchEditingMode(true);
+        }
+
+        private void SwitchEditingMode(bool On)
+        {
+            // edit toolbar (visibility)
+            EditToolStrip.Visible = On;
+
+            // buttons on other toolbars
+            LevelToolEdit.Enabled = !On;
+
+            // "Level" menu items
+            LevelUndo.Enabled = !On;
+            LevelRetry.Enabled = !On;
+
+            // "Edit" menu items
+            EditEdit.Enabled = !On;
+            EditFinish.Enabled = On;
+            EditCancel.Enabled = On;
+            EditWall.Enabled = On;
+            EditPiece.Enabled = On;
+            EditTarget.Enabled = On;
+            EditSokoban.Enabled = On;
+
+            // "View" menu items
+            ViewEditToolstrip.Enabled = On;
+            ViewMoveNo.Enabled = !On;
+            ViewMoveLine.Enabled = !On;
+            ViewMoveArrows.Enabled = !On;
+            ViewMoveDots.Enabled = !On;
+            ViewPushNo.Enabled = !On;
+            ViewPushLine.Enabled = !On;
+            ViewPushArrows.Enabled = !On;
+            ViewPushDots.Enabled = !On;
+            ViewEndPos.Enabled = !On;
+        }
+
+        private void LeaveEditingMode()
+        {
+            LevelList.SelectedIndex = EditingIndex;
+            TakeLevel(EditingIndex);
+            SwitchEditingMode(false);
+        }
+
+        private void LevelSave_Click(object sender, EventArgs e)
+        {
+            SaveWithDialog();
+        }
+
+        private DialogResult SaveWithDialog()
+        {
+            if (LevelFilename == null)
+            {
+                SaveFileDialog SaveDialog = new SaveFileDialog();
+                DialogResult Result = SaveDialog.ShowDialog();
+                if (Result != DialogResult.OK)
+                    return Result;
+                LevelFilename = SaveDialog.FileName;
+            }
+
+            StreamWriter StreamWriter = new StreamWriter(LevelFilename, false, Encoding.UTF8);
+            foreach (object Item in LevelList.Items)
+            {
+                if (Item is SokobanLevel)
+                    StreamWriter.WriteLine((Item as SokobanLevel).ToString());
+                else if (Item is string)
+                    StreamWriter.WriteLine(";" + (Item as string) + "\n");
+                else
+                    StreamWriter.WriteLine(";" + Item.ToString() + "\n");
+            }
+            StreamWriter.Close();
+
+            LevelFileChanged = false;
+            return DialogResult.OK;
         }
     }
 }

@@ -48,9 +48,10 @@ namespace ExpertSokoban
         public PathDrawMode PushDrawMode { get { return FPushDrawMode; } set { FPushDrawMode = value; Invalidate(); } }
         public bool ShowEndPos { get { return FShowEndPos; } set { FShowEndPos = value; Invalidate(); } }
         public MainAreaTool Tool { get { return FTool; } set { FTool = value; } }
+        public SokobanLevel Level { get { return FLevel; } }
         
-        public event EventHandler MoveMade;
-        public event EventHandler ToolChanged;
+        public event EventHandler MoveMade;     // occurs while playing only
+        public event EventHandler LevelChanged; // occurs in edit move only
 
         private SokobanLevel FLevel;
         private Renderer Renderer;
@@ -352,6 +353,7 @@ namespace ExpertSokoban
                     {
                         FLevel.SetCell(Cell, CellType == SokobanCell.Wall ? SokobanCell.Blank : SokobanCell.Wall);
                         SndEditorClick.Play();
+                        if (LevelChanged != null) LevelChanged(this, new EventArgs());
                     }
                     else SndMeep.Play();
                 }
@@ -365,6 +367,7 @@ namespace ExpertSokoban
                             CellType == SokobanCell.Target        ? SokobanCell.PieceOnTarget :
                                                                     SokobanCell.Blank);
                         SndPiecePlaced.Play();
+                        if (LevelChanged != null) LevelChanged(this, new EventArgs());
                     }
                     else SndMeep.Play();
                 }
@@ -378,6 +381,7 @@ namespace ExpertSokoban
                             CellType == SokobanCell.Target        ? SokobanCell.Blank :
                                                                     SokobanCell.PieceOnTarget);
                         SndPiecePlaced.Play();
+                        if (LevelChanged != null) LevelChanged(this, new EventArgs());
                     }
                     else SndMeep.Play();
                 }
@@ -391,6 +395,7 @@ namespace ExpertSokoban
                         FLevel.SetSokobanPos(Cell);
                         Renderer.RenderCell(Graphics.FromImage(Buffer), PrevSokobanPos);
                         SndPiecePlaced.Play();
+                        if (LevelChanged != null) LevelChanged(this, new EventArgs());
                     }
                     else SndMeep.Play();
                 }

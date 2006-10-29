@@ -269,6 +269,24 @@ namespace ExpertSokoban
             return SokobanLevelStatus.Valid;
         }
 
+        public override string ToString()
+        {
+            string Output = "";
+            for (int y = 0; y < FHeight; y++)
+            {
+                for (int x = 0; x < FWidth; x++)
+                    Output +=
+                        FLevel[y*FWidth + x] == SokobanCell.Blank && x == FSokobanPos.X && y == FSokobanPos.Y ? '@' :
+                        FLevel[y*FWidth + x] == SokobanCell.Target && x == FSokobanPos.X && y == FSokobanPos.Y ? '+' :
+                        FLevel[y*FWidth + x] == SokobanCell.Piece ? '$' :
+                        FLevel[y*FWidth + x] == SokobanCell.PieceOnTarget ? '*' :
+                        FLevel[y*FWidth + x] == SokobanCell.Target ? '.' :
+                        FLevel[y*FWidth + x] == SokobanCell.Wall ? '#' : ' ';
+                Output += "\n";
+            }
+            return Output;
+        }
+
         public static SokobanLevel TestLevel()
         {
             return new SokobanLevel(
@@ -290,7 +308,7 @@ namespace ExpertSokoban
             );
         }
 
-        public static SokobanLevel TrivialLvel()
+        public static SokobanLevel TrivialLevel()
         {
             return new SokobanLevel("#####\n#@$.#\n#####\n");
         }
