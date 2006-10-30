@@ -49,6 +49,7 @@ namespace ExpertSokoban
         {
             PrgSettings.OpenForRead();
             this.LoadSettings(PrgSettings.Store, "MainForm", "");
+            LevelListPanel.Width = PrgSettings.Store.GetInt("ExpSok", "Level list width", 152);
             PrgSettings.Close();
         }
 
@@ -59,6 +60,7 @@ namespace ExpertSokoban
         {
             PrgSettings.OpenForWrite(true);
             this.SaveSettings(PrgSettings.Store, "MainForm", "");
+            PrgSettings.Store.SetInt("ExpSok", "Level list width", LevelListPanel.Width);
             PrgSettings.Close();
         }
 
@@ -77,7 +79,7 @@ namespace ExpertSokoban
                 OpenFileDialog OpenDialog = new OpenFileDialog();
                 if (OpenDialog.ShowDialog() == DialogResult.OK)
                 {
-                    ShowLevelList();
+                    LevelListVisible(true);
                     LevelList.BeginUpdate();
                     LevelList.Items.Clear();
                     StreamReader StreamReader = new StreamReader(OpenDialog.FileName, Encoding.UTF8);
@@ -223,16 +225,15 @@ namespace ExpertSokoban
         private void ViewLevelsList_Click(object sender, EventArgs e)
         {
             if (LevelListPanel.Visible)
-                HideLevelList();
+                LevelListVisible(false);
             else
             {
-                ShowLevelList();
+                LevelListVisible(true);
                 if (!LevelListEverShown)
                 {
                     LevelList.Items.Add(OrigLevel);
                     LevelListEverShown = true;
                 }
-                LevelList.Focus();
                 if (LevelList.SelectedIndex < 0)
                     LevelList.SelectedIndex = 0;
             }
@@ -414,34 +415,28 @@ namespace ExpertSokoban
             SavePrgSettings();
         }
 
-        private void ShowLevelList()
+        private void LevelListVisible(bool On)
         {
-            LevelListPanel.Visible = true;
-            LevelListSplitter.Visible = true;
-            EditCreateLevel.Enabled = true;
-            EditEdit.Enabled = true;
-            EditAddComment.Enabled = true;
-            EditCut.Enabled = true;
-            EditCopy.Enabled = true;
-            EditPaste.Enabled = true;
-            EditDelete.Enabled = true;
-            LevelSave.Enabled = true;
-            LevelList.Focus();
-        }
+            // Level list itself
+            LevelListPanel.Visible = On;
+            LevelListSplitter.Visible = On;
+            if (On) LevelList.Focus();
 
-        private void HideLevelList()
-        {
-            LevelListPanel.Visible = false;
-            LevelListSplitter.Visible = false;
-            EditCreateLevel.Enabled = false;
-            EditEdit.Enabled = false;
-            EditAddComment.Enabled = false;
-            EditCut.Enabled = false;
-            EditCopy.Enabled = false;
-            EditPaste.Enabled = false;
-            EditDelete.Enabled = false;
-            LevelSave.Enabled = false;
-            LevelList.Focus();
+            // "Edit" menu
+            EditCreateLevel.Enabled = On;
+            EditEdit.Enabled = On;
+            EditAddComment.Enabled = On;
+            EditCut.Enabled = On;
+            EditCopy.Enabled = On;
+            EditPaste.Enabled = On;
+            EditDelete.Enabled = On;
+
+            // "View" menu
+            ViewToolStrip1.Enabled = On;
+            ViewToolStrip2.Enabled = On;
+
+            // "Level" menu
+            LevelSave.Enabled = On;
         }
 
         private void EditTool_Click(object sender, EventArgs e)
@@ -559,6 +554,14 @@ namespace ExpertSokoban
 
             LevelFileChanged = false;
             return DialogResult.OK;
+        }
+
+        private void ViewToolStrip_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem MenuItem = sender as ToolStripMenuItem;
+            ToolStrip Strip = sender == ViewToolStrip1 ? LevelListToolStrip1 : LevelListToolStrip2;
+            MenuItem.Checked = !MenuItem.Checked;
+            Strip.Visible = MenuItem.Checked;
         }
     }
 }

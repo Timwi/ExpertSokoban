@@ -30,7 +30,6 @@ namespace ExpertSokoban
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Mainform));
             this.LevelListPanel = new System.Windows.Forms.Panel();
-            this.LevelList = new ExpertSokoban.LevelListBox();
             this.EditToolStrip = new System.Windows.Forms.ToolStrip();
             this.EditToolWall = new System.Windows.Forms.ToolStripButton();
             this.EditToolPiece = new System.Windows.Forms.ToolStripButton();
@@ -84,8 +83,8 @@ namespace ExpertSokoban
             this.EditUnusedHotkeys = new System.Windows.Forms.ToolStripMenuItem();
             this.ViewMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.ViewLevelsList = new System.Windows.Forms.ToolStripMenuItem();
-            this.ViewToolstrip1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.ViewToolstrip2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.ViewToolStrip1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.ViewToolStrip2 = new System.Windows.Forms.ToolStripMenuItem();
             this.ViewEditToolstrip = new System.Windows.Forms.ToolStripMenuItem();
             this.ViewSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.ViewMoveNo = new System.Windows.Forms.ToolStripMenuItem();
@@ -101,8 +100,9 @@ namespace ExpertSokoban
             this.ViewEndPos = new System.Windows.Forms.ToolStripMenuItem();
             this.ViewUnusedHotkeys = new System.Windows.Forms.ToolStripMenuItem();
             this.MainToolStripContainer = new System.Windows.Forms.ToolStripContainer();
-            this.MainArea = new ExpertSokoban.MainArea();
             this.LevelListSplitter = new System.Windows.Forms.Splitter();
+            this.MainArea = new ExpertSokoban.MainArea();
+            this.LevelList = new ExpertSokoban.LevelListBox();
             this.LevelListPanel.SuspendLayout();
             this.EditToolStrip.SuspendLayout();
             this.LevelListToolStrip2.SuspendLayout();
@@ -121,24 +121,11 @@ namespace ExpertSokoban
             this.LevelListPanel.Controls.Add(this.LevelListToolStrip2);
             this.LevelListPanel.Controls.Add(this.LevelListToolStrip1);
             this.LevelListPanel.Dock = System.Windows.Forms.DockStyle.Right;
-            this.LevelListPanel.Location = new System.Drawing.Point(596, 0);
+            this.LevelListPanel.Location = new System.Drawing.Point(644, 0);
             this.LevelListPanel.Name = "LevelListPanel";
-            this.LevelListPanel.Size = new System.Drawing.Size(200, 482);
+            this.LevelListPanel.Size = new System.Drawing.Size(152, 482);
             this.LevelListPanel.TabIndex = 6;
             this.LevelListPanel.Visible = false;
-            // 
-            // LevelList
-            // 
-            this.LevelList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LevelList.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.LevelList.IntegralHeight = false;
-            this.LevelList.Location = new System.Drawing.Point(0, 50);
-            this.LevelList.Name = "LevelList";
-            this.LevelList.ScrollAlwaysVisible = true;
-            this.LevelList.Size = new System.Drawing.Size(200, 432);
-            this.LevelList.TabIndex = 2;
-            this.LevelList.DoubleClick += new System.EventHandler(this.LevelList_DoubleClick);
-            this.LevelList.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LevelList_KeyPress);
             // 
             // EditToolStrip
             // 
@@ -152,7 +139,7 @@ namespace ExpertSokoban
             this.EditToolCancel});
             this.EditToolStrip.Location = new System.Drawing.Point(0, 50);
             this.EditToolStrip.Name = "EditToolStrip";
-            this.EditToolStrip.Size = new System.Drawing.Size(200, 25);
+            this.EditToolStrip.Size = new System.Drawing.Size(152, 25);
             this.EditToolStrip.TabIndex = 3;
             this.EditToolStrip.Text = "Edit toolbar";
             this.EditToolStrip.Visible = false;
@@ -229,7 +216,7 @@ namespace ExpertSokoban
             this.LevelToolClose});
             this.LevelListToolStrip2.Location = new System.Drawing.Point(0, 25);
             this.LevelListToolStrip2.Name = "LevelListToolStrip2";
-            this.LevelListToolStrip2.Size = new System.Drawing.Size(200, 25);
+            this.LevelListToolStrip2.Size = new System.Drawing.Size(152, 25);
             this.LevelListToolStrip2.TabIndex = 4;
             this.LevelListToolStrip2.Text = "toolStrip1";
             // 
@@ -297,7 +284,7 @@ namespace ExpertSokoban
             this.LevelToolComment});
             this.LevelListToolStrip1.Location = new System.Drawing.Point(0, 0);
             this.LevelListToolStrip1.Name = "LevelListToolStrip1";
-            this.LevelListToolStrip1.Size = new System.Drawing.Size(200, 25);
+            this.LevelListToolStrip1.Size = new System.Drawing.Size(152, 25);
             this.LevelListToolStrip1.TabIndex = 0;
             this.LevelListToolStrip1.Text = "Levels toolbar";
             // 
@@ -368,7 +355,7 @@ namespace ExpertSokoban
             this.ViewMenu});
             this.MainMenu.Location = new System.Drawing.Point(0, 0);
             this.MainMenu.Name = "MainMenu";
-            this.MainMenu.Size = new System.Drawing.Size(596, 24);
+            this.MainMenu.Size = new System.Drawing.Size(644, 24);
             this.MainMenu.TabIndex = 8;
             this.MainMenu.Text = "menuStrip1";
             // 
@@ -620,8 +607,8 @@ namespace ExpertSokoban
             // 
             this.ViewMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ViewLevelsList,
-            this.ViewToolstrip1,
-            this.ViewToolstrip2,
+            this.ViewToolStrip1,
+            this.ViewToolStrip2,
             this.ViewEditToolstrip,
             this.ViewSep1,
             this.ViewMoveNo,
@@ -648,21 +635,25 @@ namespace ExpertSokoban
             this.ViewLevelsList.Text = "Display &levels list";
             this.ViewLevelsList.Click += new System.EventHandler(this.ViewLevelsList_Click);
             // 
-            // ViewToolstrip1
+            // ViewToolStrip1
             // 
-            this.ViewToolstrip1.Checked = true;
-            this.ViewToolstrip1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ViewToolstrip1.Name = "ViewToolstrip1";
-            this.ViewToolstrip1.Size = new System.Drawing.Size(275, 22);
-            this.ViewToolstrip1.Text = "Display &file toolbar";
+            this.ViewToolStrip1.Checked = true;
+            this.ViewToolStrip1.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ViewToolStrip1.Enabled = false;
+            this.ViewToolStrip1.Name = "ViewToolStrip1";
+            this.ViewToolStrip1.Size = new System.Drawing.Size(275, 22);
+            this.ViewToolStrip1.Text = "Display &file toolbar";
+            this.ViewToolStrip1.Click += new System.EventHandler(this.ViewToolStrip_Click);
             // 
-            // ViewToolstrip2
+            // ViewToolStrip2
             // 
-            this.ViewToolstrip2.Checked = true;
-            this.ViewToolstrip2.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ViewToolstrip2.Name = "ViewToolstrip2";
-            this.ViewToolstrip2.Size = new System.Drawing.Size(275, 22);
-            this.ViewToolstrip2.Text = "Display &operations toolbar";
+            this.ViewToolStrip2.Checked = true;
+            this.ViewToolStrip2.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ViewToolStrip2.Enabled = false;
+            this.ViewToolStrip2.Name = "ViewToolStrip2";
+            this.ViewToolStrip2.Size = new System.Drawing.Size(275, 22);
+            this.ViewToolStrip2.Text = "Display &operations toolbar";
+            this.ViewToolStrip2.Click += new System.EventHandler(this.ViewToolStrip_Click);
             // 
             // ViewEditToolstrip
             // 
@@ -765,17 +756,27 @@ namespace ExpertSokoban
             // 
             this.MainToolStripContainer.ContentPanel.AutoScroll = true;
             this.MainToolStripContainer.ContentPanel.Controls.Add(this.MainArea);
-            this.MainToolStripContainer.ContentPanel.Size = new System.Drawing.Size(596, 458);
+            this.MainToolStripContainer.ContentPanel.Size = new System.Drawing.Size(644, 458);
             this.MainToolStripContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MainToolStripContainer.Location = new System.Drawing.Point(0, 0);
             this.MainToolStripContainer.Name = "MainToolStripContainer";
-            this.MainToolStripContainer.Size = new System.Drawing.Size(596, 482);
+            this.MainToolStripContainer.Size = new System.Drawing.Size(644, 482);
             this.MainToolStripContainer.TabIndex = 9;
             this.MainToolStripContainer.Text = "toolStripContainer1";
             // 
             // MainToolStripContainer.TopToolStripPanel
             // 
             this.MainToolStripContainer.TopToolStripPanel.Controls.Add(this.MainMenu);
+            // 
+            // LevelListSplitter
+            // 
+            this.LevelListSplitter.Dock = System.Windows.Forms.DockStyle.Right;
+            this.LevelListSplitter.Location = new System.Drawing.Point(641, 0);
+            this.LevelListSplitter.Name = "LevelListSplitter";
+            this.LevelListSplitter.Size = new System.Drawing.Size(3, 482);
+            this.LevelListSplitter.TabIndex = 10;
+            this.LevelListSplitter.TabStop = false;
+            this.LevelListSplitter.Visible = false;
             // 
             // MainArea
             // 
@@ -786,20 +787,23 @@ namespace ExpertSokoban
             this.MainArea.Name = "MainArea";
             this.MainArea.PushDrawMode = ExpertSokoban.PathDrawMode.Arrows;
             this.MainArea.ShowEndPos = false;
-            this.MainArea.Size = new System.Drawing.Size(596, 458);
+            this.MainArea.Size = new System.Drawing.Size(644, 458);
             this.MainArea.TabIndex = 1;
             this.MainArea.Tool = ExpertSokoban.MainAreaTool.Wall;
             this.MainArea.MoveMade += new System.EventHandler(this.MainArea_MoveMade);
             // 
-            // LevelListSplitter
+            // LevelList
             // 
-            this.LevelListSplitter.Dock = System.Windows.Forms.DockStyle.Right;
-            this.LevelListSplitter.Location = new System.Drawing.Point(593, 0);
-            this.LevelListSplitter.Name = "LevelListSplitter";
-            this.LevelListSplitter.Size = new System.Drawing.Size(3, 482);
-            this.LevelListSplitter.TabIndex = 10;
-            this.LevelListSplitter.TabStop = false;
-            this.LevelListSplitter.Visible = false;
+            this.LevelList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LevelList.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.LevelList.IntegralHeight = false;
+            this.LevelList.Location = new System.Drawing.Point(0, 50);
+            this.LevelList.Name = "LevelList";
+            this.LevelList.ScrollAlwaysVisible = true;
+            this.LevelList.Size = new System.Drawing.Size(152, 432);
+            this.LevelList.TabIndex = 2;
+            this.LevelList.DoubleClick += new System.EventHandler(this.LevelList_DoubleClick);
+            this.LevelList.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LevelList_KeyPress);
             // 
             // Mainform
             // 
@@ -890,8 +894,8 @@ namespace ExpertSokoban
         private System.Windows.Forms.ToolStripButton LevelToolPaste;
         private System.Windows.Forms.ToolStripSeparator LevelToolSep2;
         private System.Windows.Forms.ToolStripButton LevelToolClose;
-        private System.Windows.Forms.ToolStripMenuItem ViewToolstrip1;
-        private System.Windows.Forms.ToolStripMenuItem ViewToolstrip2;
+        private System.Windows.Forms.ToolStripMenuItem ViewToolStrip1;
+        private System.Windows.Forms.ToolStripMenuItem ViewToolStrip2;
         private System.Windows.Forms.ToolStripMenuItem ViewEditToolstrip;
         private System.Windows.Forms.ToolStripMenuItem ViewUnusedHotkeys;
         private System.Windows.Forms.ToolStripButton LevelToolDelete;
