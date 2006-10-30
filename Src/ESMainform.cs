@@ -19,19 +19,32 @@ namespace ExpertSokoban
         private SokobanLevel OrigLevel;
         private int EditingIndex;
         private String LevelFilename;
+        private MainFormSettings FSettings;
 
         // For a bug workaround
-        private bool LevelListEverShown = false;
+        private bool LevelListEverShown;
 
         public Mainform()
         {
             InitializeComponent();
-            LoadPrgSettings();
+            LoadSettings("MainForm");
+            FSettings = EasySettings.Get("ExpSok Mainform", new MainFormSettings()) as MainFormSettings;
             OrigLevel = SokobanLevel.TestLevel();
             MainArea.SetLevel(OrigLevel);
             EverMovedOrEdited = false;
             LevelFileChanged = false;
             LevelFilename = null;
+            LevelListEverShown = false;
+
+            MainArea.MoveDrawMode = FSettings.MoveDrawMode;
+            MainArea.PushDrawMode = FSettings.PushDrawMode;
+            MainArea.ShowEndPos = FSettings.ShowEndPos;
+            LevelListToolStrip1.Visible = ViewToolStrip1.Checked = FSettings.DisplayToolStrip1;
+            LevelListToolStrip2.Visible = ViewToolStrip2.Checked = FSettings.DisplayToolStrip2;
+            ViewEditToolStrip.Checked = FSettings.DisplayEditToolStrip;
+            LevelListPanel.Width = FSettings.LevelListPanelWidth > 50 ? FSettings.LevelListPanelWidth : 50;
+            LevelListVisible(FSettings.DisplayLevelList);
+            SetTool(FSettings.LastUsedTool);
 
             (MainArea.MoveDrawMode == PathDrawMode.Arrows ? ViewMoveArrows :
                 MainArea.MoveDrawMode == PathDrawMode.Dots ? ViewMoveDots :
@@ -40,28 +53,6 @@ namespace ExpertSokoban
                 MainArea.PushDrawMode == PathDrawMode.Dots ? ViewPushDots :
                 MainArea.PushDrawMode == PathDrawMode.Line ? ViewPushLine : ViewPushNo).Checked = true;
             ViewEndPos.Checked = MainArea.ShowEndPos;
-        }
-
-        /// <summary>
-        /// Loads all program settings
-        /// </summary>
-        private void LoadPrgSettings()
-        {
-            PrgSettings.OpenForRead();
-            this.LoadSettings(PrgSettings.Store, "MainForm", "");
-            LevelListPanel.Width = PrgSettings.Store.GetInt("ExpSok", "Level list width", 152);
-            PrgSettings.Close();
-        }
-
-        /// <summary>
-        /// Saves all program settings
-        /// </summary>
-        private void SavePrgSettings()
-        {
-            PrgSettings.OpenForWrite(true);
-            this.SaveSettings(PrgSettings.Store, "MainForm", "");
-            PrgSettings.Store.SetInt("ExpSok", "Level list width", LevelListPanel.Width);
-            PrgSettings.Close();
         }
 
         private void MainArea_MoveMade(object sender, EventArgs e)
@@ -224,19 +215,7 @@ namespace ExpertSokoban
 
         private void ViewLevelsList_Click(object sender, EventArgs e)
         {
-            if (LevelListPanel.Visible)
-                LevelListVisible(false);
-            else
-            {
-                LevelListVisible(true);
-                if (!LevelListEverShown)
-                {
-                    LevelList.Items.Add(OrigLevel);
-                    LevelListEverShown = true;
-                }
-                if (LevelList.SelectedIndex < 0)
-                    LevelList.SelectedIndex = 0;
-            }
+            LevelListVisible(!LevelListPanel.Visible);
         }
 
         private void LevelUndo_Click(object sender, EventArgs e)
@@ -336,6 +315,7 @@ namespace ExpertSokoban
                 sender == ViewMoveLine ? PathDrawMode.Line :
                 sender == ViewMoveDots ? PathDrawMode.Dots :
                 sender == ViewMoveArrows ? PathDrawMode.Arrows : PathDrawMode.None;
+            FSettings.MoveDrawMode = MainArea.MoveDrawMode;
         }
 
         private void ViewPush_Click(object sender, EventArgs e)
@@ -349,12 +329,13 @@ namespace ExpertSokoban
                 sender == ViewPushLine ? PathDrawMode.Line :
                 sender == ViewPushDots ? PathDrawMode.Dots :
                 sender == ViewPushArrows ? PathDrawMode.Arrows : PathDrawMode.None;
+            FSettings.PushDrawMode = MainArea.PushDrawMode;
         }
 
         private void ViewEndPos_Click(object sender, EventArgs e)
         {
             ViewEndPos.Checked = !ViewEndPos.Checked;
-            MainArea.ShowEndPos = ViewEndPos.Checked;
+            MainArea.ShowEndPos = FSettings.ShowEndPos = ViewEndPos.Checked;
         }
 
         private void ESMainform_FormClosing(object sender, FormClosingEventArgs e)
@@ -412,15 +393,25 @@ namespace ExpertSokoban
 
         private void ESMainform_FormClosed(object sender, FormClosedEventArgs e)
         {
-            SavePrgSettings();
+            SaveSettings("MainForm");
+            EasySettings.Set("ExpSok Mainform", FSettings);
         }
 
         private void LevelListVisible(bool On)
         {
+            FSettings.DisplayLevelList = On;
+
             // Level list itself
             LevelListPanel.Visible = On;
             LevelListSplitter.Visible = On;
             if (On) LevelList.Focus();
+            if (On && !LevelListEverShown)
+            {
+                LevelList.Items.Add(OrigLevel);
+                LevelListEverShown = true;
+            }
+            if (LevelList.SelectedIndex < 0 && LevelList.Items.Count > 0)
+                LevelList.SelectedIndex = 0;
 
             // "Edit" menu
             EditCreateLevel.Enabled = On;
@@ -432,6 +423,7 @@ namespace ExpertSokoban
             EditDelete.Enabled = On;
 
             // "View" menu
+            ViewLevelsList.Checked = On;
             ViewToolStrip1.Enabled = On;
             ViewToolStrip2.Enabled = On;
 
@@ -441,7 +433,7 @@ namespace ExpertSokoban
 
         private void EditTool_Click(object sender, EventArgs e)
         {
-            MainArea.Tool =
+            SetTool(
                 sender == EditToolWall ? MainAreaTool.Wall :
                 sender == EditToolPiece ? MainAreaTool.Piece :
                 sender == EditToolTarget ? MainAreaTool.Target :
@@ -449,16 +441,16 @@ namespace ExpertSokoban
                 sender == EditWall ? MainAreaTool.Wall :
                 sender == EditPiece ? MainAreaTool.Piece :
                 sender == EditTarget ? MainAreaTool.Target :
-                MainAreaTool.Sokoban;
+                MainAreaTool.Sokoban);
+        }
 
-            EditToolWall.Checked = (sender == EditToolWall || sender == EditWall);
-            EditToolPiece.Checked = (sender == EditToolPiece || sender == EditPiece);
-            EditToolTarget.Checked = (sender == EditToolTarget || sender == EditTarget);
-            EditToolSokoban.Checked = (sender == EditToolSokoban || sender == EditSokoban);
-            EditWall.Checked = (sender == EditToolWall || sender == EditWall);
-            EditPiece.Checked = (sender == EditToolPiece || sender == EditPiece);
-            EditTarget.Checked = (sender == EditToolTarget || sender == EditTarget);
-            EditSokoban.Checked = (sender == EditToolSokoban || sender == EditSokoban);
+        private void SetTool(MainAreaTool NewTool)
+        {
+            MainArea.Tool = FSettings.LastUsedTool = NewTool;
+            EditToolWall.Checked = EditWall.Checked = NewTool == MainAreaTool.Wall;
+            EditToolPiece.Checked = EditPiece.Checked = NewTool == MainAreaTool.Piece;
+            EditToolTarget.Checked = EditTarget.Checked = NewTool == MainAreaTool.Target;
+            EditToolSokoban.Checked = EditSokoban.Checked = NewTool == MainAreaTool.Sokoban;
         }
 
         private void EditCancel_Click(object sender, EventArgs e)
@@ -486,7 +478,7 @@ namespace ExpertSokoban
         private void SwitchEditingMode(bool On)
         {
             // edit toolbar (visibility)
-            EditToolStrip.Visible = On;
+            EditToolStrip.Visible = On && ViewEditToolStrip.Checked;
 
             // buttons on other toolbars
             LevelToolEdit.Enabled = !On;
@@ -505,7 +497,7 @@ namespace ExpertSokoban
             EditSokoban.Enabled = On;
 
             // "View" menu items
-            ViewEditToolstrip.Enabled = On;
+            ViewEditToolStrip.Enabled = On;
             ViewMoveNo.Enabled = !On;
             ViewMoveLine.Enabled = !On;
             ViewMoveArrows.Enabled = !On;
@@ -556,12 +548,44 @@ namespace ExpertSokoban
             return DialogResult.OK;
         }
 
-        private void ViewToolStrip_Click(object sender, EventArgs e)
+        private void ViewToolStrip1_Click(object sender, EventArgs e)
         {
-            ToolStripMenuItem MenuItem = sender as ToolStripMenuItem;
-            ToolStrip Strip = sender == ViewToolStrip1 ? LevelListToolStrip1 : LevelListToolStrip2;
-            MenuItem.Checked = !MenuItem.Checked;
-            Strip.Visible = MenuItem.Checked;
+            ViewToolStrip1.Checked = !ViewToolStrip1.Checked;
+            LevelListToolStrip1.Visible = FSettings.DisplayToolStrip1 = ViewToolStrip1.Checked;
         }
+
+        private void ViewToolStrip2_Click(object sender, EventArgs e)
+        {
+            ViewToolStrip2.Checked = !ViewToolStrip2.Checked;
+            LevelListToolStrip2.Visible = FSettings.DisplayToolStrip2 = ViewToolStrip2.Checked;
+        }
+
+        private void ViewEditToolStrip_Click(object sender, EventArgs e)
+        {
+            ViewEditToolStrip.Checked = !ViewEditToolStrip.Checked;
+            EditToolStrip.Visible = FSettings.DisplayEditToolStrip = ViewEditToolStrip.Checked;
+        }
+
+        private void LevelListPanel_Resize(object sender, EventArgs e)
+        {
+            FSettings.LevelListPanelWidth = LevelListPanel.Width;
+        }
+
+        private void MainArea_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+    }
+
+    [Serializable]
+    public class MainFormSettings
+    {
+        public PathDrawMode MoveDrawMode = PathDrawMode.Line;
+        public PathDrawMode PushDrawMode = PathDrawMode.Line;
+        public bool ShowEndPos = true, DisplayLevelList = false,
+            DisplayToolStrip1 = true, DisplayToolStrip2 = true,
+            DisplayEditToolStrip = true;
+        public MainAreaTool LastUsedTool = MainAreaTool.Wall;
+        public int LevelListPanelWidth = 152;
     }
 }
