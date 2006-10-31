@@ -98,14 +98,14 @@ namespace ExpertSokoban
             SndMeep = new SoundPlayer(Properties.Resources.SndMeep);
             SndPiecePlaced = new SoundPlayer(Properties.Resources.SndPiecePlaced);
             SndEditorClick = new SoundPlayer(Properties.Resources.SndEditorClick);
-            this.MouseDown += new MouseEventHandler(ESMainArea_MouseDown);
-            this.MouseMove += new MouseEventHandler(ESMainArea_MouseMove);
-            this.MouseUp += new MouseEventHandler(ESMainArea_MouseUp);
-            this.Paint += new PaintEventHandler(ESMainArea_Paint);
-            this.PaintBuffer += new PaintEventHandler(ESMainArea_PaintBuffer);
+            this.MouseDown += new MouseEventHandler(MainArea_MouseDown);
+            this.MouseMove += new MouseEventHandler(MainArea_MouseMove);
+            this.MouseUp += new MouseEventHandler(MainArea_MouseUp);
+            this.Paint += new PaintEventHandler(MainArea_Paint);
+            this.PaintBuffer += new PaintEventHandler(MainArea_PaintBuffer);
         }
 
-        private void ESMainArea_PaintBuffer(object sender, PaintEventArgs e)
+        private void MainArea_PaintBuffer(object sender, PaintEventArgs e)
         {
             if (FState != MainAreaState.Null)
             {
@@ -133,7 +133,7 @@ namespace ExpertSokoban
                 : new MoveFinder(FLevel);
         }
 
-        private void ESMainArea_Paint(object sender, PaintEventArgs e)
+        private void MainArea_Paint(object sender, PaintEventArgs e)
         {
             if (FState != MainAreaState.Null)
             {
@@ -318,13 +318,13 @@ namespace ExpertSokoban
                    (OrigMouseDown.Value.X == Cell.X && OrigMouseDown.Value.Y == Cell.Y+1) ? 4 : 0;
         }
 
-        private void ESMainArea_MouseDown(object sender, MouseEventArgs e)
+        private void MainArea_MouseDown(object sender, MouseEventArgs e)
         {
             if (FState == MainAreaState.Push)
                 OrigMouseDown = Renderer.CellFromPixel(e.Location);
         }
 
-        private void ESMainArea_MouseMove(object sender, MouseEventArgs e)
+        private void MainArea_MouseMove(object sender, MouseEventArgs e)
         {
             if (FState == MainAreaState.Push)
             {
@@ -337,7 +337,7 @@ namespace ExpertSokoban
             }
         }
 
-        private void ESMainArea_MouseUp(object sender, MouseEventArgs e)
+        private void MainArea_MouseUp(object sender, MouseEventArgs e)
         {
             if (FState == MainAreaState.Null)
                 return;

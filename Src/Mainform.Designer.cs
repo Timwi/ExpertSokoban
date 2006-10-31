@@ -817,8 +817,8 @@ namespace ExpertSokoban
             this.Name = "Mainform";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Expert Sokoban";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ESMainform_FormClosed);
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ESMainform_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Mainform_FormClosed);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Mainform_FormClosing);
             this.LevelListPanel.ResumeLayout(false);
             this.LevelListPanel.PerformLayout();
             this.EditToolStrip.ResumeLayout(false);

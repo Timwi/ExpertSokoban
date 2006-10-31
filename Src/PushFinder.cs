@@ -144,7 +144,7 @@ namespace ExpertSokoban
         private MoveFinder FMoveFinder;
 
         // The actual level we're working with. While Dijkstra's algorithm is running,
-        // the level will be modified temporarily (we might want to run an ESMoveFinder
+        // the level will be modified temporarily (we might want to run a MoveFinder
         // on a modified version of the level), but it will be returned to its original
         // state before the constructor returns.
         private SokobanLevel FLevel;
@@ -221,7 +221,7 @@ namespace ExpertSokoban
 
                 // We will first examine (1)(a-d). To do that, we need to find out
                 // which of the other cells adjacent to the piece the Sokoban can move
-                // to. We do this by running an ESMoveFinder.
+                // to. We do this by running a MoveFinder.
 
                 MoveFinder mf = new MoveFinder(FLevel, Position);
                 FPath[Node] = new Point[5][];
@@ -238,9 +238,9 @@ namespace ExpertSokoban
                 if (FPath[Node][4] != null) RelaxEdge(Node, NodeIndex(Position, 4), 0, FPath[Node][4].Length, PriorityQueue);
 
                 // Finally, consider possibility (2): pushing the piece.
-                Point PosPushTo = PosDirToPos(Position, OppositeDir(DirFrom));
-                if (FLevel.IsFree(PosPushTo))
-                    RelaxEdge(Node, NodeIndex(PosPushTo, DirFrom), 1, 1, PriorityQueue);
+                Point PushTo = PosDirToPos(Position, OppositeDir(DirFrom));
+                if (FLevel.IsFree(PushTo))
+                    RelaxEdge(Node, NodeIndex(PushTo, DirFrom), 1, 1, PriorityQueue);
 
                 // Before moving on to the next iteration, restore the level as it was.
                 FLevel.MovePiece(Position, OrigPiecePos);

@@ -60,7 +60,7 @@ namespace ExpertSokoban
         }
 
         // Used only by LevelOpen_Click()
-        private enum ESMFLevelReaderState { Comment, Empty, Level }
+        private enum LevelReaderState { Comment, Empty, Level }
 
         private void LevelOpen_Click(object sender, EventArgs e)
         {
@@ -73,7 +73,7 @@ namespace ExpertSokoban
                     LevelList.BeginUpdate();
                     LevelList.Items.Clear();
                     StreamReader StreamReader = new StreamReader(OpenDialog.FileName, Encoding.UTF8);
-                    ESMFLevelReaderState State = ESMFLevelReaderState.Empty;
+                    LevelReaderState State = LevelReaderState.Empty;
                     String Line;
                     String Comment = "";
                     String LevelEncoded = "";
@@ -82,37 +82,37 @@ namespace ExpertSokoban
                         Line = StreamReader.ReadLine();
                         if (Line == null || Line.Length == 0)
                         {
-                            if (State == ESMFLevelReaderState.Comment)
+                            if (State == LevelReaderState.Comment)
                             {
                                 LevelList.Items.Add(Comment);
                                 Comment = "";
                             }
-                            else if (State == ESMFLevelReaderState.Level)
+                            else if (State == LevelReaderState.Level)
                             {
                                 LevelList.Items.Add(new SokobanLevel(LevelEncoded));
                                 LevelEncoded = "";
                             }
-                            State = ESMFLevelReaderState.Empty;
+                            State = LevelReaderState.Empty;
                         }
                         else if (Line[0] == ';')
                         {
-                            if (State == ESMFLevelReaderState.Level)
+                            if (State == LevelReaderState.Level)
                             {
                                 LevelList.Items.Add(new SokobanLevel(LevelEncoded));
                                 LevelEncoded = "";
                             }
                             Comment += Line.Substring(1) + "\n";
-                            State = ESMFLevelReaderState.Comment;
+                            State = LevelReaderState.Comment;
                         }
                         else
                         {
-                            if (State == ESMFLevelReaderState.Comment)
+                            if (State == LevelReaderState.Comment)
                             {
                                 LevelList.Items.Add(Comment);
                                 Comment = "";
                             }
                             LevelEncoded += Line + "\n";
-                            State = ESMFLevelReaderState.Level;
+                            State = LevelReaderState.Level;
                         }
                     }
                     while (Line != null);
@@ -349,7 +349,7 @@ namespace ExpertSokoban
             MainArea.ShowEndPos = FSettings.ShowEndPos = ViewEndPos.Checked;
         }
 
-        private void ESMainform_FormClosing(object sender, FormClosingEventArgs e)
+        private void Mainform_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (!MayDestroy("Exit Expert Sokoban"))
                 e.Cancel = true;
@@ -402,7 +402,7 @@ namespace ExpertSokoban
                 EnterEditingMode();
         }
 
-        private void ESMainform_FormClosed(object sender, FormClosedEventArgs e)
+        private void Mainform_FormClosed(object sender, FormClosedEventArgs e)
         {
             EasySettings.Set("ExpSok Mainform", FSettings);
         }

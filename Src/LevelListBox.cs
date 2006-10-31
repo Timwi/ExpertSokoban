@@ -60,14 +60,14 @@ namespace ExpertSokoban
 
         public LevelListBox()
         {
-            this.MeasureItem += new MeasureItemEventHandler(ESLevelListBox_MeasureItem);
-            this.DrawItem += new DrawItemEventHandler(ESLevelListBox_DrawItem);
-            this.Resize += new EventHandler(ESLevelListBox_Resize);
+            this.MeasureItem += new MeasureItemEventHandler(LevelListBox_MeasureItem);
+            this.DrawItem += new DrawItemEventHandler(LevelListBox_DrawItem);
+            this.Resize += new EventHandler(LevelListBox_Resize);
             this.DrawMode = DrawMode.OwnerDrawVariable;
             FLastWidth = ClientSize.Width;
         }
 
-        private void ESLevelListBox_Resize(object sender, EventArgs e)
+        private void LevelListBox_Resize(object sender, EventArgs e)
         {
             if (ClientSize.Width != FLastWidth)
             {
@@ -77,7 +77,7 @@ namespace ExpertSokoban
             }
         }
 
-        private void ESLevelListBox_DrawItem(object sender, DrawItemEventArgs e)
+        private void LevelListBox_DrawItem(object sender, DrawItemEventArgs e)
         {
             if (e.Index > -1 && e.Index < Items.Count && !DesignMode)
             {
@@ -122,7 +122,7 @@ namespace ExpertSokoban
             return Rendering;
         }
 
-        private void ESLevelListBox_MeasureItem(object sender, MeasureItemEventArgs e)
+        private void LevelListBox_MeasureItem(object sender, MeasureItemEventArgs e)
         {
             if (e.Index > -1 && e.Index < Items.Count && !DesignMode)
             {
