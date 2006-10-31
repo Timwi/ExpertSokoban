@@ -27,7 +27,6 @@ namespace ExpertSokoban
         public Mainform()
         {
             InitializeComponent();
-            LoadSettings("MainForm");
             FSettings = EasySettings.Get("ExpSok Mainform", new MainFormSettings()) as MainFormSettings;
             OrigLevel = SokobanLevel.TestLevel();
             MainArea.SetLevel(OrigLevel);
@@ -393,7 +392,6 @@ namespace ExpertSokoban
 
         private void ESMainform_FormClosed(object sender, FormClosedEventArgs e)
         {
-            SaveSettings("MainForm");
             EasySettings.Set("ExpSok Mainform", FSettings);
         }
 
