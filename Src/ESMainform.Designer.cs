@@ -30,6 +30,7 @@ namespace ExpertSokoban
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Mainform));
             this.LevelListPanel = new System.Windows.Forms.Panel();
+            this.LevelList = new ExpertSokoban.LevelListBox();
             this.EditToolStrip = new System.Windows.Forms.ToolStrip();
             this.EditToolWall = new System.Windows.Forms.ToolStripButton();
             this.EditToolPiece = new System.Windows.Forms.ToolStripButton();
@@ -100,9 +101,8 @@ namespace ExpertSokoban
             this.ViewEndPos = new System.Windows.Forms.ToolStripMenuItem();
             this.ViewUnusedHotkeys = new System.Windows.Forms.ToolStripMenuItem();
             this.MainToolStripContainer = new System.Windows.Forms.ToolStripContainer();
-            this.LevelListSplitter = new System.Windows.Forms.Splitter();
             this.MainArea = new ExpertSokoban.MainArea();
-            this.LevelList = new ExpertSokoban.LevelListBox();
+            this.LevelListSplitter = new System.Windows.Forms.Splitter();
             this.LevelListPanel.SuspendLayout();
             this.EditToolStrip.SuspendLayout();
             this.LevelListToolStrip2.SuspendLayout();
@@ -127,6 +127,21 @@ namespace ExpertSokoban
             this.LevelListPanel.TabIndex = 6;
             this.LevelListPanel.Visible = false;
             this.LevelListPanel.Resize += new System.EventHandler(this.LevelListPanel_Resize);
+            // 
+            // LevelList
+            // 
+            this.LevelList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LevelList.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.LevelList.EditingIndex = null;
+            this.LevelList.IntegralHeight = false;
+            this.LevelList.Location = new System.Drawing.Point(0, 50);
+            this.LevelList.Name = "LevelList";
+            this.LevelList.PlayingIndex = null;
+            this.LevelList.ScrollAlwaysVisible = true;
+            this.LevelList.Size = new System.Drawing.Size(152, 432);
+            this.LevelList.TabIndex = 2;
+            this.LevelList.DoubleClick += new System.EventHandler(this.LevelList_DoubleClick);
+            this.LevelList.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LevelList_KeyPress);
             // 
             // EditToolStrip
             // 
@@ -337,13 +352,14 @@ namespace ExpertSokoban
             this.LevelToolEdit.Name = "LevelToolEdit";
             this.LevelToolEdit.Size = new System.Drawing.Size(23, 22);
             this.LevelToolEdit.Text = "Edit level";
+            this.LevelToolEdit.Click += new System.EventHandler(this.EditEdit_Click);
             // 
             // LevelToolComment
             // 
             this.LevelToolComment.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.LevelToolComment.Image = ((System.Drawing.Image)(resources.GetObject("LevelToolComment.Image")));
             this.LevelToolComment.Name = "LevelToolComment";
-            this.LevelToolComment.Size = new System.Drawing.Size(23, 22);
+            this.LevelToolComment.Size = new System.Drawing.Size(23, 20);
             this.LevelToolComment.Text = "Add a comment";
             this.LevelToolComment.Click += new System.EventHandler(this.EditAddComment_Click);
             // 
@@ -764,17 +780,6 @@ namespace ExpertSokoban
             // 
             this.MainToolStripContainer.TopToolStripPanel.Controls.Add(this.MainMenu);
             // 
-            // LevelListSplitter
-            // 
-            this.LevelListSplitter.Dock = System.Windows.Forms.DockStyle.Right;
-            this.LevelListSplitter.Location = new System.Drawing.Point(641, 0);
-            this.LevelListSplitter.MinSize = 50;
-            this.LevelListSplitter.Name = "LevelListSplitter";
-            this.LevelListSplitter.Size = new System.Drawing.Size(3, 482);
-            this.LevelListSplitter.TabIndex = 10;
-            this.LevelListSplitter.TabStop = false;
-            this.LevelListSplitter.Visible = false;
-            // 
             // MainArea
             // 
             this.MainArea.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(206)))));
@@ -789,18 +794,16 @@ namespace ExpertSokoban
             this.MainArea.Tool = ExpertSokoban.MainAreaTool.Wall;
             this.MainArea.MoveMade += new System.EventHandler(this.MainArea_MoveMade);
             // 
-            // LevelList
+            // LevelListSplitter
             // 
-            this.LevelList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LevelList.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.LevelList.IntegralHeight = false;
-            this.LevelList.Location = new System.Drawing.Point(0, 50);
-            this.LevelList.Name = "LevelList";
-            this.LevelList.ScrollAlwaysVisible = true;
-            this.LevelList.Size = new System.Drawing.Size(152, 432);
-            this.LevelList.TabIndex = 2;
-            this.LevelList.DoubleClick += new System.EventHandler(this.LevelList_DoubleClick);
-            this.LevelList.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LevelList_KeyPress);
+            this.LevelListSplitter.Dock = System.Windows.Forms.DockStyle.Right;
+            this.LevelListSplitter.Location = new System.Drawing.Point(641, 0);
+            this.LevelListSplitter.MinSize = 50;
+            this.LevelListSplitter.Name = "LevelListSplitter";
+            this.LevelListSplitter.Size = new System.Drawing.Size(3, 482);
+            this.LevelListSplitter.TabIndex = 10;
+            this.LevelListSplitter.TabStop = false;
+            this.LevelListSplitter.Visible = false;
             // 
             // Mainform
             // 

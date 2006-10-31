@@ -10,25 +10,69 @@ namespace ExpertSokoban
 {
     public class LevelListBox : ListBox
     {
-        private Hashtable CachedRenderings;
-        private int LastWidth;
+        private enum LevelListBoxState { Null, Playing, Editing }
+
+        private Hashtable FCachedRenderings = new Hashtable();
+        private int FLastWidth = 0;
+        private int FPlayingEditingIndex = 0;
+        private LevelListBoxState FState = LevelListBoxState.Null;
+
+        public int? EditingIndex
+        {
+            get
+            {
+                if (FState == LevelListBoxState.Editing)
+                    return FPlayingEditingIndex;
+                else
+                    return null;
+            }
+            set
+            {
+                if (value == null)
+                    FState = LevelListBoxState.Null;
+                else
+                {
+                    FState = LevelListBoxState.Editing;
+                    FPlayingEditingIndex = value.Value;
+                }
+            }
+        }
+        public int? PlayingIndex
+        {
+            get
+            {
+                if (FState == LevelListBoxState.Playing)
+                    return FPlayingEditingIndex;
+                else
+                    return null;
+            }
+            set
+            {
+                if (value == null)
+                    FState = LevelListBoxState.Null;
+                else
+                {
+                    FState = LevelListBoxState.Playing;
+                    FPlayingEditingIndex = value.Value;
+                }
+            }
+        }
 
         public LevelListBox()
         {
             this.MeasureItem += new MeasureItemEventHandler(ESLevelListBox_MeasureItem);
             this.DrawItem += new DrawItemEventHandler(ESLevelListBox_DrawItem);
             this.Resize += new EventHandler(ESLevelListBox_Resize);
-            CachedRenderings = new Hashtable();
             this.DrawMode = DrawMode.OwnerDrawVariable;
-            LastWidth = ClientSize.Width;
+            FLastWidth = ClientSize.Width;
         }
 
         private void ESLevelListBox_Resize(object sender, EventArgs e)
         {
-            if (ClientSize.Width != LastWidth)
+            if (ClientSize.Width != FLastWidth)
             {
-                LastWidth = ClientSize.Width;
-                CachedRenderings = new Hashtable();
+                FLastWidth = ClientSize.Width;
+                FCachedRenderings = new Hashtable();
                 RefreshItems();
             }
         }
@@ -69,12 +113,12 @@ namespace ExpertSokoban
 
         private Image GetRendering(SokobanLevel Level, int Width, int Height)
         {
-            if (CachedRenderings.ContainsKey(Level))
-                return (Image) CachedRenderings[Level];
+            if (FCachedRenderings.ContainsKey(Level))
+                return (Image) FCachedRenderings[Level];
 
             Image Rendering = new Bitmap(Width, Height);
             new Renderer(Level, Width, Height, new SolidBrush(Color.Transparent)).Render(Graphics.FromImage(Rendering));
-            CachedRenderings[Level] = Rendering;
+            FCachedRenderings[Level] = Rendering;
             return Rendering;
         }
 

@@ -17,9 +17,9 @@ namespace ExpertSokoban
         private bool EverMovedOrEdited;
         private bool LevelFileChanged;
         private SokobanLevel OrigLevel;
-        private int EditingIndex;
         private String LevelFilename;
         private MainFormSettings FSettings;
+        private int EditingIndex;
 
         // For a bug workaround
         private bool LevelListEverShown;
@@ -290,17 +290,29 @@ namespace ExpertSokoban
                 return;
 
             object Item = LevelList.Items[LevelList.SelectedIndex];
-            if ((Item is SokobanLevel && MessageBox.Show("Are you sure you wish to delete this level?",
-                "Expert Sokoban", MessageBoxButtons.YesNo) == DialogResult.Yes) ||
-                Item is string)
+
+            if (Item is SokobanLevel)
             {
-                int OldIndex = LevelList.SelectedIndex;
-                LevelList.Items.RemoveAt(OldIndex);
-                if (LevelList.Items.Count > 0 && OldIndex < LevelList.Items.Count)
-                    LevelList.SelectedIndex = OldIndex;
-                else if (LevelList.Items.Count > 0)
-                    LevelList.SelectedIndex = LevelList.Items.Count-1;
+                if (MainArea.State == MainAreaState.Editing && LevelList.SelectedIndex == EditingIndex)
+                {
+                    DialogResult Result = MessageBox.Show("You are currently editing this level. " +
+                        "If you delete this level now, all your modifications will be discarded. " +
+                        "Are you sure you wish to do this?", "Delete level", MessageBoxButtons.YesNo);
+                    if (Result == DialogResult.No)
+                        return;
+                }
+                else if (MessageBox.Show("Are you sure you wish to delete this level?",
+                    "Expert Sokoban", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    return;
             }
+            int OldIndex = LevelList.SelectedIndex;
+            LevelList.Items.RemoveAt(OldIndex);
+            if (LevelList.Items.Count > 0 && OldIndex < LevelList.Items.Count)
+                LevelList.SelectedIndex = OldIndex;
+            else if (LevelList.Items.Count > 0)
+                LevelList.SelectedIndex = LevelList.Items.Count-1;
+            if (OldIndex < EditingIndex)
+                EditingIndex--;
         }
 
         private void ViewMove_Click(object sender, EventArgs e)
@@ -432,13 +444,9 @@ namespace ExpertSokoban
         private void EditTool_Click(object sender, EventArgs e)
         {
             SetTool(
-                sender == EditToolWall ? MainAreaTool.Wall :
-                sender == EditToolPiece ? MainAreaTool.Piece :
-                sender == EditToolTarget ? MainAreaTool.Target :
-                sender == EditToolSokoban ? MainAreaTool.Sokoban :
-                sender == EditWall ? MainAreaTool.Wall :
-                sender == EditPiece ? MainAreaTool.Piece :
-                sender == EditTarget ? MainAreaTool.Target :
+                sender == EditToolWall || sender == EditWall ? MainAreaTool.Wall :
+                sender == EditToolPiece || sender == EditPiece ? MainAreaTool.Piece :
+                sender == EditToolTarget || sender == EditTarget ? MainAreaTool.Target :
                 MainAreaTool.Sokoban);
         }
 
@@ -567,11 +575,6 @@ namespace ExpertSokoban
         private void LevelListPanel_Resize(object sender, EventArgs e)
         {
             FSettings.LevelListPanelWidth = LevelListPanel.Width;
-        }
-
-        private void MainArea_Paint(object sender, PaintEventArgs e)
-        {
-
         }
     }
 
