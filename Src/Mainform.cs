@@ -6,9 +6,11 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
+using System.IO.Compression;
 using RT.Util;
 using RT.Util.Settings;
-using System.IO.Compression;
+using RT.Util.Forms;
+using RT.Util.Dialogs;
 
 namespace ExpertSokoban
 {

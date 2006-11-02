@@ -5,9 +5,9 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Media;
 using System.Drawing.Drawing2D;
-using RT.Controls;
 using System.Drawing.Imaging;
 using RT.Util;
+using RT.Util.Controls;
 
 namespace ExpertSokoban
 {
