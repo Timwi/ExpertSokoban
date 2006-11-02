@@ -64,7 +64,7 @@ namespace ExpertSokoban
 
         private void LevelOpen_Click(object sender, EventArgs e)
         {
-            if (MayDestroyLevelFile("Open level file"))
+            if (MayDestroy("Open level file"))
             {
                 OpenFileDialog OpenDialog = new OpenFileDialog();
                 if (OpenDialog.ShowDialog() == DialogResult.OK)
@@ -72,6 +72,7 @@ namespace ExpertSokoban
                     LevelListVisible(true);
                     LevelList.BeginUpdate();
                     LevelList.Items.Clear();
+                    int? FoundValidLevel = null;
                     StreamReader StreamReader = new StreamReader(OpenDialog.FileName, Encoding.UTF8);
                     LevelReaderState State = LevelReaderState.Empty;
                     String Line;
@@ -89,8 +90,11 @@ namespace ExpertSokoban
                             }
                             else if (State == LevelReaderState.Level)
                             {
-                                LevelList.Items.Add(new SokobanLevel(LevelEncoded));
+                                SokobanLevel NewLevel = new SokobanLevel(LevelEncoded);
+                                LevelList.Items.Add(NewLevel);
                                 LevelEncoded = "";
+                                if (NewLevel.IsValid() == SokobanLevelStatus.Valid && FoundValidLevel == null)
+                                    FoundValidLevel = LevelList.Items.Count-1;
                             }
                             State = LevelReaderState.Empty;
                         }
@@ -98,8 +102,11 @@ namespace ExpertSokoban
                         {
                             if (State == LevelReaderState.Level)
                             {
-                                LevelList.Items.Add(new SokobanLevel(LevelEncoded));
+                                SokobanLevel NewLevel = new SokobanLevel(LevelEncoded);
+                                LevelList.Items.Add(NewLevel);
                                 LevelEncoded = "";
+                                if (NewLevel.IsValid() == SokobanLevelStatus.Valid && FoundValidLevel == null)
+                                    FoundValidLevel = LevelList.Items.Count-1;
                             }
                             Comment += Line.Substring(1) + "\n";
                             State = LevelReaderState.Comment;
@@ -120,6 +127,13 @@ namespace ExpertSokoban
                     StreamReader.Close();
                     LevelFileChanged = false;
                     LevelFilename = OpenDialog.FileName;
+                    if (FoundValidLevel == null)
+                    {
+                        MainArea.Clear();
+                        LevelList.PlayingIndex = null;
+                    }
+                    else
+                        TakeLevel(FoundValidLevel.Value, true);
                 }
             }
         }
@@ -270,9 +284,11 @@ namespace ExpertSokoban
         {
             if (!LevelListPanel.Visible)
                 ViewLevelsList_Click(sender, e);
-            if (MayDestroyLevelFile("New level file"))
+            if (MayDestroy("New level file"))
             {
                 LevelList.Items.Clear();
+                LevelList.PlayingIndex = null;
+                MainArea.Clear();
                 LevelFilename = null;
             }
         }
