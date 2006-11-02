@@ -188,14 +188,14 @@ namespace ExpertSokoban
         // This will reduce the size of the level if there are rows or columns
         // around the edge that are entirely blank, but will leave (or create)
         // a one-square margin around the edge.
-        public void EnsureSpace()
+        public void EnsureSpace(int Margin)
         {
             int Left = 0, Right = 0, Top = 0, Bottom = 0;
             while (Left < FWidth && ColumnBlank(Left)) Left++;
             while (Right < FWidth && ColumnBlank(FWidth-Right-1)) Right++;
             while (Top < FHeight && RowBlank(Top)) Top++;
             while (Bottom < FHeight && RowBlank(FHeight-Bottom-1)) Bottom++;
-            Resize(2-Left-Right, 2-Top-Bottom, 1-Left, 1-Top);
+            Resize(2*Margin-Left-Right, 2*Margin-Top-Bottom, Margin-Left, Margin-Top);
         }
         private bool ColumnBlank(int x)
         {

@@ -28,6 +28,7 @@ namespace ExpertSokoban
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Mainform));
             this.LevelListPanel = new System.Windows.Forms.Panel();
             this.LevelList = new ExpertSokoban.LevelListBox();
@@ -103,6 +104,7 @@ namespace ExpertSokoban
             this.MainToolStripContainer = new System.Windows.Forms.ToolStripContainer();
             this.MainArea = new ExpertSokoban.MainArea();
             this.LevelListSplitter = new System.Windows.Forms.Splitter();
+            this.BugWorkaroundTimer = new System.Windows.Forms.Timer(this.components);
             this.LevelListPanel.SuspendLayout();
             this.EditToolStrip.SuspendLayout();
             this.LevelListToolStrip2.SuspendLayout();
@@ -359,7 +361,7 @@ namespace ExpertSokoban
             this.LevelToolComment.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.LevelToolComment.Image = ((System.Drawing.Image)(resources.GetObject("LevelToolComment.Image")));
             this.LevelToolComment.Name = "LevelToolComment";
-            this.LevelToolComment.Size = new System.Drawing.Size(23, 20);
+            this.LevelToolComment.Size = new System.Drawing.Size(23, 22);
             this.LevelToolComment.Text = "Add a comment";
             this.LevelToolComment.Click += new System.EventHandler(this.EditAddComment_Click);
             // 
@@ -792,6 +794,7 @@ namespace ExpertSokoban
             this.MainArea.Size = new System.Drawing.Size(644, 458);
             this.MainArea.TabIndex = 1;
             this.MainArea.Tool = ExpertSokoban.MainAreaTool.Wall;
+            this.MainArea.LevelChanged += new System.EventHandler(this.MainArea_LevelChanged);
             this.MainArea.MoveMade += new System.EventHandler(this.MainArea_MoveMade);
             // 
             // LevelListSplitter
@@ -804,6 +807,11 @@ namespace ExpertSokoban
             this.LevelListSplitter.TabIndex = 10;
             this.LevelListSplitter.TabStop = false;
             this.LevelListSplitter.Visible = false;
+            // 
+            // BugWorkaroundTimer
+            // 
+            this.BugWorkaroundTimer.Enabled = true;
+            this.BugWorkaroundTimer.Tick += new System.EventHandler(this.BugWorkaroundTimer_Tick);
             // 
             // Mainform
             // 
@@ -914,6 +922,7 @@ namespace ExpertSokoban
         private System.Windows.Forms.ToolStripMenuItem EditDelete;
         private System.Windows.Forms.ToolStripSeparator EditSep2;
         private System.Windows.Forms.ToolStripMenuItem EditUnusedHotkeys;
+        private System.Windows.Forms.Timer BugWorkaroundTimer;
     }
 }
 

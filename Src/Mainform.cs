@@ -21,10 +21,6 @@ namespace ExpertSokoban
         private SokobanLevel OrigLevel;
         private String LevelFilename;
         private MainFormSettings FSettings;
-        private int EditingIndex;
-
-        // For a bug workaround
-        private bool LevelListEverShown;
 
         public Mainform()
         {
@@ -35,7 +31,6 @@ namespace ExpertSokoban
             EverMovedOrEdited = false;
             LevelFileChanged = false;
             LevelFilename = null;
-            LevelListEverShown = false;
 
             MainArea.MoveDrawMode = FSettings.MoveDrawMode;
             MainArea.PushDrawMode = FSettings.PushDrawMode;
@@ -45,6 +40,9 @@ namespace ExpertSokoban
             ViewEditToolStrip.Checked = FSettings.DisplayEditToolStrip;
             LevelListPanel.Width = FSettings.LevelListPanelWidth > 50 ? FSettings.LevelListPanelWidth : 50;
             LevelListVisible(FSettings.DisplayLevelList);
+            LevelList.Items.Add(OrigLevel);
+            LevelList.SelectedIndex = 0;
+            LevelList.PlayingIndex = 0;
             SetTool(FSettings.LastUsedTool);
 
             (MainArea.MoveDrawMode == PathDrawMode.Arrows ? ViewMoveArrows :
@@ -120,19 +118,22 @@ namespace ExpertSokoban
                     while (Line != null);
                     LevelList.EndUpdate();
                     StreamReader.Close();
-                    LevelListEverShown = true;
                     LevelFileChanged = false;
                     LevelFilename = OpenDialog.FileName;
                 }
             }
         }
 
-        private void TakeLevel() { TakeLevel(LevelList.SelectedIndex); }
-        private void TakeLevel(int Index)
+        private void TakeLevel() { TakeLevel(LevelList.SelectedIndex, false); }
+        private void TakeLevel(int Index) { TakeLevel(Index, false); }
+        private void TakeLevel(int Index, bool Override)
         {
             object Item = LevelList.Items[Index];
-            if (Item is SokobanLevel && MayDestroyMainAreaLevel("Open level"))
+            if (Item is SokobanLevel && (Override || MayDestroyMainAreaLevel("Open level")))
             {
+                if (MainArea.State == MainAreaState.Editing)
+                    SwitchEditingMode(false);
+
                 OrigLevel = (SokobanLevel)Item;
                 SokobanLevelStatus Status = OrigLevel.IsValid();
                 if (Status == SokobanLevelStatus.Valid)
@@ -140,14 +141,22 @@ namespace ExpertSokoban
                     MainArea.SetLevel(OrigLevel);
                     EverMovedOrEdited = false;
                     LevelList.SelectedIndex = Index;
+                    LevelList.PlayingIndex = Index;
                 }
                 else
                 {
-                    String Problem = Status == SokobanLevelStatus.NotEnclosed
-                        ? "The level is not completely enclosed by a wall."
-                        : "The number of pieces does not match the number of targets.";
-                    MessageBox.Show("The level could not be opened because it is invalid.\n\n" + Problem +
-                        "\n\nPlease edit the level in order to address this issue, then try again.", "Expert Sokoban");
+                    LevelList.PlayingIndex = null;
+                    MainArea.Clear();
+                    if (!Override)
+                    {
+                        String Problem = Status == SokobanLevelStatus.NotEnclosed
+                            ? "The level is not completely enclosed by a wall."
+                            : "The number of pieces does not match the number of targets.";
+                        if (MessageBox.Show("The level could not be opened because it is invalid.\n\n" + Problem +
+                            "\n\nYou must edit the level in order to address this issue. " +
+                            "Would you like to edit the level now?", "Expert Sokoban", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                            EnterEditingMode();
+                    }
                 }
             }
         }
@@ -197,8 +206,7 @@ namespace ExpertSokoban
             object Item = LevelList.SelectedItem;
             if (Item is SokobanLevel)
             {
-                if (MayDestroyMainAreaLevel("Open level"))
-                    TakeLevel();
+                TakeLevel();
             }
             else
             {
@@ -293,28 +301,45 @@ namespace ExpertSokoban
 
             object Item = LevelList.Items[LevelList.SelectedIndex];
 
-            if (Item is SokobanLevel)
+            if (Item is SokobanLevel && LevelList.SelectedIndex == LevelList.EditingIndex)
             {
-                if (MainArea.State == MainAreaState.Editing && LevelList.SelectedIndex == EditingIndex)
-                {
-                    DialogResult Result = MessageBox.Show("You are currently editing this level. " +
-                        "If you delete this level now, all your modifications will be discarded. " +
-                        "Are you sure you wish to do this?", "Delete level", MessageBoxButtons.YesNo);
-                    if (Result == DialogResult.No)
-                        return;
-                }
-                else if (MessageBox.Show("Are you sure you wish to delete this level?",
-                    "Expert Sokoban", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                if (MessageBox.Show("You are currently editing this level.\n\n" +
+                    "If you delete this level now, all your modifications will be discarded.\n\n" +
+                    "Are you sure you wish to do this?", "Delete level", MessageBoxButtons.YesNo) == DialogResult.No)
+                    return;
+                MainArea.Clear();
+                LevelList.EditingIndex = null;
+                SwitchEditingMode(false);
+            }
+            else if (Item is SokobanLevel && LevelList.SelectedIndex == LevelList.PlayingIndex)
+            {
+                if (MessageBox.Show("You are currently playing this level.\n\n" +
+                    "Are you sure you wish to give up?", "Delete level", MessageBoxButtons.YesNo) == DialogResult.No)
+                    return;
+                MainArea.Clear();
+                LevelList.PlayingIndex = null;
+            }
+            else if (Item is SokobanLevel)
+            {
+                if (MessageBox.Show("Are you sure you wish to delete this level?",
+                   "Expert Sokoban", MessageBoxButtons.YesNo) == DialogResult.No)
                     return;
             }
-            int OldIndex = LevelList.SelectedIndex;
-            LevelList.Items.RemoveAt(OldIndex);
-            if (LevelList.Items.Count > 0 && OldIndex < LevelList.Items.Count)
-                LevelList.SelectedIndex = OldIndex;
+
+            RemoveLevelListItem(LevelList.SelectedIndex);
+        }
+
+        private void RemoveLevelListItem(int Index)
+        {
+            LevelList.Items.RemoveAt(Index);
+            if (LevelList.Items.Count > 0 && Index < LevelList.Items.Count)
+                LevelList.SelectedIndex = Index;
             else if (LevelList.Items.Count > 0)
                 LevelList.SelectedIndex = LevelList.Items.Count-1;
-            if (OldIndex < EditingIndex)
-                EditingIndex--;
+            if (LevelList.EditingIndex != null && LevelList.EditingIndex.Value > Index)
+                LevelList.EditingIndex = LevelList.EditingIndex.Value-1;
+            if (LevelList.PlayingIndex != null && LevelList.PlayingIndex.Value > Index)
+                LevelList.PlayingIndex = LevelList.PlayingIndex.Value-1;
         }
 
         private void ViewMove_Click(object sender, EventArgs e)
@@ -369,12 +394,7 @@ namespace ExpertSokoban
             if (!LevelListPanel.Visible || LevelList.SelectedIndex < 0)
                 return;
             EditCopy_Click(sender, e);
-            int OldIndex = LevelList.SelectedIndex;
-            LevelList.Items.RemoveAt(OldIndex);
-            if (LevelList.Items.Count > 0 && OldIndex < LevelList.Items.Count)
-                LevelList.SelectedIndex = OldIndex;
-            else if (LevelList.Items.Count > 0)
-                LevelList.SelectedIndex = LevelList.Items.Count-1;
+            RemoveLevelListItem(LevelList.SelectedIndex);
         }
 
         private void EditPaste_Click(object sender, EventArgs e)
@@ -382,17 +402,24 @@ namespace ExpertSokoban
             if (!LevelListPanel.Visible)
                 return;
             if (Clipboard.ContainsData("SokobanData"))
+                AddLevelListItem(Clipboard.GetData("SokobanData"));
+        }
+
+        private void AddLevelListItem(object NewItem)
+        {
+            if (LevelList.SelectedIndex < 0)
             {
-                if (LevelList.SelectedIndex < 0)
-                {
-                    LevelList.Items.Add(Clipboard.GetData("SokobanData"));
-                    LevelList.SelectedIndex = LevelList.Items.Count-1;
-                }
-                else
-                {
-                    LevelList.Items.Insert(LevelList.SelectedIndex, Clipboard.GetData("SokobanData"));
-                    LevelList.SelectedIndex -= 1;
-                }
+                LevelList.Items.Add(NewItem);
+                LevelList.SelectedIndex = LevelList.Items.Count-1;
+            }
+            else
+            {
+                LevelList.Items.Insert(LevelList.SelectedIndex, NewItem);
+                LevelList.SelectedIndex -= 1;
+                if (LevelList.EditingIndex != null && LevelList.EditingIndex.Value >= LevelList.SelectedIndex)
+                    LevelList.EditingIndex = LevelList.EditingIndex.Value+1;
+                if (LevelList.PlayingIndex != null && LevelList.PlayingIndex.Value >= LevelList.SelectedIndex)
+                    LevelList.PlayingIndex = LevelList.PlayingIndex.Value+1;
             }
         }
 
@@ -417,11 +444,6 @@ namespace ExpertSokoban
             LevelListPanel.Visible = On;
             LevelListSplitter.Visible = On;
             if (On) LevelList.Focus();
-            if (On && !LevelListEverShown)
-            {
-                LevelList.Items.Add(OrigLevel);
-                LevelListEverShown = true;
-            }
             if (LevelList.SelectedIndex < 0 && LevelList.Items.Count > 0)
                 LevelList.SelectedIndex = 0;
 
@@ -463,21 +485,38 @@ namespace ExpertSokoban
 
         private void EditCancel_Click(object sender, EventArgs e)
         {
-            LeaveEditingMode();
+            if (LevelList.EditingIndex != null) // this should always be true
+                TakeLevel(LevelList.EditingIndex.Value);
         }
 
         private void EditOK_Click(object sender, EventArgs e)
         {
-            if (MayDestroyMainAreaLevel("Finish editing"))
+            if (LevelList.EditingIndex != null) // this should always be true
             {
-                LevelList.Items[EditingIndex] = MainArea.Level.Clone();
-                LeaveEditingMode();
+                SokobanLevelStatus Status = MainArea.Level.IsValid();
+                if (Status != SokobanLevelStatus.Valid)
+                {
+                    String Problem = Status == SokobanLevelStatus.NotEnclosed
+                        ? "The level is not completely enclosed by a wall."
+                        : "The number of pieces does not match the number of targets.";
+                    if (MessageBox.Show("The following problem has been detected with this level:\n\n" +
+                        Problem + "\n\nYou cannot play this level until you address this issue.\n\n" +
+                        "Are you sure you wish to leave the level in this invalid state?",
+                        "Expert Sokoban", MessageBoxButtons.YesNo) == DialogResult.No)
+                        return;
+                }
+
+                SokobanLevel Level = MainArea.Level.Clone();
+                Level.EnsureSpace(0);
+                LevelList.Items[LevelList.EditingIndex.Value] = Level;
+                SwitchEditingMode(false);
+                TakeLevel(LevelList.EditingIndex.Value, true);
             }
         }
 
         private void EnterEditingMode()
         {
-            EditingIndex = LevelList.SelectedIndex;
+            LevelList.EditingIndex = LevelList.SelectedIndex;
             MainArea.SetLevelEdit(LevelList.Items[LevelList.SelectedIndex] as SokobanLevel);
             EverMovedOrEdited = false;
             SwitchEditingMode(true);
@@ -515,13 +554,6 @@ namespace ExpertSokoban
             ViewPushArrows.Enabled = !On;
             ViewPushDots.Enabled = !On;
             ViewEndPos.Enabled = !On;
-        }
-
-        private void LeaveEditingMode()
-        {
-            LevelList.SelectedIndex = EditingIndex;
-            TakeLevel(EditingIndex);
-            SwitchEditingMode(false);
         }
 
         private void LevelSave_Click(object sender, EventArgs e)
@@ -577,6 +609,27 @@ namespace ExpertSokoban
         private void LevelListPanel_Resize(object sender, EventArgs e)
         {
             FSettings.LevelListPanelWidth = LevelListPanel.Width;
+        }
+
+        private void MainArea_LevelChanged(object sender, EventArgs e)
+        {
+            EverMovedOrEdited = true;
+        }
+
+        /// <summary>
+        /// This method is used to work around a bug in .NET's ListBox.
+        /// Basically, if you add items to the ListBox while it is invisible,
+        /// it screws up and sometimes crashes (some time later). During the
+        /// form's initialisation, setting the ListBox's Visible to true
+        /// doesn't help. Fortunately, calling RefreshItems() on the ListBox
+        /// retrofixes the bug's effects, so we set a timer to do that.
+        /// </summary>
+        /// <param name="sender">You know.</param>
+        /// <param name="e">You know.</param>
+        private void BugWorkaroundTimer_Tick(object sender, EventArgs e)
+        {
+            BugWorkaroundTimer.Enabled = false;
+            LevelList.ComeOn_RefreshItems();
         }
     }
 

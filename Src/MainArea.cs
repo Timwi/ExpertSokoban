@@ -49,7 +49,7 @@ namespace ExpertSokoban
         public bool ShowEndPos { get { return FShowEndPos; } set { FShowEndPos = value; Invalidate(); } }
         public MainAreaTool Tool { get { return FTool; } set { FTool = value; } }
         public SokobanLevel Level { get { return FLevel; } }
-        
+
         public event EventHandler MoveMade;     // occurs while playing only
         public event EventHandler LevelChanged; // occurs in edit move only
 
@@ -112,6 +112,9 @@ namespace ExpertSokoban
                 Renderer = new Renderer(FLevel, ClientSize);
                 Renderer.Render(e.Graphics);
             }
+            else
+                e.Graphics.FillRectangle(new SolidBrush(Color.FromKnownColor(KnownColor.Control)),
+                    new Rectangle(0, 0, ClientSize.Width, ClientSize.Height));
             if (FState == MainAreaState.Solved)
             {
                 Image ImgLevelSolved = Properties.Resources.ImgLevelSolved;
@@ -299,7 +302,7 @@ namespace ExpertSokoban
 
         private Rectangle RoundedRectangle(RectangleF Src)
         {
-            return new Rectangle((int) Src.X-2, (int) Src.Y-2, (int) Src.Width+4, (int) Src.Height+4);
+            return new Rectangle((int)Src.X-2, (int)Src.Y-2, (int)Src.Width+4, (int)Src.Height+4);
         }
 
         // If you just click a cell to push a piece to, PushFinder will find
@@ -401,7 +404,7 @@ namespace ExpertSokoban
                 }
                 int PrevSizeX = FLevel.Width;
                 int PrevSizeY = FLevel.Height;
-                FLevel.EnsureSpace();
+                FLevel.EnsureSpace(1);
                 ReinitMoveFinder();
                 if (FLevel.Width != PrevSizeX || FLevel.Height != PrevSizeY)
                     Refresh();
@@ -449,7 +452,7 @@ namespace ExpertSokoban
             else if (FState == MainAreaState.Push && PushFinder != null)
             {
                 // Remove all the move and push colourings
-                CreateGraphics().DrawImage(Buffer, 0, 0); 
+                CreateGraphics().DrawImage(Buffer, 0, 0);
 
                 // Move the Sokoban around visibly
                 Graphics g = Graphics.FromImage(Buffer);
@@ -513,7 +516,7 @@ namespace ExpertSokoban
         private void SetLevelDo(SokobanLevel Level, MainAreaState State)
         {
             FLevel = Level.Clone();
-            FLevel.EnsureSpace();
+            FLevel.EnsureSpace(1);
             Renderer = new Renderer(FLevel, ClientSize);
             FState = State;
             ReinitMoveFinder();
@@ -549,6 +552,12 @@ namespace ExpertSokoban
 
             FState = MainAreaState.Move;
             ReinitMoveFinder();
+            Refresh();
+        }
+
+        public void Clear()
+        {
+            FState = MainAreaState.Null;
             Refresh();
         }
     }
