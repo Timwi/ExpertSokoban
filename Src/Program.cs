@@ -18,7 +18,6 @@ namespace ExpertSokoban
             PrgSettings.LoadSettings(new SettingsBinaryFile());
             Application.Run(new Mainform());
             PrgSettings.SaveSettings();
-            EasySettings.WriteSettings();
         }
     }
 }
