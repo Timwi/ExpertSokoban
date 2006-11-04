@@ -36,7 +36,8 @@ namespace ExpertSokoban
             LevelFilename = null;
 
             // Restore saved settings
-            FSettings = PrgSettings.Store.Get<MainFormSettings>("ExpSok Mainform", new MainFormSettings());
+            FSettings = PrgSettings.Store.GetObject("ExpSok Mainform", null) as MainFormSettings;
+            if (FSettings == null) new MainFormSettings();
             LevelListToolStrip1.Visible = ViewToolStrip1.Checked = FSettings.DisplayToolStrip1;
             LevelListToolStrip2.Visible = ViewToolStrip2.Checked = FSettings.DisplayToolStrip2;
             ViewEditToolStrip.Checked = FSettings.DisplayEditToolStrip;
