@@ -25,30 +25,26 @@ namespace ExpertSokoban
         public Mainform()
         {
             InitializeComponent();
-            FSettings = (MainFormSettings)PrgSettings.Store.Get("ExpSok Mainform", new MainFormSettings());
+
+            // Start with the default level
             OrigLevel = SokobanLevel.TestLevel();
             MainArea.SetLevel(OrigLevel);
+            LevelList.Items.Add(OrigLevel);
+            LevelList.SelectedIndex = 0;
+            LevelList.PlayingIndex = 0;
             EverMovedOrEdited = false;
             LevelFileChanged = false;
             LevelFilename = null;
 
+            // Restore saved settings
+            FSettings = (MainFormSettings)PrgSettings.Store.Get("ExpSok Mainform", new MainFormSettings());
             LevelListToolStrip1.Visible = ViewToolStrip1.Checked = FSettings.DisplayToolStrip1;
             LevelListToolStrip2.Visible = ViewToolStrip2.Checked = FSettings.DisplayToolStrip2;
             ViewEditToolStrip.Checked = FSettings.DisplayEditToolStrip;
             LevelListPanel.Width = FSettings.LevelListPanelWidth > 50 ? FSettings.LevelListPanelWidth : 50;
             LevelListVisible(FSettings.DisplayLevelList);
-            LevelList.Items.Add(OrigLevel);
-            LevelList.SelectedIndex = 0;
-            LevelList.PlayingIndex = 0;
-
-            MovePathOptions.Members = new MenuRadioItemPathDrawMode[] {
-                ViewMoveNo, ViewMoveLine, ViewMoveDots, ViewMoveArrows };
             MovePathOptions.SetValue(FSettings.MoveDrawMode);
-            PushPathOptions.Members = new MenuRadioItemPathDrawMode[] {
-                ViewPushNo, ViewPushLine, ViewPushDots, ViewPushArrows };
             PushPathOptions.SetValue(FSettings.PushDrawMode);
-            EditToolOptions.Members = new MenuRadioItemMainAreaTool[] {
-                EditWall, EditPiece, EditTarget, EditSokoban };
             EditToolOptions.SetValue(FSettings.LastUsedTool);
 
             ViewEndPos.Checked = MainArea.ShowEndPos = FSettings.ShowEndPos;

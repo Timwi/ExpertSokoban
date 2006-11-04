@@ -716,7 +716,6 @@ namespace ExpertSokoban
             // 
             // EditToolOptions
             // 
-            this.EditToolOptions.Members = null;
             this.EditToolOptions.ValueChanged += new System.EventHandler(this.EditToolOptions_ValueChanged);
             // 
             // EditPiece
@@ -762,7 +761,6 @@ namespace ExpertSokoban
             // 
             // MovePathOptions
             // 
-            this.MovePathOptions.Members = null;
             this.MovePathOptions.ValueChanged += new System.EventHandler(this.MovePathOptions_ValueChanged);
             // 
             // ViewMoveLine
@@ -799,7 +797,6 @@ namespace ExpertSokoban
             // 
             // PushPathOptions
             // 
-            this.PushPathOptions.Members = null;
             this.PushPathOptions.ValueChanged += new System.EventHandler(this.PushPathOptions_ValueChanged);
             // 
             // ViewPushLine
