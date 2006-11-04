@@ -40,6 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExtraClasses.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="PushFinder.cs" />
     <Compile Include="MoveFinder.cs" />
     <Compile Include="MainArea.cs">

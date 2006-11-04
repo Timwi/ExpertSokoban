@@ -32,9 +32,6 @@ namespace ExpertSokoban
             LevelFileChanged = false;
             LevelFilename = null;
 
-            MainArea.MoveDrawMode = FSettings.MoveDrawMode;
-            MainArea.PushDrawMode = FSettings.PushDrawMode;
-            MainArea.ShowEndPos = FSettings.ShowEndPos;
             LevelListToolStrip1.Visible = ViewToolStrip1.Checked = FSettings.DisplayToolStrip1;
             LevelListToolStrip2.Visible = ViewToolStrip2.Checked = FSettings.DisplayToolStrip2;
             ViewEditToolStrip.Checked = FSettings.DisplayEditToolStrip;
@@ -43,15 +40,18 @@ namespace ExpertSokoban
             LevelList.Items.Add(OrigLevel);
             LevelList.SelectedIndex = 0;
             LevelList.PlayingIndex = 0;
-            SetTool(FSettings.LastUsedTool);
 
-            (MainArea.MoveDrawMode == PathDrawMode.Arrows ? ViewMoveArrows :
-                MainArea.MoveDrawMode == PathDrawMode.Dots ? ViewMoveDots :
-                MainArea.MoveDrawMode == PathDrawMode.Line ? ViewMoveLine : ViewMoveNo).Checked = true;
-            (MainArea.PushDrawMode == PathDrawMode.Arrows ? ViewPushArrows :
-                MainArea.PushDrawMode == PathDrawMode.Dots ? ViewPushDots :
-                MainArea.PushDrawMode == PathDrawMode.Line ? ViewPushLine : ViewPushNo).Checked = true;
-            ViewEndPos.Checked = MainArea.ShowEndPos;
+            MovePathOptions.Members = new MenuRadioItemPathDrawMode[] {
+                ViewMoveNo, ViewMoveLine, ViewMoveDots, ViewMoveArrows };
+            MovePathOptions.SetValue(FSettings.MoveDrawMode);
+            PushPathOptions.Members = new MenuRadioItemPathDrawMode[] {
+                ViewPushNo, ViewPushLine, ViewPushDots, ViewPushArrows };
+            PushPathOptions.SetValue(FSettings.PushDrawMode);
+            EditToolOptions.Members = new MenuRadioItemMainAreaTool[] {
+                EditWall, EditPiece, EditTarget, EditSokoban };
+            EditToolOptions.SetValue(FSettings.LastUsedTool);
+
+            ViewEndPos.Checked = MainArea.ShowEndPos = FSettings.ShowEndPos;
         }
 
         private void MainArea_MoveMade(object sender, EventArgs e)
@@ -358,32 +358,14 @@ namespace ExpertSokoban
                 LevelList.PlayingIndex = LevelList.PlayingIndex.Value-1;
         }
 
-        private void ViewMove_Click(object sender, EventArgs e)
+        private void MovePathOptions_ValueChanged(object sender, EventArgs e)
         {
-            ViewMoveNo.Checked = sender == ViewMoveNo;
-            ViewMoveLine.Checked = sender == ViewMoveLine;
-            ViewMoveDots.Checked = sender == ViewMoveDots;
-            ViewMoveArrows.Checked = sender == ViewMoveArrows;
-
-            MainArea.MoveDrawMode =
-                sender == ViewMoveLine ? PathDrawMode.Line :
-                sender == ViewMoveDots ? PathDrawMode.Dots :
-                sender == ViewMoveArrows ? PathDrawMode.Arrows : PathDrawMode.None;
-            FSettings.MoveDrawMode = MainArea.MoveDrawMode;
+            MainArea.MoveDrawMode = FSettings.MoveDrawMode = MovePathOptions.Value;
         }
 
-        private void ViewPush_Click(object sender, EventArgs e)
+        private void PushPathOptions_ValueChanged(object sender, EventArgs e)
         {
-            ViewPushNo.Checked = sender == ViewPushNo;
-            ViewPushLine.Checked = sender == ViewPushLine;
-            ViewPushDots.Checked = sender == ViewPushDots;
-            ViewPushArrows.Checked = sender == ViewPushArrows;
-
-            MainArea.PushDrawMode =
-                sender == ViewPushLine ? PathDrawMode.Line :
-                sender == ViewPushDots ? PathDrawMode.Dots :
-                sender == ViewPushArrows ? PathDrawMode.Arrows : PathDrawMode.None;
-            FSettings.PushDrawMode = MainArea.PushDrawMode;
+            MainArea.PushDrawMode = FSettings.PushDrawMode = PushPathOptions.Value;
         }
 
         private void ViewEndPos_Click(object sender, EventArgs e)
@@ -459,7 +441,11 @@ namespace ExpertSokoban
             // Level list itself
             LevelListPanel.Visible = On;
             LevelListSplitter.Visible = On;
-            if (On) LevelList.Focus();
+            if (On)
+            {
+                LevelList.ComeOn_RefreshItems();
+                LevelList.Focus();
+            }
             if (LevelList.SelectedIndex < 0 && LevelList.Items.Count > 0)
                 LevelList.SelectedIndex = 0;
 
@@ -483,20 +469,10 @@ namespace ExpertSokoban
 
         private void EditTool_Click(object sender, EventArgs e)
         {
-            SetTool(
-                sender == EditToolWall || sender == EditWall ? MainAreaTool.Wall :
-                sender == EditToolPiece || sender == EditPiece ? MainAreaTool.Piece :
-                sender == EditToolTarget || sender == EditTarget ? MainAreaTool.Target :
-                MainAreaTool.Sokoban);
-        }
-
-        private void SetTool(MainAreaTool NewTool)
-        {
-            MainArea.Tool = FSettings.LastUsedTool = NewTool;
-            EditToolWall.Checked = EditWall.Checked = NewTool == MainAreaTool.Wall;
-            EditToolPiece.Checked = EditPiece.Checked = NewTool == MainAreaTool.Piece;
-            EditToolTarget.Checked = EditTarget.Checked = NewTool == MainAreaTool.Target;
-            EditToolSokoban.Checked = EditSokoban.Checked = NewTool == MainAreaTool.Sokoban;
+            EditToolOptions.SetValue(
+                sender == EditToolWall ? MainAreaTool.Wall :
+                sender == EditToolPiece ? MainAreaTool.Piece :
+                sender == EditToolTarget ? MainAreaTool.Target : MainAreaTool.Sokoban);
         }
 
         private void EditCancel_Click(object sender, EventArgs e)
@@ -646,6 +622,15 @@ namespace ExpertSokoban
         {
             BugWorkaroundTimer.Enabled = false;
             LevelList.ComeOn_RefreshItems();
+        }
+
+        private void EditToolOptions_ValueChanged(object sender, EventArgs e)
+        {
+            MainArea.Tool = FSettings.LastUsedTool = EditToolOptions.Value;
+            EditToolWall.Checked = EditToolOptions.Value == MainAreaTool.Wall;
+            EditToolPiece.Checked = EditToolOptions.Value == MainAreaTool.Piece;
+            EditToolTarget.Checked = EditToolOptions.Value == MainAreaTool.Target;
+            EditToolSokoban.Checked = EditToolOptions.Value == MainAreaTool.Sokoban;
         }
     }
 
