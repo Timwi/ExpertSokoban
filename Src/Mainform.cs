@@ -25,7 +25,6 @@ namespace ExpertSokoban
         public Mainform()
         {
             InitializeComponent();
-
             // Start with the default level
             OrigLevel = SokobanLevel.TestLevel();
             MainArea.SetLevel(OrigLevel);
@@ -37,7 +36,7 @@ namespace ExpertSokoban
             LevelFilename = null;
 
             // Restore saved settings
-            FSettings = (MainFormSettings)PrgSettings.Store.Get("ExpSok Mainform", new MainFormSettings());
+            FSettings = PrgSettings.Store.Get<MainFormSettings>("ExpSok Mainform", new MainFormSettings());
             LevelListToolStrip1.Visible = ViewToolStrip1.Checked = FSettings.DisplayToolStrip1;
             LevelListToolStrip2.Visible = ViewToolStrip2.Checked = FSettings.DisplayToolStrip2;
             ViewEditToolStrip.Checked = FSettings.DisplayEditToolStrip;
