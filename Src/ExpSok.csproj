@@ -40,7 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExtraClasses.cs">
+    <Compile Include="MenuRadioClasses.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="PushFinder.cs" />
