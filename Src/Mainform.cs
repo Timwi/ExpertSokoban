@@ -262,18 +262,7 @@ namespace ExpertSokoban
                 ViewLevelsList_Click(sender, e);
             string Comment = InputBox.GetLine("Please enter a comment:");
             if (Comment != null)
-            {
-                if (LevelList.SelectedIndex < 0)
-                {
-                    LevelList.Items.Add(Comment);
-                    LevelList.SelectedIndex = LevelList.Items.Count-1;
-                }
-                else
-                {
-                    LevelList.Items.Insert(LevelList.SelectedIndex, Comment);
-                    LevelList.SelectedIndex -= 1;
-                }
-            }
+                AddLevelListItem(Comment);
         }
 
         private void LevelNew_Click(object sender, EventArgs e)
