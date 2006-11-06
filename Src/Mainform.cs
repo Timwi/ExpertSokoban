@@ -17,10 +17,37 @@ namespace ExpertSokoban
     public partial class Mainform : ManagedForm
     {
         private bool EverMovedOrEdited;
-        private bool LevelFileChanged;
         private SokobanLevel OrigLevel;
-        private String LevelFilename;
+        private String FLevelFilename;
+        private bool FLevelFileChanged;
         private MainFormSettings FSettings;
+
+        private string LevelFilename
+        {
+            get { return FLevelFilename; }
+            set
+            {
+                FLevelFilename = value;
+                UpdateTitlebar();
+            }
+        }
+
+        private bool LevelFileChanged
+        {
+            get { return FLevelFileChanged; }
+            set
+            {
+                FLevelFileChanged = value;
+                UpdateTitlebar();
+            }
+        }
+
+        private void UpdateTitlebar()
+        {
+            Text = "Expert Sokoban - " +
+                    (FLevelFilename == null ? "(untitled)" : Path.GetFileName(FLevelFilename)) +
+                    (FLevelFileChanged ? " *" : "");
+        }
 
         public Mainform()
         {
@@ -182,7 +209,7 @@ namespace ExpertSokoban
                 return true;
 
             DialogResult Result = MessageBox.Show("You have made changes to "
-                + (LevelFilename == null ? "(untitled)" : LevelFilename) +
+                + (LevelFilename == null ? "(untitled)" : Path.GetFileName(LevelFilename)) +
                 ". Would you like to save those changes?", Title, MessageBoxButtons.YesNoCancel);
             if (Result == DialogResult.Cancel)
                 return false;
@@ -282,23 +309,13 @@ namespace ExpertSokoban
         {
             if (!LevelListPanel.Visible)
                 ViewLevelsList_Click(sender, e);
-            SokobanLevel NewLevel = SokobanLevel.TrivialLevel();
-            if (LevelList.SelectedIndex < 0)
-            {
-                LevelList.Items.Insert(0, NewLevel);
-                LevelList.SelectedIndex = 0;
-            }
-            else
-            {
-                LevelList.Items.Insert(LevelList.SelectedIndex+1, NewLevel);
-                LevelList.SelectedIndex += 1;
-            }
+            AddLevelListItem(SokobanLevel.TrivialLevel());
         }
 
-        private void EditDelete_Click(object sender, EventArgs e)
+        private bool CanDeleteLevel(bool NormalConfirmation)
         {
             if (!LevelListPanel.Visible || LevelList.SelectedIndex < 0)
-                return;
+                return false;
 
             object Item = LevelList.Items[LevelList.SelectedIndex];
 
@@ -307,7 +324,7 @@ namespace ExpertSokoban
                 if (MessageBox.Show("You are currently editing this level.\n\n" +
                     "If you delete this level now, all your modifications will be discarded.\n\n" +
                     "Are you sure you wish to do this?", "Delete level", MessageBoxButtons.YesNo) == DialogResult.No)
-                    return;
+                    return false;
                 MainArea.Clear();
                 LevelList.EditingIndex = null;
                 SwitchEditingMode(false);
@@ -316,18 +333,23 @@ namespace ExpertSokoban
             {
                 if (MessageBox.Show("You are currently playing this level.\n\n" +
                     "Are you sure you wish to give up?", "Delete level", MessageBoxButtons.YesNo) == DialogResult.No)
-                    return;
+                    return false;
                 MainArea.Clear();
                 LevelList.PlayingIndex = null;
             }
             else if (Item is SokobanLevel)
             {
-                if (MessageBox.Show("Are you sure you wish to delete this level?",
+                if (NormalConfirmation && MessageBox.Show("Are you sure you wish to delete this level?",
                    "Expert Sokoban", MessageBoxButtons.YesNo) == DialogResult.No)
-                    return;
+                    return false;
             }
+            return true;
+        }
 
-            RemoveLevelListItem(LevelList.SelectedIndex);
+        private void EditDelete_Click(object sender, EventArgs e)
+        {
+            if (CanDeleteLevel(true))
+                RemoveLevelListItem(LevelList.SelectedIndex);
         }
 
         private void RemoveLevelListItem(int Index)
@@ -341,6 +363,7 @@ namespace ExpertSokoban
                 LevelList.EditingIndex = LevelList.EditingIndex.Value-1;
             if (LevelList.PlayingIndex != null && LevelList.PlayingIndex.Value > Index)
                 LevelList.PlayingIndex = LevelList.PlayingIndex.Value-1;
+            LevelFileChanged = true;
         }
 
         private void MovePathOptions_ValueChanged(object sender, EventArgs e)
@@ -374,17 +397,16 @@ namespace ExpertSokoban
 
         private void EditCut_Click(object sender, EventArgs e)
         {
-            if (!LevelListPanel.Visible || LevelList.SelectedIndex < 0)
-                return;
-            EditCopy_Click(sender, e);
-            RemoveLevelListItem(LevelList.SelectedIndex);
+            if (CanDeleteLevel(false))
+            {
+                EditCopy_Click(sender, e);
+                RemoveLevelListItem(LevelList.SelectedIndex);
+            }
         }
 
         private void EditPaste_Click(object sender, EventArgs e)
         {
-            if (!LevelListPanel.Visible)
-                return;
-            if (Clipboard.ContainsData("SokobanData"))
+            if (LevelListPanel.Visible && Clipboard.ContainsData("SokobanData"))
                 AddLevelListItem(Clipboard.GetData("SokobanData"));
         }
 
@@ -404,6 +426,7 @@ namespace ExpertSokoban
                 if (LevelList.PlayingIndex != null && LevelList.PlayingIndex.Value >= LevelList.SelectedIndex)
                     LevelList.PlayingIndex = LevelList.PlayingIndex.Value+1;
             }
+            LevelFileChanged = true;
         }
 
         private void EditEdit_Click(object sender, EventArgs e)
@@ -488,6 +511,7 @@ namespace ExpertSokoban
                 LevelList.Items[LevelList.EditingIndex.Value] = Level;
                 SwitchEditingMode(false);
                 TakeLevel(LevelList.EditingIndex.Value, true);
+                LevelFileChanged = true;
             }
         }
 
