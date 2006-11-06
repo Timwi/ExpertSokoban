@@ -103,6 +103,10 @@ namespace ExpertSokoban
             this.ViewSep3 = new System.Windows.Forms.ToolStripSeparator();
             this.ViewEndPos = new System.Windows.Forms.ToolStripMenuItem();
             this.ViewUnusedHotkeys = new System.Windows.Forms.ToolStripMenuItem();
+            this.HelpMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.OnlineHelp = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.AboutHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.MainToolStripContainer = new System.Windows.Forms.ToolStripContainer();
             this.MainArea = new ExpertSokoban.MainArea();
             this.LevelListSplitter = new System.Windows.Forms.Splitter();
@@ -365,7 +369,8 @@ namespace ExpertSokoban
             this.MainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.LevelMenu,
             this.EditMenu,
-            this.ViewMenu});
+            this.ViewMenu,
+            this.HelpMenu});
             this.MainMenu.Location = new System.Drawing.Point(0, 0);
             this.MainMenu.Name = "MainMenu";
             this.MainMenu.Size = new System.Drawing.Size(644, 24);
@@ -779,6 +784,35 @@ namespace ExpertSokoban
             this.ViewUnusedHotkeys.Text = "Unused hotkeys: bcghjkquvwxyz";
             this.ViewUnusedHotkeys.Visible = false;
             // 
+            // HelpMenu
+            // 
+            this.HelpMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.OnlineHelp,
+            this.toolStripMenuItem1,
+            this.AboutHelp});
+            this.HelpMenu.Name = "HelpMenu";
+            this.HelpMenu.Size = new System.Drawing.Size(40, 20);
+            this.HelpMenu.Text = "Help";
+            // 
+            // OnlineHelp
+            // 
+            this.OnlineHelp.Name = "OnlineHelp";
+            this.OnlineHelp.Size = new System.Drawing.Size(152, 22);
+            this.OnlineHelp.Text = "Online help";
+            this.OnlineHelp.Click += new System.EventHandler(this.OnlineHelp_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(149, 6);
+            // 
+            // AboutHelp
+            // 
+            this.AboutHelp.Name = "AboutHelp";
+            this.AboutHelp.Size = new System.Drawing.Size(152, 22);
+            this.AboutHelp.Text = "About...";
+            this.AboutHelp.Click += new System.EventHandler(this.AboutHelp_Click);
+            // 
             // MainToolStripContainer
             // 
             // 
@@ -837,6 +871,7 @@ namespace ExpertSokoban
             this.Controls.Add(this.LevelListSplitter);
             this.Controls.Add(this.MainToolStripContainer);
             this.Controls.Add(this.LevelListPanel);
+            this.Icon = global::ExpertSokoban.Properties.Resources.ExpertSokoban;
             this.MainMenuStrip = this.MainMenu;
             this.Name = "Mainform";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
@@ -941,6 +976,10 @@ namespace ExpertSokoban
         private ExpertSokoban.MenuRadioGroupPathDrawMode MovePathOptions;
         private ExpertSokoban.MenuRadioGroupPathDrawMode PushPathOptions;
         private ExpertSokoban.MenuRadioGroupMainAreaTool EditToolOptions;
+        private System.Windows.Forms.ToolStripMenuItem HelpMenu;
+        private System.Windows.Forms.ToolStripMenuItem OnlineHelp;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem AboutHelp;
     }
 }
 

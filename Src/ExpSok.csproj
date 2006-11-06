@@ -9,6 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ExpertSokoban</RootNamespace>
     <AssemblyName>ExpSok</AssemblyName>
+    <ApplicationIcon>Resources\ExpertSokoban.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -129,6 +130,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Arrow down.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\ExpertSokoban.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

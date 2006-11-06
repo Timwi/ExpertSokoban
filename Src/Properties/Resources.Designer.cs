@@ -88,6 +88,13 @@ namespace ExpertSokoban.Properties {
             }
         }
         
+        internal static System.Drawing.Icon ExpertSokoban {
+            get {
+                object obj = ResourceManager.GetObject("ExpertSokoban", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap ImgLevelSolved {
             get {
                 object obj = ResourceManager.GetObject("ImgLevelSolved", resourceCulture);

@@ -617,6 +617,16 @@ namespace ExpertSokoban
             EditToolTarget.Checked = EditToolOptions.Value == MainAreaTool.Target;
             EditToolSokoban.Checked = EditToolOptions.Value == MainAreaTool.Sokoban;
         }
+
+        private void OnlineHelp_Click(object sender, EventArgs e)
+        {
+            DlgMessage.ShowInfo("This is supposed to bring up http://www.CuteBits.com/ExpertSokoban in the browser.", "OK");
+        }
+
+        private void AboutHelp_Click(object sender, EventArgs e)
+        {
+            DlgMessage.ShowInfo("This is supposed to show the About dialog.", "OK");
+        }
     }
 
     [Serializable]
