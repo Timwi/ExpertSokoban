@@ -63,8 +63,6 @@ namespace ExpertSokoban
             this.LevelUndo = new System.Windows.Forms.ToolStripMenuItem();
             this.LevelRetry = new System.Windows.Forms.ToolStripMenuItem();
             this.LevelSep2 = new System.Windows.Forms.ToolStripSeparator();
-            this.LevelAbout = new System.Windows.Forms.ToolStripMenuItem();
-            this.LevelSep3 = new System.Windows.Forms.ToolStripSeparator();
             this.LevelExit = new System.Windows.Forms.ToolStripMenuItem();
             this.EditMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.EditCreateLevel = new System.Windows.Forms.ToolStripMenuItem();
@@ -105,10 +103,13 @@ namespace ExpertSokoban
             this.ViewSep3 = new System.Windows.Forms.ToolStripSeparator();
             this.ViewEndPos = new System.Windows.Forms.ToolStripMenuItem();
             this.ViewUnusedHotkeys = new System.Windows.Forms.ToolStripMenuItem();
+            this.HelpMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.HelpAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.MainToolStripContainer = new System.Windows.Forms.ToolStripContainer();
             this.MainArea = new ExpertSokoban.MainArea();
             this.LevelListSplitter = new System.Windows.Forms.Splitter();
             this.BugWorkaroundTimer = new System.Windows.Forms.Timer(this.components);
+            this.HelpHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.LevelListPanel.SuspendLayout();
             this.EditToolStrip.SuspendLayout();
             this.LevelListToolStrip2.SuspendLayout();
@@ -367,7 +368,8 @@ namespace ExpertSokoban
             this.MainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.LevelMenu,
             this.EditMenu,
-            this.ViewMenu});
+            this.ViewMenu,
+            this.HelpMenu});
             this.MainMenu.Location = new System.Drawing.Point(0, 0);
             this.MainMenu.Name = "MainMenu";
             this.MainMenu.Size = new System.Drawing.Size(644, 24);
@@ -384,8 +386,6 @@ namespace ExpertSokoban
             this.LevelUndo,
             this.LevelRetry,
             this.LevelSep2,
-            this.LevelAbout,
-            this.LevelSep3,
             this.LevelExit});
             this.LevelMenu.Name = "LevelMenu";
             this.LevelMenu.Size = new System.Drawing.Size(44, 20);
@@ -441,18 +441,6 @@ namespace ExpertSokoban
             // 
             this.LevelSep2.Name = "LevelSep2";
             this.LevelSep2.Size = new System.Drawing.Size(191, 6);
-            // 
-            // LevelAbout
-            // 
-            this.LevelAbout.Name = "LevelAbout";
-            this.LevelAbout.Size = new System.Drawing.Size(194, 22);
-            this.LevelAbout.Text = "&About";
-            this.LevelAbout.Click += new System.EventHandler(this.LevelAbout_Click);
-            // 
-            // LevelSep3
-            // 
-            this.LevelSep3.Name = "LevelSep3";
-            this.LevelSep3.Size = new System.Drawing.Size(191, 6);
             // 
             // LevelExit
             // 
@@ -795,6 +783,22 @@ namespace ExpertSokoban
             this.ViewUnusedHotkeys.Text = "Unused hotkeys: bcghjkquvwxyz";
             this.ViewUnusedHotkeys.Visible = false;
             // 
+            // HelpMenu
+            // 
+            this.HelpMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.HelpHelp,
+            this.HelpAbout});
+            this.HelpMenu.Name = "HelpMenu";
+            this.HelpMenu.Size = new System.Drawing.Size(40, 20);
+            this.HelpMenu.Text = "&Help";
+            // 
+            // HelpAbout
+            // 
+            this.HelpAbout.Name = "HelpAbout";
+            this.HelpAbout.Size = new System.Drawing.Size(152, 22);
+            this.HelpAbout.Text = "&About";
+            this.HelpAbout.Click += new System.EventHandler(this.HelpAbout_Click);
+            // 
             // MainToolStripContainer
             // 
             // 
@@ -844,6 +848,13 @@ namespace ExpertSokoban
             // 
             this.BugWorkaroundTimer.Enabled = true;
             this.BugWorkaroundTimer.Tick += new System.EventHandler(this.BugWorkaroundTimer_Tick);
+            // 
+            // HelpHelp
+            // 
+            this.HelpHelp.Name = "HelpHelp";
+            this.HelpHelp.Size = new System.Drawing.Size(152, 22);
+            this.HelpHelp.Text = "&Online Help...";
+            this.HelpHelp.Click += new System.EventHandler(this.HelpHelp_Click);
             // 
             // Mainform
             // 
@@ -943,7 +954,6 @@ namespace ExpertSokoban
         private System.Windows.Forms.ToolStripMenuItem LevelExit;
         private System.Windows.Forms.ToolStripMenuItem LevelUndo;
         private System.Windows.Forms.ToolStripMenuItem LevelRetry;
-        private System.Windows.Forms.ToolStripSeparator LevelSep3;
         private System.Windows.Forms.ToolStripMenuItem EditCreateLevel;
         private System.Windows.Forms.ToolStripMenuItem EditEdit;
         private System.Windows.Forms.ToolStripMenuItem EditAddComment;
@@ -959,7 +969,9 @@ namespace ExpertSokoban
         private ExpertSokoban.MenuRadioGroupPathDrawMode PushPathOptions;
         private ExpertSokoban.MenuRadioGroupMainAreaTool EditToolOptions;
         private System.Windows.Forms.ToolStripSeparator LevelSep2;
-        private System.Windows.Forms.ToolStripMenuItem LevelAbout;
+        private System.Windows.Forms.ToolStripMenuItem HelpMenu;
+        private System.Windows.Forms.ToolStripMenuItem HelpAbout;
+        private System.Windows.Forms.ToolStripMenuItem HelpHelp;
     }
 }
 

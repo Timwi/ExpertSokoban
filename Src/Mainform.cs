@@ -189,9 +189,10 @@ namespace ExpertSokoban
                         String Problem = Status == SokobanLevelStatus.NotEnclosed
                             ? "The level is not completely enclosed by a wall."
                             : "The number of pieces does not match the number of targets.";
-                        if (MessageBox.Show("The level could not be opened because it is invalid.\n\n" + Problem +
+                        if (DlgMessage.Show("The level could not be opened because it is invalid.\n\n" + Problem +
                             "\n\nYou must edit the level in order to address this issue. " +
-                            "Would you like to edit the level now?", "Expert Sokoban", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                            "Would you like to edit the level now?", "Expert Sokoban",
+                            DlgType.Error, "Edit level", "Cancel") == 0)
                             EnterEditingMode();
                     }
                 }
@@ -208,12 +209,13 @@ namespace ExpertSokoban
             if (!LevelFileChanged)
                 return true;
 
-            DialogResult Result = MessageBox.Show("You have made changes to "
+            int Result = DlgMessage.Show("You have made changes to "
                 + (LevelFilename == null ? "(untitled)" : Path.GetFileName(LevelFilename)) +
-                ". Would you like to save those changes?", Title, MessageBoxButtons.YesNoCancel);
-            if (Result == DialogResult.Cancel)
+                ". Would you like to save those changes?", Title, DlgType.Question,
+                "Save changes", "&Discard changes", "Cancel");
+            if (Result == 2)
                 return false;
-            if (Result == DialogResult.Yes)
+            if (Result == 0)
             {
                 if (SaveWithDialog() != DialogResult.OK)
                     return false;
@@ -229,10 +231,10 @@ namespace ExpertSokoban
                 return true;
 
             return MainArea.State == MainAreaState.Editing
-                ? MessageBox.Show("Are you sure you wish to discard your changes to the level you're editing?",
-                    Title, MessageBoxButtons.YesNo) == DialogResult.Yes
-                : MessageBox.Show("Are you sure you wish to give up the current level?",
-                    Title, MessageBoxButtons.YesNo) == DialogResult.Yes;
+                ? DlgMessage.Show("Are you sure you wish to discard your changes to the level you're editing?",
+                    Title, DlgType.Warning, "Discard changes", "Cancel") == 0
+                : DlgMessage.Show("Are you sure you wish to give up the current level?",
+                    Title, DlgType.Warning, "Give up", "Cancel") == 0;
         }
 
         private void LevelList_DoubleClick(object sender, EventArgs e)
@@ -321,9 +323,10 @@ namespace ExpertSokoban
 
             if (Item is SokobanLevel && LevelList.SelectedIndex == LevelList.EditingIndex)
             {
-                if (MessageBox.Show("You are currently editing this level.\n\n" +
+                if (DlgMessage.Show("You are currently editing this level.\n\n" +
                     "If you delete this level now, all your modifications will be discarded.\n\n" +
-                    "Are you sure you wish to do this?", "Delete level", MessageBoxButtons.YesNo) == DialogResult.No)
+                    "Are you sure you wish to do this?", "Delete level",
+                    DlgType.Warning, "Discard changes", "Cancel") == 1)
                     return false;
                 MainArea.Clear();
                 LevelList.EditingIndex = null;
@@ -331,16 +334,18 @@ namespace ExpertSokoban
             }
             else if (Item is SokobanLevel && LevelList.SelectedIndex == LevelList.PlayingIndex)
             {
-                if (MessageBox.Show("You are currently playing this level.\n\n" +
-                    "Are you sure you wish to give up?", "Delete level", MessageBoxButtons.YesNo) == DialogResult.No)
+                if (DlgMessage.Show("You are currently playing this level.\n\n" +
+                    "Are you sure you wish to give up?", "Delete level",
+                    DlgType.Warning, "Give up", "Cancel") == 1)
                     return false;
                 MainArea.Clear();
                 LevelList.PlayingIndex = null;
             }
             else if (Item is SokobanLevel)
             {
-                if (NormalConfirmation && MessageBox.Show("Are you sure you wish to delete this level?",
-                   "Expert Sokoban", MessageBoxButtons.YesNo) == DialogResult.No)
+                if (NormalConfirmation && DlgMessage.Show(
+                    "Are you sure you wish to delete this level?",
+                    "Expert Sokoban", DlgType.Question, "Delete level", "Cancel") == 1)
                     return false;
             }
             return true;
@@ -499,10 +504,11 @@ namespace ExpertSokoban
                     String Problem = Status == SokobanLevelStatus.NotEnclosed
                         ? "The level is not completely enclosed by a wall."
                         : "The number of pieces does not match the number of targets.";
-                    if (MessageBox.Show("The following problem has been detected with this level:\n\n" +
+                    if (DlgMessage.Show("The following problem has been detected with this level:\n\n" +
                         Problem + "\n\nYou cannot play this level until you address this issue.\n\n" +
                         "Are you sure you wish to leave the level in this invalid state?",
-                        "Expert Sokoban", MessageBoxButtons.YesNo) == DialogResult.No)
+                        "Expert Sokoban", DlgType.Error, "Save level anyway",
+                        "Resume editing") == 1)
                         return;
                 }
 
@@ -642,10 +648,17 @@ namespace ExpertSokoban
             EditToolSokoban.Checked = EditToolOptions.Value == MainAreaTool.Sokoban;
         }
 
-        private void LevelAbout_Click(object sender, EventArgs e)
+        private void HelpAbout_Click(object sender, EventArgs e)
         {
             AboutBox ab = new AboutBox();
             ab.ShowDialog();
+        }
+
+        private void HelpHelp_Click(object sender, EventArgs e)
+        {
+            DlgMessage.Show("Welcome to Expert Sokoban. You can " +
+                "find detailed help about this product on our website:\n\n" +
+                "http://www.cutebits.com", "Expert Sokoban", DlgType.Info);
         }
     }
 
