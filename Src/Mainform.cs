@@ -660,6 +660,16 @@ namespace ExpertSokoban
                 "find detailed help about this product on our website:\n\n" +
                 "http://www.cutebits.com", "Expert Sokoban", DlgType.Info);
         }
+
+        private void Mainform_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                if (MainArea.State == MainAreaState.Push)
+                    MainArea.Deselect();
+                e.Handled = true;
+            }
+        }
     }
 
     [Serializable]

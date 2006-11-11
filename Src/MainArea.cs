@@ -427,10 +427,12 @@ namespace ExpertSokoban
                        OrigMouseDownDir(Cell) != 0 &&
                        PushFinder.GetDir(Cell, OrigMouseDownDir(Cell))))
             {
-                if (MoveFinder.Get(Cell.X, Cell.Y+1) ||
-                    MoveFinder.Get(Cell.X, Cell.Y-1) ||
-                    MoveFinder.Get(Cell.X+1, Cell.Y) ||
-                    MoveFinder.Get(Cell.X-1, Cell.Y))
+                if (Sel != null && Cell.Equals(Sel.Value))
+                    Deselect();
+                else if (MoveFinder.Get(Cell.X, Cell.Y+1) ||
+                         MoveFinder.Get(Cell.X, Cell.Y-1) ||
+                         MoveFinder.Get(Cell.X+1, Cell.Y) ||
+                         MoveFinder.Get(Cell.X-1, Cell.Y))
                 {
                     Sel = Cell;
                     MouseOverCell = null;
@@ -559,6 +561,16 @@ namespace ExpertSokoban
         {
             FState = MainAreaState.Null;
             Refresh();
+        }
+
+        public void Deselect()
+        {
+            if (FState != MainAreaState.Push)
+                return;
+            Sel = null;
+            FState = MainAreaState.Move;
+            ReinitMoveFinder();
+            Invalidate();
         }
     }
 }

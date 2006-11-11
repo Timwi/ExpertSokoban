@@ -104,12 +104,12 @@ namespace ExpertSokoban
             this.ViewEndPos = new System.Windows.Forms.ToolStripMenuItem();
             this.ViewUnusedHotkeys = new System.Windows.Forms.ToolStripMenuItem();
             this.HelpMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.HelpHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.HelpAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.MainToolStripContainer = new System.Windows.Forms.ToolStripContainer();
             this.MainArea = new ExpertSokoban.MainArea();
             this.LevelListSplitter = new System.Windows.Forms.Splitter();
             this.BugWorkaroundTimer = new System.Windows.Forms.Timer(this.components);
-            this.HelpHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.LevelListPanel.SuspendLayout();
             this.EditToolStrip.SuspendLayout();
             this.LevelListToolStrip2.SuspendLayout();
@@ -792,10 +792,17 @@ namespace ExpertSokoban
             this.HelpMenu.Size = new System.Drawing.Size(40, 20);
             this.HelpMenu.Text = "&Help";
             // 
+            // HelpHelp
+            // 
+            this.HelpHelp.Name = "HelpHelp";
+            this.HelpHelp.Size = new System.Drawing.Size(140, 22);
+            this.HelpHelp.Text = "&Online Help...";
+            this.HelpHelp.Click += new System.EventHandler(this.HelpHelp_Click);
+            // 
             // HelpAbout
             // 
             this.HelpAbout.Name = "HelpAbout";
-            this.HelpAbout.Size = new System.Drawing.Size(152, 22);
+            this.HelpAbout.Size = new System.Drawing.Size(140, 22);
             this.HelpAbout.Text = "&About";
             this.HelpAbout.Click += new System.EventHandler(this.HelpAbout_Click);
             // 
@@ -849,13 +856,6 @@ namespace ExpertSokoban
             this.BugWorkaroundTimer.Enabled = true;
             this.BugWorkaroundTimer.Tick += new System.EventHandler(this.BugWorkaroundTimer_Tick);
             // 
-            // HelpHelp
-            // 
-            this.HelpHelp.Name = "HelpHelp";
-            this.HelpHelp.Size = new System.Drawing.Size(152, 22);
-            this.HelpHelp.Text = "&Online Help...";
-            this.HelpHelp.Click += new System.EventHandler(this.HelpHelp_Click);
-            // 
             // Mainform
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -865,12 +865,14 @@ namespace ExpertSokoban
             this.Controls.Add(this.MainToolStripContainer);
             this.Controls.Add(this.LevelListPanel);
             this.Icon = global::ExpertSokoban.Properties.Resources.ExpertSokoban;
+            this.KeyPreview = true;
             this.MainMenuStrip = this.MainMenu;
             this.Name = "Mainform";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Expert Sokoban";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Mainform_FormClosed);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Mainform_FormClosing);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Mainform_KeyDown);
             this.LevelListPanel.ResumeLayout(false);
             this.LevelListPanel.PerformLayout();
             this.EditToolStrip.ResumeLayout(false);
