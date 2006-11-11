@@ -16,6 +16,12 @@ namespace ExpertSokoban
         private int FLastWidth = 0;
         private int FPlayingEditingIndex = 0;
         private LevelListBoxState FState = LevelListBoxState.Null;
+        private Hashtable FSolvedLevels;
+
+        private Color EditingColor = Color.FromArgb(255, 192, 128);
+        private Color PlayingColor = Color.FromArgb(64, 224, 128);
+        private Color SolvedColor = Color.FromArgb(64, 128, 255);
+        private Color NeutralColor = Color.Silver;
 
         public int? EditingIndex
         {
@@ -27,6 +33,11 @@ namespace ExpertSokoban
         {
             get { return FState == LevelListBoxState.Playing ? (int?)FPlayingEditingIndex : null; }
             set { SetPlayingEditing(LevelListBoxState.Playing, value); }
+        }
+
+        public void SetSolvedLevels(Hashtable SolvedLevels)
+        {
+            FSolvedLevels = SolvedLevels;
         }
 
         private void SetPlayingEditing(LevelListBoxState State, int? Value)
@@ -70,12 +81,16 @@ namespace ExpertSokoban
             {
                 if (Items[e.Index] is SokobanLevel)
                 {
+                    bool IsSolved = FSolvedLevels.ContainsKey(Items[e.Index].ToString());
+                    bool IsPlaying = (e.Index == FPlayingEditingIndex && FState == LevelListBoxState.Playing);
+                    bool IsEditing = (e.Index == FPlayingEditingIndex && FState == LevelListBoxState.Editing);
+
                     int UseHeight = e.Bounds.Height-10;
                     SizeF MessageSize = new SizeF(0, 0);
-                    if (e.Index == FPlayingEditingIndex && FState != LevelListBoxState.Null)
+                    if (IsSolved || IsPlaying || IsEditing)
                     {
                         MessageSize = e.Graphics.MeasureString(
-                            FState == LevelListBoxState.Editing ? "Currently editing" : "Currently playing",
+                            IsEditing ? "Currently editing" : IsPlaying ? "Currently playing" : "Solved",
                             Font
                         );
                         MessageSize.Height += 5;
@@ -90,21 +105,18 @@ namespace ExpertSokoban
                             new LinearGradientBrush(
                                 e.Bounds,
                                 Color.White,
-                                e.Index == FPlayingEditingIndex && FState == LevelListBoxState.Editing ? Color.FromArgb(255, 192, 128) :
-                                e.Index == FPlayingEditingIndex && FState == LevelListBoxState.Playing ? Color.FromArgb(64, 224, 128) :
-                                Color.Silver,
+                                IsEditing ? EditingColor : IsPlaying ? PlayingColor : IsSolved ? SolvedColor : NeutralColor,
                                 90,
                                 false
                             ),
                             e.Bounds
                         );
-                    if (e.Index == FPlayingEditingIndex && FState != LevelListBoxState.Null)
+                    if (IsPlaying || IsEditing || IsSolved)
                     {
                         e.Graphics.FillRectangle(
                             new LinearGradientBrush(
                                 new RectangleF(e.Bounds.Left+5, e.Bounds.Top+4, e.Bounds.Width-10, MessageSize.Height-3),
-                                e.Index == FPlayingEditingIndex && FState == LevelListBoxState.Editing
-                                    ? Color.FromArgb(255, 192, 128) : Color.FromArgb(64, 224, 128),
+                                IsEditing ? EditingColor : IsPlaying ? PlayingColor : SolvedColor,
                                 Color.White,
                                 90,
                                 false
@@ -112,7 +124,7 @@ namespace ExpertSokoban
                             new RectangleF(e.Bounds.Left+5, e.Bounds.Top+5, e.Bounds.Width-10, MessageSize.Height-5)
                         );
                         e.Graphics.DrawString(
-                            FState == LevelListBoxState.Editing ? "Currently editing" : "Currently playing",
+                            IsEditing ? "Currently editing" : IsPlaying ? "Currently playing" : "Solved",
                             Font,
                             new SolidBrush(Color.Black),
                             e.Bounds.Left + e.Bounds.Width/2 - MessageSize.Width/2,
@@ -161,16 +173,17 @@ namespace ExpertSokoban
                 {
                     SokobanLevel Level = (SokobanLevel)Items[e.Index];
                     e.ItemHeight = (ClientSize.Width-10)*Level.Height/Level.Width + 10;
+                    if (e.Index == FPlayingEditingIndex && FState == LevelListBoxState.Playing)
+                        e.ItemHeight += (int)e.Graphics.MeasureString("Currently playing", Font).Height + 5;
+                    else if (e.Index == FPlayingEditingIndex && FState == LevelListBoxState.Editing)
+                        e.ItemHeight += (int)e.Graphics.MeasureString("Currently editing", Font).Height + 5;
+                    else if (FSolvedLevels.ContainsKey(Items[e.Index].ToString()))
+                        e.ItemHeight += (int)e.Graphics.MeasureString("Solved", Font).Height + 5;
                 }
                 else if (Items[e.Index] is string)
                     e.ItemHeight = (int)e.Graphics.MeasureString((string)Items[e.Index], Font).Height + 10;
                 else
                     e.ItemHeight = (int)e.Graphics.MeasureString(Items[e.Index].ToString(), Font).Height + 10;
-
-                if (e.Index == FPlayingEditingIndex && FState == LevelListBoxState.Playing)
-                    e.ItemHeight += (int)e.Graphics.MeasureString("Currently playing", Font).Height + 5;
-                else if (e.Index == FPlayingEditingIndex && FState == LevelListBoxState.Editing)
-                    e.ItemHeight += (int)e.Graphics.MeasureString("Currently editing", Font).Height + 5;
 
                 if (e.ItemHeight > 255)
                     e.ItemHeight = 255;

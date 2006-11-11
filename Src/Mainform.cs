@@ -1,16 +1,17 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
 using System.IO;
 using System.IO.Compression;
+using System.Text;
+using System.Windows.Forms;
 using RT.Util;
-using RT.Util.Settings;
-using RT.Util.Forms;
 using RT.Util.Dialogs;
+using RT.Util.Forms;
+using RT.Util.Settings;
 
 namespace ExpertSokoban
 {
@@ -65,6 +66,7 @@ namespace ExpertSokoban
             // Restore saved settings
             FSettings = PrgSettings.Store.GetObject("ExpSok Mainform", null) as MainFormSettings;
             if (FSettings == null) FSettings = new MainFormSettings();
+            if (FSettings.SolvedLevels == null) FSettings.SolvedLevels = new Hashtable();
             LevelListToolStrip1.Visible = ViewToolStrip1.Checked = FSettings.DisplayToolStrip1;
             LevelListToolStrip2.Visible = ViewToolStrip2.Checked = FSettings.DisplayToolStrip2;
             ViewEditToolStrip.Checked = FSettings.DisplayEditToolStrip;
@@ -73,6 +75,7 @@ namespace ExpertSokoban
             MovePathOptions.SetValue(FSettings.MoveDrawMode);
             PushPathOptions.SetValue(FSettings.PushDrawMode);
             EditToolOptions.SetValue(FSettings.LastUsedTool);
+            LevelList.SetSolvedLevels(FSettings.SolvedLevels);
 
             ViewEndPos.Checked = MainArea.ShowEndPos = FSettings.ShowEndPos;
         }
@@ -670,6 +673,12 @@ namespace ExpertSokoban
                 e.Handled = true;
             }
         }
+
+        private void MainArea_LevelSolved(object sender, EventArgs e)
+        {
+            FSettings.SolvedLevels.Add(OrigLevel.ToString(), true);
+            LevelList.ComeOn_RefreshItems();
+        }
     }
 
     [Serializable]
@@ -682,5 +691,6 @@ namespace ExpertSokoban
             DisplayEditToolStrip = true;
         public MainAreaTool LastUsedTool = MainAreaTool.Wall;
         public int LevelListPanelWidth = 152;
+        public Hashtable SolvedLevels = new Hashtable();
     }
 }

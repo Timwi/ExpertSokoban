@@ -312,5 +312,13 @@ namespace ExpertSokoban
         {
             return new SokobanLevel("#####\n#@$.#\n#####\n");
         }
+
+        public override int GetHashCode()
+        {
+            // We want to make sure that same levels return same hash codes.
+            // Same levels will already have same string representations,
+            // so use the string representation to generate the hash code.
+            return ToString().GetHashCode();
+        }
     }
 }

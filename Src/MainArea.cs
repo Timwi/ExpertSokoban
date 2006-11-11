@@ -52,6 +52,7 @@ namespace ExpertSokoban
 
         public event EventHandler MoveMade;     // occurs while playing only
         public event EventHandler LevelChanged; // occurs in edit move only
+        public event EventHandler LevelSolved;  // occurs when the user solves a level
 
         private SokobanLevel FLevel;
         private Renderer Renderer;
@@ -491,6 +492,7 @@ namespace ExpertSokoban
                 if (FLevel.Solved)
                 {
                     FState = MainAreaState.Solved;
+                    if (LevelSolved != null) LevelSolved(this, new EventArgs());
                     SndLevelSolved.Play();
                     Refresh();
                 }
