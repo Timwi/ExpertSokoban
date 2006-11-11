@@ -120,6 +120,15 @@
   <metadata name="EditToolStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>813, 17</value>
   </metadata>
+  <metadata name="LevelListToolStrip2.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>421, 17</value>
+  </metadata>
+  <metadata name="LevelListToolStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>668, 17</value>
+  </metadata>
+  <metadata name="EditToolStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>813, 17</value>
+  </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="EditToolWall.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -880,6 +889,23 @@
         gCAIRPl4v83fsg4GCdqEttycW8Xx7kKiv1YjGrxbG+UepeL4cakYaEC0Io8N9NMWd1Fk8CI5Xk6IWz47
         ipOIF5jQ0VEtpQis+52F4vpnextG8HTznlVERXeBcgYQwMuMZ4j13u3PiIBMWip1LWZTYUpTBDPpIpAY
         mmWo3D3h0D7s8kWLBRcbFakUzoMoOgAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="LevelToolNext.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAFVJREFUOE9jYBhW
+        4D/QN8RirB7/Twi0tLTALMBtwNatz//jwoQMAJkKdgQ2A4jRTBUDsBpCrO2wgMHwBqkGoLiCHM1UMQBs
+        CLm2w8OCUgPArqB5ZgUADqvH485YQ+EAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="LevelToolNextUnsolved.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAHJJREFUOE+tk9EJ
+        wDAIRJvdXSkzdYyUCyimhvasFfIh6DtPSTvWGLd8l7anmoHo/QxPRAB/FSgDMF2AsOpqrQRQnwZx6vwO
+        vA0FsDZMGRBtwlVYgC3RAzLNyxUAyaqHS2TVfwNMK1/VbYoqYE5B/M5ayQVUuM7ccH8wTgAAAABJRU5E
+        rkJggg==
 </value>
   </data>
   <metadata name="LevelListToolStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">

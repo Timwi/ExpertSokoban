@@ -554,6 +554,7 @@ namespace ExpertSokoban
                 FLevel.MovePiece(ItemPush.MovedPieceTo, ItemPush.MovedPieceFrom);
             }
 
+            Sel = null;
             FState = MainAreaState.Move;
             ReinitMoveFinder();
             Refresh();

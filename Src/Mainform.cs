@@ -194,7 +194,7 @@ namespace ExpertSokoban
                             : "The number of pieces does not match the number of targets.";
                         if (DlgMessage.Show("The level could not be opened because it is invalid.\n\n" + Problem +
                             "\n\nYou must edit the level in order to address this issue. " +
-                            "Would you like to edit the level now?", "Expert Sokoban",
+                            "Would you like to edit the level now?", "Open level",
                             DlgType.Error, "Edit level", "Cancel") == 0)
                             EnterEditingMode();
                     }
@@ -348,7 +348,7 @@ namespace ExpertSokoban
             {
                 if (NormalConfirmation && DlgMessage.Show(
                     "Are you sure you wish to delete this level?",
-                    "Expert Sokoban", DlgType.Question, "Delete level", "Cancel") == 1)
+                    "Delete level", DlgType.Question, "Delete level", "Cancel") == 1)
                     return false;
             }
             return true;
@@ -372,6 +372,10 @@ namespace ExpertSokoban
             if (LevelList.PlayingIndex != null && LevelList.PlayingIndex.Value > Index)
                 LevelList.PlayingIndex = LevelList.PlayingIndex.Value-1;
             LevelFileChanged = true;
+            LevelNext.Enabled = LevelNextUnsolved.Enabled =
+                LevelToolNext.Enabled = LevelToolNextUnsolved.Enabled =
+                LevelPrevious.Enabled = LevelPreviousUnsolved.Enabled =
+                LevelList.Items.Count > 0;
         }
 
         private void MovePathOptions_ValueChanged(object sender, EventArgs e)
@@ -435,6 +439,9 @@ namespace ExpertSokoban
                     LevelList.PlayingIndex = LevelList.PlayingIndex.Value+1;
             }
             LevelFileChanged = true;
+            LevelNext.Enabled = LevelNextUnsolved.Enabled =
+                LevelToolNext.Enabled = LevelToolNextUnsolved.Enabled =
+                LevelPrevious.Enabled = LevelPreviousUnsolved.Enabled = true;
         }
 
         private void EditEdit_Click(object sender, EventArgs e)
@@ -510,7 +517,7 @@ namespace ExpertSokoban
                     if (DlgMessage.Show("The following problem has been detected with this level:\n\n" +
                         Problem + "\n\nYou cannot play this level until you address this issue.\n\n" +
                         "Are you sure you wish to leave the level in this invalid state?",
-                        "Expert Sokoban", DlgType.Error, "Save level anyway",
+                        "Finish editing", DlgType.Error, "Save level anyway",
                         "Resume editing") == 1)
                         return;
                 }
@@ -678,6 +685,60 @@ namespace ExpertSokoban
         {
             FSettings.SolvedLevels.Add(OrigLevel.ToString(), true);
             LevelList.ComeOn_RefreshItems();
+        }
+
+        private void LevelNext_Click(object sender, EventArgs e)
+        {
+            if (LevelList.Items.Count < 1)  // should never happen because buttons & menu items should be greyed out
+                return;
+
+            bool MustBeUnsolved = sender == LevelNextUnsolved || sender == LevelToolNextUnsolved;
+
+            int OldIndex = LevelList.SelectedIndex, i = OldIndex;
+            for (; ; )
+            {
+                i = (i+1) % LevelList.Items.Count;
+                if (i == OldIndex || (i == 0 && OldIndex == -1))
+                {
+                    DlgMessage.Show("There is no other level in the level file.",
+                        MustBeUnsolved ? "Next unsolved level" : "Next level",
+                        DlgType.Info);
+                    return;
+                }
+                if (LevelList.Items[i] is SokobanLevel &&
+                    (!MustBeUnsolved || !FSettings.SolvedLevels.ContainsKey(LevelList.Items[i].ToString())))
+                {
+                    TakeLevel(i);
+                    return;
+                }
+            }
+        }
+
+        private void LevelPrevious_Click(object sender, EventArgs e)
+        {
+            if (LevelList.Items.Count < 1)  // should never happen because buttons & menu items should be greyed out
+                return;
+
+            bool MustBeUnsolved = sender == LevelPreviousUnsolved;
+
+            int OldIndex = LevelList.SelectedIndex, i = OldIndex;
+            for (; ; )
+            {
+                i = (i + LevelList.Items.Count - 1) % LevelList.Items.Count;
+                if (i == OldIndex || (i == LevelList.Items.Count-1 && OldIndex == -1))
+                {
+                    DlgMessage.Show("There is no other level in the level file.",
+                        MustBeUnsolved ? "Previous unsolved level" : "Previous level",
+                        DlgType.Info);
+                    return;
+                }
+                if (LevelList.Items[i] is SokobanLevel &&
+                    (!MustBeUnsolved || !FSettings.SolvedLevels.ContainsKey(LevelList.Items[i].ToString())))
+                {
+                    TakeLevel(i);
+                    return;
+                }
+            }
         }
     }
 
