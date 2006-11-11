@@ -113,7 +113,7 @@ namespace ExpertSokoban
             this.HelpMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.HelpHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.HelpAbout = new System.Windows.Forms.ToolStripMenuItem();
-            this.unusedCTRLShortcutsAbcdefghijklmnopqrstuvwxyzToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.UnusedCTRLShortcuts = new System.Windows.Forms.ToolStripMenuItem();
             this.MainToolStripContainer = new System.Windows.Forms.ToolStripContainer();
             this.MainArea = new ExpertSokoban.MainArea();
             this.LevelListSplitter = new System.Windows.Forms.Splitter();
@@ -860,7 +860,7 @@ namespace ExpertSokoban
             this.HelpMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.HelpHelp,
             this.HelpAbout,
-            this.unusedCTRLShortcutsAbcdefghijklmnopqrstuvwxyzToolStripMenuItem});
+            this.UnusedCTRLShortcuts});
             this.HelpMenu.Name = "HelpMenu";
             this.HelpMenu.Size = new System.Drawing.Size(40, 20);
             this.HelpMenu.Text = "&Help";
@@ -879,11 +879,12 @@ namespace ExpertSokoban
             this.HelpAbout.Text = "&About";
             this.HelpAbout.Click += new System.EventHandler(this.HelpAbout_Click);
             // 
-            // unusedCTRLShortcutsAbcdefghijklmnopqrstuvwxyzToolStripMenuItem
+            // UnusedCTRLShortcuts
             // 
-            this.unusedCTRLShortcutsAbcdefghijklmnopqrstuvwxyzToolStripMenuItem.Name = "unusedCTRLShortcutsAbcdefghijklmnopqrstuvwxyzToolStripMenuItem";
-            this.unusedCTRLShortcutsAbcdefghijklmnopqrstuvwxyzToolStripMenuItem.Size = new System.Drawing.Size(238, 22);
-            this.unusedCTRLShortcutsAbcdefghijklmnopqrstuvwxyzToolStripMenuItem.Text = "Unused CTRL shortcuts: afghijquy";
+            this.UnusedCTRLShortcuts.Name = "UnusedCTRLShortcuts";
+            this.UnusedCTRLShortcuts.Size = new System.Drawing.Size(234, 22);
+            this.UnusedCTRLShortcuts.Text = "Unused CTRL shortcuts: aghijquy";
+            this.UnusedCTRLShortcuts.Visible = false;
             // 
             // MainToolStripContainer
             // 
@@ -1057,7 +1058,7 @@ namespace ExpertSokoban
         private System.Windows.Forms.ToolStripMenuItem LevelNext;
         private System.Windows.Forms.ToolStripMenuItem LevelNextUnsolved;
         private System.Windows.Forms.ToolStripSeparator LevelSep3;
-        private System.Windows.Forms.ToolStripMenuItem unusedCTRLShortcutsAbcdefghijklmnopqrstuvwxyzToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem UnusedCTRLShortcuts;
         private System.Windows.Forms.ToolStripButton LevelToolNext;
         private System.Windows.Forms.ToolStripButton LevelToolNextUnsolved;
         private System.Windows.Forms.ToolStripMenuItem LevelPrevious;
