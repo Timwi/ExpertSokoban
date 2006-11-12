@@ -492,6 +492,7 @@ namespace ExpertSokoban
                 if (FLevel.Solved)
                 {
                     FState = MainAreaState.Solved;
+                    Sel = null;
                     if (LevelSolved != null) LevelSolved(this, new EventArgs());
                     SndLevelSolved.Play();
                     Refresh();
