@@ -21,16 +21,35 @@ namespace ExpertSokoban
     public class Renderer
     {
         private SokobanLevel FLevel;
-        private float FCellWidth, FCellHeight;
+        private int FCellWidth, FCellHeight;
         private int FClientWidth, FClientHeight;
         private int FOriginX, FOriginY;
         private Brush FBackgroundBrush = new SolidBrush(Color.FromArgb(255, 255, 192));
 
-        public float CellWidth { get { return FCellWidth; } }
-        public float CellHeight { get { return FCellHeight; } }
-        public SizeF CellSize { get { return new SizeF(FCellWidth, FCellHeight); } }
+        public int CellWidth { get { return FCellWidth; } }
+        public int CellHeight { get { return FCellHeight; } }
+        public Size CellSize { get { return new Size(FCellWidth, FCellHeight); } }
         public int OriginX { get { return FOriginX; } }
         public int OriginY { get { return FOriginY; } }
+
+        #region Scaled image caching
+
+        /// <summary>
+        /// Holds cached resized images
+        /// </summary>
+        private Dictionary<Size, Dictionary<SokobanImage, Bitmap>> CachedImage = new Dictionary<Size, Dictionary<SokobanImage, Bitmap>>();
+
+        /// <summary>
+        /// Holds the last time a particular size was used.
+        /// </summary>
+        private Dictionary<Size, DateTime> CachedImageAge = new Dictionary<Size, DateTime>();
+
+        /// <summary>
+        /// Defines the number of sizes cached.
+        /// </summary>
+        private const int CachedMaxSizes = 20;
+
+        #endregion
 
         public Renderer(SokobanLevel Level, Size ClientSize)
         {
@@ -60,11 +79,11 @@ namespace ExpertSokoban
             FClientHeight = ClientHeight;
             FLevel = Level;
             int IdealWidth = FClientHeight*Level.Width/Level.Height;
-            FCellWidth = FCellHeight = FClientWidth > IdealWidth 
-                ? (float) FClientHeight/Level.Height
-                : (float) FClientWidth/Level.Width;
-            FOriginX = (int) (FClientWidth > IdealWidth ? (FClientWidth/2 - FCellWidth*Level.Width/2) : 0);
-            FOriginY = (int) (FClientWidth > IdealWidth ? 0 : (FClientHeight/2 - FCellHeight*Level.Height/2));
+            FCellWidth = FCellHeight =
+                FClientWidth > IdealWidth ? FClientHeight/Level.Height : FClientWidth/Level.Width;
+
+            FOriginX = (int)(FClientWidth/2f - FCellWidth*Level.Width/2f);
+            FOriginY = (int)(FClientHeight/2f - FCellHeight*Level.Height/2f);
         }
 
         public void Render(Graphics g)
@@ -87,7 +106,7 @@ namespace ExpertSokoban
 
         public void RenderCell(Graphics g, int x, int y)
         {
-            RectangleF Rect = CellRect(x, y);
+            Rectangle Rect = CellRect(x, y);
             g.SetClip(new Rectangle((int) (Rect.Left-FCellWidth*0.25f), (int) (Rect.Top-FCellHeight*0.25f),
                 (int) (2*FCellWidth), (int) (2*FCellHeight)));
             g.FillRectangle(FBackgroundBrush, 0, 0, FClientWidth, FClientHeight);
@@ -108,15 +127,15 @@ namespace ExpertSokoban
                     RenderCellAsPartOfCompleteRender(g, i, j);
         }
 
-        public RectangleF ClippingRectForCells(Point CellFrom, Point CellTo)
+        public Rectangle ClippingRectForCells(Point CellFrom, Point CellTo)
         {
             int FromX = Math.Min(CellFrom.X, CellTo.X),
                 FromY = Math.Min(CellFrom.Y, CellTo.Y),
                 ToX = Math.Max(CellFrom.X, CellTo.X),
                 ToY = Math.Max(CellFrom.Y, CellTo.Y);
-            RectangleF RectFrom = CellRectForImage(FromX, FromY);
-            RectangleF RectTo = CellRectForImage(ToX, ToY);
-            return new RectangleF(RectFrom.Left, RectTo.Top, RectTo.Right-RectFrom.Left, RectTo.Bottom-RectFrom.Top);
+            Rectangle RectFrom = CellRectForImage(FromX, FromY);
+            Rectangle RectTo = CellRectForImage(ToX, ToY);
+            return new Rectangle(RectFrom.Left, RectTo.Top, RectTo.Right-RectFrom.Left, RectTo.Bottom-RectFrom.Top);
         }
 
         private void RenderCellAsPartOfCompleteRender(Graphics g, Point Pos)
@@ -168,36 +187,40 @@ namespace ExpertSokoban
 
         public void DrawCell(Graphics g, int x, int y, SokobanImage ImageType)
         {
-            g.DrawImage(GetImage(ImageType), CellRectForImage(x, y));
+            Rectangle rect = CellRect(x, y);
+            g.DrawImageUnscaled(GetScaledImage(ImageType), rect.Left, rect.Top);
         }
 
-        public RectangleF CellRectForImage(Point Pos)
+        public Rectangle CellRectForImage(Point Pos)
         {
             return CellRectForImage(Pos.X, Pos.Y);
         }
 
-        public RectangleF CellRectForImage(int x, int y)
+        public Rectangle CellRectForImage(int x, int y)
         {
-            RectangleF Src = CellRect(x, y);
-            return new RectangleF(Src.X, Src.Y, Src.Width*1.5f+1, Src.Height*1.5f+1);
+            Rectangle Src = CellRect(x, y);
+            return new Rectangle(Src.X, Src.Y, (int)(Src.Width*1.5f), (int)(Src.Height*1.5f));
         }
 
-        public RectangleF CellRect(Point Pos)
+        public Rectangle CellRect(Point Pos)
         {
             return CellRect(Pos.X, Pos.Y);
         }
 
-        public RectangleF CellRect(int x, int y)
+        public Rectangle CellRect(int x, int y)
         {
-            return new RectangleF(x*FCellWidth + FOriginX, y*FCellHeight + FOriginY, FCellWidth, FCellHeight);
+            return new Rectangle(x*FCellWidth + FOriginX, y*FCellHeight + FOriginY, FCellWidth, FCellHeight);
         }
 
-        public RectangleF GetMultiCellRect(int FromX, int FromY, int ToX, int ToY)
+        public Rectangle GetMultiCellRect(int FromX, int FromY, int ToX, int ToY)
         {
-            return new RectangleF(FromX*FCellWidth + FOriginX, FromY*FCellHeight + FOriginY,
+            return new Rectangle(FromX*FCellWidth + FOriginX, FromY*FCellHeight + FOriginY,
                 FCellWidth * (ToX-FromX+1), FCellHeight * (ToY-FromY+1));
         }
 
+        /// <summary>
+        /// Returns the original (unscaled) image of the specified type.
+        /// </summary>
         private Image GetImage(SokobanImage ImageType)
         {
             switch (ImageType)
@@ -221,6 +244,51 @@ namespace ExpertSokoban
             }
         }
 
+        /// <summary>
+        /// Returns the specified image scaled for the current cell size.
+        /// Images are cached for efficiency.
+        /// </summary>
+        private Image GetScaledImage(SokobanImage ImageType)
+        {
+            // If we have it - return it
+            Size sz = new Size(CellWidth, CellHeight);
+            if (CachedImage.ContainsKey(sz))
+            {
+                CachedImageAge[sz] = DateTime.Now;
+                return CachedImage[sz][ImageType];
+            }
+
+            // Discard the oldest version if too many
+            if (CachedImage.Count > CachedMaxSizes)
+            {
+                KeyValuePair<Size, DateTime> last = new KeyValuePair<Size, DateTime>(new Size(), DateTime.Now);
+                foreach (KeyValuePair<Size, DateTime> kvp in CachedImageAge)
+                    if (kvp.Value < last.Value)
+                        last = kvp;
+                CachedImage.Remove(last.Key);
+                CachedImageAge.Remove(last.Key);
+            }
+
+            // Create scaled versions
+            CachedImage[sz] = new Dictionary<SokobanImage, Bitmap>();
+            RectangleF dest = new RectangleF(0, 0, CellWidth*1.5f+1f, CellHeight*1.5f+1f);
+            Graphics g;
+            foreach (SokobanImage si in Enum.GetValues(typeof(SokobanImage)))
+            {
+                CachedImage[sz][si] = new Bitmap((int)dest.Width+1, (int)dest.Height+1);
+                g = Graphics.FromImage(CachedImage[sz][si]);
+                if (si == SokobanImage.Wall)
+                    g.InterpolationMode = InterpolationMode.Bicubic;
+                else
+                    g.InterpolationMode = InterpolationMode.High;
+                g.DrawImage(GetImage(si), dest);
+            }
+
+            // Return the requested one
+            CachedImageAge[sz] = DateTime.Now;
+            return CachedImage[sz][ImageType];
+        }
+
         public GraphicsPath ValidPath(Virtual2DArray<bool> Finder)
         {
             Point[][] Outlines = GraphicsUtil.BoolsToPaths(Finder);
@@ -235,7 +303,7 @@ namespace ExpertSokoban
                     Point Point1 = Outlines[i][j];
                     Point Point2 = Outlines[i][(j+1) % Outlines[i].Length];
                     Point Point3 = Outlines[i][(j+2) % Outlines[i].Length];
-                    RectangleF Rect = CellRect(Point2);
+                    Rectangle Rect = CellRect(Point2);
 
                     int Dir1 = GetDir(Point1, Point2);
                     int Dir2 = GetDir(Point2, Point3);
@@ -278,7 +346,7 @@ namespace ExpertSokoban
                 return null;
 
             GraphicsPath Result = new GraphicsPath();
-            RectangleF StartRect = CellRect(StartPos);
+            Rectangle StartRect = CellRect(StartPos);
             Result.AddLine(StartRect.X + FCellWidth/2, StartRect.Y + FCellHeight/2,
                 StartRect.X + FCellWidth/2, StartRect.Y + FCellHeight/2);
             DiameterX *= FCellWidth;
@@ -316,7 +384,7 @@ namespace ExpertSokoban
                 else
                     Result.AddLine(Center, Center);
             }
-            RectangleF EndRect = CellRect(CellSequence[CellSequence.Length-1]);
+            Rectangle EndRect = CellRect(CellSequence[CellSequence.Length-1]);
             Result.AddLine(EndRect.X + FCellWidth/2, EndRect.Y + FCellHeight/2,
                 EndRect.X + FCellWidth/2, EndRect.Y + FCellHeight/2);
             return Result;
