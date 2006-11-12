@@ -35,17 +35,19 @@ namespace ExpertSokoban
         #region Scaled image caching
 
         /// <summary>
-        /// Holds cached resized images
+        /// Holds cached resized images. This is shared among all instances
+        /// of the Renderer.
         /// </summary>
-        private Dictionary<Size, Dictionary<SokobanImage, Bitmap>> CachedImage = new Dictionary<Size, Dictionary<SokobanImage, Bitmap>>();
+        private static Dictionary<Size, Dictionary<SokobanImage, Bitmap>> CachedImage = new Dictionary<Size, Dictionary<SokobanImage, Bitmap>>();
 
         /// <summary>
         /// Holds the last time a particular size was used.
         /// </summary>
-        private Dictionary<Size, DateTime> CachedImageAge = new Dictionary<Size, DateTime>();
+        private static Dictionary<Size, DateTime> CachedImageAge = new Dictionary<Size, DateTime>();
 
         /// <summary>
-        /// Defines the number of sizes cached.
+        /// Defines the number of sizes cached. The oldest set of images will be
+        /// discarded if the limit is exceeded.
         /// </summary>
         private const int CachedMaxSizes = 20;
 
