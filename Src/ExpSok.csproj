@@ -47,6 +47,7 @@
     <Compile Include="AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="MainformSettings.cs" />
     <Compile Include="MenuRadioClasses.cs">
       <SubType>Component</SubType>
     </Compile>

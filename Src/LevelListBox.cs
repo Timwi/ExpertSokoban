@@ -12,11 +12,11 @@ namespace ExpertSokoban
     {
         private enum LevelListBoxState { Null, Playing, Editing }
 
-        private Hashtable FCachedRenderings = new Hashtable();
+        private Dictionary<SokobanLevel, Image> FCachedRenderings = new Dictionary<SokobanLevel, Image>();
         private int FLastWidth = 0;
         private int FPlayingEditingIndex = 0;
         private LevelListBoxState FState = LevelListBoxState.Null;
-        private Hashtable FSolvedLevels;
+        private Dictionary<string, bool> FSolvedLevels;
 
         private Color EditingColor = Color.FromArgb(255, 192, 128);
         private Color PlayingColor = Color.FromArgb(64, 224, 128);
@@ -35,7 +35,7 @@ namespace ExpertSokoban
             set { SetPlayingEditing(LevelListBoxState.Playing, value); }
         }
 
-        public void SetSolvedLevels(Hashtable SolvedLevels)
+        public void SetSolvedLevels(Dictionary<string, bool> SolvedLevels)
         {
             FSolvedLevels = SolvedLevels;
         }
@@ -70,7 +70,7 @@ namespace ExpertSokoban
             if (ClientSize.Width != FLastWidth)
             {
                 FLastWidth = ClientSize.Width;
-                FCachedRenderings = new Hashtable();
+                FCachedRenderings = new Dictionary<SokobanLevel, Image>();
                 RefreshItems();
             }
         }

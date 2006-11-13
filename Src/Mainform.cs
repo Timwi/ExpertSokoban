@@ -50,7 +50,7 @@ namespace ExpertSokoban
         /// Encapsulates all the settings that are saved at application shutdown and
         /// restored at application startup.
         /// </summary>
-        private MainFormSettings FSettings;
+        private MainFormSettingsVersion1 FSettings;
 
         /// <summary>
         /// The filename of the current level file. Setting this property automatically
@@ -109,9 +109,7 @@ namespace ExpertSokoban
             LevelFilename = null;
 
             // Restore saved settings
-            FSettings = PrgSettings.Store.GetObject("ExpSok Mainform", null) as MainFormSettings;
-            if (FSettings == null) FSettings = new MainFormSettings();
-            if (FSettings.SolvedLevels == null) FSettings.SolvedLevels = new Hashtable();
+            FSettings = MainFormSettingsVersion1.GetSettings();
             LevelListToolStrip1.Visible = ViewToolStrip1.Checked = FSettings.DisplayToolStrip1;
             LevelListToolStrip2.Visible = ViewToolStrip2.Checked = FSettings.DisplayToolStrip2;
             ViewEditToolStrip.Checked = FSettings.DisplayEditToolStrip;
@@ -1110,64 +1108,5 @@ namespace ExpertSokoban
             if (MainArea.State == MainAreaState.Solved)
                 LevelNext_Click(LevelNextUnsolved, null);
         }
-    }
-
-    /// <summary>
-    /// This class encapsulates all the settings for the application which are saved at
-    /// application shutdown and restored at application startup.
-    /// </summary>
-    [Serializable]
-    public class MainFormSettings
-    {
-        /// <summary>
-        /// Move path draw move
-        /// </summary>
-        public PathDrawMode MoveDrawMode = PathDrawMode.Line;
-
-        /// <summary>
-        /// Push path draw move
-        /// </summary>
-        public PathDrawMode PushDrawMode = PathDrawMode.Line;
-
-        /// <summary>
-        /// Whether the Sokoban and piece end-position should be displayed
-        /// </summary>
-        public bool ShowEndPos = true;
-
-        /// <summary>
-        /// Whether the level list should be displayed
-        /// </summary>
-        public bool DisplayLevelList = false;
-
-        /// <summary>
-        /// Whether the file toolbar should be displayed
-        /// </summary>
-        public bool DisplayToolStrip1 = true;
-
-        /// <summary>
-        /// Whether the operations toolbar should be displayed
-        /// </summary>
-        public bool DisplayToolStrip2 = true;
-
-        /// <summary>
-        /// Whether the edit toolbar should be displayed
-        /// </summary>
-        public bool DisplayEditToolStrip = true;
-
-        /// <summary>
-        /// Last used editing tool
-        /// </summary>
-        public MainAreaTool LastUsedTool = MainAreaTool.Wall;
-
-        /// <summary>
-        /// Width of the panel containing the level list. The default value is chosen
-        /// minimally such that the toolbar buttons still fit.
-        /// </summary>
-        public int LevelListPanelWidth = 152;
-
-        /// <summary>
-        /// Collection of levels the user has already solved
-        /// </summary>
-        public Hashtable SolvedLevels = new Hashtable();
     }
 }
