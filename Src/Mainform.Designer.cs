@@ -917,6 +917,7 @@ namespace ExpertSokoban
             this.MainArea.Size = new System.Drawing.Size(644, 458);
             this.MainArea.TabIndex = 1;
             this.MainArea.Tool = ExpertSokoban.MainAreaTool.Wall;
+            this.MainArea.Click += new System.EventHandler(this.MainArea_Click);
             this.MainArea.LevelChanged += new System.EventHandler(this.MainArea_LevelChanged);
             this.MainArea.MoveMade += new System.EventHandler(this.MainArea_MoveMade);
             this.MainArea.LevelSolved += new System.EventHandler(this.MainArea_LevelSolved);

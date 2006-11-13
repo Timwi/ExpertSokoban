@@ -245,28 +245,34 @@ namespace ExpertSokoban
             return new SokobanLevel(FWidth, FHeight, NewLevel, FSokobanPos);
         }
 
-        public SokobanLevelStatus IsValid()
+        /// <summary>
+        /// Returns a value indicating whether the level is valid, and if not - why.
+        /// </summary>
+        public SokobanLevelStatus Validity
         {
-            // Check if the number of pieces equals the number of targets
-            int Pieces = 0, Targets = 0;
-            for (int i = 0; i < FLevel.Length; i++)
-                if (FLevel[i] == SokobanCell.Piece)
-                    Pieces++;
-                else if (FLevel[i] == SokobanCell.Target)
-                    Targets++;
-            if (Pieces != Targets)
-                return SokobanLevelStatus.TargetsPiecesMismatch;
+            get
+            {
+                // Check if the number of pieces equals the number of targets
+                int Pieces = 0, Targets = 0;
+                for (int i = 0; i < FLevel.Length; i++)
+                    if (FLevel[i] == SokobanCell.Piece)
+                        Pieces++;
+                    else if (FLevel[i] == SokobanCell.Target)
+                        Targets++;
+                if (Pieces != Targets)
+                    return SokobanLevelStatus.TargetsPiecesMismatch;
 
-            // Check if the level is properly enclosed
-            MoveFinder Finder = new MoveFinder(this, MoveFinderOption.IgnorePieces);
-            for (int i = 0; i < FWidth; i++)
-                if (Finder.Get(i, 0) || Finder.Get(i, FHeight-1))
-                    return SokobanLevelStatus.NotEnclosed;
-            for (int i = 0; i < FHeight; i++)
-                if (Finder.Get(0, i) || Finder.Get(FWidth-1, i))
-                    return SokobanLevelStatus.NotEnclosed;
+                // Check if the level is properly enclosed
+                MoveFinder Finder = new MoveFinder(this, MoveFinderOption.IgnorePieces);
+                for (int i = 0; i < FWidth; i++)
+                    if (Finder.Get(i, 0) || Finder.Get(i, FHeight-1))
+                        return SokobanLevelStatus.NotEnclosed;
+                for (int i = 0; i < FHeight; i++)
+                    if (Finder.Get(0, i) || Finder.Get(FWidth-1, i))
+                        return SokobanLevelStatus.NotEnclosed;
 
-            return SokobanLevelStatus.Valid;
+                return SokobanLevelStatus.Valid;
+            }
         }
 
         public override string ToString()

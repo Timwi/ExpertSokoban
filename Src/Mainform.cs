@@ -90,77 +90,89 @@ namespace ExpertSokoban
 
         private void LevelOpen_Click(object sender, EventArgs e)
         {
-            if (MayDestroy("Open level file"))
+            if (!MayDestroy("Open level file"))
+                return;
+
+            OpenFileDialog OpenDialog = new OpenFileDialog();
+            if (OpenDialog.ShowDialog() != DialogResult.OK)
+                return;
+
+            LevelListVisible(true);
+            LevelList.BeginUpdate();
+            LevelList.Items.Clear();
+            int? FoundValidLevel = null;
+            int? FoundUnsolvedLevel = null;
+            StreamReader StreamReader = new StreamReader(OpenDialog.FileName, Encoding.UTF8);
+            LevelReaderState State = LevelReaderState.Empty;
+            String Line;
+            String Comment = "";
+            String LevelEncoded = "";
+            do
             {
-                OpenFileDialog OpenDialog = new OpenFileDialog();
-                if (OpenDialog.ShowDialog() == DialogResult.OK)
+                Line = StreamReader.ReadLine();
+                if (Line == null || Line.Length == 0)
                 {
-                    LevelListVisible(true);
-                    LevelList.BeginUpdate();
-                    LevelList.Items.Clear();
-                    int? FoundValidLevel = null;
-                    StreamReader StreamReader = new StreamReader(OpenDialog.FileName, Encoding.UTF8);
-                    LevelReaderState State = LevelReaderState.Empty;
-                    String Line;
-                    String Comment = "";
-                    String LevelEncoded = "";
-                    do
+                    if (State == LevelReaderState.Comment)
                     {
-                        Line = StreamReader.ReadLine();
-                        if (Line == null || Line.Length == 0)
+                        LevelList.Items.Add(Comment);
+                        Comment = "";
+                    }
+                    else if (State == LevelReaderState.Level)
+                    {
+                        SokobanLevel NewLevel = new SokobanLevel(LevelEncoded);
+                        LevelList.Items.Add(NewLevel);
+                        LevelEncoded = "";
+                        if (NewLevel.Validity == SokobanLevelStatus.Valid)
                         {
-                            if (State == LevelReaderState.Comment)
-                            {
-                                LevelList.Items.Add(Comment);
-                                Comment = "";
-                            }
-                            else if (State == LevelReaderState.Level)
-                            {
-                                SokobanLevel NewLevel = new SokobanLevel(LevelEncoded);
-                                LevelList.Items.Add(NewLevel);
-                                LevelEncoded = "";
-                                if (NewLevel.IsValid() == SokobanLevelStatus.Valid && FoundValidLevel == null)
-                                    FoundValidLevel = LevelList.Items.Count-1;
-                            }
-                            State = LevelReaderState.Empty;
-                        }
-                        else if (Line[0] == ';')
-                        {
-                            if (State == LevelReaderState.Level)
-                            {
-                                SokobanLevel NewLevel = new SokobanLevel(LevelEncoded);
-                                LevelList.Items.Add(NewLevel);
-                                LevelEncoded = "";
-                                if (NewLevel.IsValid() == SokobanLevelStatus.Valid && FoundValidLevel == null)
-                                    FoundValidLevel = LevelList.Items.Count-1;
-                            }
-                            Comment += Line.Substring(1) + "\n";
-                            State = LevelReaderState.Comment;
-                        }
-                        else
-                        {
-                            if (State == LevelReaderState.Comment)
-                            {
-                                LevelList.Items.Add(Comment);
-                                Comment = "";
-                            }
-                            LevelEncoded += Line + "\n";
-                            State = LevelReaderState.Level;
+                            if (FoundValidLevel == null)
+                                FoundValidLevel = LevelList.Items.Count-1;
+                            if (FoundUnsolvedLevel == null && !FSettings.SolvedLevels.ContainsKey(NewLevel.ToString()))
+                                FoundUnsolvedLevel = LevelList.Items.Count-1;
                         }
                     }
-                    while (Line != null);
-                    LevelList.EndUpdate();
-                    StreamReader.Close();
-                    LevelFileChanged = false;
-                    LevelFilename = OpenDialog.FileName;
-                    if (FoundValidLevel == null)
-                    {
-                        MainArea.Clear();
-                        LevelList.PlayingIndex = null;
-                    }
-                    else
-                        TakeLevel(FoundValidLevel.Value, true);
+                    State = LevelReaderState.Empty;
                 }
+                else if (Line[0] == ';')
+                {
+                    if (State == LevelReaderState.Level)
+                    {
+                        SokobanLevel NewLevel = new SokobanLevel(LevelEncoded);
+                        LevelList.Items.Add(NewLevel);
+                        LevelEncoded = "";
+                        if (NewLevel.Validity == SokobanLevelStatus.Valid)
+                        {
+                            if (FoundValidLevel == null)
+                                FoundValidLevel = LevelList.Items.Count-1;
+                            if (FoundUnsolvedLevel == null && !FSettings.SolvedLevels.ContainsKey(NewLevel.ToString()))
+                                FoundUnsolvedLevel = LevelList.Items.Count-1;
+                        }
+                    }
+                    Comment += Line.Substring(1) + "\n";
+                    State = LevelReaderState.Comment;
+                }
+                else
+                {
+                    if (State == LevelReaderState.Comment)
+                    {
+                        LevelList.Items.Add(Comment);
+                        Comment = "";
+                    }
+                    LevelEncoded += Line + "\n";
+                    State = LevelReaderState.Level;
+                }
+            } while (Line != null);
+            LevelList.EndUpdate();
+            StreamReader.Close();
+            LevelFileChanged = false;
+            LevelFilename = OpenDialog.FileName;
+            if (FoundUnsolvedLevel != null)
+                TakeLevel(FoundUnsolvedLevel.Value, true);
+            else if (FoundValidLevel != null)
+                TakeLevel(FoundValidLevel.Value, true);
+            else
+            {
+                MainArea.Clear();
+                LevelList.PlayingIndex = null;
             }
         }
 
@@ -175,7 +187,7 @@ namespace ExpertSokoban
                     SwitchEditingMode(false);
 
                 OrigLevel = (SokobanLevel)Item;
-                SokobanLevelStatus Status = OrigLevel.IsValid();
+                SokobanLevelStatus Status = OrigLevel.Validity;
                 if (Status == SokobanLevelStatus.Valid)
                 {
                     MainArea.SetLevel(OrigLevel);
@@ -508,7 +520,7 @@ namespace ExpertSokoban
         {
             if (LevelList.EditingIndex != null) // this should always be true
             {
-                SokobanLevelStatus Status = MainArea.Level.IsValid();
+                SokobanLevelStatus Status = MainArea.Level.Validity;
                 if (Status != SokobanLevelStatus.Valid)
                 {
                     String Problem = Status == SokobanLevelStatus.NotEnclosed
@@ -668,7 +680,7 @@ namespace ExpertSokoban
         {
             DlgMessage.Show("Welcome to Expert Sokoban. You can " +
                 "find detailed help about this product on our website:\n\n" +
-                "http://www.cutebits.com", "Expert Sokoban", DlgType.Info);
+                "http://www.cutebits.com", "Expert Sokoban", Properties.Resources.ExpertSokoban.ToBitmap());
         }
 
         private void Mainform_KeyDown(object sender, KeyEventArgs e)
@@ -683,10 +695,13 @@ namespace ExpertSokoban
 
         private void MainArea_LevelSolved(object sender, EventArgs e)
         {
-            FSettings.SolvedLevels.Add(OrigLevel.ToString(), true);
+            FSettings.SolvedLevels[OrigLevel.ToString()] = true;
             LevelList.ComeOn_RefreshItems();
         }
 
+        /// <summary>
+        /// Pass null to "e" to display congratulations if all levels solved.
+        /// </summary>
         private void LevelNext_Click(object sender, EventArgs e)
         {
             if (LevelList.Items.Count < 1)  // should never happen because buttons & menu items should be greyed out
@@ -700,9 +715,13 @@ namespace ExpertSokoban
                 i = (i+1) % LevelList.Items.Count;
                 if (i == OldIndex || (i == 0 && OldIndex == -1))
                 {
-                    DlgMessage.Show("There is no other level in the level file.",
-                        MustBeUnsolved ? "Next unsolved level" : "Next level",
-                        DlgType.Info);
+                    if (e==null)
+                        DlgMessage.ShowInfo("You have solved all levels in this level pack!", "Congratulations!!!");
+                    else if (MustBeUnsolved)
+                        DlgMessage.ShowInfo("There are no more unsolved levels in this level file.", "Next unsolved level");
+                    else
+                        DlgMessage.ShowInfo("There is no other level in the level file.", "Next level");
+
                     return;
                 }
                 if (LevelList.Items[i] is SokobanLevel &&
@@ -739,6 +758,15 @@ namespace ExpertSokoban
                     return;
                 }
             }
+        }
+
+        /// <summary>
+        /// Do next unsolved level if clicking on the Level Solved message.
+        /// </summary>
+        private void MainArea_Click(object sender, EventArgs e)
+        {
+            if (MainArea.State == MainAreaState.Solved)
+                LevelNext_Click(LevelNextUnsolved, null);
         }
     }
 
