@@ -113,13 +113,16 @@ namespace ExpertSokoban
             LevelListToolStrip1.Visible = ViewToolStrip1.Checked = FSettings.DisplayToolStrip1;
             LevelListToolStrip2.Visible = ViewToolStrip2.Checked = FSettings.DisplayToolStrip2;
             ViewEditToolStrip.Checked = FSettings.DisplayEditToolStrip;
-            ViewEndPos.Checked = MainArea.ShowEndPos = FSettings.ShowEndPos;
+            StatusBar.Visible = ViewStatusBar.Checked = FSettings.DisplayStatusBar;
             LevelListPanel.Width = FSettings.LevelListPanelWidth > 50 ? FSettings.LevelListPanelWidth : 50;
             LevelListVisible(FSettings.DisplayLevelList);
             MovePathOptions.SetValue(FSettings.MoveDrawMode);
             PushPathOptions.SetValue(FSettings.PushDrawMode);
             EditToolOptions.SetValue(FSettings.LastUsedTool);
+            ViewEndPos.Checked = MainArea.ShowEndPos = FSettings.ShowEndPos;
             LevelList.SetSolvedLevels(FSettings.SolvedLevels);
+
+            UpdateStatusBar();
         }
 
         /// <summary>
@@ -128,6 +131,35 @@ namespace ExpertSokoban
         private void MainArea_MoveMade(object sender, EventArgs e)
         {
             EverMovedOrEdited = true;
+            UpdateStatusBar();
+        }
+
+        private void UpdateStatusBar()
+        {
+            StatusNull.Visible = MainArea.State == MainAreaState.Null;
+            StatusMoves.Visible = MainArea.State == MainAreaState.Move || MainArea.State == MainAreaState.Push || MainArea.State == MainAreaState.Solved;
+            StatusPushes.Visible = MainArea.State == MainAreaState.Move || MainArea.State == MainAreaState.Push || MainArea.State == MainAreaState.Solved;
+            StatusPieces.Visible = MainArea.State == MainAreaState.Move || MainArea.State == MainAreaState.Push;
+            StatusEdit.Visible = MainArea.State == MainAreaState.Editing;
+            StatusSolved.Visible = MainArea.State == MainAreaState.Solved;
+
+            if (MainArea.State == MainAreaState.Editing)
+            {
+                string Message = "The level is valid.";
+                SokobanLevelStatus Status = MainArea.Level.Validity;
+                if (Status == SokobanLevelStatus.NotEnclosed)
+                    Message = "The level is invalid because it is not completely enclosed by a wall.";
+                else if (Status == SokobanLevelStatus.TargetsPiecesMismatch)
+                    Message = "The level is invalid because the number of pieces does not match the number of targets.";
+                StatusEdit.Text = Message;
+            }
+
+            if (MainArea.State == MainAreaState.Move || MainArea.State == MainAreaState.Push || MainArea.State == MainAreaState.Solved)
+            {
+                StatusMoves.Text = "Moves: " + MainArea.Moves;
+                StatusPushes.Text = "Pushes: " + MainArea.Pushes;
+                StatusPieces.Text = "Remaining pieces: " + MainArea.Level.RemainingPieces;
+            }
         }
 
         /// <summary>
@@ -279,11 +311,13 @@ namespace ExpertSokoban
                     EverMovedOrEdited = false;
                     LevelList.SelectedIndex = Index;
                     LevelList.PlayingIndex = Index;
+                    UpdateStatusBar();
                 }
                 else
                 {
                     LevelList.PlayingIndex = null;
                     MainArea.Clear();
+                    UpdateStatusBar();
                     if (!Override)
                     {
                         String Problem = Status == SokobanLevelStatus.NotEnclosed
@@ -416,6 +450,7 @@ namespace ExpertSokoban
         private void LevelUndo_Click(object sender, EventArgs e)
         {
             MainArea.Undo();
+            UpdateStatusBar();
         }
 
         /// <summary>
@@ -854,6 +889,8 @@ namespace ExpertSokoban
             ViewPushArrows.Enabled = !On;
             ViewPushDots.Enabled = !On;
             ViewEndPos.Enabled = !On;
+
+            UpdateStatusBar();
         }
 
         /// <summary>
@@ -949,6 +986,7 @@ namespace ExpertSokoban
         private void MainArea_LevelChanged(object sender, EventArgs e)
         {
             EverMovedOrEdited = true;
+            UpdateStatusBar();
         }
 
         /// <summary>
@@ -1020,6 +1058,7 @@ namespace ExpertSokoban
         {
             FSettings.SolvedLevels[OrigLevel.ToString()] = true;
             LevelList.ComeOn_RefreshItems();
+            UpdateStatusBar();
         }
 
         /// <summary>
@@ -1107,6 +1146,12 @@ namespace ExpertSokoban
         {
             if (MainArea.State == MainAreaState.Solved)
                 LevelNext_Click(LevelNextUnsolved, null);
+        }
+
+        private void ViewStatusBar_Click(object sender, EventArgs e)
+        {
+            ViewStatusBar.Checked = !ViewStatusBar.Checked;
+            StatusBar.Visible = FSettings.DisplayStatusBar = ViewStatusBar.Checked;
         }
     }
 }

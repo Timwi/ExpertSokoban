@@ -43,6 +43,18 @@ namespace ExpertSokoban
             }
         }
 
+        public int RemainingPieces
+        {
+            get
+            {
+                int Ret = 0;
+                for (int i = 0; i < FWidth*FHeight; i++)
+                    if (FLevel[i] == SokobanCell.Piece)
+                        Ret++;
+                return Ret;
+            }
+        }
+
         public SokobanLevel(string EncodedForm)
         {
             FWidth = 0;

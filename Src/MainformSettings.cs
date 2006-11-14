@@ -49,6 +49,11 @@ namespace ExpertSokoban
         public bool DisplayEditToolStrip = true;
 
         /// <summary>
+        /// Whether the status bar should be displayed
+        /// </summary>
+        public bool DisplayStatusBar = true;
+
+        /// <summary>
         /// Last used editing tool
         /// </summary>
         public MainAreaTool LastUsedTool = MainAreaTool.Wall;
@@ -70,58 +75,14 @@ namespace ExpertSokoban
             if (Settings == null) return new MainFormSettingsVersion1();
 
             // Convert old versions of the settings to new versions
-            if (Settings is MainFormSettings)
-                Settings = MainFormSettingsVersion1.ConvertFrom (Settings as MainFormSettings);
+            // Un-comment this (and change the below to Version2) when MainFormSettingsVersion2 comes along
+            // if (Settings is MainFormSettingsVersion1)
+            //    Settings = MainFormSettingsVersion2.ConvertFrom (Settings as MainFormSettingsVersion1);
 
             if (Settings is MainFormSettingsVersion1)
                 return Settings as MainFormSettingsVersion1;
 
             return new MainFormSettingsVersion1();
         }
-
-        private static MainFormSettingsVersion1 ConvertFrom(MainFormSettings OldVersion)
-        {
-            MainFormSettingsVersion1 Settings = new MainFormSettingsVersion1();
-            Settings.MoveDrawMode = OldVersion.MoveDrawMode;
-            Settings.PushDrawMode = OldVersion.PushDrawMode;
-            Settings.ShowEndPos = OldVersion.ShowEndPos;
-            Settings.DisplayLevelList = OldVersion.DisplayLevelList;
-            Settings.DisplayToolStrip1 = OldVersion.DisplayToolStrip1;
-            Settings.DisplayToolStrip2 = OldVersion.DisplayToolStrip2;
-            Settings.DisplayEditToolStrip = OldVersion.DisplayEditToolStrip;
-            Settings.LastUsedTool = OldVersion.LastUsedTool;
-            Settings.LevelListPanelWidth = OldVersion.LevelListPanelWidth;
-
-            // Convert the old Hashtable to a Dictionary
-            Settings.SolvedLevels = new Dictionary<string, bool>();
-            foreach (object i in OldVersion.SolvedLevels.Keys)
-            {
-                if (i is string)
-                    Settings.SolvedLevels[i as string] = true;
-                else if (i is SokobanLevel)
-                    Settings.SolvedLevels[(i as SokobanLevel).ToString()] = true;
-            }
-
-            return Settings;
-        }
-    }
-
-    /// <summary>
-    /// This is an OLD VERSION of the class that encapsulates the settings for the
-    /// application which are saved at shutdown and restored at startup.
-    /// </summary>
-    [Serializable]
-    public class MainFormSettings
-    {
-        public PathDrawMode MoveDrawMode = PathDrawMode.Line;
-        public PathDrawMode PushDrawMode = PathDrawMode.Line;
-        public bool ShowEndPos = true;
-        public bool DisplayLevelList = false;
-        public bool DisplayToolStrip1 = true;
-        public bool DisplayToolStrip2 = true;
-        public bool DisplayEditToolStrip = true;
-        public MainAreaTool LastUsedTool = MainAreaTool.Wall;
-        public int LevelListPanelWidth = 152;
-        public Hashtable SolvedLevels = new Hashtable();
     }
 }

@@ -123,14 +123,20 @@ namespace ExpertSokoban
         public Point MovedTo;
 
         /// <summary>
+        /// The number of cells moved by the Sokoban.
+        /// </summary>
+        public int Moves;
+
+        /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="From">The position from where the Sokoban moved.</param>
         /// <param name="To">The position the Sokoban moved to.</param>
-        public UndoMoveItem(Point From, Point To)
+        public UndoMoveItem(Point From, Point To, int MovesMade)
         {
             MovedFrom = From;
             MovedTo = To;
+            Moves = MovesMade;
         }
     }
 
@@ -160,18 +166,30 @@ namespace ExpertSokoban
         public Point MovedPieceTo;
 
         /// <summary>
+        /// The number of cells moved by the Sokoban.
+        /// </summary>
+        public int Moves;
+
+        /// <summary>
+        /// The number of cells the piece was pushed.
+        /// </summary>
+        public int Pushes;
+
+        /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="SFrom">The position from where the Sokoban moved.</param>
         /// <param name="STo">The position the Sokoban moved to.</param>
         /// <param name="PFrom">The original position of the piece pushed.</param>
         /// <param name="PTo">The final position of the piece pushed.</param>
-        public UndoPushItem(Point SFrom, Point STo, Point PFrom, Point PTo)
+        public UndoPushItem(Point SFrom, Point STo, Point PFrom, Point PTo, int MovesMade, int PushesMade)
         {
             MovedSokobanFrom = SFrom;
             MovedSokobanTo = STo;
             MovedPieceFrom = PFrom;
             MovedPieceTo = PTo;
+            Moves = MovesMade;
+            Pushes = PushesMade;
         }
     }
 
@@ -182,7 +200,7 @@ namespace ExpertSokoban
     public class MainArea : DoubleBufferedPanel
     {
         /// <summary>
-        /// The current state of the main area.
+        /// (read-only) The current state of the main area.
         /// </summary>
         public MainAreaState State { get { return FState; } }
 
@@ -190,29 +208,55 @@ namespace ExpertSokoban
         /// Gets or sets how the move path should be displayed while selecting a
         /// destination cell for a piece.
         /// </summary>
-        public PathDrawMode MoveDrawMode { get { return FMoveDrawMode; } set { FMoveDrawMode = value; Invalidate(); } }
+        public PathDrawMode MoveDrawMode
+        {
+            get { return FMoveDrawMode; }
+            set { FMoveDrawMode = value; Invalidate(); }
+        }
 
         /// <summary>
         /// Gets or sets how the push path should be displayed while selecting a
         /// destination cell for a piece.
         /// </summary>
-        public PathDrawMode PushDrawMode { get { return FPushDrawMode; } set { FPushDrawMode = value; Invalidate(); } }
+        public PathDrawMode PushDrawMode
+        {
+            get { return FPushDrawMode; }
+            set { FPushDrawMode = value; Invalidate(); }
+        }
 
         /// <summary>
         /// Gets or sets whether the Sokoban and piece end-position should be displayed
         /// while selecting a destination cell for a piece.
         /// </summary>
-        public bool ShowEndPos { get { return FShowEndPos; } set { FShowEndPos = value; Invalidate(); } }
+        public bool ShowEndPos
+        {
+            get { return FShowEndPos; }
+            set { FShowEndPos = value; Invalidate(); }
+        }
 
         /// <summary>
         /// The currently selected tool while editing a level.
         /// </summary>
-        public MainAreaTool Tool { get { return FTool; } set { FTool = value; } }
+        public MainAreaTool Tool
+        {
+            get { return FTool; }
+            set { FTool = value; }
+        }
 
         /// <summary>
-        /// The currently displayed level, or null if none.
+        /// (read-only) The currently displayed level, or null if none.
         /// </summary>
         public SokobanLevel Level { get { return FState == MainAreaState.Null ? null : FLevel; } }
+
+        /// <summary>
+        /// (read-only) Returns the number of moves performed by the Sokoban so far.
+        /// </summary>
+        public int Moves { get { return FMoves; } }
+
+        /// <summary>
+        /// (read-only) Returns the number of pushes performed by the Sokoban so far.
+        /// </summary>
+        public int Pushes { get { return FPushes; } }
 
         /// <summary>
         /// Triggers when the player makes a move (i.e. pushes a piece).
@@ -394,6 +438,16 @@ namespace ExpertSokoban
         private Point CellSeqSokoban;
 
         /// <summary>
+        /// The number of moves performed by the Sokoban so far.
+        /// </summary>
+        private int FMoves = 0;
+
+        /// <summary>
+        /// The number of pushes performed by the Sokoban so far.
+        /// </summary>
+        private int FPushes = 0;
+
+        /// <summary>
         /// Main constructor.
         /// </summary>
         public MainArea()
@@ -504,7 +558,7 @@ namespace ExpertSokoban
 
             // Draw the selected piece
             Renderer.DrawCell(e.Graphics, Sel.Value, SokobanImage.PieceSelected);
-            
+
             // If there is no push sequence to show, we can stop here.
             if (PushCellSequence == null)
                 return;
@@ -857,6 +911,11 @@ namespace ExpertSokoban
                 Point OrigSokPos = FLevel.SokobanPos;
                 Point? OrigPushPos = null, LastPushPos = null;
                 bool EverPushed = false;
+
+                // We need to remember how many moves and pushes were made in this move
+                // because we need to save them in the Undo buffer
+                int MovesMade = 0, PushesMade = 0;
+
                 foreach (Point Move in MoveCellSequence)
                 {
                     System.Threading.Thread.Sleep(20);
@@ -874,14 +933,19 @@ namespace ExpertSokoban
                             EverPushed = true;
                         }
                         LastPushPos = PushTo;
+                        PushesMade++;
                     }
                     else
                         // just move Sokoban
                         FLevel.SetSokobanPos(Move);
+                    MovesMade++;
                     Renderer.RenderCell(g, Move);
                     Renderer.RenderCell(g, PrevSokPos);
                     CreateGraphics().DrawImage(Buffer, 0, 0);
                 }
+
+                FMoves += MovesMade;
+                FPushes += PushesMade;
 
                 // No piece is selected after the push
                 Sel = null;
@@ -901,9 +965,10 @@ namespace ExpertSokoban
 
                     // Add this action to the undo stack
                     if (OrigPushPos == null)
-                        FUndo.Push(new UndoMoveItem(OrigSokPos, FLevel.SokobanPos));
+                        FUndo.Push(new UndoMoveItem(OrigSokPos, FLevel.SokobanPos, MovesMade));
                     else
-                        FUndo.Push(new UndoPushItem(OrigSokPos, FLevel.SokobanPos, OrigPushPos.Value, LastPushPos.Value));
+                        FUndo.Push(new UndoPushItem(OrigSokPos, FLevel.SokobanPos, OrigPushPos.Value,
+                            LastPushPos.Value, MovesMade, PushesMade));
 
                     // Switch back into move mode
                     FState = MainAreaState.Move;
@@ -935,6 +1000,8 @@ namespace ExpertSokoban
             Renderer = new Renderer(FLevel, ClientSize);
             FState = State;
             Sel = null;
+            FMoves = 0;
+            FPushes = 0;
             ReinitMoveFinder();
             Refresh();
         }
@@ -972,12 +1039,17 @@ namespace ExpertSokoban
             UndoItem Item = FUndo.Pop();
 
             if (Item is UndoMoveItem)
+            {
                 FLevel.SetSokobanPos((Item as UndoMoveItem).MovedFrom);
+                FMoves -= (Item as UndoMoveItem).Moves;
+            }
             else if (Item is UndoPushItem)
             {
                 UndoPushItem ItemPush = Item as UndoPushItem;
                 FLevel.SetSokobanPos(ItemPush.MovedSokobanFrom);
                 FLevel.MovePiece(ItemPush.MovedPieceTo, ItemPush.MovedPieceFrom);
+                FMoves -= ItemPush.Moves;
+                FPushes -= ItemPush.Pushes;
             }
             else return;
 
