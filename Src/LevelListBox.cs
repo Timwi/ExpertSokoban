@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using System.Drawing.Drawing2D;
 using System.Drawing;
 using System.Collections;
+using System.IO;
 
 namespace ExpertSokoban
 {
@@ -16,7 +17,6 @@ namespace ExpertSokoban
         private int FLastWidth = 0;
         private int FPlayingEditingIndex = 0;
         private LevelListBoxState FState = LevelListBoxState.Null;
-        private Dictionary<string, bool> FSolvedLevels;
 
         private Color EditingColor = Color.FromArgb(255, 192, 128);
         private Color PlayingColor = Color.FromArgb(64, 224, 128);
@@ -33,11 +33,6 @@ namespace ExpertSokoban
         {
             get { return FState == LevelListBoxState.Playing ? (int?)FPlayingEditingIndex : null; }
             set { SetPlayingEditing(LevelListBoxState.Playing, value); }
-        }
-
-        public void SetSolvedLevels(Dictionary<string, bool> SolvedLevels)
-        {
-            FSolvedLevels = SolvedLevels;
         }
 
         private void SetPlayingEditing(LevelListBoxState State, int? Value)
@@ -81,7 +76,7 @@ namespace ExpertSokoban
             {
                 if (Items[e.Index] is SokobanLevel)
                 {
-                    bool IsSolved = FSolvedLevels.ContainsKey(Items[e.Index].ToString());
+                    bool IsSolved = Program.Settings.SolvedLevels.ContainsKey(Items[e.Index].ToString());
                     bool IsPlaying = (e.Index == FPlayingEditingIndex && FState == LevelListBoxState.Playing);
                     bool IsEditing = (e.Index == FPlayingEditingIndex && FState == LevelListBoxState.Editing);
 
@@ -177,7 +172,7 @@ namespace ExpertSokoban
                         e.ItemHeight += (int)e.Graphics.MeasureString("Currently playing", Font).Height + 5;
                     else if (e.Index == FPlayingEditingIndex && FState == LevelListBoxState.Editing)
                         e.ItemHeight += (int)e.Graphics.MeasureString("Currently editing", Font).Height + 5;
-                    else if (FSolvedLevels.ContainsKey(Items[e.Index].ToString()))
+                    else if (Program.Settings.SolvedLevels.ContainsKey(Items[e.Index].ToString()))
                         e.ItemHeight += (int)e.Graphics.MeasureString("Solved", Font).Height + 5;
                 }
                 else if (Items[e.Index] is string)
@@ -193,6 +188,93 @@ namespace ExpertSokoban
         public void ComeOn_RefreshItems()
         {
             RefreshItems();
+        }
+
+        /// <summary>
+        /// Used only by LevelOpen_Click(). Encapsulates the states that occur while
+        /// reading a text file containing levels.
+        /// </summary>
+        private enum LevelReaderState { Empty, Comment, Level }
+
+        /// <summary>
+        /// Loads a level pack from the level list. Returns an index to the first unsolved
+        /// level, or if all solved - the first valid level, or if all invalid - null.
+        /// </summary>
+        public int? LoadLevelPack(string FileName)
+        {
+            BeginUpdate();
+            Items.Clear();
+
+            // Have we encountered a valid level yet?
+            int? FoundValidLevel = null;
+            // Have we encountered a valid unsolved level yet?
+            int? FoundUnsolvedLevel = null;
+            // Class to read from the text file
+            StreamReader StreamReader = new StreamReader(FileName, Encoding.UTF8);
+            // State we're in (Empty, Comment or Level)
+            LevelReaderState State = LevelReaderState.Empty;
+            // Line last read
+            String Line;
+            // Current comment (gets appended to until we reach the end of the comment)
+            String Comment = "";
+            // Current level (gets appended to until we reach the end of the level)
+            String LevelEncoded = "";
+
+            do
+            {
+                Line = StreamReader.ReadLine();
+
+                // Decide whether this line belongs to a level or comment
+                LevelReaderState NewState =
+                            (Line == null || Line.Length == 0) ? LevelReaderState.Empty :
+                            Line[0] == ';' ? LevelReaderState.Comment :
+                            LevelReaderState.Level;
+
+                // If we are switching from level to comment or vice versa,
+                // or reaching the end of the file, add the level or comment
+                // to the level list and empty the relevant variable
+
+                if (NewState != State && State == LevelReaderState.Comment)
+                {
+                    Items.Add(Comment);
+                    Comment = "";
+                }
+                else if (NewState != State && State == LevelReaderState.Level)
+                {
+                    SokobanLevel NewLevel = new SokobanLevel(LevelEncoded);
+                    NewLevel.EnsureSpace(0);
+                    Items.Add(NewLevel);
+                    LevelEncoded = "";
+                    if (NewLevel.Validity == SokobanLevelStatus.Valid)
+                    {
+                        if (FoundValidLevel == null)
+                            FoundValidLevel = Items.Count-1;
+                        if (FoundUnsolvedLevel == null && !Program.Settings.SolvedLevels.ContainsKey(NewLevel.ToString()))
+                            FoundUnsolvedLevel = Items.Count-1;
+                    }
+                }
+
+                // Append the line we just read to the relevant variable
+                if (NewState == LevelReaderState.Comment)
+                    Comment += Line.Substring(1) + "\n";
+                else if (NewState == LevelReaderState.Level)
+                    LevelEncoded += Line + "\n";
+
+                // Update the state
+                State = NewState;
+            } while (Line != null);
+
+            EndUpdate();
+            StreamReader.Close();
+
+            if (FoundUnsolvedLevel != null)
+                // If we found a valid unsolved level, display it and let the player play it.
+                return FoundUnsolvedLevel.Value;
+            else if (FoundValidLevel != null)
+                // If not, but we found a valid level, display that instead.
+                return FoundValidLevel.Value;
+            else
+                return null;
         }
     }
 }

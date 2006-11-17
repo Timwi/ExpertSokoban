@@ -11,7 +11,7 @@ namespace ExpertSokoban
     /// application shutdown and restored at application startup.
     /// </summary>
     [Serializable]
-    public class MainFormSettingsVersion1
+    public class ExpSokSettingsVer1
     {
         /// <summary>
         /// Move path draw move
@@ -69,20 +69,20 @@ namespace ExpertSokoban
         /// </summary>
         public Dictionary<string, bool> SolvedLevels = new Dictionary<string, bool>();
 
-        public static MainFormSettingsVersion1 GetSettings()
+        public static ExpSokSettingsVer1 GetSettings()
         {
             object Settings = PrgSettings.Store.GetObject("ExpSok Mainform", null);
-            if (Settings == null) return new MainFormSettingsVersion1();
+            if (Settings == null) return new ExpSokSettingsVer1();
 
             // Convert old versions of the settings to new versions
             // Un-comment this (and change the below to Version2) when MainFormSettingsVersion2 comes along
             // if (Settings is MainFormSettingsVersion1)
             //    Settings = MainFormSettingsVersion2.ConvertFrom (Settings as MainFormSettingsVersion1);
 
-            if (Settings is MainFormSettingsVersion1)
-                return Settings as MainFormSettingsVersion1;
+            if (Settings is ExpSokSettingsVer1)
+                return Settings as ExpSokSettingsVer1;
 
-            return new MainFormSettingsVersion1();
+            return new ExpSokSettingsVer1();
         }
     }
 }

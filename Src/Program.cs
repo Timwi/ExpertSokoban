@@ -19,5 +19,11 @@ namespace ExpertSokoban
             Application.Run(new Mainform());
             PrgSettings.SaveSettings();
         }
+
+        /// <summary>
+        /// Encapsulates all the settings that are saved at application shutdown and
+        /// restored at application startup.
+        /// </summary>
+        public static ExpSokSettingsVer1 Settings;
     }
 }

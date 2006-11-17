@@ -38,19 +38,13 @@ namespace ExpertSokoban
         /// <summary>
         /// Remembers the filename of the currently open level file. Null if none.
         /// </summary>
-        private String FLevelFilename;
+        private string FLevelFilename;
 
         /// <summary>
         /// Determines whether any changes have been made to the level file (i.e. the
         /// contents of the level list).
         /// </summary>
         private bool FLevelFileChanged;
-
-        /// <summary>
-        /// Encapsulates all the settings that are saved at application shutdown and
-        /// restored at application startup.
-        /// </summary>
-        private MainFormSettingsVersion1 FSettings;
 
         /// <summary>
         /// The filename of the current level file. Setting this property automatically
@@ -98,29 +92,42 @@ namespace ExpertSokoban
         {
             InitializeComponent();
 
-            // Start with the default level
-            OrigLevel = SokobanLevel.TestLevel();
-            MainArea.SetLevel(OrigLevel);
-            LevelList.Items.Add(OrigLevel);
-            LevelList.SelectedIndex = 0;
-            LevelList.PlayingIndex = 0;
+            // Load the settings
+            Program.Settings = ExpSokSettingsVer1.GetSettings();
+
+            // Restore the last used level pack
+            LevelFilename = PrgSettings.Store.Get("ExpSok.LastLevelFile", (string)null);
+            try
+            {
+                int? LevelFound = LevelList.LoadLevelPack(LevelFilename);
+                if (LevelFound != null)
+                    TakeLevel(LevelFound.Value, true);
+            }
+            catch
+            {
+                // Default level
+                LevelFilename = null;
+                OrigLevel = SokobanLevel.TestLevel();
+                MainArea.SetLevel(OrigLevel);
+                LevelList.Items.Add(OrigLevel);
+                LevelList.SelectedIndex = 0;
+                LevelList.PlayingIndex = 0;
+            }
+
             EverMovedOrEdited = false;
             LevelFileChanged = false;
-            LevelFilename = null;
 
             // Restore saved settings
-            FSettings = MainFormSettingsVersion1.GetSettings();
-            LevelListToolStrip1.Visible = ViewToolStrip1.Checked = FSettings.DisplayToolStrip1;
-            LevelListToolStrip2.Visible = ViewToolStrip2.Checked = FSettings.DisplayToolStrip2;
-            ViewEditToolStrip.Checked = FSettings.DisplayEditToolStrip;
-            StatusBar.Visible = ViewStatusBar.Checked = FSettings.DisplayStatusBar;
-            LevelListPanel.Width = FSettings.LevelListPanelWidth > 50 ? FSettings.LevelListPanelWidth : 50;
-            LevelListVisible(FSettings.DisplayLevelList);
-            MovePathOptions.SetValue(FSettings.MoveDrawMode);
-            PushPathOptions.SetValue(FSettings.PushDrawMode);
-            EditToolOptions.SetValue(FSettings.LastUsedTool);
-            ViewEndPos.Checked = MainArea.ShowEndPos = FSettings.ShowEndPos;
-            LevelList.SetSolvedLevels(FSettings.SolvedLevels);
+            LevelListToolStrip1.Visible = ViewToolStrip1.Checked = Program.Settings.DisplayToolStrip1;
+            LevelListToolStrip2.Visible = ViewToolStrip2.Checked = Program.Settings.DisplayToolStrip2;
+            ViewEditToolStrip.Checked = Program.Settings.DisplayEditToolStrip;
+            StatusBar.Visible = ViewStatusBar.Checked = Program.Settings.DisplayStatusBar;
+            LevelListPanel.Width = Program.Settings.LevelListPanelWidth < 50 ? 50 : Program.Settings.LevelListPanelWidth;
+            LevelListVisible(Program.Settings.DisplayLevelList);
+            MovePathOptions.SetValue(Program.Settings.MoveDrawMode);
+            PushPathOptions.SetValue(Program.Settings.PushDrawMode);
+            EditToolOptions.SetValue(Program.Settings.LastUsedTool);
+            ViewEndPos.Checked = MainArea.ShowEndPos = Program.Settings.ShowEndPos;
 
             UpdateStatusBar();
         }
@@ -163,12 +170,6 @@ namespace ExpertSokoban
         }
 
         /// <summary>
-        /// Used only by LevelOpen_Click(). Encapsulates the states that occur while
-        /// reading a text file containing levels.
-        /// </summary>
-        private enum LevelReaderState { Empty, Comment, Level }
-
-        /// <summary>
         /// Invoked by "Level => Open level file". Allows the user to open a text file
         /// containing Sokoban levels.
         /// </summary>
@@ -181,80 +182,16 @@ namespace ExpertSokoban
             if (OpenDialog.ShowDialog() != DialogResult.OK)
                 return;
 
+            int? FoundLevel;
+
             LevelListVisible(true);
-            LevelList.BeginUpdate();
-            LevelList.Items.Clear();
-
-            // Have we encountered a valid level yet?
-            int? FoundValidLevel = null;
-            // Have we encountered a valid unsolved level yet?
-            int? FoundUnsolvedLevel = null;
-            // Class to read from the text file
-            StreamReader StreamReader = new StreamReader(OpenDialog.FileName, Encoding.UTF8);
-            // State we're in (Empty, Comment or Level)
-            LevelReaderState State = LevelReaderState.Empty;
-            // Line last read
-            String Line;
-            // Current comment (gets appended to until we reach the end of the comment)
-            String Comment = "";
-            // Current level (gets appended to until we reach the end of the level)
-            String LevelEncoded = "";
-
-            do
-            {
-                Line = StreamReader.ReadLine();
-
-                // Decide whether this line belongs to a level or comment
-                LevelReaderState NewState =
-                            (Line == null || Line.Length == 0) ? LevelReaderState.Empty :
-                            Line[0] == ';' ? LevelReaderState.Comment :
-                            LevelReaderState.Level;
-
-                // If we are switching from level to comment or vice versa,
-                // or reaching the end of the file, add the level or comment
-                // to the level list and empty the relevant variable
-
-                if (NewState != State && State == LevelReaderState.Comment)
-                {
-                    LevelList.Items.Add(Comment);
-                    Comment = "";
-                }
-                else if (NewState != State && State == LevelReaderState.Level)
-                {
-                    SokobanLevel NewLevel = new SokobanLevel(LevelEncoded);
-                    NewLevel.EnsureSpace(0);
-                    LevelList.Items.Add(NewLevel);
-                    LevelEncoded = "";
-                    if (NewLevel.Validity == SokobanLevelStatus.Valid)
-                    {
-                        if (FoundValidLevel == null)
-                            FoundValidLevel = LevelList.Items.Count-1;
-                        if (FoundUnsolvedLevel == null && !FSettings.SolvedLevels.ContainsKey(NewLevel.ToString()))
-                            FoundUnsolvedLevel = LevelList.Items.Count-1;
-                    }
-                }
-
-                // Append the line we just read to the relevant variable
-                if (NewState == LevelReaderState.Comment)
-                    Comment += Line.Substring(1) + "\n";
-                else if (NewState == LevelReaderState.Level)
-                    LevelEncoded += Line + "\n";
-
-                // Update the state
-                State = NewState;
-            } while (Line != null);
-
-            LevelList.EndUpdate();
-            StreamReader.Close();
+            FoundLevel = LevelList.LoadLevelPack(OpenDialog.FileName);
             LevelFileChanged = false;
             LevelFilename = OpenDialog.FileName;
 
-            if (FoundUnsolvedLevel != null)
-                // If we found a valid unsolved level, display it and let the player play it.
-                TakeLevel(FoundUnsolvedLevel.Value, true);
-            else if (FoundValidLevel != null)
-                // If not, but we found a valid level, display that instead.
-                TakeLevel(FoundValidLevel.Value, true);
+            if (FoundLevel != null)
+                // Found a valid level (preferably unsolved): display it and let the player play it.
+                TakeLevel(FoundLevel.Value, true);
             else
             {
                 // Otherwise, clear the main area.
@@ -298,37 +235,39 @@ namespace ExpertSokoban
         private void TakeLevel(int Index, bool Override)
         {
             object Item = LevelList.Items[Index];
-            if (Item is SokobanLevel && (Override || MayDestroyMainAreaLevel("Open level")))
-            {
-                if (MainArea.State == MainAreaState.Editing)
-                    SwitchEditingMode(false);
+            if (!(Item is SokobanLevel))
+                return;
+            if (!Override && !MayDestroyMainAreaLevel("Open level"))
+                return;
 
-                OrigLevel = (SokobanLevel)Item;
-                SokobanLevelStatus Status = OrigLevel.Validity;
-                if (Status == SokobanLevelStatus.Valid)
+            if (MainArea.State == MainAreaState.Editing)
+                SwitchEditingMode(false);
+
+            OrigLevel = (SokobanLevel)Item;
+            SokobanLevelStatus Status = OrigLevel.Validity;
+            if (Status == SokobanLevelStatus.Valid)
+            {
+                MainArea.SetLevel(OrigLevel);
+                EverMovedOrEdited = false;
+                LevelList.SelectedIndex = Index;
+                LevelList.PlayingIndex = Index;
+                UpdateStatusBar();
+            }
+            else
+            {
+                LevelList.PlayingIndex = null;
+                MainArea.Clear();
+                UpdateStatusBar();
+                if (!Override)
                 {
-                    MainArea.SetLevel(OrigLevel);
-                    EverMovedOrEdited = false;
-                    LevelList.SelectedIndex = Index;
-                    LevelList.PlayingIndex = Index;
-                    UpdateStatusBar();
-                }
-                else
-                {
-                    LevelList.PlayingIndex = null;
-                    MainArea.Clear();
-                    UpdateStatusBar();
-                    if (!Override)
-                    {
-                        String Problem = Status == SokobanLevelStatus.NotEnclosed
+                    String Problem = Status == SokobanLevelStatus.NotEnclosed
                             ? "The level is not completely enclosed by a wall."
                             : "The number of pieces does not match the number of targets.";
-                        if (DlgMessage.Show("The level could not be opened because it is invalid.\n\n" + Problem +
+                    if (DlgMessage.Show("The level could not be opened because it is invalid.\n\n" + Problem +
                             "\n\nYou must edit the level in order to address this issue. " +
                             "Would you like to edit the level now?", "Open level",
-                            DlgType.Error, "Edit level", "Cancel") == 0)
-                            EnterEditingMode();
-                    }
+                        DlgType.Error, "Edit level", "Cancel") == 0)
+                        EnterEditingMode();
                 }
             }
         }
@@ -621,7 +560,7 @@ namespace ExpertSokoban
         /// </summary>
         private void MovePathOptions_ValueChanged(object sender, EventArgs e)
         {
-            MainArea.MoveDrawMode = FSettings.MoveDrawMode = MovePathOptions.Value;
+            MainArea.MoveDrawMode = Program.Settings.MoveDrawMode = MovePathOptions.Value;
         }
 
         /// <summary>
@@ -630,7 +569,7 @@ namespace ExpertSokoban
         /// </summary>
         private void PushPathOptions_ValueChanged(object sender, EventArgs e)
         {
-            MainArea.PushDrawMode = FSettings.PushDrawMode = PushPathOptions.Value;
+            MainArea.PushDrawMode = Program.Settings.PushDrawMode = PushPathOptions.Value;
         }
 
         /// <summary>
@@ -640,7 +579,7 @@ namespace ExpertSokoban
         private void ViewEndPos_Click(object sender, EventArgs e)
         {
             ViewEndPos.Checked = !ViewEndPos.Checked;
-            MainArea.ShowEndPos = FSettings.ShowEndPos = ViewEndPos.Checked;
+            MainArea.ShowEndPos = Program.Settings.ShowEndPos = ViewEndPos.Checked;
         }
 
         /// <summary>
@@ -745,7 +684,8 @@ namespace ExpertSokoban
         /// </summary>
         private void Mainform_FormClosed(object sender, FormClosedEventArgs e)
         {
-            PrgSettings.Store.Set("ExpSok Mainform", FSettings);
+            PrgSettings.Store.Set("ExpSok Mainform", Program.Settings);
+            PrgSettings.Store.Set("ExpSok.LastLevelFile", LevelFilename);
         }
 
         /// <summary>
@@ -754,7 +694,7 @@ namespace ExpertSokoban
         /// <param name="On">True: shows the level list. False: hides it.</param>
         private void LevelListVisible(bool On)
         {
-            FSettings.DisplayLevelList = On;
+            Program.Settings.DisplayLevelList = On;
 
             // Level list itself
             LevelListPanel.Visible = On;
@@ -948,7 +888,7 @@ namespace ExpertSokoban
         private void ViewToolStrip1_Click(object sender, EventArgs e)
         {
             ViewToolStrip1.Checked = !ViewToolStrip1.Checked;
-            LevelListToolStrip1.Visible = FSettings.DisplayToolStrip1 = ViewToolStrip1.Checked;
+            LevelListToolStrip1.Visible = Program.Settings.DisplayToolStrip1 = ViewToolStrip1.Checked;
         }
 
         /// <summary>
@@ -958,7 +898,7 @@ namespace ExpertSokoban
         private void ViewToolStrip2_Click(object sender, EventArgs e)
         {
             ViewToolStrip2.Checked = !ViewToolStrip2.Checked;
-            LevelListToolStrip2.Visible = FSettings.DisplayToolStrip2 = ViewToolStrip2.Checked;
+            LevelListToolStrip2.Visible = Program.Settings.DisplayToolStrip2 = ViewToolStrip2.Checked;
         }
 
         /// <summary>
@@ -967,7 +907,7 @@ namespace ExpertSokoban
         private void ViewEditToolStrip_Click(object sender, EventArgs e)
         {
             ViewEditToolStrip.Checked = !ViewEditToolStrip.Checked;
-            EditToolStrip.Visible = FSettings.DisplayEditToolStrip = ViewEditToolStrip.Checked;
+            EditToolStrip.Visible = Program.Settings.DisplayEditToolStrip = ViewEditToolStrip.Checked;
         }
 
         /// <summary>
@@ -976,7 +916,7 @@ namespace ExpertSokoban
         /// </summary>
         private void LevelListPanel_Resize(object sender, EventArgs e)
         {
-            FSettings.LevelListPanelWidth = LevelListPanel.Width;
+            Program.Settings.LevelListPanelWidth = LevelListPanel.Width;
         }
 
         /// <summary>
@@ -1009,7 +949,7 @@ namespace ExpertSokoban
         /// </summary>
         private void EditToolOptions_ValueChanged(object sender, EventArgs e)
         {
-            MainArea.Tool = FSettings.LastUsedTool = EditToolOptions.Value;
+            MainArea.Tool = Program.Settings.LastUsedTool = EditToolOptions.Value;
             EditToolWall.Checked = EditToolOptions.Value == MainAreaTool.Wall;
             EditToolPiece.Checked = EditToolOptions.Value == MainAreaTool.Piece;
             EditToolTarget.Checked = EditToolOptions.Value == MainAreaTool.Target;
@@ -1056,7 +996,7 @@ namespace ExpertSokoban
         /// </summary>
         private void MainArea_LevelSolved(object sender, EventArgs e)
         {
-            FSettings.SolvedLevels[OrigLevel.ToString()] = true;
+            Program.Settings.SolvedLevels[OrigLevel.ToString()] = true;
             LevelList.ComeOn_RefreshItems();
             UpdateStatusBar();
         }
@@ -1093,7 +1033,7 @@ namespace ExpertSokoban
                     return;
                 }
                 if (LevelList.Items[i] is SokobanLevel &&
-                    (!MustBeUnsolved || !FSettings.SolvedLevels.ContainsKey(LevelList.Items[i].ToString())))
+                    (!MustBeUnsolved || !Program.Settings.SolvedLevels.ContainsKey(LevelList.Items[i].ToString())))
                 {
                     // We've found a matching level
                     TakeLevel(i);
@@ -1128,7 +1068,7 @@ namespace ExpertSokoban
                     return;
                 }
                 if (LevelList.Items[i] is SokobanLevel &&
-                    (!MustBeUnsolved || !FSettings.SolvedLevels.ContainsKey(LevelList.Items[i].ToString())))
+                    (!MustBeUnsolved || !Program.Settings.SolvedLevels.ContainsKey(LevelList.Items[i].ToString())))
                 {
                     // We've found a matching level
                     TakeLevel(i);
@@ -1151,7 +1091,7 @@ namespace ExpertSokoban
         private void ViewStatusBar_Click(object sender, EventArgs e)
         {
             ViewStatusBar.Checked = !ViewStatusBar.Checked;
-            StatusBar.Visible = FSettings.DisplayStatusBar = ViewStatusBar.Checked;
+            StatusBar.Visible = Program.Settings.DisplayStatusBar = ViewStatusBar.Checked;
         }
     }
 }
