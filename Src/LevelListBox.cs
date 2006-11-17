@@ -191,7 +191,7 @@ namespace ExpertSokoban
         }
 
         /// <summary>
-        /// Used only by LevelOpen_Click(). Encapsulates the states that occur while
+        /// Used only by LoadLevelPack(). Encapsulates the states that occur while
         /// reading a text file containing levels.
         /// </summary>
         private enum LevelReaderState { Empty, Comment, Level }
