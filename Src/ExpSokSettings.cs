@@ -75,9 +75,9 @@ namespace ExpertSokoban
             if (Settings == null) return new ExpSokSettingsVer1();
 
             // Convert old versions of the settings to new versions
-            // Un-comment this (and change the below to Version2) when MainFormSettingsVersion2 comes along
-            // if (Settings is MainFormSettingsVersion1)
-            //    Settings = MainFormSettingsVersion2.ConvertFrom (Settings as MainFormSettingsVersion1);
+            // Un-comment this (and change the below to Ver2) when ExpSokSettingsVer2 comes along
+            // if (Settings is ExpSokSettingsVer1)
+            //    Settings = ExpSokSettingsVer2.ConvertFrom (Settings as ExpSokSettingsVer1);
 
             if (Settings is ExpSokSettingsVer1)
                 return Settings as ExpSokSettingsVer1;
