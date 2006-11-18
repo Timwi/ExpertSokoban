@@ -6,25 +6,25 @@ using RT.Util;
 namespace ExpertSokoban
 {
     /// <summary>
-    /// This struct encapsulates a player's highscore in a level.
+    /// Encapsulates a player's highscore in a level.
     /// </summary>
     [Serializable]
-    public struct Highscore
+    public class Highscore
     {
         /// <summary>
         /// The player's best result, where "best" means "fewest pushes".
         /// </summary>
-        public Tuple<int /* pushes */, int /* moves */> BestPushScore;
+        public Tuple<int /* pushes */, int /* moves */> BestPushScore = new Tuple<int,int>(int.MaxValue, int.MaxValue);
 
         /// <summary>
         /// The player's best result, where "best" means "fewest pushes".
         /// </summary>
-        public Tuple<int /* pushes */, int /* moves */> BestMoveScore;
+        public Tuple<int /* pushes */, int /* moves */> BestMoveScore = new Tuple<int, int>(int.MaxValue, int.MaxValue);
 
         /// <summary>
         /// The player's best result, where "best" means "fewest sum of moves + pushes".
         /// </summary>
-        public Tuple<int /* pushes */, int /* moves */> BestSumScore;
+        public Tuple<int /* pushes */, int /* moves */> BestSumScore = new Tuple<int, int>(int.MaxValue, int.MaxValue);
 
         /// <summary>
         /// If Score is a better score in any of the three respects, updates
@@ -41,17 +41,6 @@ namespace ExpertSokoban
                 BestMoveScore = Score;
             if (Score.E1 + Score.E2 < BestSumScore.E1 + BestSumScore.E2)
                 BestSumScore = Score;
-        }
-
-        /// <summary>
-        /// Initialises a Highscore struct with a given Score.
-        /// </summary>
-        /// <param name="Score">The Score to initialise the Highscore with.</param>
-        public Highscore(Tuple<int, int> Score)
-        {
-            BestPushScore = Score;
-            BestMoveScore = Score;
-            BestSumScore = Score;
         }
 
         /// <summary>

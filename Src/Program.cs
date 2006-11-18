@@ -15,15 +15,19 @@ namespace ExpertSokoban
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            // Load settings and convert them if necessary
             PrgSettings.LoadSettings(new SettingsBinaryFile());
+            //if (!ExpSokSettings.SettingsExist)
+            //{
+            //    if (ExpSokSettingsOldV1.SettingsExist)
+            //        ExpSokSettings.FromOld(ExpSokSettingsOldV1);
+            //}
+
             Application.Run(new Mainform());
+
+            // Store settings
             PrgSettings.SaveSettings();
         }
-
-        /// <summary>
-        /// Encapsulates all the settings that are saved at application shutdown and
-        /// restored at application startup.
-        /// </summary>
-        public static ExpSokSettingsVer1 Settings;
     }
 }

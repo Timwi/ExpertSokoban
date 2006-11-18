@@ -81,8 +81,8 @@ namespace ExpertSokoban
         private void UpdateTitlebar()
         {
             Text = "Expert Sokoban - " +
-                    (Program.Settings.PlayerName == null || Program.Settings.PlayerName.Length == 0
-                        ? "(no player name)" : Program.Settings.PlayerName) +
+                    (ExpSokSettings.PlayerName == null || ExpSokSettings.PlayerName.Length == 0
+                        ? "(no player name)" : ExpSokSettings.PlayerName) +
                     " - " +
                     (FLevelFilename == null ? "(untitled)" : Path.GetFileName(FLevelFilename)) +
                     (FLevelFileChanged ? " *" : "");
@@ -94,9 +94,6 @@ namespace ExpertSokoban
         public Mainform()
         {
             InitializeComponent();
-
-            // Load the settings
-            Program.Settings = ExpSokSettingsVer1.GetSettings();
 
             // Restore the last used level pack
             LevelFilename = PrgSettings.Store.Get("ExpSok.LastLevelFile", (string)null);
@@ -121,21 +118,21 @@ namespace ExpertSokoban
             LevelFileChanged = false;
 
             // Restore saved settings
-            LevelListToolStrip1.Visible = ViewToolStrip1.Checked = Program.Settings.DisplayToolStrip1;
-            LevelListToolStrip2.Visible = ViewToolStrip2.Checked = Program.Settings.DisplayToolStrip2;
-            ViewEditToolStrip.Checked = Program.Settings.DisplayEditToolStrip;
-            StatusBar.Visible = ViewStatusBar.Checked = Program.Settings.DisplayStatusBar;
-            LevelListPanel.Width = Program.Settings.LevelListPanelWidth < 50 ? 50 : Program.Settings.LevelListPanelWidth;
-            LevelListVisible(Program.Settings.DisplayLevelList);
-            MovePathOptions.SetValue(Program.Settings.MoveDrawMode);
-            PushPathOptions.SetValue(Program.Settings.PushDrawMode);
-            EditToolOptions.SetValue(Program.Settings.LastUsedTool);
-            ViewEndPos.Checked = MainArea.ShowEndPos = Program.Settings.ShowEndPos;
+            LevelListToolStrip1.Visible = ViewToolStrip1.Checked = ExpSokSettings.DisplayToolStrip1;
+            LevelListToolStrip2.Visible = ViewToolStrip2.Checked = ExpSokSettings.DisplayToolStrip2;
+            ViewEditToolStrip.Checked = ExpSokSettings.DisplayEditToolStrip;
+            StatusBar.Visible = ViewStatusBar.Checked = ExpSokSettings.DisplayStatusBar;
+            LevelListPanel.Width = ExpSokSettings.LevelListWidth < 50 ? 50 : ExpSokSettings.LevelListWidth;
+            LevelListVisible(ExpSokSettings.DisplayLevelList);
+            MovePathOptions.SetValue(ExpSokSettings.MoveDrawMode);
+            PushPathOptions.SetValue(ExpSokSettings.PushDrawMode);
+            EditToolOptions.SetValue(ExpSokSettings.LastUsedTool);
+            ViewEndPos.Checked = MainArea.ShowEndPos = ExpSokSettings.ShowEndPos;
 
             UpdateStatusBar();
 
-            if (Program.Settings.PlayerName == null || Program.Settings.PlayerName.Length == 0)
-                Program.Settings.PlayerName = InputBox.GetLine("Please choose a name which will be used to identify " +
+            if (ExpSokSettings.PlayerName == null || ExpSokSettings.PlayerName.Length == 0)
+                ExpSokSettings.PlayerName = InputBox.GetLine("Please choose a name which will be used to identify " +
                     "you in highscore tables.\nYou can change this name later by selecting \"Change player name\" " +
                     "from the \"Level\" menu.", "", "Expert Sokoban");
         }
@@ -568,7 +565,7 @@ namespace ExpertSokoban
         /// </summary>
         private void MovePathOptions_ValueChanged(object sender, EventArgs e)
         {
-            MainArea.MoveDrawMode = Program.Settings.MoveDrawMode = MovePathOptions.Value;
+            MainArea.MoveDrawMode = ExpSokSettings.MoveDrawMode = MovePathOptions.Value;
         }
 
         /// <summary>
@@ -577,7 +574,7 @@ namespace ExpertSokoban
         /// </summary>
         private void PushPathOptions_ValueChanged(object sender, EventArgs e)
         {
-            MainArea.PushDrawMode = Program.Settings.PushDrawMode = PushPathOptions.Value;
+            MainArea.PushDrawMode = ExpSokSettings.PushDrawMode = PushPathOptions.Value;
         }
 
         /// <summary>
@@ -587,7 +584,7 @@ namespace ExpertSokoban
         private void ViewEndPos_Click(object sender, EventArgs e)
         {
             ViewEndPos.Checked = !ViewEndPos.Checked;
-            MainArea.ShowEndPos = Program.Settings.ShowEndPos = ViewEndPos.Checked;
+            MainArea.ShowEndPos = ExpSokSettings.ShowEndPos = ViewEndPos.Checked;
         }
 
         /// <summary>
@@ -692,7 +689,6 @@ namespace ExpertSokoban
         /// </summary>
         private void Mainform_FormClosed(object sender, FormClosedEventArgs e)
         {
-            PrgSettings.Store.Set("ExpSok Mainform", Program.Settings);
             PrgSettings.Store.Set("ExpSok.LastLevelFile", LevelFilename);
         }
 
@@ -702,7 +698,7 @@ namespace ExpertSokoban
         /// <param name="On">True: shows the level list. False: hides it.</param>
         private void LevelListVisible(bool On)
         {
-            Program.Settings.DisplayLevelList = On;
+            ExpSokSettings.DisplayLevelList = On;
 
             // Level list itself
             LevelListPanel.Visible = On;
@@ -896,7 +892,7 @@ namespace ExpertSokoban
         private void ViewToolStrip1_Click(object sender, EventArgs e)
         {
             ViewToolStrip1.Checked = !ViewToolStrip1.Checked;
-            LevelListToolStrip1.Visible = Program.Settings.DisplayToolStrip1 = ViewToolStrip1.Checked;
+            LevelListToolStrip1.Visible = ExpSokSettings.DisplayToolStrip1 = ViewToolStrip1.Checked;
         }
 
         /// <summary>
@@ -906,7 +902,7 @@ namespace ExpertSokoban
         private void ViewToolStrip2_Click(object sender, EventArgs e)
         {
             ViewToolStrip2.Checked = !ViewToolStrip2.Checked;
-            LevelListToolStrip2.Visible = Program.Settings.DisplayToolStrip2 = ViewToolStrip2.Checked;
+            LevelListToolStrip2.Visible = ExpSokSettings.DisplayToolStrip2 = ViewToolStrip2.Checked;
         }
 
         /// <summary>
@@ -915,7 +911,7 @@ namespace ExpertSokoban
         private void ViewEditToolStrip_Click(object sender, EventArgs e)
         {
             ViewEditToolStrip.Checked = !ViewEditToolStrip.Checked;
-            EditToolStrip.Visible = Program.Settings.DisplayEditToolStrip = ViewEditToolStrip.Checked;
+            EditToolStrip.Visible = ExpSokSettings.DisplayEditToolStrip = ViewEditToolStrip.Checked;
         }
 
         /// <summary>
@@ -924,7 +920,7 @@ namespace ExpertSokoban
         /// </summary>
         private void LevelListPanel_Resize(object sender, EventArgs e)
         {
-            Program.Settings.LevelListPanelWidth = LevelListPanel.Width;
+            ExpSokSettings.LevelListWidth = LevelListPanel.Width;
         }
 
         /// <summary>
@@ -957,7 +953,7 @@ namespace ExpertSokoban
         /// </summary>
         private void EditToolOptions_ValueChanged(object sender, EventArgs e)
         {
-            MainArea.Tool = Program.Settings.LastUsedTool = EditToolOptions.Value;
+            MainArea.Tool = ExpSokSettings.LastUsedTool = EditToolOptions.Value;
             EditToolWall.Checked = EditToolOptions.Value == MainAreaTool.Wall;
             EditToolPiece.Checked = EditToolOptions.Value == MainAreaTool.Piece;
             EditToolTarget.Checked = EditToolOptions.Value == MainAreaTool.Target;
@@ -1005,26 +1001,18 @@ namespace ExpertSokoban
         private void MainArea_LevelSolved(object sender, EventArgs e)
         {
             // If the user hasn't chosen a name for themselves yet, ask them
-            if (Program.Settings.PlayerName == null || Program.Settings.PlayerName.Length == 0)
-                Program.Settings.PlayerName = InputBox.GetLine("Congratulations! You've solved the current level.\n" +
+            if (ExpSokSettings.PlayerName == null || ExpSokSettings.PlayerName.Length == 0)
+                ExpSokSettings.PlayerName = InputBox.GetLine("Congratulations! You've solved the current level.\n" +
                     "Please choose a name which will be used to identify you in highscore tables.\n" +
                     "If you do not choose a name now, your score for this level will not be recorded.\n" +
                     "You can change this name again later by selecting \"Change player name\" " +
                     "from the \"Level\" menu.", "", "Expert Sokoban");
 
             // If they still haven't chosen a name, discard the high score
-            if (Program.Settings.PlayerName == null || Program.Settings.PlayerName.Length == 0)
+            if (ExpSokSettings.PlayerName == null || ExpSokSettings.PlayerName.Length == 0)
                 return;
 
-            Tuple<int, int> Score = new Tuple<int, int>(MainArea.Pushes, MainArea.Moves);
-            string Key = OrigLevel.ToString();
-            if (!Program.Settings.Highscores.ContainsKey(Key))
-                Program.Settings.Highscores[Key] = new Dictionary<string, Highscore>();
-            
-            if (Program.Settings.Highscores[Key].ContainsKey(Program.Settings.PlayerName))
-                Program.Settings.Highscores[Key][Program.Settings.PlayerName].UpdateWith(Score);
-            else
-                Program.Settings.Highscores[Key][Program.Settings.PlayerName] = new Highscore(Score);
+            ExpSokSettings.UpdateHighscore(OrigLevel.ToString(), MainArea.Moves, MainArea.Pushes);
 
             LevelList.ComeOn_RefreshItems();
             UpdateStatusBar();
@@ -1062,7 +1050,7 @@ namespace ExpertSokoban
                     return;
                 }
                 if (LevelList.Items[i] is SokobanLevel &&
-                    (!MustBeUnsolved || !Program.Settings.IsSolved(LevelList.Items[i].ToString())))
+                    (!MustBeUnsolved || !ExpSokSettings.IsSolved(LevelList.Items[i].ToString())))
                 {
                     // We've found a matching level
                     TakeLevel(i);
@@ -1097,7 +1085,7 @@ namespace ExpertSokoban
                     return;
                 }
                 if (LevelList.Items[i] is SokobanLevel &&
-                    (!MustBeUnsolved || !Program.Settings.IsSolved(LevelList.Items[i].ToString())))
+                    (!MustBeUnsolved || !ExpSokSettings.IsSolved(LevelList.Items[i].ToString())))
                 {
                     // We've found a matching level
                     TakeLevel(i);
@@ -1120,16 +1108,16 @@ namespace ExpertSokoban
         private void ViewStatusBar_Click(object sender, EventArgs e)
         {
             ViewStatusBar.Checked = !ViewStatusBar.Checked;
-            StatusBar.Visible = Program.Settings.DisplayStatusBar = ViewStatusBar.Checked;
+            StatusBar.Visible = ExpSokSettings.DisplayStatusBar = ViewStatusBar.Checked;
         }
 
         private void LevelChangePlayer_Click(object sender, EventArgs e)
         {
             string Result = InputBox.GetLine("Please choose a name which will be used to identify " +
-                "you in highscore tables.", Program.Settings.PlayerName, "Expert Sokoban");
+                "you in highscore tables.", ExpSokSettings.PlayerName, "Expert Sokoban");
             if (Result != null)
             {
-                Program.Settings.PlayerName = Result;
+                ExpSokSettings.PlayerName = Result;
                 LevelList.ComeOn_RefreshItems();
                 UpdateTitlebar();
             }

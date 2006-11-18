@@ -77,11 +77,11 @@ namespace ExpertSokoban
                 if (Items[e.Index] is SokobanLevel)
                 {
                     string Key = Items[e.Index].ToString();
-                    bool IsSolved = Program.Settings.IsSolved(Key);
+                    bool IsSolved = ExpSokSettings.IsSolved(Key);
                     string SolvedMessage = IsSolved
                         ?   "Solved (" + 
-                            Program.Settings.Highscores[Key][Program.Settings.PlayerName].BestPushScore.E1 + "/" +
-                            Program.Settings.Highscores[Key][Program.Settings.PlayerName].BestPushScore.E2 + ")"
+                            ExpSokSettings.Highscores[Key][ExpSokSettings.PlayerName].BestPushScore.E1 + "/" +
+                            ExpSokSettings.Highscores[Key][ExpSokSettings.PlayerName].BestPushScore.E2 + ")"
                         :   "";
                     bool IsPlaying = (e.Index == FPlayingEditingIndex && FState == LevelListBoxState.Playing);
                     bool IsEditing = (e.Index == FPlayingEditingIndex && FState == LevelListBoxState.Editing);
@@ -200,7 +200,7 @@ namespace ExpertSokoban
                     else if (e.Index == FPlayingEditingIndex && FState == LevelListBoxState.Editing)
                         e.ItemHeight += (int)e.Graphics.MeasureString("Currently editing", Font).Height + 5;
                     
-                    if (Program.Settings.IsSolved(Items[e.Index].ToString()))
+                    if (ExpSokSettings.IsSolved(Items[e.Index].ToString()))
                         e.ItemHeight += (int)e.Graphics.MeasureString("Solved", Font).Height + 5;
                 }
                 else if (Items[e.Index] is string)
@@ -277,7 +277,7 @@ namespace ExpertSokoban
                     {
                         if (FoundValidLevel == null)
                             FoundValidLevel = Items.Count-1;
-                        if (FoundUnsolvedLevel == null && !Program.Settings.IsSolved(NewLevel.ToString()))
+                        if (FoundUnsolvedLevel == null && !ExpSokSettings.IsSolved(NewLevel.ToString()))
                             FoundUnsolvedLevel = Items.Count-1;
                     }
                 }
