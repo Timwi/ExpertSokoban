@@ -1002,6 +1002,7 @@ namespace ExpertSokoban
             Sel = null;
             FMoves = 0;
             FPushes = 0;
+            FUndo = new Stack<UndoItem>();
             ReinitMoveFinder();
             Refresh();
         }
