@@ -101,6 +101,15 @@ namespace ExpertSokoban
         }
 
         /// <summary>
+        /// The filename of the current/last played level file. Null if none.
+        /// </summary>
+        public static string LevelFilename
+        {
+            get { return PrgSettings.Store.Get("ExpSok.LevelFilename", (string)null); }
+            set { PrgSettings.Store.Set("ExpSok.LevelFilename", value); }
+        }
+
+        /// <summary>
         /// Currently selected player name
         /// </summary>
         public static string PlayerName

@@ -36,29 +36,10 @@ namespace ExpertSokoban
         private SokobanLevel OrigLevel;
 
         /// <summary>
-        /// Remembers the filename of the currently open level file. Null if none.
-        /// </summary>
-        private string FLevelFilename;
-
-        /// <summary>
         /// Determines whether any changes have been made to the level file (i.e. the
         /// contents of the level list).
         /// </summary>
         private bool FLevelFileChanged;
-
-        /// <summary>
-        /// The filename of the current level file. Setting this property automatically
-        /// updates the window title bar.
-        /// </summary>
-        private string LevelFilename
-        {
-            get { return FLevelFilename; }
-            set
-            {
-                FLevelFilename = value;
-                UpdateTitlebar();
-            }
-        }
 
         /// <summary>
         /// Whether the current level file has been changed. Setting this property
@@ -70,22 +51,8 @@ namespace ExpertSokoban
             set
             {
                 FLevelFileChanged = value;
-                UpdateTitlebar();
+                UpdateControls();
             }
-        }
-
-        /// <summary>
-        /// Updates the title bar with the current filename and an asterisk if the file
-        /// has changed.
-        /// </summary>
-        private void UpdateTitlebar()
-        {
-            Text = "Expert Sokoban - " +
-                    (ExpSokSettings.PlayerName == null || ExpSokSettings.PlayerName.Length == 0
-                        ? "(no player name)" : ExpSokSettings.PlayerName) +
-                    " - " +
-                    (FLevelFilename == null ? "(untitled)" : Path.GetFileName(FLevelFilename)) +
-                    (FLevelFileChanged ? " *" : "");
         }
 
         /// <summary>
@@ -96,17 +63,16 @@ namespace ExpertSokoban
             InitializeComponent();
 
             // Restore the last used level pack
-            LevelFilename = PrgSettings.Store.Get("ExpSok.LastLevelFile", (string)null);
             try
             {
-                int? LevelFound = LevelList.LoadLevelPack(LevelFilename);
+                int? LevelFound = LevelList.LoadLevelPack(ExpSokSettings.LevelFilename);
                 if (LevelFound != null)
                     TakeLevel(LevelFound.Value, true);
             }
             catch
             {
                 // Default level
-                LevelFilename = null;
+                ExpSokSettings.LevelFilename = null;
                 OrigLevel = SokobanLevel.TestLevel();
                 MainArea.SetLevel(OrigLevel);
                 LevelList.Items.Add(OrigLevel);
@@ -129,12 +95,12 @@ namespace ExpertSokoban
             EditToolOptions.SetValue(ExpSokSettings.LastUsedTool);
             ViewEndPos.Checked = MainArea.ShowEndPos = ExpSokSettings.ShowEndPos;
 
-            UpdateStatusBar();
-
             if (ExpSokSettings.PlayerName == null || ExpSokSettings.PlayerName.Length == 0)
                 ExpSokSettings.PlayerName = InputBox.GetLine("Please choose a name which will be used to identify " +
                     "you in highscore tables.\nYou can change this name later by selecting \"Change player name\" " +
                     "from the \"Level\" menu.", "", "Expert Sokoban");
+
+            UpdateControls();
         }
 
         /// <summary>
@@ -143,11 +109,21 @@ namespace ExpertSokoban
         private void MainArea_MoveMade(object sender, EventArgs e)
         {
             EverMovedOrEdited = true;
-            UpdateStatusBar();
+            UpdateControls();
         }
 
-        private void UpdateStatusBar()
+        /// <summary>
+        /// Updates various GUI controls to reflect the current program state.
+        /// </summary>
+        private void UpdateControls()
         {
+            Text = "Expert Sokoban - " +
+                    (ExpSokSettings.PlayerName == null || ExpSokSettings.PlayerName.Length == 0
+                        ? "(no player name)" : ExpSokSettings.PlayerName) +
+                    " - " +
+                    (ExpSokSettings.LevelFilename == null ? "(untitled)" : Path.GetFileName(ExpSokSettings.LevelFilename)) +
+                    (LevelFileChanged ? " *" : "");
+
             StatusNull.Visible = MainArea.State == MainAreaState.Null;
             StatusMoves.Visible = MainArea.State == MainAreaState.Move || MainArea.State == MainAreaState.Push || MainArea.State == MainAreaState.Solved;
             StatusPushes.Visible = MainArea.State == MainAreaState.Move || MainArea.State == MainAreaState.Push || MainArea.State == MainAreaState.Solved;
@@ -192,7 +168,7 @@ namespace ExpertSokoban
             LevelListVisible(true);
             FoundLevel = LevelList.LoadLevelPack(OpenDialog.FileName);
             LevelFileChanged = false;
-            LevelFilename = OpenDialog.FileName;
+            ExpSokSettings.LevelFilename = OpenDialog.FileName;
 
             if (FoundLevel != null)
                 // Found a valid level (preferably unsolved): display it and let the player play it.
@@ -256,13 +232,13 @@ namespace ExpertSokoban
                 EverMovedOrEdited = false;
                 LevelList.SelectedIndex = Index;
                 LevelList.PlayingIndex = Index;
-                UpdateStatusBar();
+                UpdateControls();
             }
             else
             {
                 LevelList.PlayingIndex = null;
                 MainArea.Clear();
-                UpdateStatusBar();
+                UpdateControls();
                 if (!Override)
                 {
                     String Problem = Status == SokobanLevelStatus.NotEnclosed
@@ -302,7 +278,7 @@ namespace ExpertSokoban
 
             // Ask the user if they want to save their changes to the level life.
             int Result = DlgMessage.Show("You have made changes to "
-                + (LevelFilename == null ? "(untitled)" : Path.GetFileName(LevelFilename)) +
+                + (ExpSokSettings.LevelFilename == null ? "(untitled)" : Path.GetFileName(ExpSokSettings.LevelFilename)) +
                 ". Would you like to save those changes?", Title, DlgType.Question,
                 "Save changes", "&Discard changes", "Cancel");
 
@@ -394,7 +370,7 @@ namespace ExpertSokoban
         private void LevelUndo_Click(object sender, EventArgs e)
         {
             MainArea.Undo();
-            UpdateStatusBar();
+            UpdateControls();
         }
 
         /// <summary>
@@ -446,7 +422,7 @@ namespace ExpertSokoban
                 LevelList.Items.Clear();
                 LevelList.PlayingIndex = null;
                 MainArea.Clear();
-                LevelFilename = null;
+                ExpSokSettings.LevelFilename = null;
             }
         }
 
@@ -685,14 +661,6 @@ namespace ExpertSokoban
         }
 
         /// <summary>
-        /// Invoked by application shutdown. Saves the settings.
-        /// </summary>
-        private void Mainform_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            PrgSettings.Store.Set("ExpSok.LastLevelFile", LevelFilename);
-        }
-
-        /// <summary>
         /// Switches the visibility of the level list.
         /// </summary>
         /// <param name="On">True: shows the level list. False: hides it.</param>
@@ -834,7 +802,7 @@ namespace ExpertSokoban
             ViewPushDots.Enabled = !On;
             ViewEndPos.Enabled = !On;
 
-            UpdateStatusBar();
+            UpdateControls();
         }
 
         /// <summary>
@@ -854,7 +822,7 @@ namespace ExpertSokoban
         private DialogResult SaveWithDialog()
         {
             // If we don't already have a filename, ask the user for one
-            if (LevelFilename == null)
+            if (ExpSokSettings.LevelFilename == null)
             {
                 SaveFileDialog SaveDialog = new SaveFileDialog();
                 DialogResult Result = SaveDialog.ShowDialog();
@@ -864,11 +832,11 @@ namespace ExpertSokoban
                     return Result;
 
                 // Update the current filename (this updates the window titlebar too)
-                LevelFilename = SaveDialog.FileName;
+                ExpSokSettings.LevelFilename = SaveDialog.FileName;
             }
 
             // Save the file
-            StreamWriter StreamWriter = new StreamWriter(LevelFilename, false, Encoding.UTF8);
+            StreamWriter StreamWriter = new StreamWriter(ExpSokSettings.LevelFilename, false, Encoding.UTF8);
             foreach (object Item in LevelList.Items)
             {
                 if (Item is SokobanLevel)
@@ -930,7 +898,7 @@ namespace ExpertSokoban
         private void MainArea_LevelChanged(object sender, EventArgs e)
         {
             EverMovedOrEdited = true;
-            UpdateStatusBar();
+            UpdateControls();
         }
 
         /// <summary>
@@ -1015,7 +983,7 @@ namespace ExpertSokoban
             ExpSokSettings.UpdateHighscore(OrigLevel.ToString(), MainArea.Moves, MainArea.Pushes);
 
             LevelList.ComeOn_RefreshItems();
-            UpdateStatusBar();
+            UpdateControls();
         }
 
         /// <summary>
@@ -1119,7 +1087,7 @@ namespace ExpertSokoban
             {
                 ExpSokSettings.PlayerName = Result;
                 LevelList.ComeOn_RefreshItems();
-                UpdateTitlebar();
+                UpdateControls();
             }
         }
     }
