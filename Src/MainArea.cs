@@ -950,13 +950,17 @@ namespace ExpertSokoban
                 // No piece is selected after the push
                 Sel = null;
 
+                // Fire the MoveMade event
+                if (MoveMade != null)
+                    MoveMade(this, new EventArgs());
+
                 // Did this push solve the level?
                 if (FLevel.Solved)
                 {
                     FState = MainAreaState.Solved;
-                    if (LevelSolved != null) LevelSolved(this, new EventArgs());
                     SndLevelSolved.Play();
                     Refresh();
+                    if (LevelSolved != null) LevelSolved(this, new EventArgs());
                 }
                 else
                 {
@@ -975,10 +979,6 @@ namespace ExpertSokoban
                     ReinitMoveFinder();
                     Invalidate();
                 }
-
-                // Fire the MoveMade event
-                if (MoveMade != null)
-                    MoveMade(this, new EventArgs());
             }
             OrigMouseDown = null;
         }

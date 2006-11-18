@@ -1,8 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using RT.Util;
 using RT.Util.Settings;
-using System.Collections;
 
 namespace ExpertSokoban
 {
@@ -65,17 +66,36 @@ namespace ExpertSokoban
         public int LevelListPanelWidth = 152;
 
         /// <summary>
-        /// Collection of levels the user has already solved
+        /// Player highscores
         /// </summary>
-        public Dictionary<string, bool> SolvedLevels = new Dictionary<string, bool>();
+        public Dictionary<string /* String representation of a level */,
+            Dictionary<string /* Player name */, Highscore>> Highscores = new
+            Dictionary<string, Dictionary<string, Highscore>>();
+
+        /// <summary>
+        /// Helper method to determine whether the current player has solved the given level
+        /// </summary>
+        /// <param name="Level">String representation of the level to check.</param>
+        /// <returns>True if the level has ever been solved by the current player.</returns>
+        public bool IsSolved(string Level)
+        {
+            if (PlayerName == null || PlayerName.Length == 0)
+                return false;
+            return Highscores.ContainsKey(Level) && Highscores[Level].ContainsKey(PlayerName);
+        }
+
+        /// <summary>
+        /// Last used player name
+        /// </summary>
+        public string PlayerName = null;
 
         public static ExpSokSettingsVer1 GetSettings()
         {
             object Settings = PrgSettings.Store.GetObject("ExpSok Mainform", null);
             if (Settings == null) return new ExpSokSettingsVer1();
 
-            // Convert old versions of the settings to new versions
-            // Un-comment this (and change the below to Ver2) when ExpSokSettingsVer2 comes along
+            // Un-comment this (and change the below to Ver2) when ExpSokSettingsVer2 comes along:
+            // // Convert old versions of the settings to new versions
             // if (Settings is ExpSokSettingsVer1)
             //    Settings = ExpSokSettingsVer2.ConvertFrom (Settings as ExpSokSettingsVer1);
 

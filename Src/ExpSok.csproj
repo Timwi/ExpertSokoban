@@ -48,6 +48,7 @@
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
     <Compile Include="ExpSokSettings.cs" />
+    <Compile Include="Highscore.cs" />
     <Compile Include="MenuRadioClasses.cs">
       <SubType>Component</SubType>
     </Compile>

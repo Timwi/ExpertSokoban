@@ -81,6 +81,9 @@ namespace ExpertSokoban
         private void UpdateTitlebar()
         {
             Text = "Expert Sokoban - " +
+                    (Program.Settings.PlayerName == null || Program.Settings.PlayerName.Length == 0
+                        ? "(no player name)" : Program.Settings.PlayerName) +
+                    " - " +
                     (FLevelFilename == null ? "(untitled)" : Path.GetFileName(FLevelFilename)) +
                     (FLevelFileChanged ? " *" : "");
         }
@@ -130,6 +133,11 @@ namespace ExpertSokoban
             ViewEndPos.Checked = MainArea.ShowEndPos = Program.Settings.ShowEndPos;
 
             UpdateStatusBar();
+
+            if (Program.Settings.PlayerName == null || Program.Settings.PlayerName.Length == 0)
+                Program.Settings.PlayerName = InputBox.GetLine("Please choose a name which will be used to identify " +
+                    "you in highscore tables.\nYou can change this name later by selecting \"Change player name\" " +
+                    "from the \"Level\" menu.", "", "Expert Sokoban");
         }
 
         /// <summary>
@@ -996,7 +1004,28 @@ namespace ExpertSokoban
         /// </summary>
         private void MainArea_LevelSolved(object sender, EventArgs e)
         {
-            Program.Settings.SolvedLevels[OrigLevel.ToString()] = true;
+            // If the user hasn't chosen a name for themselves yet, ask them
+            if (Program.Settings.PlayerName == null || Program.Settings.PlayerName.Length == 0)
+                Program.Settings.PlayerName = InputBox.GetLine("Congratulations! You've solved the current level.\n" +
+                    "Please choose a name which will be used to identify you in highscore tables.\n" +
+                    "If you do not choose a name now, your score for this level will not be recorded.\n" +
+                    "You can change this name again later by selecting \"Change player name\" " +
+                    "from the \"Level\" menu.", "", "Expert Sokoban");
+
+            // If they still haven't chosen a name, discard the high score
+            if (Program.Settings.PlayerName == null || Program.Settings.PlayerName.Length == 0)
+                return;
+
+            Tuple<int, int> Score = new Tuple<int, int>(MainArea.Pushes, MainArea.Moves);
+            string Key = OrigLevel.ToString();
+            if (!Program.Settings.Highscores.ContainsKey(Key))
+                Program.Settings.Highscores[Key] = new Dictionary<string, Highscore>();
+            
+            if (Program.Settings.Highscores[Key].ContainsKey(Program.Settings.PlayerName))
+                Program.Settings.Highscores[Key][Program.Settings.PlayerName].UpdateWith(Score);
+            else
+                Program.Settings.Highscores[Key][Program.Settings.PlayerName] = new Highscore(Score);
+
             LevelList.ComeOn_RefreshItems();
             UpdateStatusBar();
         }
@@ -1033,7 +1062,7 @@ namespace ExpertSokoban
                     return;
                 }
                 if (LevelList.Items[i] is SokobanLevel &&
-                    (!MustBeUnsolved || !Program.Settings.SolvedLevels.ContainsKey(LevelList.Items[i].ToString())))
+                    (!MustBeUnsolved || !Program.Settings.IsSolved(LevelList.Items[i].ToString())))
                 {
                     // We've found a matching level
                     TakeLevel(i);
@@ -1068,7 +1097,7 @@ namespace ExpertSokoban
                     return;
                 }
                 if (LevelList.Items[i] is SokobanLevel &&
-                    (!MustBeUnsolved || !Program.Settings.SolvedLevels.ContainsKey(LevelList.Items[i].ToString())))
+                    (!MustBeUnsolved || !Program.Settings.IsSolved(LevelList.Items[i].ToString())))
                 {
                     // We've found a matching level
                     TakeLevel(i);
@@ -1092,6 +1121,18 @@ namespace ExpertSokoban
         {
             ViewStatusBar.Checked = !ViewStatusBar.Checked;
             StatusBar.Visible = Program.Settings.DisplayStatusBar = ViewStatusBar.Checked;
+        }
+
+        private void LevelChangePlayer_Click(object sender, EventArgs e)
+        {
+            string Result = InputBox.GetLine("Please choose a name which will be used to identify " +
+                "you in highscore tables.", Program.Settings.PlayerName, "Expert Sokoban");
+            if (Result != null)
+            {
+                Program.Settings.PlayerName = Result;
+                LevelList.ComeOn_RefreshItems();
+                UpdateTitlebar();
+            }
         }
     }
 }

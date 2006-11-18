@@ -76,23 +76,33 @@ namespace ExpertSokoban
             {
                 if (Items[e.Index] is SokobanLevel)
                 {
-                    bool IsSolved = Program.Settings.SolvedLevels.ContainsKey(Items[e.Index].ToString());
+                    string Key = Items[e.Index].ToString();
+                    bool IsSolved = Program.Settings.IsSolved(Key);
+                    string SolvedMessage = IsSolved
+                        ?   "Solved (" + 
+                            Program.Settings.Highscores[Key][Program.Settings.PlayerName].BestPushScore.E1 + "/" +
+                            Program.Settings.Highscores[Key][Program.Settings.PlayerName].BestPushScore.E2 + ")"
+                        :   "";
                     bool IsPlaying = (e.Index == FPlayingEditingIndex && FState == LevelListBoxState.Playing);
                     bool IsEditing = (e.Index == FPlayingEditingIndex && FState == LevelListBoxState.Editing);
 
                     int UseHeight = e.Bounds.Height-10;
-                    SizeF MessageSize = new SizeF(0, 0);
-                    if (IsSolved || IsPlaying || IsEditing)
+                    SizeF MessageSize1 = new SizeF(0, 0);
+                    SizeF MessageSize2 = new SizeF(0, 0);
+                    if (IsPlaying || IsEditing)
                     {
-                        MessageSize = e.Graphics.MeasureString(
-                            IsEditing ? "Currently editing" : IsPlaying ? "Currently playing" : "Solved",
-                            Font
-                        );
-                        MessageSize.Height += 5;
+                        MessageSize1 = e.Graphics.MeasureString(
+                            IsEditing ? "Currently editing" : "Currently playing", Font);
+                        MessageSize1.Height += 5;
+                    }
+                    if (IsSolved)
+                    {
+                        MessageSize2 = e.Graphics.MeasureString(SolvedMessage, Font);
+                        MessageSize2.Height += 5;
                     }
 
                     Image Rendering = GetRendering((SokobanLevel)Items[e.Index], e.Bounds.Width-10,
-                        e.Bounds.Height-10-(int)MessageSize.Height);
+                        e.Bounds.Height-10-(int)MessageSize1.Height-(int)MessageSize2.Height);
                     e.DrawBackground();
                     e.DrawFocusRectangle();
                     if ((e.State & DrawItemState.Selected) != DrawItemState.Selected)
@@ -106,27 +116,43 @@ namespace ExpertSokoban
                             ),
                             e.Bounds
                         );
-                    if (IsPlaying || IsEditing || IsSolved)
+                    if (IsPlaying || IsEditing)
                     {
                         e.Graphics.FillRectangle(
                             new LinearGradientBrush(
-                                new RectangleF(e.Bounds.Left+5, e.Bounds.Top+4, e.Bounds.Width-10, MessageSize.Height-3),
-                                IsEditing ? EditingColor : IsPlaying ? PlayingColor : SolvedColor,
+                                new RectangleF(e.Bounds.Left+5, e.Bounds.Top+4, e.Bounds.Width-10, MessageSize1.Height-3),
+                                IsEditing ? EditingColor : PlayingColor,
                                 Color.White,
                                 90,
                                 false
                             ),
-                            new RectangleF(e.Bounds.Left+5, e.Bounds.Top+5, e.Bounds.Width-10, MessageSize.Height-5)
+                            new RectangleF(e.Bounds.Left+5, e.Bounds.Top+5, e.Bounds.Width-10, MessageSize1.Height-5)
                         );
                         e.Graphics.DrawString(
-                            IsEditing ? "Currently editing" : IsPlaying ? "Currently playing" : "Solved",
+                            IsEditing ? "Currently editing" : "Currently playing",
                             Font,
                             new SolidBrush(Color.Black),
-                            e.Bounds.Left + e.Bounds.Width/2 - MessageSize.Width/2,
+                            e.Bounds.Left + e.Bounds.Width/2 - MessageSize1.Width/2,
                             e.Bounds.Top + 5
                         );
                     }
-                    e.Graphics.DrawImage(Rendering, e.Bounds.Left + 5, e.Bounds.Top + 5 + MessageSize.Height);
+                    if (IsSolved)
+                    {
+                        e.Graphics.FillRectangle(
+                            new LinearGradientBrush(
+                                new RectangleF(e.Bounds.Left+5, e.Bounds.Top+4+MessageSize1.Height,
+                                    e.Bounds.Width-10, MessageSize2.Height-3),
+                                SolvedColor, Color.White, 90, false),
+                            new RectangleF(e.Bounds.Left+5, e.Bounds.Top+5+MessageSize1.Height,
+                                e.Bounds.Width-10, MessageSize2.Height-5)
+                        );
+                        e.Graphics.DrawString(SolvedMessage, Font, new SolidBrush(Color.Black),
+                            e.Bounds.Left + e.Bounds.Width/2 - MessageSize2.Width/2,
+                            e.Bounds.Top + 5 + MessageSize1.Height
+                        );
+                    }
+                    e.Graphics.DrawImage(Rendering, e.Bounds.Left + 5,
+                        e.Bounds.Top + 5 + MessageSize1.Height + MessageSize2.Height);
                 }
                 else if (Items[e.Index] is string)
                 {
@@ -168,11 +194,13 @@ namespace ExpertSokoban
                 {
                     SokobanLevel Level = (SokobanLevel)Items[e.Index];
                     e.ItemHeight = (ClientSize.Width-10)*Level.Height/Level.Width + 10;
+
                     if (e.Index == FPlayingEditingIndex && FState == LevelListBoxState.Playing)
                         e.ItemHeight += (int)e.Graphics.MeasureString("Currently playing", Font).Height + 5;
                     else if (e.Index == FPlayingEditingIndex && FState == LevelListBoxState.Editing)
                         e.ItemHeight += (int)e.Graphics.MeasureString("Currently editing", Font).Height + 5;
-                    else if (Program.Settings.SolvedLevels.ContainsKey(Items[e.Index].ToString()))
+                    
+                    if (Program.Settings.IsSolved(Items[e.Index].ToString()))
                         e.ItemHeight += (int)e.Graphics.MeasureString("Solved", Font).Height + 5;
                 }
                 else if (Items[e.Index] is string)
@@ -249,7 +277,7 @@ namespace ExpertSokoban
                     {
                         if (FoundValidLevel == null)
                             FoundValidLevel = Items.Count-1;
-                        if (FoundUnsolvedLevel == null && !Program.Settings.SolvedLevels.ContainsKey(NewLevel.ToString()))
+                        if (FoundUnsolvedLevel == null && !Program.Settings.IsSolved(NewLevel.ToString()))
                             FoundUnsolvedLevel = Items.Count-1;
                     }
                 }
