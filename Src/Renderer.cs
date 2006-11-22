@@ -392,5 +392,16 @@ namespace ExpertSokoban
             return Result;
         }
 
+        public GraphicsPath SelectorPath(Point Cell)
+        {
+            GraphicsPath Result = new GraphicsPath();
+            Rectangle Rect = CellRect(Cell);
+            Result.AddArc(Rect.Left-CellWidth/10, Rect.Top-CellWidth/10, CellWidth/5, CellHeight/5, 180, 90);
+            Result.AddArc(Rect.Right-CellWidth/10, Rect.Top-CellWidth/10, CellWidth/5, CellHeight/5, 270, 90);
+            Result.AddArc(Rect.Right-CellWidth/10, Rect.Bottom-CellWidth/10, CellWidth/5, CellHeight/5, 0, 90);
+            Result.AddArc(Rect.Left-CellWidth/10, Rect.Bottom-CellWidth/10, CellWidth/5, CellHeight/5, 90, 90);
+            Result.CloseAllFigures();
+            return Result;
+        }
     }
 }

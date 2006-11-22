@@ -345,17 +345,6 @@ namespace ExpertSokoban
         }
 
         /// <summary>
-        /// Invoked if the user presses a key while the level list has focus.
-        /// Currently handles only the Enter key, which in turn invokes
-        /// LevelList_DoubleClick().
-        /// </summary>
-        private void LevelList_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (e.KeyChar == '\r')
-                LevelList_DoubleClick(sender, new EventArgs());
-        }
-
-        /// <summary>
         /// Invoked by "View => Display level list" or the LevelListClosePanel.
         /// Shows or hides the level list.
         /// </summary>
@@ -676,6 +665,8 @@ namespace ExpertSokoban
                 LevelList.ComeOn_RefreshItems();
                 LevelList.Focus();
             }
+            else
+                MainArea.Focus();
             if (LevelList.SelectedIndex < 0 && LevelList.Items.Count > 0)
                 LevelList.SelectedIndex = 0;
 
@@ -949,20 +940,6 @@ namespace ExpertSokoban
         }
 
         /// <summary>
-        /// Invoked by a keypress anywhere in the mainform. If the key pressed is
-        /// Escape, and the main area has a selected piece, deselects it.
-        /// </summary>
-        private void Mainform_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Escape)
-            {
-                if (MainArea.State == MainAreaState.Push)
-                    MainArea.Deselect();
-                e.Handled = true;
-            }
-        }
-
-        /// <summary>
         /// Invoked whenever the user solves the level. Remembers the solved level and
         /// tells the level list to update itself.
         /// </summary>
@@ -1073,12 +1050,20 @@ namespace ExpertSokoban
                 LevelNext_Click(LevelNextUnsolved, null);
         }
 
+        /// <summary>
+        /// Invoked by "View => Display status bar". Toggles the visibility of the
+        /// status bar at the bottom of the window.
+        /// </summary>
         private void ViewStatusBar_Click(object sender, EventArgs e)
         {
             ViewStatusBar.Checked = !ViewStatusBar.Checked;
             StatusBar.Visible = ExpSokSettings.DisplayStatusBar = ViewStatusBar.Checked;
         }
 
+        /// <summary>
+        /// Invoked by "Level => Change player name". Allows the user to change the
+        /// name used to identify them in highscore lists.
+        /// </summary>
         private void LevelChangePlayer_Click(object sender, EventArgs e)
         {
             string Result = InputBox.GetLine("Please choose a name which will be used to identify " +
@@ -1089,6 +1074,33 @@ namespace ExpertSokoban
                 LevelList.ComeOn_RefreshItems();
                 UpdateControls();
             }
+        }
+
+        /// <summary>
+        /// Invoked by the user pressing Enter while the MainArea is in Solved state.
+        /// This will open the next unsolved level.
+        /// </summary>
+        private void MainArea_EnterPressedWhileSolved(object sender, EventArgs e)
+        {
+            LevelNext_Click(LevelNextUnsolved, null);
+        }
+
+        /// <summary>
+        /// Invoked if the user presses a key while the level list has focus.
+        /// Currently handles the following keys:
+        /// - Enter: opens the currently-selected level or edits the
+        ///   currently-selected comment (equivalent to mouse double-click).
+        /// - Escape: hides the level list.
+        /// </summary>
+        private void LevelList_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Shift || e.Control || e.Alt)
+                return;
+
+            if (e.KeyCode == Keys.Enter)
+                LevelList_DoubleClick(sender, new EventArgs());
+            else if (e.KeyCode == Keys.Escape)
+                LevelListVisible(false);
         }
     }
 }

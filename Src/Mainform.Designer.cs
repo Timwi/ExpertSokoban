@@ -70,7 +70,10 @@ namespace ExpertSokoban
             this.LevelNext = new System.Windows.Forms.ToolStripMenuItem();
             this.LevelNextUnsolved = new System.Windows.Forms.ToolStripMenuItem();
             this.LevelSep3 = new System.Windows.Forms.ToolStripSeparator();
+            this.LevelChangePlayer = new System.Windows.Forms.ToolStripMenuItem();
+            this.LevelSep4 = new System.Windows.Forms.ToolStripSeparator();
             this.LevelExit = new System.Windows.Forms.ToolStripMenuItem();
+            this.LevelUnusedHotkeys = new System.Windows.Forms.ToolStripMenuItem();
             this.UnusedCTRLShortcuts = new System.Windows.Forms.ToolStripMenuItem();
             this.EditMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.EditCreateLevel = new System.Windows.Forms.ToolStripMenuItem();
@@ -126,9 +129,6 @@ namespace ExpertSokoban
             this.MainArea = new ExpertSokoban.MainArea();
             this.LevelListSplitter = new System.Windows.Forms.Splitter();
             this.BugWorkaroundTimer = new System.Windows.Forms.Timer(this.components);
-            this.LevelChangePlayer = new System.Windows.Forms.ToolStripMenuItem();
-            this.LevelSep4 = new System.Windows.Forms.ToolStripSeparator();
-            this.LevelUnusedHotkeys = new System.Windows.Forms.ToolStripMenuItem();
             this.LevelListPanel.SuspendLayout();
             this.EditToolStrip.SuspendLayout();
             this.LevelListToolStrip2.SuspendLayout();
@@ -170,7 +170,7 @@ namespace ExpertSokoban
             this.LevelList.Size = new System.Drawing.Size(152, 422);
             this.LevelList.TabIndex = 2;
             this.LevelList.DoubleClick += new System.EventHandler(this.LevelList_DoubleClick);
-            this.LevelList.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LevelList_KeyPress);
+            this.LevelList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.LevelList_KeyDown);
             // 
             // EditToolStrip
             // 
@@ -531,12 +531,32 @@ namespace ExpertSokoban
             this.LevelSep3.Name = "LevelSep3";
             this.LevelSep3.Size = new System.Drawing.Size(232, 6);
             // 
+            // LevelChangePlayer
+            // 
+            this.LevelChangePlayer.Name = "LevelChangePlayer";
+            this.LevelChangePlayer.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.H)));
+            this.LevelChangePlayer.Size = new System.Drawing.Size(235, 22);
+            this.LevelChangePlayer.Text = "&Change player name...";
+            this.LevelChangePlayer.Click += new System.EventHandler(this.LevelChangePlayer_Click);
+            // 
+            // LevelSep4
+            // 
+            this.LevelSep4.Name = "LevelSep4";
+            this.LevelSep4.Size = new System.Drawing.Size(232, 6);
+            // 
             // LevelExit
             // 
             this.LevelExit.Name = "LevelExit";
             this.LevelExit.Size = new System.Drawing.Size(235, 22);
             this.LevelExit.Text = "E&xit";
             this.LevelExit.Click += new System.EventHandler(this.LevelExit_Click);
+            // 
+            // LevelUnusedHotkeys
+            // 
+            this.LevelUnusedHotkeys.Name = "LevelUnusedHotkeys";
+            this.LevelUnusedHotkeys.Size = new System.Drawing.Size(235, 22);
+            this.LevelUnusedHotkeys.Text = "Unused hotkeys: abfghijklmqtwyz";
+            this.LevelUnusedHotkeys.Visible = false;
             // 
             // UnusedCTRLShortcuts
             // 
@@ -1003,11 +1023,13 @@ namespace ExpertSokoban
             this.MainArea.ShowEndPos = false;
             this.MainArea.Size = new System.Drawing.Size(658, 436);
             this.MainArea.TabIndex = 1;
+            this.MainArea.TabStop = true;
             this.MainArea.Tool = ExpertSokoban.MainAreaTool.Wall;
             this.MainArea.Click += new System.EventHandler(this.MainArea_Click);
             this.MainArea.LevelChanged += new System.EventHandler(this.MainArea_LevelChanged);
             this.MainArea.MoveMade += new System.EventHandler(this.MainArea_MoveMade);
             this.MainArea.LevelSolved += new System.EventHandler(this.MainArea_LevelSolved);
+            this.MainArea.EnterPressedWhileSolved += new System.EventHandler(this.MainArea_EnterPressedWhileSolved);
             // 
             // LevelListSplitter
             // 
@@ -1025,26 +1047,6 @@ namespace ExpertSokoban
             this.BugWorkaroundTimer.Enabled = true;
             this.BugWorkaroundTimer.Tick += new System.EventHandler(this.BugWorkaroundTimer_Tick);
             // 
-            // LevelChangePlayer
-            // 
-            this.LevelChangePlayer.Name = "LevelChangePlayer";
-            this.LevelChangePlayer.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.H)));
-            this.LevelChangePlayer.Size = new System.Drawing.Size(235, 22);
-            this.LevelChangePlayer.Text = "&Change player name...";
-            this.LevelChangePlayer.Click += new System.EventHandler(this.LevelChangePlayer_Click);
-            // 
-            // LevelSep4
-            // 
-            this.LevelSep4.Name = "LevelSep4";
-            this.LevelSep4.Size = new System.Drawing.Size(232, 6);
-            // 
-            // LevelUnusedHotkeys
-            // 
-            this.LevelUnusedHotkeys.Name = "LevelUnusedHotkeys";
-            this.LevelUnusedHotkeys.Size = new System.Drawing.Size(235, 22);
-            this.LevelUnusedHotkeys.Text = "Unused hotkeys: abfghijklmqtwyz";
-            this.LevelUnusedHotkeys.Visible = false;
-            // 
             // Mainform
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1060,7 +1062,6 @@ namespace ExpertSokoban
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Expert Sokoban";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Mainform_FormClosing);
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Mainform_KeyDown);
             this.LevelListPanel.ResumeLayout(false);
             this.LevelListPanel.PerformLayout();
             this.EditToolStrip.ResumeLayout(false);

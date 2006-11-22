@@ -5,6 +5,8 @@ using System.Text;
 using RT.Util;
 using RT.Util.Settings;
 
+using Score=RT.Util.Tuple<int /* pushes */, int /* moves */>;
+
 namespace ExpertSokoban
 {
     public static class ExpSokSettings
@@ -158,7 +160,7 @@ namespace ExpertSokoban
                 Highscores[Level] = new Dictionary<string, Highscore>();
             if (!Highscores[Level].ContainsKey(PlayerName))
                 Highscores[Level][PlayerName] = new Highscore();
-            Highscores[Level][PlayerName].UpdateWith(new Tuple<int, int>(Moves, Pushes));
+            Highscores[Level][PlayerName].UpdateWith(new Score(Moves, Pushes));
         }
 
         /// <summary>

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using RT.Util;
 
+using Score=RT.Util.Tuple<int /* pushes */, int /* moves */>;
+
 namespace ExpertSokoban
 {
     /// <summary>
@@ -14,24 +16,24 @@ namespace ExpertSokoban
         /// <summary>
         /// The player's best result, where "best" means "fewest pushes".
         /// </summary>
-        public Tuple<int /* pushes */, int /* moves */> BestPushScore = new Tuple<int,int>(int.MaxValue, int.MaxValue);
+        public Score BestPushScore = new Score(int.MaxValue, int.MaxValue);
 
         /// <summary>
         /// The player's best result, where "best" means "fewest pushes".
         /// </summary>
-        public Tuple<int /* pushes */, int /* moves */> BestMoveScore = new Tuple<int, int>(int.MaxValue, int.MaxValue);
+        public Score BestMoveScore = new Score(int.MaxValue, int.MaxValue);
 
         /// <summary>
         /// The player's best result, where "best" means "fewest sum of moves + pushes".
         /// </summary>
-        public Tuple<int /* pushes */, int /* moves */> BestSumScore = new Tuple<int, int>(int.MaxValue, int.MaxValue);
+        public Score BestSumScore = new Score(int.MaxValue, int.MaxValue);
 
         /// <summary>
         /// If Score is a better score in any of the three respects, updates
         /// the relevant value with Score.
         /// </summary>
         /// <param name="Score">The Score to update the Highscore with.</param>
-        public void UpdateWith(Tuple<int, int> Score)
+        public void UpdateWith(Score Score)
         {
             if (Score.E1 < BestPushScore.E1 ||
                 (Score.E1 == BestPushScore.E1 && Score.E2 < BestPushScore.E2))

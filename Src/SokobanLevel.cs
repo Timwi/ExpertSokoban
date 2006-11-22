@@ -139,7 +139,7 @@ namespace ExpertSokoban
         }
         public SokobanCell Cell(int x, int y)
         {
-            if (x < 0 || y < 0 || x >= Width || y >= Height)
+            if (x < 0 || y < 0 || x >= FWidth || y >= FHeight)
                 return SokobanCell.Blank;
             return FLevel[y*FWidth + x];
         }
@@ -152,8 +152,18 @@ namespace ExpertSokoban
             if (Index < 0 || Index > FLevel.Length) return false;
             return FLevel[Index] == SokobanCell.Piece || FLevel[Index] == SokobanCell.PieceOnTarget;
         }
-        public bool IsPiece(Point Pos) { return IsPiece(Pos.Y*FWidth + Pos.X); }
-        public bool IsPiece(int x, int y) { return IsPiece(y*FWidth + x); }
+        public bool IsPiece(Point Pos)
+        {
+            if (Pos.X < 0 || Pos.X >= FWidth || Pos.Y < 0 || Pos.Y >= FHeight)
+                return false;
+            return IsPiece(Pos.Y*FWidth + Pos.X);
+        }
+        public bool IsPiece(int x, int y)
+        {
+            if (x < 0 || x >= FWidth || y < 0 || y >= FHeight)
+                return false;
+            return IsPiece(y*FWidth + x);
+        }
         private bool IsFree(int Index)
         {
             return (Index >= 0 && Index < FWidth*FHeight)
