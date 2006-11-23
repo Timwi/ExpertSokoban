@@ -791,10 +791,10 @@ namespace ExpertSokoban
             OrigKeyDown = null;
             CursorPos = null;
             MainArea_MouseMove(sender, e);
-            Invalidate();
-
             if (FState == MainAreaState.Push)
                 OrigMouseDown = Renderer.CellFromPixel(e.Location);
+            Invalidate();
+            Focus();
         }
 
         /// <summary>
