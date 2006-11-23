@@ -1045,6 +1045,7 @@ namespace ExpertSokoban
             Renderer = new Renderer(FLevel, ClientSize);
             FState = State;
             SelectedPiece = null;
+            CursorPos = null;
             FMoves = 0;
             FPushes = 0;
             FUndo = new Stack<UndoItem>();
