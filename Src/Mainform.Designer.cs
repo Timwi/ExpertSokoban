@@ -32,6 +32,19 @@ namespace ExpertSokoban
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Mainform));
             this.LevelListPanel = new System.Windows.Forms.Panel();
             this.LevelList = new ExpertSokoban.LevelListBox();
+            this.LevelContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.ContextPlay = new System.Windows.Forms.ToolStripMenuItem();
+            this.ContextEdit = new System.Windows.Forms.ToolStripMenuItem();
+            this.ContextSep1 = new System.Windows.Forms.ToolStripSeparator();
+            this.ContextNewLevel = new System.Windows.Forms.ToolStripMenuItem();
+            this.ContextNewComment = new System.Windows.Forms.ToolStripMenuItem();
+            this.ContextSep2 = new System.Windows.Forms.ToolStripSeparator();
+            this.ContextCut = new System.Windows.Forms.ToolStripMenuItem();
+            this.ContextCutItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ContextPaste = new System.Windows.Forms.ToolStripMenuItem();
+            this.ContextDelete = new System.Windows.Forms.ToolStripMenuItem();
+            this.ContextSep3 = new System.Windows.Forms.ToolStripSeparator();
+            this.ContextHide = new System.Windows.Forms.ToolStripMenuItem();
             this.EditToolStrip = new System.Windows.Forms.ToolStrip();
             this.EditToolWall = new System.Windows.Forms.ToolStripButton();
             this.EditToolPiece = new System.Windows.Forms.ToolStripButton();
@@ -130,6 +143,7 @@ namespace ExpertSokoban
             this.LevelListSplitter = new System.Windows.Forms.Splitter();
             this.BugWorkaroundTimer = new System.Windows.Forms.Timer(this.components);
             this.LevelListPanel.SuspendLayout();
+            this.LevelContextMenu.SuspendLayout();
             this.EditToolStrip.SuspendLayout();
             this.LevelListToolStrip2.SuspendLayout();
             this.LevelListToolStrip1.SuspendLayout();
@@ -159,6 +173,7 @@ namespace ExpertSokoban
             // 
             // LevelList
             // 
+            this.LevelList.ContextMenuStrip = this.LevelContextMenu;
             this.LevelList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.LevelList.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
             this.LevelList.EditingIndex = null;
@@ -170,7 +185,113 @@ namespace ExpertSokoban
             this.LevelList.Size = new System.Drawing.Size(152, 422);
             this.LevelList.TabIndex = 2;
             this.LevelList.DoubleClick += new System.EventHandler(this.LevelList_DoubleClick);
+            this.LevelList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.LevelList_MouseDown);
             this.LevelList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.LevelList_KeyDown);
+            // 
+            // LevelContextMenu
+            // 
+            this.LevelContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ContextPlay,
+            this.ContextEdit,
+            this.ContextSep1,
+            this.ContextNewLevel,
+            this.ContextNewComment,
+            this.ContextSep2,
+            this.ContextCut,
+            this.ContextCutItem,
+            this.ContextPaste,
+            this.ContextDelete,
+            this.ContextSep3,
+            this.ContextHide});
+            this.LevelContextMenu.Name = "LevelContextMenu";
+            this.LevelContextMenu.Size = new System.Drawing.Size(228, 220);
+            // 
+            // ContextPlay
+            // 
+            this.ContextPlay.Name = "ContextPlay";
+            this.ContextPlay.ShortcutKeyDisplayString = "Enter";
+            this.ContextPlay.Size = new System.Drawing.Size(227, 22);
+            this.ContextPlay.Text = "P&lay this level";
+            this.ContextPlay.Click += new System.EventHandler(this.LevelList_DoubleClick);
+            // 
+            // ContextEdit
+            // 
+            this.ContextEdit.Name = "ContextEdit";
+            this.ContextEdit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
+            this.ContextEdit.Size = new System.Drawing.Size(227, 22);
+            this.ContextEdit.Text = "&Edit this level";
+            this.ContextEdit.Click += new System.EventHandler(this.EditEdit_Click);
+            // 
+            // ContextSep1
+            // 
+            this.ContextSep1.Name = "ContextSep1";
+            this.ContextSep1.Size = new System.Drawing.Size(224, 6);
+            // 
+            // ContextNewLevel
+            // 
+            this.ContextNewLevel.Name = "ContextNewLevel";
+            this.ContextNewLevel.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
+            this.ContextNewLevel.Size = new System.Drawing.Size(227, 22);
+            this.ContextNewLevel.Text = "C&reate a new level here";
+            this.ContextNewLevel.Click += new System.EventHandler(this.EditCreateLevel_Click);
+            // 
+            // ContextNewComment
+            // 
+            this.ContextNewComment.Name = "ContextNewComment";
+            this.ContextNewComment.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.M)));
+            this.ContextNewComment.Size = new System.Drawing.Size(227, 22);
+            this.ContextNewComment.Text = "&Insert a comment here";
+            this.ContextNewComment.Click += new System.EventHandler(this.EditAddComment_Click);
+            // 
+            // ContextSep2
+            // 
+            this.ContextSep2.Name = "ContextSep2";
+            this.ContextSep2.Size = new System.Drawing.Size(224, 6);
+            // 
+            // ContextCut
+            // 
+            this.ContextCut.Name = "ContextCut";
+            this.ContextCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
+            this.ContextCut.Size = new System.Drawing.Size(227, 22);
+            this.ContextCut.Text = "C&ut";
+            this.ContextCut.Click += new System.EventHandler(this.EditCut_Click);
+            // 
+            // ContextCutItem
+            // 
+            this.ContextCutItem.Name = "ContextCutItem";
+            this.ContextCutItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
+            this.ContextCutItem.Size = new System.Drawing.Size(227, 22);
+            this.ContextCutItem.Text = "&Copy";
+            this.ContextCutItem.Click += new System.EventHandler(this.EditCopy_Click);
+            // 
+            // ContextPaste
+            // 
+            this.ContextPaste.Name = "ContextPaste";
+            this.ContextPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
+            this.ContextPaste.Size = new System.Drawing.Size(227, 22);
+            this.ContextPaste.Text = "&Paste";
+            this.ContextPaste.Click += new System.EventHandler(this.EditPaste_Click);
+            // 
+            // ContextDelete
+            // 
+            this.ContextDelete.Name = "ContextDelete";
+            this.ContextDelete.ShortcutKeys = System.Windows.Forms.Keys.Delete;
+            this.ContextDelete.Size = new System.Drawing.Size(227, 22);
+            this.ContextDelete.Text = "&Delete";
+            this.ContextDelete.Click += new System.EventHandler(this.EditDelete_Click);
+            // 
+            // ContextSep3
+            // 
+            this.ContextSep3.Name = "ContextSep3";
+            this.ContextSep3.Size = new System.Drawing.Size(224, 6);
+            // 
+            // ContextHide
+            // 
+            this.ContextHide.Name = "ContextHide";
+            this.ContextHide.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
+            this.ContextHide.Size = new System.Drawing.Size(227, 22);
+            this.ContextHide.Text = "&Hide level list";
+            this.ContextHide.Click += new System.EventHandler(this.ViewLevelList_Click);
             // 
             // EditToolStrip
             // 
@@ -920,14 +1041,14 @@ namespace ExpertSokoban
             // HelpHelp
             // 
             this.HelpHelp.Name = "HelpHelp";
-            this.HelpHelp.Size = new System.Drawing.Size(152, 22);
+            this.HelpHelp.Size = new System.Drawing.Size(140, 22);
             this.HelpHelp.Text = "&Online Help...";
             this.HelpHelp.Click += new System.EventHandler(this.HelpHelp_Click);
             // 
             // HelpAbout
             // 
             this.HelpAbout.Name = "HelpAbout";
-            this.HelpAbout.Size = new System.Drawing.Size(152, 22);
+            this.HelpAbout.Size = new System.Drawing.Size(140, 22);
             this.HelpAbout.Text = "&About";
             this.HelpAbout.Click += new System.EventHandler(this.HelpAbout_Click);
             // 
@@ -1064,6 +1185,7 @@ namespace ExpertSokoban
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Mainform_FormClosing);
             this.LevelListPanel.ResumeLayout(false);
             this.LevelListPanel.PerformLayout();
+            this.LevelContextMenu.ResumeLayout(false);
             this.EditToolStrip.ResumeLayout(false);
             this.EditToolStrip.PerformLayout();
             this.LevelListToolStrip2.ResumeLayout(false);
@@ -1186,6 +1308,19 @@ namespace ExpertSokoban
         private System.Windows.Forms.ToolStripMenuItem LevelChangePlayer;
         private System.Windows.Forms.ToolStripSeparator LevelSep4;
         private System.Windows.Forms.ToolStripMenuItem LevelUnusedHotkeys;
+        private System.Windows.Forms.ContextMenuStrip LevelContextMenu;
+        private System.Windows.Forms.ToolStripMenuItem ContextPlay;
+        private System.Windows.Forms.ToolStripMenuItem ContextEdit;
+        private System.Windows.Forms.ToolStripSeparator ContextSep1;
+        private System.Windows.Forms.ToolStripMenuItem ContextNewLevel;
+        private System.Windows.Forms.ToolStripMenuItem ContextNewComment;
+        private System.Windows.Forms.ToolStripSeparator ContextSep2;
+        private System.Windows.Forms.ToolStripMenuItem ContextCut;
+        private System.Windows.Forms.ToolStripMenuItem ContextCutItem;
+        private System.Windows.Forms.ToolStripMenuItem ContextPaste;
+        private System.Windows.Forms.ToolStripMenuItem ContextDelete;
+        private System.Windows.Forms.ToolStripSeparator ContextSep3;
+        private System.Windows.Forms.ToolStripMenuItem ContextHide;
     }
 }
 

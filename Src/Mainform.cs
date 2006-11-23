@@ -1102,5 +1102,14 @@ namespace ExpertSokoban
             else if (e.KeyCode == Keys.Escape)
                 LevelListVisible(false);
         }
+
+        private void LevelList_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                LevelList.SelectedIndex = LevelList.IndexFromPoint(e.Location);
+                LevelList.Focus();
+            }
+        }
     }
 }
