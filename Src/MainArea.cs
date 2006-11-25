@@ -446,6 +446,11 @@ namespace ExpertSokoban
         private Stack<UndoItem> FUndo = new Stack<UndoItem>();
 
         /// <summary>
+        /// Remembers the history of undone actions to allow for redo.
+        /// </summary>
+        private Stack<UndoItem> FRedo = new Stack<UndoItem>();
+
+        /// <summary>
         /// The currently-displayed push path, encoded as a sequence of cell co-ordinates.
         /// </summary>
         private Point[] PushCellSequence;
@@ -1020,6 +1025,7 @@ namespace ExpertSokoban
                 else
                     FUndo.Push(new UndoPushItem(OrigSokPos, FLevel.SokobanPos, OrigPushPos.Value,
                         LastPushPos.Value, MovesMade, PushesMade));
+                FRedo = new Stack<UndoItem>();
 
                 // Switch back into move mode
                 FState = MainAreaState.Move;
@@ -1049,6 +1055,7 @@ namespace ExpertSokoban
             FMoves = 0;
             FPushes = 0;
             FUndo = new Stack<UndoItem>();
+            FRedo = new Stack<UndoItem>();
             ReinitMoveFinder();
             Refresh();
         }
@@ -1084,6 +1091,7 @@ namespace ExpertSokoban
                 return;
 
             UndoItem Item = FUndo.Pop();
+            FRedo.Push(Item);
 
             if (Item is UndoMoveItem)
             {
@@ -1097,6 +1105,41 @@ namespace ExpertSokoban
                 FLevel.MovePiece(ItemPush.MovedPieceTo, ItemPush.MovedPieceFrom);
                 FMoves -= ItemPush.Moves;
                 FPushes -= ItemPush.Pushes;
+            }
+            else
+                return;
+
+            SelectedPiece = null;
+            FState = MainAreaState.Move;
+            ReinitMoveFinder();
+            Refresh();
+        }
+
+        /// <summary>
+        /// Performs the Redo operation, i.e. redoes the last undone move/push. If there
+        /// are no moves/pushes to redo, nothing happens.
+        /// </summary>
+        public void Redo()
+        {
+            if (FState == MainAreaState.Editing || FState == MainAreaState.Solved ||
+                FRedo.Count == 0 || FLevel == null)
+                return;
+
+            UndoItem Item = FRedo.Pop();
+            FUndo.Push(Item);
+
+            if (Item is UndoMoveItem)
+            {
+                FLevel.SetSokobanPos((Item as UndoMoveItem).MovedTo);
+                FMoves += (Item as UndoMoveItem).Moves;
+            }
+            else if (Item is UndoPushItem)
+            {
+                UndoPushItem ItemPush = Item as UndoPushItem;
+                FLevel.SetSokobanPos(ItemPush.MovedSokobanTo);
+                FLevel.MovePiece(ItemPush.MovedPieceFrom, ItemPush.MovedPieceTo);
+                FMoves += ItemPush.Moves;
+                FPushes += ItemPush.Pushes;
             }
             else
                 return;

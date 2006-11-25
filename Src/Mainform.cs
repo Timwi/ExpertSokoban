@@ -363,6 +363,15 @@ namespace ExpertSokoban
         }
 
         /// <summary>
+        /// Invoked by "Level => Redo move". Redoes the last undone move.
+        /// </summary>
+        private void LevelRedo_Click(object sender, EventArgs e)
+        {
+            MainArea.Redo();
+            UpdateControls();
+        }
+
+        /// <summary>
         /// Invoked by "Level => Retry level". Resets the level to its original state.
         /// Asks for confirmation first if the current level has been played or edited.
         /// </summary>
@@ -1103,6 +1112,11 @@ namespace ExpertSokoban
                 LevelListVisible(false);
         }
 
+        /// <summary>
+        /// Invoked by a mouse click in the level list. Handles the case where the user
+        /// presses the right mouse button; we want to select the clicked-on item before
+        /// showing the context menu.
+        /// </summary>
         private void LevelList_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
@@ -1110,6 +1124,57 @@ namespace ExpertSokoban
                 LevelList.SelectedIndex = LevelList.IndexFromPoint(e.Location);
                 LevelList.Focus();
             }
+        }
+
+        /// <summary>
+        /// Invoked by "Help => Keyboard shortcuts". Displays a message box outlining
+        /// the keyboard shortcuts that are not directly documented in the menus.
+        /// </summary>
+        private void HelpKeyboard_Click(object sender, EventArgs e)
+        {
+            // Do not add too much to this box. The way it is now, it fits nicely and
+            // neatly on the screen at a resolution of 800x600. We wouldn't want it to
+            // become too large for people with low resolutions. In particular, don't
+            // add even more redundant documentation for shortcuts that are already
+            // displayed in the menus.
+
+            DlgMessage.Show(
+                "During the game, the following keyboard commands can be used to control the Sokoban:\n" +
+                "\n" +
+                "Arrow keys: Moves the selection cursor a cell at a time.\n" +
+                "Shift+Arrow keys: If a piece is selected, selects a target that lies in the specified " +
+                "direction; otherwise, selects a piece that lies in the specified direction.\n" +
+                "Enter: Selects a piece for pushing, or executes a push sequence if a valid one is selected.\n" +
+                "Space: Selects a potential end-position for the Sokoban. You will need to press this " +
+                "on a cell adjacent to the one where you want to push the piece to. Then select the " +
+                "destination cell for the piece and press Enter.\n" +
+                "Escape: If a piece is selected, cancels the selection.\n" +
+                "\n" +
+                "If the level list is visible and has focus, the following keyboard commands apply:\n" +
+                "\n" +
+                "Tab key: Switches keyboard focus between the level list and the main area.\n" +
+                "Enter: If a level is selected, opens the level for playing. " +
+                "If the selected item is a comment, edits it.\n" +
+                "Escape: Hides the level list.\n" +
+                "\n" +
+                "In the level editor, the following keyboard commands are available:\n" +
+                "\n" +
+                "Arrow keys: Moves the selection cursor a cell at a time.\n" +
+                "Enter or Space: Applies the currently-selected tool.\n" +
+                "\n" +
+                "The keyboard shortcuts for all other commands are displayed in the menus. Here is an " +
+                "incomplete summary:\n" +
+                "\n" +
+                "Ctrl+J: Allows you to change your player name that is used to identify you in high score lists.\n" +
+                "Ctrl+L: Shows or hides the level list.\n" +
+                "Ctrl+E: Opens the currently selected level for editing.\n" +
+                "Ctrl+W, Ctrl+P, Ctrl+T, Ctrl+K: During editing, selects the Wall tool, Piece tool, " +
+                "Target tool or Sokoban tool.\n" +
+                "Ctrl+Enter: During editing, saves your edits to the level.",
+
+                "Expert Sokoban Keyboard Shortcuts",
+                DlgType.Info
+            );
         }
     }
 }
