@@ -7,24 +7,50 @@ using System.Drawing;
 
 namespace ExpertSokoban
 {
+    /// <summary>
+    /// Given a SokobanLevel and a selected piece, finds out (using Dijsktra's
+    /// Algorithm) what empty cells the piece can be pushed to, and for each such
+    /// cell, the optimal path (where "optimal" means "least number of pushes").
+    /// </summary>
     public class PushFinder : Virtual2DArray<bool>
     {
-        // FPushLength and FMoveLength are layed out like this:
-        // element #0 = virtual start node
-        // element #4*(y*sizex+x)+1 = node representing piece at (x,y) with Sokoban above
-        //                       +2 = on the left
-        //                       +3 = on the right
-        //                       +4 = below
-        // The value "0" means "infinity" (so we don't need to initialise the arrays).
-        // Values above zero mean "one less than this".
+        /// <summary>
+        /// Stores the number of pushes required to push the piece to a specific
+        /// destination cell with the Sokoban ending up on a specific cell adjacent
+        /// to the destination cell of the piece. The array is layed out like this:
+        /// element #0 = virtual start node;
+        /// element #4*(y*sizex+x)+1 = node representing piece at (x,y) with Sokoban above;
+        ///                       +2 = with Sokoban on the left;
+        ///                       +3 = with Sokoban on the right;
+        ///                       +4 = with Sokoban below.
+        /// The value "0" means "infinity" (so we don't need to initialise the arrays).
+        /// Values above zero mean "one less than this".
+        /// </summary>
         private int[] FPushLength;
+
+        /// <summary>
+        /// Stores the number of moves required to push the piece to a specific
+        /// destination cell with the Sokoban ending up on a specific cell adjacent
+        /// to the destination cell of the piece. The array is layed out as explained
+        /// in the documentation for FPushLength.
+        /// </summary>
         private int[] FMoveLength;
 
-        // Maps from any node to the node that comes before it in any path
+        /// <summary>
+        /// For each node, stores the predecessor node, which is the node that "comes
+        /// before it" in the path leading up to that node. A complete path can be
+        /// extracted by following the precessor from the desired destination node to
+        /// the source node (node #0).
+        /// </summary>
         private int[] FPredecessor;
 
-        // For node a, path[a][b] is the sequence of moves to go from
-        //  a = 4*(y*Width+x)+d to 4*(y*Width+x)+b.
+        /// <summary>
+        /// Given a node (first index), which represents both a position for the piece
+        /// and for the Sokoban, and given a direction from the piece (second index,
+        /// values are 1 to 4), stores the move path necessary to get from the former
+        /// node to the one where the piece is in the same place, but the Sokoban is in
+        /// the cell that is adjacent to the piece in the specified direction.
+        /// </summary>
         private Point[][][] FPath;
 
         #region SpecialHeap class
@@ -139,24 +165,43 @@ namespace ExpertSokoban
         };
         #endregion
 
-        // This is the MoveFinder passed in the constructor, which is for the initial
-        // level situation. We need it to construct the beginning of the path in Path().
+        /// <summary>
+        /// Remembers the MoveFinder passed in the constructor, which is for the initial
+        /// level situation. It is required in order to construct the beginning of the
+        /// path in Path().
+        /// </summary>
         private MoveFinder FMoveFinder;
 
-        // The actual level we're working with. While Dijkstra's algorithm is running,
-        // the level will be modified temporarily (we might want to run a MoveFinder
-        // on a modified version of the level), but it will be returned to its original
-        // state before the constructor returns.
+        /// <summary>
+        /// The actual level we're working with. While Dijkstra's algorithm is running,
+        /// the level will be modified temporarily (we might want to run a MoveFinder
+        /// on a modified version of the level), but it will be returned to its original
+        /// state before the constructor returns.
+        /// </summary>
         private SokobanLevel FLevel;
 
+        /// <summary>
+        /// (read-only) Returns the width of the level.
+        /// </summary>
         public int Width { get { return FLevel.Width; } }
+
+        /// <summary>
+        /// (read-only) Returns the height of the level.
+        /// </summary>
         public int Height { get { return FLevel.Height; } }
 
-        public PushFinder(SokobanLevel Level, Point Sel, MoveFinder MoveFinder)
+        /// <summary>
+        /// Main constructor. Runs the push finder.
+        /// </summary>
+        /// <param name="Level">The Sokoban level under consideration.</param>
+        /// <param name="SelectedPiece">The co-ordinates of the currently selected piece
+        /// (which is the source node for our algorithm).</param>
+        /// <param name="MoveFinder">The MoveFinder for the initial level situation.</param>
+        public PushFinder(SokobanLevel Level, Point SelectedPiece, MoveFinder MoveFinder)
         {
             FLevel = Level;
             SpecialHeap PriorityQueue = new SpecialHeap(this);
-            Point OrigPiecePos = Sel;
+            Point OrigPiecePos = SelectedPiece;
             Point OrigSokPos = FLevel.SokobanPos;
             int ArraySize = 4 * Level.Width * Level.Height;
             FPushLength = new int[ArraySize];
@@ -193,7 +238,7 @@ namespace ExpertSokoban
                 if (Extracted.Get(Node)) continue;
                 Extracted.Set(Node, true);
 
-                // The item we have extracted represents a node in our tree
+                // The item we have extracted represents a node in our graph
                 // that we want to run Dijkstra's algorithm on. That node, in
                 // turn, represents a situation in which:
                 //  (1) the piece we are moving is at the position given by Position;
@@ -207,8 +252,8 @@ namespace ExpertSokoban
                 // manipulate the level by placing the piece and the Sokoban in the
                 // right place. We will undo this change at the end of the iteration.
                 FLevel.MovePiece(OrigPiecePos, Position);
-                Point NSokPos = PosDirToPos(Position, DirFrom);
-                FLevel.SetSokobanPos(NSokPos);
+                Point NewSokPos = PosDirToPos(Position, DirFrom);
+                FLevel.SetSokobanPos(NewSokPos);
 
                 // The node we're at has up to four possible outgoing edges.
                 // These are:
@@ -248,8 +293,15 @@ namespace ExpertSokoban
             }
         }
 
-        // Used to add the first four items into the priority queue at the 
-        // beginning of the algorithm.
+        /// <summary>
+        /// Determines whether the Sokoban can move from the source node to Pos, and if
+        /// so, adds this as a newly-discovered node to the PriorityQueue. This is used
+        /// only to add the first four items into the priority queue at the beginning of
+        /// the algorithm.
+        /// </summary>
+        /// <param name="ArrIndex">Index of the node the Sokoban is moving to.</param>
+        /// <param name="Pos">Co-ordinates of the cell the Sokoban is moving to.</param>
+        /// <param name="PriorityQueue">The priority queue.</param>
         private void AddIfValid(int ArrIndex, Point Pos, SpecialHeap PriorityQueue)
         {
             if (FMoveFinder.Get(Pos))
@@ -260,10 +312,13 @@ namespace ExpertSokoban
             }
         }
 
-        // Relax an edge, which is Dijkstrian for: check if we have found a
-        // shorter way to reach ToNode, and if so, update the node with
-        // the new path lengths and the new predecessor (FromNode), and
-        // insert it into the priority queue.
+        /// <summary>
+        /// Relaxes an edge, which is Dijkstrian for: Given that going from FromNode to
+        /// ToNode requires PushLength pushes and MoveLength moves, check if this gives
+        /// rise to a shorter way to reach ToNode from the source node, and if so,
+        /// update the node with the new path lengths and the new predecessor, and
+        /// insert it into the priority queue.
+        /// </summary>
         private void RelaxEdge(int FromNode, int ToNode, int PushLength, int MoveLength, SpecialHeap PriorityQueue)
         {
             if (
@@ -282,35 +337,54 @@ namespace ExpertSokoban
             }
         }
 
+        /// <summary>
+        /// Returns true if it is possible to push the selected piece to Pos in such a
+        /// way that the Sokoban will end up adjacent to it in the direction Direction.
+        /// </summary>
         public bool GetDir(Point Pos, int Direction)
         {
             return GetDir(Pos.X, Pos.Y, Direction);
         }
 
+        /// <summary>
+        /// Returns true if it is possible to push the selected piece to the cell given
+        /// by x and y in such a way that the Sokoban will end up adjacent to it in the
+        /// direction Direction.
+        /// </summary>
         public bool GetDir(int x, int y, int Direction)
         {
             int Index = 4*(y*FLevel.Width + x) + Direction;
             return Index <= 0 || Index >= FPushLength.Length ? false : FPushLength[Index] > 0;
         }
 
+        /// <summary>
+        /// Returns true if it is possible to push the selected piece to Pos,
+        /// irrespective of where the Sokoban will end up.
+        /// </summary>
         public bool Get(Point Pos)
         {
             return Get(Pos.X, Pos.Y);
         }
 
+        /// <summary>
+        /// Returns true if it is possible to push the selected piece to the cell given
+        /// by x and y, irrespective of where the Sokoban will end up.
+        /// </summary>
         public bool Get(int x, int y)
         {
             return GetDir(x, y, 1) || GetDir(x, y, 2) ||
                    GetDir(x, y, 3) || GetDir(x, y, 4);
         }
 
-        // Returns the path (sequence of Sokoban movements) that lead from
-        // the current situation (Level in the constructor) to one where
-        // the selected piece (Sel in the constructor) is moved to Pos. If
-        // PreferDir is between 1 and 4, and it is possible to push the piece
-        // in such a way that the Sokoban will end up above, left of, right of,
-        // or below the piece (1, 2, 3, 4, respectively), that sequence is
-        // returned, otherwise the most push-efficient one.
+        /// <summary>
+        /// Returns the path (sequence of Sokoban movements) that lead from the current
+        /// situation (Level in the constructor) to one where the selected piece
+        /// (SelectedPiece in the constructor) is moved to Pos. If PreferDir is between
+        /// 1 and 4, and it is possible to push the piece in such a way that the Sokoban
+        /// will end up above, left of, right of, or below the piece (1, 2, 3, 4,
+        /// respectively), that sequence is returned, otherwise the most push-efficient
+        /// one.
+        /// </summary>
         public Point[] Path(Point Pos, int PreferDir)
         {
             if (Pos.X < 0 || Pos.Y < 0 || Pos.X >= FLevel.Width || Pos.Y >= FLevel.Height || !Get(Pos))
@@ -369,27 +443,48 @@ namespace ExpertSokoban
             return Result.ToArray();
         }
 
+        /// <summary>
+        /// Returns the co-ordinates of the cell in which the selected piece is located
+        /// under the scenario represented by the node Node.
+        /// </summary>
         private Point NodeToPos(int Node)
         {
             int PosIndex = (Node-1)/4;
             return new Point(PosIndex % FLevel.Width, PosIndex / FLevel.Width);
         }
 
+        /// <summary>
+        /// Returns the direction in which the Sokoban is located relative to the
+        /// selected piece under the scenario represented by the node Node.
+        /// </summary>
         private int NodeToDir(int Node)
         {
             return (Node-1) % 4 + 1;
         }
 
+        /// <summary>
+        /// Returns the direction that is opposite Dir.
+        /// </summary>
         private int OppositeDir(int Dir)
         {
             return 5-Dir;
         }
 
+        /// <summary>
+        /// Returns the index of the node that represents the scenario in which the
+        /// selected piece is located at Pos, and the Sokoban is located above it
+        /// (Dir = 1), left of it (Dir = 2), right of it (Dir = 3) or below it
+        /// (Dir = 4).
+        /// </summary>
         private int NodeIndex(Point Pos, int Dir)
         {
             return 4*Pos.Y*FLevel.Width + 4*Pos.X + Dir;
         }
 
+        /// <summary>
+        /// Given a cell where the selected piece is located, and the direction in which
+        /// the Sokoban is located relative to it, returns the location of the Sokoban.
+        /// </summary>
         private Point PosDirToPos(Point Pos, int Dir)
         {
             if (Dir == 1) return new Point(Pos.X, Pos.Y-1);

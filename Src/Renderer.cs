@@ -7,6 +7,9 @@ using System.Drawing.Drawing2D;
 
 namespace ExpertSokoban
 {
+    /// <summary>
+    /// Enumerates the various images used in visually rendering a SokobanLevel.
+    /// </summary>
     public enum SokobanImage
     {
         Wall,
@@ -18,18 +21,74 @@ namespace ExpertSokoban
         Sokoban
     }
 
+    /// <summary>
+    /// Encapsulates the fields and methods used in visually rendering a SokobanLevel.
+    /// </summary>
     public class Renderer
     {
+        /// <summary>
+        /// The SokobanLevel that is being rendered.
+        /// </summary>
         private SokobanLevel FLevel;
-        private int FCellWidth, FCellHeight;
-        private int FClientWidth, FClientHeight;
-        private int FOriginX, FOriginY;
+
+        /// <summary>
+        /// The width of a cell in pixel.
+        /// </summary>
+        private int FCellWidth;
+        
+        /// <summary>
+        /// The height of a cell in pixel.
+        /// </summary>
+        private int FCellHeight;
+
+        /// <summary>
+        /// The width of the rectangle into which the rendered level should fit.
+        /// </summary>
+        private int FClientWidth;
+
+        /// <summary>
+        /// The height of the rectangle into which the rendered level should fit.
+        /// </summary>
+        private int FClientHeight;
+
+        /// <summary>
+        /// The X co-ordinate of the top-left corner of where the level is rendered.
+        /// </summary>
+        private int FOriginX;
+
+        /// <summary>
+        /// The Y co-ordinate of the top-left corner of where the level is rendered.
+        /// </summary>
+        private int FOriginY;
+
+        /// <summary>
+        /// The brush used to fill the background of the level.
+        /// </summary>
         private Brush FBackgroundBrush = new SolidBrush(Color.FromArgb(255, 255, 192));
 
+        /// <summary>
+        /// (read-only) Returns the width of a single cell in pixel.
+        /// </summary>
         public int CellWidth { get { return FCellWidth; } }
+
+        /// <summary>
+        /// (read-only) Returns the hright of a single cell in pixel.
+        /// </summary>
         public int CellHeight { get { return FCellHeight; } }
+
+        /// <summary>
+        /// (read-only) Returns the size of a single cell in pixel.
+        /// </summary>
         public Size CellSize { get { return new Size(FCellWidth, FCellHeight); } }
+
+        /// <summary>
+        /// (read-only) Returns the X co-ordinate of the top-left corner of where the level is rendered.
+        /// </summary>
         public int OriginX { get { return FOriginX; } }
+
+        /// <summary>
+        /// (read-only) Returns the Y co-ordinate of the top-left corner of where the level is rendered.
+        /// </summary>
         public int OriginY { get { return FOriginY; } }
 
         #region Scaled image caching
@@ -53,28 +112,59 @@ namespace ExpertSokoban
 
         #endregion
 
+        /// <summary>
+        /// Constructs a Renderer object.
+        /// </summary>
+        /// <param name="Level">The SokobanLevel that is to be rendered.</param>
+        /// <param name="ClientSize">The size (in pixels) of the client area into which the level is to be rendered.</param>
         public Renderer(SokobanLevel Level, Size ClientSize)
         {
             Init(Level, ClientSize.Width, ClientSize.Height);
         }
 
+        /// <summary>
+        /// Constructs a Renderer object.
+        /// </summary>
+        /// <param name="Level">The SokobanLevel that is to be rendered.</param>
+        /// <param name="ClientWidth">The width (in pixels) of the client area into which the level is to be rendered.</param>
+        /// <param name="ClientHeight">The height (in pixels) of the client area into which the level is to be rendered.</param>
         public Renderer(SokobanLevel Level, int ClientWidth, int ClientHeight)
         {
             Init(Level, ClientWidth, ClientHeight);
         }
 
+        /// <summary>
+        /// Constructs a Renderer object.
+        /// </summary>
+        /// <param name="Level">The SokobanLevel that is to be rendered.</param>
+        /// <param name="ClientSize">The size (in pixels) of the client area into which the level is to be rendered.</param>
+        /// <param name="BackgroundBrush">The Brush used to fill the background of the level.</param>
         public Renderer(SokobanLevel Level, Size ClientSize, Brush BackgroundBrush)
         {
             FBackgroundBrush = BackgroundBrush;
             Init(Level, ClientSize.Width, ClientSize.Height);
         }
 
+        /// <summary>
+        /// Constructs a Renderer object.
+        /// </summary>
+        /// <param name="Level">The SokobanLevel that is to be rendered.</param>
+        /// <param name="ClientWidth">The width (in pixels) of the client area into which the level is to be rendered.</param>
+        /// <param name="ClientHeight">The height (in pixels) of the client area into which the level is to be rendered.</param>
+        /// <param name="BackgroundBrush">The Brush used to fill the background of the level.</param>
         public Renderer(SokobanLevel Level, int ClientWidth, int ClientHeight, Brush BackgroundBrush)
         {
             FBackgroundBrush = BackgroundBrush;
             Init(Level, ClientWidth, ClientHeight);
         }
 
+        /// <summary>
+        /// Initialisation. Called by each of the overloaded constructors to perform the
+        /// common initialisation work.
+        /// </summary>
+        /// <param name="Level">The SokobanLevel that is to be rendered.</param>
+        /// <param name="ClientWidth">The width (in pixels) of the client area into which the level is to be rendered.</param>
+        /// <param name="ClientHeight">The height (in pixels) of the client area into which the level is to be rendered.</param>
         private void Init(SokobanLevel Level, int ClientWidth, int ClientHeight)
         {
             FClientWidth = ClientWidth;
@@ -88,6 +178,10 @@ namespace ExpertSokoban
             FOriginY = (int)(FClientHeight/2f - FCellHeight*Level.Height/2f);
         }
 
+        /// <summary>
+        /// Renders the level.
+        /// </summary>
+        /// <param name="g">Graphics object to render the level onto.</param>
         public void Render(Graphics g)
         {
             g.FillRectangle(FBackgroundBrush, new Rectangle(0, 0, FClientWidth, FClientHeight));
@@ -96,16 +190,34 @@ namespace ExpertSokoban
                     RenderCellAsPartOfCompleteRender(g, x, y);
         }
 
+        /// <summary>
+        /// Returns the co-ordinates of the cell that contains the given pixel.
+        /// </summary>
+        /// <param name="Pixel">Co-ordinates of a pixel.</param>
+        /// <returns>Co-ordinates of a cell.</returns>
         public Point CellFromPixel(Point Pixel)
         {
             return new Point((int)((Pixel.X - FOriginX) / FCellWidth), (int)((Pixel.Y - FOriginY) / FCellHeight));
         }
 
+        /// <summary>
+        /// Renders a particular cell (while taking the necessary rendering work for all
+        /// adjacent cells into account).
+        /// </summary>
+        /// <param name="g">Graphics object to render the cell onto.</param>
+        /// <param name="Pos">Co-ordinates of the cell to render.</param>
         public void RenderCell(Graphics g, Point Pos)
         {
             RenderCell(g, Pos.X, Pos.Y);
         }
 
+        /// <summary>
+        /// Renders a particular cell (while taking the necessary rendering work for all
+        /// adjacent cells into account).
+        /// </summary>
+        /// <param name="g">Graphics object to render the cell onto.</param>
+        /// <param name="x">X co-ordinate of the cell to render.</param>
+        /// <param name="y">Y co-ordinate of the cell to render.</param>
         public void RenderCell(Graphics g, int x, int y)
         {
             Rectangle Rect = CellRect(x, y);
@@ -117,6 +229,13 @@ namespace ExpertSokoban
                     RenderCellAsPartOfCompleteRender(g, i, j);
         }
 
+        /// <summary>
+        /// Renders a rectangular area of cells (while taking the necessary rendering
+        /// work for all adjacent cells into account).
+        /// </summary>
+        /// <param name="g">Graphics object to render the cell onto.</param>
+        /// <param name="RenderFrom">Co-ordinates of the top-left cell of the rectangle to render.</param>
+        /// <param name="RenderTo">Co-ordinates of the bottom-right cell of the rectangle to render.</param>
         public void RenderCells(Graphics g, Point RenderFrom, Point RenderTo)
         {
             int FromX = Math.Min(RenderFrom.X, RenderTo.X),
@@ -129,6 +248,13 @@ namespace ExpertSokoban
                     RenderCellAsPartOfCompleteRender(g, i, j);
         }
 
+        /// <summary>
+        /// Returns the pixel rectangle that corresponds to the given rectangular area
+        /// of cells.
+        /// </summary>
+        /// <param name="CellFrom">Co-ordinates of the top-left cell of the rectangle.</param>
+        /// <param name="CellTo">Co-ordinates of the bottom-right cell of the rectangle.</param>
+        /// <returns></returns>
         public Rectangle ClippingRectForCells(Point CellFrom, Point CellTo)
         {
             int FromX = Math.Min(CellFrom.X, CellTo.X),
@@ -140,11 +266,22 @@ namespace ExpertSokoban
             return new Rectangle(RectFrom.Left, RectTo.Top, RectTo.Right-RectFrom.Left, RectTo.Bottom-RectFrom.Top);
         }
 
+        /// <summary>
+        /// Renders a cell without taking the adjacent cells into account.
+        /// </summary>
+        /// <param name="g">Graphics object to render onto.</param>
+        /// <param name="Pos">Co-ordinates of the cell to render.</param>
         private void RenderCellAsPartOfCompleteRender(Graphics g, Point Pos)
         {
             RenderCellAsPartOfCompleteRender(g, Pos.X, Pos.Y);
         }
 
+        /// <summary>
+        /// Renders a cell without taking the adjacent cells into account.
+        /// </summary>
+        /// <param name="g">Graphics object to render onto.</param>
+        /// <param name="x">X co-ordinate of the cell to render.</param>
+        /// <param name="y">Y co-ordinate of the cell to render.</param>
         private void RenderCellAsPartOfCompleteRender(Graphics g, int x, int y)
         {
             if (x < 0 || x >= FLevel.Width || y < 0 || y >= FLevel.Height)
@@ -182,42 +319,79 @@ namespace ExpertSokoban
                 DrawCell(g, x, y, SokobanImage.Sokoban);
         }
 
+        /// <summary>
+        /// Draws a specified image into the specified cell.
+        /// </summary>
+        /// <param name="g">Graphics object to render onto.</param>
+        /// <param name="Pos">Co-ordinates of the cell to render into.</param>
+        /// <param name="ImageType">Identifies the image to be drawn.</param>
         public void DrawCell(Graphics g, Point Pos, SokobanImage ImageType)
         {
             DrawCell(g, Pos.X, Pos.Y, ImageType);
         }
 
+        /// <summary>
+        /// Draws a specified image into the specified cell.
+        /// </summary>
+        /// <param name="g">Graphics object to render onto.</param>
+        /// <param name="x">X co-ordinate of the cell to render into.</param>
+        /// <param name="y">Y co-ordinate of the cell to render into.</param>
+        /// <param name="ImageType">Identifies the image to be drawn.</param>
         public void DrawCell(Graphics g, int x, int y, SokobanImage ImageType)
         {
             Rectangle rect = CellRect(x, y);
             g.DrawImageUnscaled(GetScaledImage(ImageType), rect.Left, rect.Top);
         }
 
+        /// <summary>
+        /// Returns a pixel rectangle that corresponds to the area occupied by the
+        /// image that represents a given cell. This is NOT the outline of the cell
+        /// itself; the image extends beyond the bottom-right of the cell by a factor
+        /// of 1.5. In order to retrieve the outline of the cell itself, use CellRect().
+        /// </summary>
+        /// <param name="Pos">Co-ordinates of the cell.</param>
         public Rectangle CellRectForImage(Point Pos)
         {
             return CellRectForImage(Pos.X, Pos.Y);
         }
 
+        /// <summary>
+        /// Returns a pixel rectangle that corresponds to the area occupied by the
+        /// image that represents a given cell. This is NOT the outline of the cell
+        /// itself; the image extends beyond the bottom-right of the cell by a factor
+        /// of 1.5. In order to retrieve the outline of the cell itself, use CellRect().
+        /// </summary>
+        /// <param name="x">X co-ordinate of the cell.</param>
+        /// <param name="y">Y co-ordinate of the cell.</param>
         public Rectangle CellRectForImage(int x, int y)
         {
             Rectangle Src = CellRect(x, y);
             return new Rectangle(Src.X, Src.Y, (int)(Src.Width*1.5f), (int)(Src.Height*1.5f));
         }
 
+        /// <summary>
+        /// Returns a pixel rectangle that corresponds to the area logically occupied by
+        /// the given cell. This rectangle is SMALLER than the image that is drawn to
+        /// represent the cell; in order to retrieve the rectangle for the image, use
+        /// CellRectForImage().
+        /// </summary>
+        /// <param name="Pos">Co-ordinates of the cell.</param>
         public Rectangle CellRect(Point Pos)
         {
             return CellRect(Pos.X, Pos.Y);
         }
 
+        /// <summary>
+        /// Returns a pixel rectangle that corresponds to the area logically occupied by
+        /// the given cell. This rectangle is SMALLER than the image that is drawn to
+        /// represent the cell; in order to retrieve the rectangle for the image, use
+        /// CellRectForImage().
+        /// </summary>
+        /// <param name="x">X co-ordinate of the cell.</param>
+        /// <param name="y">Y co-ordinate of the cell.</param>
         public Rectangle CellRect(int x, int y)
         {
             return new Rectangle(x*FCellWidth + FOriginX, y*FCellHeight + FOriginY, FCellWidth, FCellHeight);
-        }
-
-        public Rectangle GetMultiCellRect(int FromX, int FromY, int ToX, int ToY)
-        {
-            return new Rectangle(FromX*FCellWidth + FOriginX, FromY*FCellHeight + FOriginY,
-                FCellWidth * (ToX-FromX+1), FCellHeight * (ToY-FromY+1));
         }
 
         /// <summary>
@@ -291,6 +465,11 @@ namespace ExpertSokoban
             return CachedImage[sz][ImageType];
         }
 
+        /// <summary>
+        /// Given a MoveFinder or PushFinder, returns a GraphicsPath object that can be
+        /// used to visualise the area deemed "valid" by the relevant Finder.
+        /// </summary>
+        /// <param name="Finder">A MoveFinder or PushFinder object.</param>
         public GraphicsPath ValidPath(Virtual2DArray<bool> Finder)
         {
             Point[][] Outlines = GraphicsUtil.BoolsToPaths(Finder);
@@ -335,6 +514,12 @@ namespace ExpertSokoban
             return Result;
         }
 
+        /// <summary>
+        /// Returns the value 0, 1, 2 or 3 if the cell specified by the second parameter
+        /// is above, left of, right of and below the cell specified by the first
+        /// parameter, respectively. If neither of the four is the case, the result is
+        /// undefined.
+        /// </summary>
         private int GetDir(Point From, Point To)
         {
             return From.X == To.X
@@ -342,6 +527,19 @@ namespace ExpertSokoban
                 : (From.X > To.X ? 1 : 2);
         }
 
+        /// <summary>
+        /// Returns a GraphicsPath object that can be used to visualise a path through
+        /// a sequence of cells. This can be a move path or a push path.
+        /// </summary>
+        /// <param name="StartPos">Starting position for the path.</param>
+        /// <param name="CellSequence">Sequence of cells for the path, not including the
+        /// starting position. Each cell must be directly adjacent to the previous cell,
+        /// and the first cell must be directly adjacent to the cell specified by
+        /// StartPos. Otherwise, the behaviour is undefined.</param>
+        /// <param name="DiameterX">Proportion of the cell width that is used to round
+        /// the corners.</param>
+        /// <param name="DiameterY">Proportion of the cell height that is used to round
+        /// the corners.</param>
         public GraphicsPath LinePath(Point StartPos, Point[] CellSequence, float DiameterX, float DiameterY)
         {
             if (CellSequence.Length < 1)
@@ -392,6 +590,11 @@ namespace ExpertSokoban
             return Result;
         }
 
+        /// <summary>
+        /// Returns a GraphicsPath object that can be used to visualise a selection
+        /// cursor that encompasses one cell.
+        /// </summary>
+        /// <param name="Cell">Cell to generate a cursor for.</param>
         public GraphicsPath SelectorPath(Point Cell)
         {
             GraphicsPath Result = new GraphicsPath();

@@ -9,32 +9,96 @@ using System.IO;
 
 namespace ExpertSokoban
 {
+    /// <summary>
+    /// Encapsulates a list box that displays Sokoban levels and comments.
+    /// </summary>
     public class LevelListBox : ListBox
     {
+        /// <summary>
+        /// Encapsulates the state of the level list box.
+        /// </summary>
         private enum LevelListBoxState { Null, Playing, Editing }
 
+        /// <summary>
+        /// Caches complete renderings for levels to ensure smooth scrolling.
+        /// </summary>
         private Dictionary<SokobanLevel, Image> FCachedRenderings = new Dictionary<SokobanLevel, Image>();
+
+        /// <summary>
+        /// Remembers the last width of the level list. The cached renderings only need
+        /// to be updated when the width changes, not when the height changes.
+        /// </summary>
         private int FLastWidth = 0;
+
+        /// <summary>
+        /// The index of one element that is currently being played or edited.
+        /// </summary>
         private int FPlayingEditingIndex = 0;
+
+        /// <summary>
+        /// Whether the "special element" is currently being played or edited (or neither)
+        /// </summary>
         private LevelListBoxState FState = LevelListBoxState.Null;
 
+        /// <summary>
+        /// The colour used to represent an item if it is currently being edited.
+        /// </summary>
         private Color EditingColor = Color.FromArgb(255, 192, 128);
+        
+        /// <summary>
+        /// The colour used to represent an item if it is currently being played.
+        /// </summary>
         private Color PlayingColor = Color.FromArgb(64, 224, 128);
+
+        /// <summary>
+        /// The colour used to represent an item if it has been solved before by the
+        /// current player.
+        /// </summary>
         private Color SolvedColor = Color.FromArgb(64, 128, 255);
+
+        /// <summary>
+        /// The colour used to represent an item that has never been solved and is not
+        /// currently being played or edited.
+        /// </summary>
         private Color NeutralColor = Color.Silver;
 
+        /// <summary>
+        /// Gets or sets the index of the item that is currently being edited.
+        /// Setting this property automatically sets PlayingIndex to null.
+        /// </summary>
         public int? EditingIndex
         {
             get { return FState == LevelListBoxState.Editing ? (int?)FPlayingEditingIndex : null; }
             set { SetPlayingEditing(LevelListBoxState.Editing, value); }
         }
 
+        /// <summary>
+        /// Gets or sets the index of the item that is currently being played.
+        /// Setting this property automatically sets EditingIndex to null.
+        /// </summary>
         public int? PlayingIndex
         {
             get { return FState == LevelListBoxState.Playing ? (int?)FPlayingEditingIndex : null; }
             set { SetPlayingEditing(LevelListBoxState.Playing, value); }
         }
 
+        /// <summary>
+        /// Main constructor.
+        /// </summary>
+        public LevelListBox()
+        {
+            this.MeasureItem += new MeasureItemEventHandler(LevelListBox_MeasureItem);
+            this.DrawItem += new DrawItemEventHandler(LevelListBox_DrawItem);
+            this.Resize += new EventHandler(LevelListBox_Resize);
+            this.DrawMode = DrawMode.OwnerDrawVariable;
+            FLastWidth = ClientSize.Width;
+        }
+
+        /// <summary>
+        /// Private method to handle assignments to PlayingIndex or EditingIndex.
+        /// </summary>
+        /// <param name="State">LevelListBoxState.Playing or LevelListBoxState.Editing.</param>
+        /// <param name="Value">Index of the item, or null if neither playing nor editing.</param>
         private void SetPlayingEditing(LevelListBoxState State, int? Value)
         {
             int OldIndex = FPlayingEditingIndex;
@@ -51,15 +115,10 @@ namespace ExpertSokoban
             SelectedIndex = OldSelectedIndex;
         }
 
-        public LevelListBox()
-        {
-            this.MeasureItem += new MeasureItemEventHandler(LevelListBox_MeasureItem);
-            this.DrawItem += new DrawItemEventHandler(LevelListBox_DrawItem);
-            this.Resize += new EventHandler(LevelListBox_Resize);
-            this.DrawMode = DrawMode.OwnerDrawVariable;
-            FLastWidth = ClientSize.Width;
-        }
-
+        /// <summary>
+        /// Occurs when the LevelListBox is resized. If the width has changed, the
+        /// cached renderings are discarded and the levels re-rendered.
+        /// </summary>
         private void LevelListBox_Resize(object sender, EventArgs e)
         {
             if (ClientSize.Width != FLastWidth)
@@ -70,10 +129,14 @@ namespace ExpertSokoban
             }
         }
 
+        /// <summary>
+        /// Occurs when an item in the level list requires drawing.
+        /// </summary>
         private void LevelListBox_DrawItem(object sender, DrawItemEventArgs e)
         {
             if (e.Index > -1 && e.Index < Items.Count && !DesignMode)
             {
+                // The item we are trying to draw is a SokobanLevel
                 if (Items[e.Index] is SokobanLevel)
                 {
                     string Key = Items[e.Index].ToString();
@@ -154,20 +217,12 @@ namespace ExpertSokoban
                     e.Graphics.DrawImage(Rendering, e.Bounds.Left + 5,
                         e.Bounds.Top + 5 + MessageSize1.Height + MessageSize2.Height);
                 }
-                else if (Items[e.Index] is string)
-                {
-                    e.DrawBackground();
-                    e.DrawFocusRectangle();
-                    string Str = (string)Items[e.Index];
-                    if ((e.State & DrawItemState.Selected) != DrawItemState.Selected)
-                        e.Graphics.FillRectangle(new LinearGradientBrush(e.Bounds, Color.White, Color.Silver, 90, false), e.Bounds);
-                    e.Graphics.DrawString(Str, Font, new SolidBrush(e.ForeColor), e.Bounds.Left + 5, e.Bounds.Top + 5);
-                }
+                // The item we are trying to draw is a comment
                 else
                 {
                     e.DrawBackground();
                     e.DrawFocusRectangle();
-                    string Str = Items[e.Index].ToString();
+                    string Str = Items[e.Index] is string ? (string)Items[e.Index] : Items[e.Index].ToString();
                     if ((e.State & DrawItemState.Selected) != DrawItemState.Selected)
                         e.Graphics.FillRectangle(new LinearGradientBrush(e.Bounds, Color.White, Color.Silver, 90, false), e.Bounds);
                     e.Graphics.DrawString(Str, Font, new SolidBrush(e.ForeColor), e.Bounds.Left + 5, e.Bounds.Top + 5);
@@ -175,6 +230,13 @@ namespace ExpertSokoban
             }
         }
 
+        /// <summary>
+        /// Renders the specified level and returns the finished image. Renderings are
+        /// cached for efficiency.
+        /// </summary>
+        /// <param name="Level">The SokobanLevel to be rendered.</param>
+        /// <param name="Width">Width of the area to render into.</param>
+        /// <param name="Height">Height of the area to render into.</param>
         private Image GetRendering(SokobanLevel Level, int Width, int Height)
         {
             if (FCachedRenderings.ContainsKey(Level))
@@ -186,6 +248,12 @@ namespace ExpertSokoban
             return Rendering;
         }
 
+        /// <summary>
+        /// Occurs when the list box needs to determine the size (height) of an item.
+        /// Levels are measured in such a way that the height of the item is to its
+        /// width as the height of the level is to its width. The "currently playing"
+        /// or "currently editing" and the "solved" messages are taken into account.
+        /// </summary>
         private void LevelListBox_MeasureItem(object sender, MeasureItemEventArgs e)
         {
             if (e.Index > -1 && e.Index < Items.Count && !DesignMode)
@@ -213,6 +281,9 @@ namespace ExpertSokoban
             }
         }
 
+        /// <summary>
+        /// Calls RefreshItems() which, inexplicably, is protected.
+        /// </summary>
         public void ComeOn_RefreshItems()
         {
             RefreshItems();

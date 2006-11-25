@@ -9,6 +9,9 @@ namespace ExpertSokoban
 {
     partial class AboutBox : Form
     {
+        /// <summary>
+        /// Main constructor.
+        /// </summary>
         public AboutBox()
         {
             InitializeComponent();

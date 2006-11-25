@@ -743,6 +743,7 @@ namespace ExpertSokoban
             if (PushCellSequence != null)
             {
                 PushCellSequence = null;
+                MoveCellSequence = null;
                 Invalidate();
             }
         }
@@ -860,12 +861,18 @@ namespace ExpertSokoban
             // (if this is not possible, ExecutePush() will meep)
             else if (FState == MainAreaState.Push)
             {
-                ExecutePush(Cell);
+                ExecutePush();
             }
 
             OrigMouseDown = null;
         }
 
+        /// <summary>
+        /// Performs the action corresponding to the currently-selected tool in the
+        /// level editor. This happens whenever the user clicks the mouse or presses
+        /// Enter or Space.
+        /// </summary>
+        /// <param name="Cell">The cell that was "clicked".</param>
         private void ProcessEditorClick(Point Cell)
         {
             SokobanCell CellType = FLevel.Cell(Cell);
@@ -945,9 +952,14 @@ namespace ExpertSokoban
             }
         }
 
-        private void ExecutePush(Point Cell)
+        /// <summary>
+        /// Executes a push. This occurs if the user clicks the destination cell for the
+        /// piece with the mouse, or presses Enter after selecting it with the keyboard.
+        /// The current value of MoveCellSequence determines the actual action taken.
+        /// </summary>
+        private void ExecutePush()
         {
-            if (PushFinder == null || !PushFinder.Get(Cell) || MoveCellSequence == null)
+            if (MoveCellSequence == null)
             {
                 SndMeep.Play();
                 return;
@@ -1223,6 +1235,11 @@ namespace ExpertSokoban
             Invalidate();
         }
 
+        /// <summary>
+        /// Calls UpdatePushPath() or ClearPushPath() depending on whether the user has
+        /// just moved the keyboard selection cursor onto a cell that represents a valid
+        /// destination for a push.
+        /// </summary>
         private void UpdatePushPathAfterKeyboardSelectionChange()
         {
             if (FState != MainAreaState.Push)
@@ -1249,6 +1266,11 @@ namespace ExpertSokoban
             }
         }
 
+        /// <summary>
+        /// This function is overridden in order for persuade the arrow keys and Enter
+        /// to fire the KeyDown event. (The SetStyle() call in the constructor is also
+        /// necessary.)
+        /// </summary>
         protected override bool IsInputKey(Keys keyData)
         {
             if (keyData == Keys.Left || keyData == (Keys.Left | Keys.Shift))
@@ -1264,6 +1286,12 @@ namespace ExpertSokoban
             return base.IsInputKey(keyData);
         }
 
+        /// <summary>
+        /// Selects a piece. Occurs when the player clicks on a piece with the mouse, or
+        /// selects one with the keyboard and presses Enter. If the given piece is already
+        /// selected, deselects it.
+        /// </summary>
+        /// <param name="Cell">The cell containing the piece to be selected.</param>
         private void SelectPiece(Point Cell)
         {
             if (FState != MainAreaState.Move && FState != MainAreaState.Push) // should never happen
@@ -1286,6 +1314,7 @@ namespace ExpertSokoban
                 SelectedPiece = Cell;
                 MouseOverCell = null;
                 PushCellSequence = null;
+                MoveCellSequence = null;
                 OrigKeyDown = null;
                 PushFinder = new PushFinder(FLevel, Cell, MoveFinder);
                 FState = MainAreaState.Push;
@@ -1353,23 +1382,25 @@ namespace ExpertSokoban
                 UpdatePushPathAfterKeyboardSelectionChange();
             }
 
-            // Enter: handle the "dragged" special case first
+            // Enter: handle the special case in which the player "dragged" back onto
+            // the same piece that is selected
             else if (e.KeyCode == Keys.Enter && FState == MainAreaState.Push &&
                      CursorPos != null && PushFinder != null && SelectedPiece != null &&
                      SelectedPiece.Value.Equals(CursorPos.Value) &&
                      OrigDownDir(CursorPos.Value, OrigKeyDown) != 0 &&
                      PushFinder.GetDir(CursorPos.Value, OrigDownDir(CursorPos.Value, OrigKeyDown)))
-                ExecutePush(CursorPos.Value);
+                ExecutePush();
 
-            // Enter: if the cursor is on a valid piece, select it
+            // Enter: if the cursor is on a valid piece, select it (if the piece is
+            // already the currently-selected one, it is automatically deselected)
             else if (e.KeyCode == Keys.Enter && CursorPos != null &&
                      FLevel.IsPiece(CursorPos.Value))
                 SelectPiece(CursorPos.Value);
 
             // Enter: if in push mode and valid destination is selected, execute the push
+            // (if the selected destination is not valid, this will automatically meep)
             else if (e.KeyCode == Keys.Enter && CursorPos != null)
-                ExecutePush(CursorPos.Value);
+                ExecutePush();
         }
     }
 }
-

@@ -5,33 +5,107 @@ using System.Drawing;
 
 namespace ExpertSokoban
 {
+    /// <summary>
+    /// Represents the possible contents of a single cell in a Sokoban level.
+    /// </summary>
     public enum SokobanCell
     {
-        //Invalid,
+        /// <summary>
+        /// The cell is empty.
+        /// </summary>
         Blank,
+
+        /// <summary>
+        /// The cell is a wall (unpassable).
+        /// </summary>
         Wall,
+        
+        /// <summary>
+        /// The cell is a piece (pushable).
+        /// </summary>
         Piece,
+        
+        /// <summary>
+        /// The cell is a target (the level is considered "solved" if all pieces are
+        /// pushed onto all the targets).
+        /// </summary>
         Target,
+        
+        /// <summary>
+        /// The cell is a target with a piece on it.
+        /// </summary>
         PieceOnTarget
     }
+
+    /// <summary>
+    /// Represents possible errors that can make a Sokoban level unplayable.
+    /// </summary>
     public enum SokobanLevelStatus
     {
+        /// <summary>
+        /// The level is valid.
+        /// </summary>
         Valid,
+
+        /// <summary>
+        /// The level is not entirely enclosed by an outer wall. This way it could be
+        /// possible for the Sokoban to leave the level to the outside.
+        /// </summary>
         NotEnclosed,
+
+        /// <summary>
+        /// The level is not solvable because the number of targets does not equal the
+        /// number of pieces.
+        /// </summary>
         TargetsPiecesMismatch
     }
 
+    /// <summary>
+    /// Represents a Sokoban level, or a specific situation during the game.
+    /// (Use ToString() when comparing levels or adding them to dictionaries.)
+    /// </summary>
     [Serializable]
-    public class SokobanLevel
+    public class SokobanLevel : IEquatable<SokobanLevel>
     {
+        /// <summary>
+        /// Stores the individual cells of the level.
+        /// </summary>
         private SokobanCell[] FLevel;
-        private int FWidth, FHeight;
+
+        /// <summary>
+        /// The width of the level.
+        /// </summary>
+        private int FWidth;
+        
+        /// <summary>
+        /// The height of the level.
+        /// </summary>
+        private int FHeight;
+
+        /// <summary>
+        /// The current position of the Sokoban.
+        /// </summary>
         private Point FSokobanPos;
 
+        /// <summary>
+        /// (read-only) Returns the width of the level.
+        /// </summary>
         public int Width { get { return FWidth; } }
+
+        /// <summary>
+        /// (read-only) Returns the height of the level.
+        /// </summary>
         public int Height { get { return FHeight; } }
+
+        /// <summary>
+        /// (read-only) Returns the current Sokoban position.
+        /// </summary>
         public Point SokobanPos { get { return FSokobanPos; } }
 
+        /// <summary>
+        /// (read-only) Returns true if the level is in a solved state
+        /// (all the pieces are on a target).
+        /// </summary>
         public bool Solved
         {
             get
@@ -43,6 +117,9 @@ namespace ExpertSokoban
             }
         }
 
+        /// <summary>
+        /// (read-only) Returns the number of pieces that are not on a target.
+        /// </summary>
         public int RemainingPieces
         {
             get
@@ -55,6 +132,9 @@ namespace ExpertSokoban
             }
         }
 
+        /// <summary>
+        /// Constructs a Sokoban level from its string representation.
+        /// </summary>
         public SokobanLevel(string EncodedForm)
         {
             FWidth = 0;
@@ -126,52 +206,135 @@ namespace ExpertSokoban
                     }
             }
         }
-        public SokobanLevel(int Width, int Height, SokobanCell[] LevelData, Point SokobanPos)
+
+        /// <summary>
+        /// Constructs a level directly given its width, height, cell contents and Sokoban position.
+        /// </summary>
+        private SokobanLevel(int Width, int Height, SokobanCell[] LevelData, Point SokobanPos)
         {
             FWidth = Width;
             FHeight = Height;
             FLevel = LevelData;
             FSokobanPos = SokobanPos;
         }
+
+        /// <summary>
+        /// Returns the contents of the specified cell.
+        /// </summary>
         public SokobanCell Cell(Point Pos)
         {
             return Cell(Pos.X, Pos.Y);
         }
+
+        /// <summary>
+        /// Returns the contents of the specified cell.
+        /// </summary>
         public SokobanCell Cell(int x, int y)
         {
             if (x < 0 || y < 0 || x >= FWidth || y >= FHeight)
                 return SokobanCell.Blank;
             return FLevel[y*FWidth + x];
         }
-        public void SetSokobanPos(Point Pos) { if (Pos.X >= 0 && Pos.Y >= 0 && Pos.X < FWidth && Pos.Y < FHeight) FSokobanPos = Pos; }
-        private void SetCell(int Index, SokobanCell c) { if (Index >= 0 && Index < FWidth*FHeight) FLevel[Index] = c; }
-        public void SetCell(Point Pos, SokobanCell c) { SetCell(Pos.Y*FWidth + Pos.X, c); }
-        public void SetCell(int x, int y, SokobanCell c) { SetCell(y*FWidth + x, c); }
+
+        /// <summary>
+        /// Moves the Sokoban to the specified position.
+        /// </summary>
+        /// <param name="Pos"></param>
+        public void SetSokobanPos(Point Pos)
+        {
+            if (Pos.X >= 0 && Pos.Y >= 0 && Pos.X < FWidth && Pos.Y < FHeight)
+                FSokobanPos = Pos;
+        }
+
+        /// <summary>
+        /// Changes the contents of the specified cell.
+        /// </summary>
+        private void SetCell(int Index, SokobanCell c)
+        {
+            if (Index >= 0 && Index < FWidth*FHeight)
+                FLevel[Index] = c;
+        }
+
+        /// <summary>
+        /// Changes the contents of the specified cell.
+        /// </summary>
+        public void SetCell(Point Pos, SokobanCell c)
+        {
+            SetCell(Pos.Y*FWidth + Pos.X, c);
+        }
+
+        /// <summary>
+        /// Changes the contents of the specified cell.
+        /// </summary>
+        public void SetCell(int x, int y, SokobanCell c)
+        {
+            SetCell(y*FWidth + x, c);
+        }
+
+        /// <summary>
+        /// Returns true if the cell identified by the specified array index contains a
+        /// piece, irrespective of whether it's on a target or not.
+        /// </summary>
         private bool IsPiece(int Index)
         {
             if (Index < 0 || Index > FLevel.Length) return false;
             return FLevel[Index] == SokobanCell.Piece || FLevel[Index] == SokobanCell.PieceOnTarget;
         }
+
+        /// <summary>
+        /// Returns true if the specified cell contains a piece, irrespective of whether
+        /// it's on a target or not.
+        /// </summary>
         public bool IsPiece(Point Pos)
         {
             if (Pos.X < 0 || Pos.X >= FWidth || Pos.Y < 0 || Pos.Y >= FHeight)
                 return false;
             return IsPiece(Pos.Y*FWidth + Pos.X);
         }
+
+        /// <summary>
+        /// Returns true if the specified cell contains a piece, irrespective of whether
+        /// it's on a target or not.
+        /// </summary>
         public bool IsPiece(int x, int y)
         {
             if (x < 0 || x >= FWidth || y < 0 || y >= FHeight)
                 return false;
             return IsPiece(y*FWidth + x);
         }
+
+        /// <summary>
+        /// Returns true if the cell identified by the specified array index is either
+        /// blank or a target without a piece on it.
+        /// </summary>
         private bool IsFree(int Index)
         {
             return (Index >= 0 && Index < FWidth*FHeight)
                 ? (FLevel[Index] == SokobanCell.Blank || FLevel[Index] == SokobanCell.Target)
                 : false;
         }
-        public bool IsFree(Point Pos) { return IsFree(Pos.Y*FWidth + Pos.X); }
-        public bool IsFree(int x, int y) { return IsFree(y*FWidth + x); }
+
+        /// <summary>
+        /// Returns true if the specified cell is either blank or a target without a
+        /// piece on it.
+        /// </summary>
+        public bool IsFree(Point Pos)
+        {
+            return IsFree(Pos.Y*FWidth + Pos.X);
+        }
+
+        /// <summary>
+        /// Returns true if the specified cell is either blank or a target without a
+        /// piece on it.
+        /// </summary>
+        public bool IsFree(int x, int y)
+        {
+            return IsFree(y*FWidth + x);
+        }
+
+        /// <summary>
+        /// Adds a piece to the cell identified by the specified array index.
+        /// </summary>
         private void SetPiece(int Index)
         {
             if (Index >= 0 && Index < FWidth*FHeight)
@@ -182,8 +345,28 @@ namespace ExpertSokoban
                     FLevel[Index] = SokobanCell.PieceOnTarget;
             }
         }
-        public void SetPiece(Point Pos) { SetPiece(Pos.Y*FWidth + Pos.X); }
-        public void SetPiece(int x, int y) { SetPiece(y*FWidth + x); }
+
+        /// <summary>
+        /// Adds a piece to the specified cell. If it is a target, it becomes a piece on
+        /// a target.
+        /// </summary>
+        public void SetPiece(Point Pos)
+        {
+            SetPiece(Pos.Y*FWidth + Pos.X);
+        }
+
+        /// <summary>
+        /// Adds a piece to the specified cell. If it is a target, it becomes a piece on
+        /// a target.
+        /// </summary>
+        public void SetPiece(int x, int y)
+        {
+            SetPiece(y*FWidth + x);
+        }
+
+        /// <summary>
+        /// Removes a piece from the cell identified by the specified array index.
+        /// </summary>
         private void RemovePiece(int Index)
         {
             if (Index >= 0 && Index < FWidth*FHeight)
@@ -194,22 +377,48 @@ namespace ExpertSokoban
                     FLevel[Index] = SokobanCell.Target;
             }
         }
-        public void RemovePiece(Point Pos) { RemovePiece(Pos.Y*FWidth + Pos.X); }
-        public void RemovePiece(int x, int y) { RemovePiece(y*FWidth + x); }
+
+        /// <summary>
+        /// Removes a piece from the specified cell. If it is a piece on a target, the
+        /// cell becomes a target.
+        /// </summary>
+        public void RemovePiece(Point Pos)
+        {
+            RemovePiece(Pos.Y*FWidth + Pos.X);
+        }
+
+        /// <summary>
+        /// Removes a piece from the specified cell. If it is a piece on a target, the
+        /// cell becomes a target.
+        /// </summary>
+        public void RemovePiece(int x, int y)
+        {
+            RemovePiece(y*FWidth + x);
+        }
+
+        /// <summary>
+        /// Moves a piece from the specified location to another.
+        /// </summary>
         public void MovePiece(int FromX, int FromY, int ToX, int ToY)
         {
             RemovePiece(FromX, FromY);
             SetPiece(ToX, ToY);
         }
+
+        /// <summary>
+        /// Moves a piece from the specified location to another.
+        /// </summary>
         public void MovePiece(Point FromPos, Point ToPos)
         {
             RemovePiece(FromPos);
             SetPiece(ToPos);
         }
 
-        // This will reduce the size of the level if there are rows or columns
-        // around the edge that are entirely blank, but will leave (or create)
-        // a one-square margin around the edge.
+        /// <summary>
+        /// Resizes the level in such a way that there is a margin (containing all blank
+        /// cells) of the specified width around the level.
+        /// </summary>
+        /// <param name="Margin">The size of the margin.</param>
         public void EnsureSpace(int Margin)
         {
             int Left = 0, Right = 0, Top = 0, Bottom = 0;
@@ -219,6 +428,10 @@ namespace ExpertSokoban
             while (Bottom < FHeight && RowBlank(FHeight-Bottom-1)) Bottom++;
             Resize(2*Margin-Left-Right, 2*Margin-Top-Bottom, Margin-Left, Margin-Top);
         }
+
+        /// <summary>
+        /// Determines whether a column is entirely blank or not.
+        /// </summary>
         private bool ColumnBlank(int x)
         {
             if (FSokobanPos.X == x)
@@ -228,6 +441,10 @@ namespace ExpertSokoban
                     return false;
             return true;
         }
+
+        /// <summary>
+        /// Determines whether a row is entirely blank or not.
+        /// </summary>
         private bool RowBlank(int y)
         {
             if (FSokobanPos.Y == y)
@@ -238,7 +455,13 @@ namespace ExpertSokoban
             return true;
         }
 
-        // any parameter may be negative
+        /// <summary>
+        /// Resizes the level.
+        /// </summary>
+        /// <param name="AmountX">Amount by which to change the width of the level.</param>
+        /// <param name="AmountY">Amount by which to change the height of the level.</param>
+        /// <param name="ShiftX">Amount by which to shift the contents of the level in X direction.</param>
+        /// <param name="ShiftY">Amount by which to shift the contents of the level in Y direction.</param>
         private void Resize(int AmountX, int AmountY, int ShiftX, int ShiftY)
         {
             if (AmountX == 0 && AmountY == 0) return;
@@ -261,6 +484,9 @@ namespace ExpertSokoban
             FHeight = NewHeight;
         }
 
+        /// <summary>
+        /// Returns a deep copy of this SokobanLevel object.
+        /// </summary>
         public SokobanLevel Clone()
         {
             SokobanCell[] NewLevel = (SokobanCell[]) FLevel.Clone();
@@ -268,7 +494,7 @@ namespace ExpertSokoban
         }
 
         /// <summary>
-        /// Returns a value indicating whether the level is valid, and if not - why.
+        /// Returns a value indicating whether the level is valid, and if not, why not.
         /// </summary>
         public SokobanLevelStatus Validity
         {
@@ -297,6 +523,9 @@ namespace ExpertSokoban
             }
         }
 
+        /// <summary>
+        /// Returns a (somewhat human-readable) string representation of this level.
+        /// </summary>
         public override string ToString()
         {
             string Output = "";
@@ -315,6 +544,9 @@ namespace ExpertSokoban
             return Output;
         }
 
+        /// <summary>
+        /// Returns a Sokoban level that can be used for testing purposes.
+        /// </summary>
         public static SokobanLevel TestLevel()
         {
             return new SokobanLevel(
@@ -336,17 +568,20 @@ namespace ExpertSokoban
             );
         }
 
+        /// <summary>
+        /// Returns the smallest valid unsolved solvable level.
+        /// </summary>
         public static SokobanLevel TrivialLevel()
         {
             return new SokobanLevel("#####\n#@$.#\n#####\n");
         }
 
-        public override int GetHashCode()
+        /// <summary>
+        /// Returns true if the specified object represents the same level.
+        /// </summary>
+        public bool Equals(SokobanLevel Other)
         {
-            // We want to make sure that same levels return same hash codes.
-            // Same levels will already have same string representations,
-            // so use the string representation to generate the hash code.
-            return ToString().GetHashCode();
+            return ToString().Equals(Other.ToString());
         }
     }
 }
