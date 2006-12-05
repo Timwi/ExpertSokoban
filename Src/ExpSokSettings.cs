@@ -89,7 +89,7 @@ namespace ExpertSokoban
         public static MainAreaTool LastUsedTool
         {
             get { return PrgSettings.Store.Get<MainAreaTool>("ExpSok.LastUsedTool", MainAreaTool.Wall); }
-            set { PrgSettings.Store.Set("ExpSok.LastUsedTool", MainAreaTool.Wall); }
+            set { PrgSettings.Store.Set("ExpSok.LastUsedTool", value); }
         }
 
         /// <summary>

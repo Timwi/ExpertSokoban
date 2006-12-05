@@ -54,12 +54,15 @@ namespace ExpertSokoban
             get { return FActiveLevelIndex; }
             set
             {
-                // Confirm with the owner that level can be changed.
-                ConfirmEventArgs args = new ConfirmEventArgs();
-                args.ConfirmOK = true;
-                LevelBeforeActivate(this, args);
-                if (!args.ConfirmOK)
-                    return;
+                if (LevelActivating != null)
+                {
+                    // Confirm with the owner that the level can be changed
+                    ConfirmEventArgs args = new ConfirmEventArgs();
+                    args.ConfirmOK = true;
+                    LevelActivating(this, args);
+                    if (!args.ConfirmOK)
+                        return;
+                }
 
                 FState = State;
 
@@ -72,11 +75,11 @@ namespace ExpertSokoban
 
                 RefreshItems();
 
-                // Inform the user that level has changed
-                LevelAfterActivate(this, new EventArgs());
+                // Inform the owner that the level has changed
+                LevelActivated(this, new EventArgs());
 
-                // Ensure selected
-                SelectCurrent();
+                // Make the active level selected
+                SelectActiveLevel();
             }
         }
 
@@ -119,15 +122,15 @@ namespace ExpertSokoban
         }
 
         /// <summary>
-        /// Sent prior to changing a level to check whether it is OK to do so. Set the
-        /// ConfirmOK parameter to false to cancel level change.
+        /// Invoked before activating a level. Set the ConfirmOK parameter to false to
+        /// cancel the level change.
         /// </summary>
-        public event ConfirmEventHandler LevelBeforeActivate;
+        public event ConfirmEventHandler LevelActivating;
 
         /// <summary>
-        /// Sent after a level has been changed. Use ActiveLevel to get the new level.
+        /// Sent after a level has been activated. Use ActiveLevel to get the new level.
         /// </summary>
-        public event EventHandler LevelAfterActivate;
+        public event EventHandler LevelActivated;
 
         #endregion
 
@@ -583,7 +586,7 @@ namespace ExpertSokoban
             {
                 // If anything fails here, don't crash. Just tell the caller that save
                 // hasn't actually happened.
-                DlgMessage.ShowError("Failed to save the settings.\n" + e.Message, "OK");
+                DlgMessage.ShowError("The settings could not be saved.\n" + e.Message, "Error saving settings");
                 return false;
             }
         }
@@ -624,7 +627,7 @@ namespace ExpertSokoban
         {
             // Play this level
             PlayingIndex = FActiveLevelIndex;
-            SelectCurrent(); // select this level in the box - probably desirable?
+            SelectActiveLevel(); // select this level in the box - probably desirable?
         }
 
         /// <summary>
@@ -639,8 +642,7 @@ namespace ExpertSokoban
 
         /// <summary>
         /// Adds the specified item to the level list, while ensuring that the level
-        /// list's EditingIndex/PlayingIndex remain intact. If the level list was
-        /// previously empty, several menu items and toolbar buttons become enabled.
+        /// list's EditingIndex/PlayingIndex remain intact.
         /// </summary>
         /// <param name="NewItem">The item to insert. May be a SokobanLevel object
         /// or a string (representing a comment).</param>
@@ -670,7 +672,9 @@ namespace ExpertSokoban
 
         /// <summary>
         /// Deletes the selected item from the level list, while ensuring that the
-        /// level list's EditingIndex/PlayingIndex & Selected index remain intact.
+        /// level list's EditingIndex/PlayingIndex and SelectedIndex remain intact.
+        /// EditingIndex/PlayingIndex is set to null if the selected item is the
+        /// active level.
         /// </summary>
         public void RemoveLevelListItem()
         {
@@ -688,6 +692,8 @@ namespace ExpertSokoban
             // Fix the values of EditingIndex and PlayingIndex
             if (FActiveLevelIndex != null && FActiveLevelIndex.Value > Index)
                 FActiveLevelIndex = FActiveLevelIndex.Value - 1;
+            else if (FActiveLevelIndex != null && FActiveLevelIndex.Value == Index)
+                FActiveLevelIndex = null;
 
             // The level file has changed
             FModified = true;
@@ -728,20 +734,21 @@ namespace ExpertSokoban
             i = FindPrevNext(false, true);
 
             if (i == null)
-                PlayingIndex = null; // empty level pack?
+                PlayingIndex = null; // empty level pack
             else
                 PlayingIndex = i.Value;
         }
 
         /// <summary>
-        /// Activates the next level for playing. One can specify whether to activate
-        /// the very next level or the next unsolved level. Wraps around and starts from
-        /// the first level if necessary. If no next level is found, an appropriate
-        /// message is displayed to the user.
-        /// The function will switch the level nicely, i.e. ask the owner if it's OK.
+        /// Activates the next level for playing. Wraps around and starts from the first
+        /// level if necessary. If no next level is found, an appropriate message is
+        /// displayed to the user. The function will trigger the LevelActivating event
+        /// before activating the level.
+        /// </summary>
+        /// <param name="MustBeUnsolved">Specifies whether to activate the immediately
+        /// next level (false) or the next unsolved level (true).</param>
         /// <param name="CongratulateIfAll">If true, congratulates the user about having
         /// solved all levels if no more can be found.</param>
-        /// </summary>
         public void PlayNext(bool MustBeUnsolved, bool CongratulateIfAll)
         {
             int? i = FindPrevNext(MustBeUnsolved, true);
@@ -760,12 +767,13 @@ namespace ExpertSokoban
         }
 
         /// <summary>
-        /// Activates the previous level for playing. One can specify whether to activate
-        /// the very prev level or the prev unsolved level. Wraps around and starts from
-        /// the last level if necessary. If no prev level is found, an appropriate
-        /// message is displayed to the user.
-        /// The function will switch the level nicely, i.e. ask the owner if it's OK.
+        /// Activates the previous level for playing. Wraps around and starts from the
+        /// last level if necessary. If no previous level is found, an appropriate
+        /// message is displayed to the user. The function will trigger the
+        /// LevelActivating event before activating the level.
         /// </summary>
+        /// <param name="MustBeUnsolved">Specifies whether to activate the immediately
+        /// previous level (false) or the previous unsolved level (true).</param>
         public void PlayPrev(bool MustBeUnsolved)
         {
             int? i = FindPrevNext(MustBeUnsolved, false);
@@ -779,16 +787,18 @@ namespace ExpertSokoban
         }
 
         /// <summary>
-        /// Finds the next level in the specified direction. Can search for unsolved levels
-        /// only. Wraps around if necessary. Returns null if not found.
+        /// Returns the index of the next level in the specified direction, or null if
+        /// there is none.
         /// </summary>
+        /// <param name="MustBeUnsolved">If true, finds a level that has not yet been
+        /// solved by the current player, and returns null if all levels have been
+        /// solved. If false, returns the immediately next or previous level.</param>
+        /// <param name="Forward">If true, searches for the next level, otherwise the
+        /// previous.</param>
         private int? FindPrevNext(bool MustBeUnsolved, bool Forward)
         {
             if (Items.Count < 1)
-            {
-                Ut.InternalError("There are no levels.");
                 return null;
-            }
 
             int StartIndex = SelectedIndex == -1 ? (Forward ? Items.Count-1 : 0) : SelectedIndex;
             int i = StartIndex;
@@ -812,16 +822,15 @@ namespace ExpertSokoban
         #endregion
 
         /// <summary>
-        /// Selects the currently active level in the level list.
+        /// Selects the currently active level in the level list. If no level is
+        /// currently active, the selection does not change.
         /// </summary>
-        public void SelectCurrent()
+        public void SelectActiveLevel()
         {
             if (Items.Count == 0)
                 return;
 
-            if (FActiveLevelIndex == null)
-                SelectedIndex = 0;
-            else
+            if (FActiveLevelIndex != null)
                 SelectedIndex = FActiveLevelIndex.Value;
         }
 
@@ -829,9 +838,9 @@ namespace ExpertSokoban
         /// Determines (by asking the user if necessary) whether we are allowed to
         /// destroy the contents of the level list.
         /// </summary>
-        /// <param name="Title">Title bar caption to use in case any confirmation
+        /// <param name="Caption">Title bar caption to use in case any confirmation
         /// dialogs need to pop up.</param>
-        public bool MayDestroy(string Title)
+        public bool MayDestroy(string Caption)
         {
             // If no changes have been made, we're definitely allowed.
             if (!Modified)
@@ -840,7 +849,7 @@ namespace ExpertSokoban
             // Ask the user if they want to save their changes to the level file.
             int Result = DlgMessage.Show("You have made changes to "
                 + (ExpSokSettings.LevelFilename == null ? "(untitled)" : Path.GetFileName(ExpSokSettings.LevelFilename)) +
-                ". Would you like to save those changes?", Title, DlgType.Question,
+                ". Would you like to save those changes?", Caption, DlgType.Question,
                 "Save changes", "&Discard changes", "Cancel");
 
             // If they said "Cancel", bail out immediately.
@@ -862,10 +871,9 @@ namespace ExpertSokoban
 
         /// <summary>
         /// Determines whether we are allowed to delete the selected item from the
-        /// level list. If the user is currently playing the level, a
-        /// confirmation message asks whether they want to give up. If they are
-        /// currently editing it, a message asks whether they want to discard it. In
-        /// both of those cases, the main area is cleared.
+        /// level list. If the user is currently playing the level, a confirmation
+        /// message asks whether they want to give up. If they are currently editing it,
+        /// a message asks whether they want to discard it.
         /// </summary>
         /// <param name="NormalConfirmation">If true, a confirmation message will also
         /// appear if the user is not currently playing or editing the selected level.
@@ -886,8 +894,6 @@ namespace ExpertSokoban
                     "Are you sure you wish to do this?", "Delete level",
                     DlgType.Warning, "Discard changes", "Cancel") == 1)
                     return false;
-                
-                EditingIndex = null;
             }
             // Confirmation message if user is currently playing the selected level
             else if (Item is SokobanLevel && SelectedIndex == PlayingIndex)
@@ -896,8 +902,6 @@ namespace ExpertSokoban
                     "Are you sure you wish to give up?", "Delete level",
                     DlgType.Warning, "Give up", "Cancel") == 1)
                     return false;
-
-                PlayingIndex = null;
             }
             // Confirmation message if neither of the two cases apply
             else if (Item is SokobanLevel)
@@ -910,5 +914,12 @@ namespace ExpertSokoban
             return true;
         }
 
+        /// <summary>
+        /// Determines whether the selected level is the active level or not.
+        /// </summary>
+        public bool SelectedLevelActive()
+        {
+            return SelectedIndex == FActiveLevelIndex;
+        }
     }
 }

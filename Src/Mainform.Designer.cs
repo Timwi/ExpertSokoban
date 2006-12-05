@@ -182,14 +182,13 @@ namespace ExpertSokoban
             this.LevelList.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
             this.LevelList.IntegralHeight = false;
             this.LevelList.Location = new System.Drawing.Point(0, 85);
-            this.LevelList.Modified = false;
             this.LevelList.Name = "LevelList";
             this.LevelList.ScrollAlwaysVisible = true;
             this.LevelList.Size = new System.Drawing.Size(171, 397);
             this.LevelList.TabIndex = 2;
-            this.LevelList.LevelBeforeActivate += new RT.Util.ConfirmEventHandler(this.LevelList_LevelBeforeActivate);
+            this.LevelList.LevelActivating += new RT.Util.ConfirmEventHandler(this.LevelList_LevelActivating);
             this.LevelList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.LevelList_KeyDown);
-            this.LevelList.LevelAfterActivate += new System.EventHandler(this.LevelList_LevelAfterActivate);
+            this.LevelList.LevelActivated += new System.EventHandler(this.LevelList_LevelActivated);
             // 
             // LevelContextMenu
             // 

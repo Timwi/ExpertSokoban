@@ -113,26 +113,28 @@ namespace ExpertSokoban
                     Message = "The level is invalid because the number of pieces does not match the number of targets.";
                 StatusEdit.Text = Message;
             }
-            else
+            else if (!MainAreaNull)
             {
                 StatusMoves.Text = "Moves: " + MainArea.Moves;
                 StatusPushes.Text = "Pushes: " + MainArea.Pushes;
-                if (MainAreaSolved)
+                if (!MainAreaSolved)
                     StatusPieces.Text = "Remaining pieces: " + MainArea.Level.RemainingPieces;
             }
 
             // "Level" menu
             LevelNew.Enabled = true;
             LevelOpen.Enabled = true;
-            LevelSave.Enabled = LevelList.Modified || ExpSokSettings.LevelFilename == null;
+            LevelSave.Enabled = true;
             LevelSaveAs.Enabled = true;
 
             LevelUndo.Enabled = !MainAreaEditing;
             LevelRedo.Enabled = !MainAreaEditing;
             LevelRetry.Enabled = !MainAreaEditing;
 
-            LevelPrevious.Enabled = LevelNext.Enabled = !MainAreaEditing && LevelList.Items.Count > 0;
-            LevelPreviousUnsolved.Enabled = LevelNextUnsolved.Enabled = !MainAreaEditing && LevelList.Items.Count > 0;
+            LevelPrevious.Enabled = !MainAreaEditing && LevelList.Items.Count > 0;
+            LevelNext.Enabled = !MainAreaEditing && LevelList.Items.Count > 0;
+            LevelPreviousUnsolved.Enabled = !MainAreaEditing && LevelList.Items.Count > 0;
+            LevelNextUnsolved.Enabled = !MainAreaEditing && LevelList.Items.Count > 0;
 
             LevelChangePlayer.Enabled = true;
 
@@ -158,21 +160,23 @@ namespace ExpertSokoban
             ViewLevelList.Enabled = true;
             ViewToolStrip1.Enabled = LevelList.Visible;
             ViewToolStrip2.Enabled = LevelList.Visible;
-            ViewEditToolStrip.Enabled = MainAreaEditing;
+            ViewEditToolStrip.Enabled = LevelList.Visible && MainAreaEditing;
             ViewStatusBar.Enabled = true;
 
-            ViewMoveNo.Enabled =
-            ViewMoveLine.Enabled = 
-            ViewMoveDots.Enabled = 
-            ViewMoveArrows.Enabled = 
-            ViewPushNo.Enabled = 
-            ViewPushLine.Enabled = 
-            ViewPushDots.Enabled = 
-            ViewPushArrows.Enabled = !MainAreaEditing;
+            ViewMoveNo.Enabled = !MainAreaEditing && !MainAreaNull;
+            ViewMoveLine.Enabled = !MainAreaEditing && !MainAreaNull;
+            ViewMoveDots.Enabled = !MainAreaEditing && !MainAreaNull;
+            ViewMoveArrows.Enabled = !MainAreaEditing && !MainAreaNull;
+            ViewPushNo.Enabled = !MainAreaEditing && !MainAreaNull;
+            ViewPushLine.Enabled = !MainAreaEditing && !MainAreaNull;
+            ViewPushDots.Enabled = !MainAreaEditing && !MainAreaNull;
+            ViewPushArrows.Enabled = !MainAreaEditing && !MainAreaNull;
 
-            ViewEndPos.Enabled = !MainAreaEditing;
+            ViewEndPos.Enabled = !MainAreaEditing && !MainAreaNull;
 
             // Other stuff
+            LevelListToolStrip1.Visible = ViewToolStrip1.Checked;
+            LevelListToolStrip2.Visible = ViewToolStrip2.Checked;
             EditToolStrip.Visible = MainAreaEditing && ViewEditToolStrip.Checked;
 
             // Toolbar buttons
@@ -194,11 +198,11 @@ namespace ExpertSokoban
         /// Determines (by asking the user if necessary) whether we are allowed to
         /// destroy the contents of both the main area and the level list.
         /// </summary>
-        /// <param name="Title">Title bar caption to use in case any confirmation
+        /// <param name="Caption">Title bar caption to use in case any confirmation
         /// dialogs need to pop up.</param>
-        private bool MayDestroyEverything(string Title)
+        private bool MayDestroyEverything(string Caption)
         {
-            return MainArea.MayDestroy(Title) && LevelList.MayDestroy(Title);
+            return MainArea.MayDestroy(Caption) && LevelList.MayDestroy(Caption);
         }
 
         /// <summary>
@@ -277,7 +281,7 @@ namespace ExpertSokoban
             {
                 LevelList.RefreshItems();
                 LevelList.Focus();
-                LevelList.SelectCurrent();
+                LevelList.SelectActiveLevel();
             }
             else
                 MainArea.Focus();
@@ -286,7 +290,7 @@ namespace ExpertSokoban
         /// <summary>
         /// Called by the level list to verify that it is OK to switch levels.
         /// </summary>
-        private void LevelList_LevelBeforeActivate(object sender, ConfirmEventArgs e)
+        private void LevelList_LevelActivating(object sender, ConfirmEventArgs e)
         {
             e.ConfirmOK = MainArea.MayDestroy("Open level");
         }
@@ -294,7 +298,7 @@ namespace ExpertSokoban
         /// <summary>
         /// Current level changed in the LevelList - so we need to update a few things.
         /// </summary>
-        private void LevelList_LevelAfterActivate(object sender, EventArgs e)
+        private void LevelList_LevelActivated(object sender, EventArgs e)
         {
             if (LevelList.ActiveLevel == null)
             {
@@ -311,11 +315,11 @@ namespace ExpertSokoban
             else
             {
                 string Problem = Status == SokobanLevelStatus.NotEnclosed
-                            ? "The level is not completely enclosed by a wall."
-                            : "The number of pieces does not match the number of targets.";
+                    ? "The level is not completely enclosed by a wall."
+                    : "The number of pieces does not match the number of targets.";
                 if (DlgMessage.Show("The level could not be opened because it is invalid.\n\n" + Problem +
-                            "\n\nYou must edit the level in order to address this issue. " +
-                            "Would you like to edit the level now?", "Open level",
+                    "\n\nYou must edit the level in order to address this issue. " +
+                    "Would you like to edit the level now?", "Open level",
                     DlgType.Error, "Edit level", "Cancel") == 0)
                 {
                     MainArea.Modified = false;
@@ -354,10 +358,7 @@ namespace ExpertSokoban
         /// </summary>
         private void LevelList_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Shift || e.Control || e.Alt)
-                return;
-
-            if (e.KeyCode == Keys.Escape)
+            if (e.KeyCode == Keys.Escape && e.Modifiers == 0)
                 ShowLevelList(false);
         }
 
@@ -390,8 +391,8 @@ namespace ExpertSokoban
         }
 
         /// <summary>
-        /// Handles the "Open level file" action. Allows the user to load a text file
-        /// containing Sokoban levels.
+        /// Invoked by "Level => Open level file" or the relevant toolbar button.
+        /// Allows the user to load a text file containing Sokoban levels.
         /// </summary>
         private void LevelOpen_Click(object sender, EventArgs e)
         {
@@ -409,8 +410,9 @@ namespace ExpertSokoban
         }
 
         /// <summary>
-        /// Saves the level pack to a file. If name specified then just saves it,
-        /// otherwise invokes LevelSaveAs.
+        /// Invoked by "Level => Save level file" or the relevant toolbar button.
+        /// Saves the level pack to a file, using the existing filename if it exists,
+        /// or popping up a Save As dialog if it doesn't.
         /// </summary>
         private void LevelSave_Click(object sender, EventArgs e)
         {
@@ -418,6 +420,7 @@ namespace ExpertSokoban
         }
 
         /// <summary>
+        /// Invoked by "Level => Save level file as" or the relevant toolbar button.
         /// Asks the user where to save the level pack, then saves it there.
         /// </summary>
         private void LevelSaveAs_Click(object sender, EventArgs e)
@@ -491,20 +494,13 @@ namespace ExpertSokoban
         /// </summary>
         private void LevelChangePlayer_Click(object sender, EventArgs e)
         {
-            //if (!MainArea.MayDestroy("Change player"))
-            //    return;
-
             string Result = InputBox.GetLine("Please choose a name which will be used to identify " +
                 "you in highscore tables.", ExpSokSettings.PlayerName, "Expert Sokoban");
             if (Result == null)
                 return;
 
-            // Yes, we really do just want to change the name.
-
-            //MainArea.Modified = false;
             ExpSokSettings.PlayerName = Result;
             LevelList.RefreshItems();
-            //LevelList.PlayFirstUnsolved();
         }
 
         /// <summary>
@@ -533,7 +529,7 @@ namespace ExpertSokoban
         }
 
         /// <summary>
-        /// Invoked by "Edit => Edit level". Switches the application into edit move
+        /// Invoked by "Edit => Edit level". Switches the application into edit mode
         /// and lets the user edit the level currently selected in the level list.
         /// </summary>
         private void EditEdit_Click(object sender, EventArgs e)
@@ -567,8 +563,8 @@ namespace ExpertSokoban
         {
             if (!LevelList.MayDeleteSelectedItem(false))
                 return;
-
-            MainArea.Clear();
+            if (LevelList.SelectedLevelActive())
+                MainArea.Clear();
             EditCopy_Click(sender, e);
             LevelList.RemoveLevelListItem();
         }
@@ -604,7 +600,8 @@ namespace ExpertSokoban
         {
             if (!LevelList.MayDeleteSelectedItem(true))
                 return;
-
+            if (LevelList.SelectedLevelActive())
+                MainArea.Clear();
             LevelList.RemoveLevelListItem();
         }
 
@@ -634,7 +631,13 @@ namespace ExpertSokoban
 
             SokobanLevel Level = MainArea.Level.Clone();
             Level.EnsureSpace(0);
+            
+            // LevelList.EditAccept() will trigger LevelList_LevelActivating(), which in
+            // turn will ask the user if they want to discard their changes to the level.
+            // Since we don't want this, we have to set the Modified flag for the MainArea
+            // to false before calling LevelList.EditAccept().
             MainArea.Modified = false;
+            
             LevelList.EditAccept(Level);
         }
 

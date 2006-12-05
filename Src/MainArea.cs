@@ -1014,7 +1014,7 @@ namespace ExpertSokoban
             // No piece is selected after the push
             SelectedPiece = null;
 
-            // Fire the MoveMade event
+            // Level has now been "modified" (i.e. player made a move)
             FModified = true;
 
             // Did this push solve the level?
@@ -1403,22 +1403,20 @@ namespace ExpertSokoban
         /// Determines (by asking the user if necessary) whether we are allowed to
         /// destroy the contents of the main area.
         /// </summary>
-        /// <param name="Title">Title bar caption to use in case any confirmation
+        /// <param name="Caption">Title bar caption to use in case any confirmation
         /// dialogs need to pop up.</param>
-        public bool MayDestroy(string Title)
+        public bool MayDestroy(string Caption)
         {
             // If we're not playing or editing, we're definitely allowed.
-            if (State == MainAreaState.Solved ||
-                State == MainAreaState.Null ||
-                !Modified)
+            if (State == MainAreaState.Solved || State == MainAreaState.Null || !FModified)
                 return true;
 
             // Ask the user the appropriate question.
             return State == MainAreaState.Editing
                 ? DlgMessage.Show("Are you sure you wish to discard your changes to the level you're editing?",
-                    Title, DlgType.Warning, "Discard changes", "Cancel") == 0
+                    Caption, DlgType.Warning, "Discard changes", "Cancel") == 0
                 : DlgMessage.Show("Are you sure you wish to give up the current level?",
-                    Title, DlgType.Warning, "Give up", "Cancel") == 0;
+                    Caption, DlgType.Warning, "Give up", "Cancel") == 0;
         }
     }
 }
