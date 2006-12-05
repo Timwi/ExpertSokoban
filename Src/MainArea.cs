@@ -8,6 +8,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using RT.Util;
 using RT.Util.Controls;
+using RT.Util.Dialogs;
 
 namespace ExpertSokoban
 {
@@ -200,9 +201,25 @@ namespace ExpertSokoban
     public class MainArea : DoubleBufferedPanel
     {
         /// <summary>
-        /// (read-only) The current state of the main area.
+        /// Gets the current state of the main area.
         /// </summary>
         public MainAreaState State { get { return FState; } }
+
+        /// <summary>
+        /// If playing, true if the player made any moves. If editing, true
+        /// if any changes have been made to the level.
+        /// </summary>
+        public bool Modified
+        {
+            get { return FModified; }
+            set
+            {
+                if (value)
+                    Ut.InternalError("Not allowed to set Modified to true");
+                else
+                    FModified = false;
+            }
+        }
 
         /// <summary>
         /// Gets or sets how the move path should be displayed while selecting a
@@ -259,25 +276,9 @@ namespace ExpertSokoban
         public int Pushes { get { return FPushes; } }
 
         /// <summary>
-        /// Triggers when the player makes a move (i.e. pushes a piece).
-        /// </summary>
-        public event EventHandler MoveMade;
-
-        /// <summary>
-        /// Triggers for every change a player makes to a level while editing it.
-        /// </summary>
-        public event EventHandler LevelChanged;
-
-        /// <summary>
         /// Triggers when the player solves (completes) a level.
         /// </summary>
         public event EventHandler LevelSolved;
-
-        /// <summary>
-        /// Triggers when the player presses the Enter key while the MainArea is in
-        /// Solved state.
-        /// </summary>
-        public event EventHandler EnterPressedWhileSolved;
 
         /// <summary>
         /// The currently displayed level. Value may be invalid if State == Null.
@@ -307,6 +308,11 @@ namespace ExpertSokoban
         /// The state the Main Area is in.
         /// </summary>
         private MainAreaState FState;
+
+        /// <summary>
+        /// Indicates whether a move has been made or any changed to the level being edited.
+        /// </summary>
+        private bool FModified;
 
         /// <summary>
         /// The currently selected tool for editing.
@@ -882,8 +888,7 @@ namespace ExpertSokoban
                 {
                     FLevel.SetCell(Cell, CellType == SokobanCell.Wall ? SokobanCell.Blank : SokobanCell.Wall);
                     SndEditorClick.Play();
-                    if (LevelChanged != null)
-                        LevelChanged(this, new EventArgs());
+                    FModified = true;
                 }
                 else
                     SndMeep.Play();
@@ -898,8 +903,7 @@ namespace ExpertSokoban
                         CellType == SokobanCell.Target        ? SokobanCell.PieceOnTarget :
                                                                 SokobanCell.Blank);
                     SndPiecePlaced.Play();
-                    if (LevelChanged != null)
-                        LevelChanged(this, new EventArgs());
+                    FModified = true;
                 }
                 else
                     SndMeep.Play();
@@ -914,8 +918,7 @@ namespace ExpertSokoban
                         CellType == SokobanCell.Target        ? SokobanCell.Blank :
                                                                 SokobanCell.PieceOnTarget);
                     SndPiecePlaced.Play();
-                    if (LevelChanged != null)
-                        LevelChanged(this, new EventArgs());
+                    FModified = true;
                 }
                 else
                     SndMeep.Play();
@@ -930,8 +933,7 @@ namespace ExpertSokoban
                     FLevel.SetSokobanPos(Cell);
                     Renderer.RenderCell(Graphics.FromImage(Buffer), PrevSokobanPos);
                     SndPiecePlaced.Play();
-                    if (LevelChanged != null)
-                        LevelChanged(this, new EventArgs());
+                    FModified = true;
                 }
                 else
                     SndMeep.Play();
@@ -1013,8 +1015,7 @@ namespace ExpertSokoban
             SelectedPiece = null;
 
             // Fire the MoveMade event
-            if (MoveMade != null)
-                MoveMade(this, new EventArgs());
+            FModified = true;
 
             // Did this push solve the level?
             if (FLevel.Solved)
@@ -1058,6 +1059,7 @@ namespace ExpertSokoban
             if (State == MainAreaState.Push)
                 return;
 
+            FModified = false;
             FLevel = Level.Clone();
             FLevel.EnsureSpace(1);
             Renderer = new Renderer(FLevel, ClientSize);
@@ -1337,22 +1339,16 @@ namespace ExpertSokoban
         {
             if (e.Control || e.Alt)
                 return;
-
-            // Enter or Space in Solved state fires the EnterPressedWhileSolved event
-            if (FState == MainAreaState.Solved && (e.KeyCode == Keys.Space || e.KeyCode == Keys.Enter) &&
-                EnterPressedWhileSolved != null)
-                EnterPressedWhileSolved(this, new EventArgs());
-
             if (FState == MainAreaState.Solved || FState == MainAreaState.Null)
                 return;
 
             // Escape: if a piece is selected, deselect it
-            if (e.KeyCode == Keys.Escape && (e.KeyCode & Keys.Shift) != Keys.Shift &&
-                FState == MainAreaState.Push && SelectedPiece != null)
+            if (e.KeyCode == Keys.Escape && e.Modifiers == 0
+                && FState == MainAreaState.Push && SelectedPiece != null)
                 Deselect();
 
             // Escape: remove the keyboard cursor
-            else if (e.KeyCode == Keys.Escape && (e.KeyCode & Keys.Shift) != Keys.Shift)
+            else if (e.KeyCode == Keys.Escape && e.Modifiers == 0)
             {
                 CursorPos = null;
                 Invalidate();
@@ -1401,6 +1397,28 @@ namespace ExpertSokoban
             // (if the selected destination is not valid, this will automatically meep)
             else if (e.KeyCode == Keys.Enter && CursorPos != null)
                 ExecutePush();
+        }
+
+        /// <summary>
+        /// Determines (by asking the user if necessary) whether we are allowed to
+        /// destroy the contents of the main area.
+        /// </summary>
+        /// <param name="Title">Title bar caption to use in case any confirmation
+        /// dialogs need to pop up.</param>
+        public bool MayDestroy(string Title)
+        {
+            // If we're not playing or editing, we're definitely allowed.
+            if (State == MainAreaState.Solved ||
+                State == MainAreaState.Null ||
+                !Modified)
+                return true;
+
+            // Ask the user the appropriate question.
+            return State == MainAreaState.Editing
+                ? DlgMessage.Show("Are you sure you wish to discard your changes to the level you're editing?",
+                    Title, DlgType.Warning, "Discard changes", "Cancel") == 0
+                : DlgMessage.Show("Are you sure you wish to give up the current level?",
+                    Title, DlgType.Warning, "Give up", "Cancel") == 0;
         }
     }
 }
