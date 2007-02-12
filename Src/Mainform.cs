@@ -244,6 +244,9 @@ namespace ExpertSokoban
         /// </summary>
         private void MainArea_LevelSolved(object sender, EventArgs e)
         {
+            // Set the LevelListBox to JustSolved state
+            LevelList.JustSolved();
+            
             // If the user hasn't chosen a name for themselves yet, ask them
             if (ExpSokSettings.PlayerName == null || ExpSokSettings.PlayerName.Length == 0)
                 ExpSokSettings.PlayerName = InputBox.GetLine("Congratulations! You've solved the current level.\n" +

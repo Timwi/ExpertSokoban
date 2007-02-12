@@ -22,7 +22,7 @@ namespace ExpertSokoban
         /// <summary>
         /// Encapsulates the state of the level list box.
         /// </summary>
-        public enum LevelListBoxState { Playing, Editing }
+        public enum LevelListBoxState { Playing, JustSolved, Editing }
 
         /// <summary>
         /// Determines whether the user is playing or editing levels.
@@ -117,7 +117,8 @@ namespace ExpertSokoban
         /// </summary>
         private int? PlayingIndex
         {
-            get { return FState == LevelListBoxState.Playing ? (int?)FActiveLevelIndex : null; }
+            get { return FState == LevelListBoxState.Playing ? (int?)FActiveLevelIndex : 
+                         FState == LevelListBoxState.JustSolved ? (int?)FActiveLevelIndex : null; }
             set { FState = LevelListBoxState.Playing; ActiveLevelIndex = value; }
         }
 
@@ -196,6 +197,7 @@ namespace ExpertSokoban
             if (SelectedItem is SokobanLevel)
             {
                 ActiveLevelIndex = SelectedIndex;
+                FState = LevelListBoxState.Playing;
             }
             else
             {
@@ -290,16 +292,18 @@ namespace ExpertSokoban
                             ExpSokSettings.Highscores[Key][ExpSokSettings.PlayerName].BestPushScore.E1 + "/" +
                             ExpSokSettings.Highscores[Key][ExpSokSettings.PlayerName].BestPushScore.E2 + ")"
                         :   "";
-                bool IsPlaying = (e.Index == PlayingIndex);
+                bool IsPlaying = (e.Index == PlayingIndex) && State == LevelListBoxState.Playing;
+                bool IsJustSolved = (e.Index == PlayingIndex) && State == LevelListBoxState.JustSolved;
                 bool IsEditing = (e.Index == EditingIndex);
 
                 int UseHeight = e.Bounds.Height-10;
                 SizeF MessageSize1 = new SizeF(0, 0);
                 SizeF MessageSize2 = new SizeF(0, 0);
-                if (IsPlaying || IsEditing)
+                if (IsPlaying || IsEditing || IsJustSolved)
                 {
                     MessageSize1 = e.Graphics.MeasureString(
-                        IsEditing ? "Currently editing" : "Currently playing", Font);
+                        IsEditing ? "Currently editing" :
+                        IsJustSolved ? "Just solved" : "Currently playing", Font);
                     MessageSize1.Height += 5;
                 }
                 if (IsSolved)
@@ -323,7 +327,7 @@ namespace ExpertSokoban
                         ),
                         e.Bounds
                     );
-                if (IsPlaying || IsEditing)
+                if (IsPlaying || IsEditing || IsJustSolved)
                 {
                     e.Graphics.FillRectangle(
                         new LinearGradientBrush(
@@ -336,7 +340,7 @@ namespace ExpertSokoban
                         new RectangleF(e.Bounds.Left+5, e.Bounds.Top+5, e.Bounds.Width-10, MessageSize1.Height-5)
                     );
                     e.Graphics.DrawString(
-                        IsEditing ? "Currently editing" : "Currently playing",
+                        IsEditing ? "Currently editing" : IsJustSolved ? "Just Solved" : "Currently playing",
                         Font,
                         new SolidBrush(Color.Black),
                         e.Bounds.Left + e.Bounds.Width/2 - MessageSize1.Width/2,
@@ -421,7 +425,7 @@ namespace ExpertSokoban
                 SokobanLevel Level = (SokobanLevel)Items[e.Index];
                 e.ItemHeight = (ClientSize.Width-10)*Level.Height/Level.Width + 10;
 
-                if (e.Index == PlayingIndex)
+                if (e.Index == PlayingIndex)    // also covers "Just Solved"
                     e.ItemHeight += (int)e.Graphics.MeasureString("Currently playing", Font).Height + 5;
                 else if (e.Index == EditingIndex)
                     e.ItemHeight += (int)e.Graphics.MeasureString("Currently editing", Font).Height + 5;
@@ -737,6 +741,18 @@ namespace ExpertSokoban
                 PlayingIndex = null; // empty level pack
             else
                 PlayingIndex = i.Value;
+        }
+
+        /// <summary>
+        /// If State is Playing, sets State to JustSolved.
+        /// </summary>
+        public void JustSolved()
+        {
+            if (State != LevelListBoxState.Playing)
+                return;
+
+            FState = LevelListBoxState.JustSolved;
+            RefreshItems();
         }
 
         /// <summary>
