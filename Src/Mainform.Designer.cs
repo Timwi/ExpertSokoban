@@ -35,6 +35,7 @@ namespace ExpertSokoban
             this.LevelContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.ContextPlay = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextEdit = new System.Windows.Forms.ToolStripMenuItem();
+            this.ContextHighscores = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.ContextNewLevel = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextNewComment = new System.Windows.Forms.ToolStripMenuItem();
@@ -79,6 +80,7 @@ namespace ExpertSokoban
             this.LevelUndo = new System.Windows.Forms.ToolStripMenuItem();
             this.LevelRedo = new System.Windows.Forms.ToolStripMenuItem();
             this.LevelRetry = new System.Windows.Forms.ToolStripMenuItem();
+            this.LevelHighscores = new System.Windows.Forms.ToolStripMenuItem();
             this.LevelSep2 = new System.Windows.Forms.ToolStripSeparator();
             this.LevelPrevious = new System.Windows.Forms.ToolStripMenuItem();
             this.LevelNext = new System.Windows.Forms.ToolStripMenuItem();
@@ -146,8 +148,6 @@ namespace ExpertSokoban
             this.LevelListSplitter = new System.Windows.Forms.Splitter();
             this.BugWorkaroundTimer = new System.Windows.Forms.Timer(this.components);
             this.UpdateControlsTimer = new System.Windows.Forms.Timer(this.components);
-            this.LevelHighscores = new System.Windows.Forms.ToolStripMenuItem();
-            this.ContextHighscores = new System.Windows.Forms.ToolStripMenuItem();
             this.LevelListPanel.SuspendLayout();
             this.LevelContextMenu.SuspendLayout();
             this.EditToolStrip.SuspendLayout();
@@ -210,7 +210,7 @@ namespace ExpertSokoban
             this.ContextSep3,
             this.ContextHide});
             this.LevelContextMenu.Name = "LevelContextMenu";
-            this.LevelContextMenu.Size = new System.Drawing.Size(228, 242);
+            this.LevelContextMenu.Size = new System.Drawing.Size(228, 264);
             // 
             // ContextPlay
             // 
@@ -227,6 +227,14 @@ namespace ExpertSokoban
             this.ContextEdit.Size = new System.Drawing.Size(227, 22);
             this.ContextEdit.Text = "&Edit this level";
             this.ContextEdit.Click += new System.EventHandler(this.EditEdit_Click);
+            // 
+            // ContextHighscores
+            // 
+            this.ContextHighscores.Name = "ContextHighscores";
+            this.ContextHighscores.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.H)));
+            this.ContextHighscores.Size = new System.Drawing.Size(227, 22);
+            this.ContextHighscores.Text = "Show &highscores";
+            this.ContextHighscores.Click += new System.EventHandler(this.LevelHighscores_Click);
             // 
             // ContextSep1
             // 
@@ -631,6 +639,14 @@ namespace ExpertSokoban
             this.LevelRetry.Size = new System.Drawing.Size(225, 22);
             this.LevelRetry.Text = "&Retry level";
             this.LevelRetry.Click += new System.EventHandler(this.LevelRetry_Click);
+            // 
+            // LevelHighscores
+            // 
+            this.LevelHighscores.Name = "LevelHighscores";
+            this.LevelHighscores.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.H)));
+            this.LevelHighscores.Size = new System.Drawing.Size(225, 22);
+            this.LevelHighscores.Text = "Show &highscores";
+            this.LevelHighscores.Click += new System.EventHandler(this.LevelHighscores_Click);
             // 
             // LevelSep2
             // 
@@ -1191,21 +1207,6 @@ namespace ExpertSokoban
             this.UpdateControlsTimer.Enabled = true;
             this.UpdateControlsTimer.Interval = 10;
             this.UpdateControlsTimer.Tick += new System.EventHandler(this.UpdateControlsTimer_Tick);
-            // 
-            // LevelHighscores
-            // 
-            this.LevelHighscores.Name = "LevelHighscores";
-            this.LevelHighscores.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.H)));
-            this.LevelHighscores.Size = new System.Drawing.Size(225, 22);
-            this.LevelHighscores.Text = "Show &highscores";
-            this.LevelHighscores.Click += new System.EventHandler(this.LevelHighscores_Click);
-            // 
-            // ContextHighscores
-            // 
-            this.ContextHighscores.Name = "ContextHighscores";
-            this.ContextHighscores.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.H)));
-            this.ContextHighscores.Size = new System.Drawing.Size(227, 22);
-            this.ContextHighscores.Text = "Show &highscores";
             // 
             // Mainform
             // 

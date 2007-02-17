@@ -100,6 +100,22 @@ namespace ExpertSokoban
         }
 
         /// <summary>
+        /// Gets the currently selected level, or null if the currently selected item
+        /// is not a level.
+        /// </summary>
+        public SokobanLevel SelectedLevel
+        {
+            get
+            {
+                if (SelectedIndex < 0)
+                    return null;
+                if (Items[SelectedIndex] is SokobanLevel)
+                    return (SokobanLevel)Items[SelectedIndex];
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the index of the item that is currently being edited.
         /// Comparing this to an integer index is equivalent to also verifying that state is Editing.
         /// Setting this is equivalent to setting both State and FActiveLevelIndex.

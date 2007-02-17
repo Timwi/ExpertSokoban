@@ -30,14 +30,15 @@ namespace ExpertSokoban
         {
             this.HighscoresTable = new System.Windows.Forms.TableLayoutPanel();
             this.OKButton = new System.Windows.Forms.Button();
+            this.LevelPicture = new System.Windows.Forms.PictureBox();
             this.HighscoresTable.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.LevelPicture)).BeginInit();
             this.SuspendLayout();
             // 
             // HighscoresTable
             // 
             this.HighscoresTable.AutoSize = true;
             this.HighscoresTable.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.HighscoresTable.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.HighscoresTable.ColumnCount = 1;
             this.HighscoresTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.HighscoresTable.Controls.Add(this.OKButton, 0, 0);
@@ -54,13 +55,24 @@ namespace ExpertSokoban
             // 
             this.OKButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.OKButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.OKButton.Location = new System.Drawing.Point(183, 241);
+            this.OKButton.Location = new System.Drawing.Point(182, 240);
+            this.OKButton.Margin = new System.Windows.Forms.Padding(5);
             this.OKButton.Name = "OKButton";
             this.OKButton.Size = new System.Drawing.Size(100, 23);
             this.OKButton.TabIndex = 0;
             this.OKButton.Text = "OK";
             this.OKButton.UseVisualStyleBackColor = true;
             this.OKButton.Click += new System.EventHandler(this.OKButton_Click);
+            // 
+            // LevelPicture
+            // 
+            this.LevelPicture.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.LevelPicture.Location = new System.Drawing.Point(0, 0);
+            this.LevelPicture.Name = "LevelPicture";
+            this.LevelPicture.Size = new System.Drawing.Size(200, 50);
+            this.LevelPicture.TabIndex = 1;
+            this.LevelPicture.TabStop = false;
+            this.LevelPicture.Paint += new System.Windows.Forms.PaintEventHandler(this.LevelPicture_Paint);
             // 
             // HighscoresForm
             // 
@@ -70,13 +82,15 @@ namespace ExpertSokoban
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(292, 273);
+            this.Controls.Add(this.LevelPicture);
             this.Controls.Add(this.HighscoresTable);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "HighscoresForm";
-            this.Text = "HighscoresForm";
+            this.Text = "Highscores";
             this.HighscoresTable.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.LevelPicture)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -86,5 +100,6 @@ namespace ExpertSokoban
 
         private System.Windows.Forms.TableLayoutPanel HighscoresTable;
         private System.Windows.Forms.Button OKButton;
+        private System.Windows.Forms.PictureBox LevelPicture;
     }
 }
