@@ -5,10 +5,11 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using RT.Util.Forms;
 
 namespace ExpertSokoban
 {
-    public partial class HighscoresForm : Form
+    public partial class HighscoresForm : ManagedForm
     {
         private SokobanLevel CurLevel;
 

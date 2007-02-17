@@ -88,6 +88,8 @@ namespace ExpertSokoban
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "HighscoresForm";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             this.Text = "Highscores";
             this.HighscoresTable.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.LevelPicture)).EndInit();
