@@ -58,5 +58,18 @@ namespace ExpertSokoban
                 BestSumScore.E1 + "/" +
                 BestSumScore.E2 + ")";
         }
+
+        public int CompareTo(Highscore Other)
+        {
+            if (BestPushScore.E1 < Other.BestPushScore.E1)
+                return -1;
+            if (BestPushScore.E1 > Other.BestPushScore.E1)
+                return 1;
+            if (BestPushScore.E2 < Other.BestPushScore.E2)
+                return -1;
+            if (BestPushScore.E2 > Other.BestPushScore.E2)
+                return 1;
+            return 0;
+        }
     }
 }

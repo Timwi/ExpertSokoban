@@ -844,5 +844,21 @@ namespace ExpertSokoban
 
         #endregion
 
+        private void LevelHighscores_Click(object sender, EventArgs e)
+        {
+            if (LevelList.ActiveLevel != null)
+            {
+                string l = LevelList.ActiveLevel.ToString();
+                if (!ExpSokSettings.Highscores.ContainsKey(l))
+                    DlgMessage.ShowInfo("The selected level does not have any highscores associated with it yet.",
+                        "No highscores for this level");
+                else
+                {
+                    HighscoresForm hsf = new HighscoresForm();
+                    hsf.SetContents(ExpSokSettings.Highscores[l]);
+                    hsf.ShowDialog();
+                }
+            }
+        }
     }
 }
