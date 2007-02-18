@@ -43,7 +43,7 @@ namespace ExpertSokoban
         /// </summary>
         public static bool DisplayLevelList
         {
-            get { return PrgSettings.Store.Get("ExpSok.DisplayLevelList", false); }
+            get { return PrgSettings.Store.Get("ExpSok.DisplayLevelList", true); }
             set { PrgSettings.Store.Set("ExpSok.DisplayLevelList", value); }
         }
 
@@ -61,7 +61,7 @@ namespace ExpertSokoban
         /// </summary>
         public static bool DisplayEditToolStrip
         {
-            get { return PrgSettings.Store.Get("ExpSok.DisplayEditToolStrip", true); }
+            get { return PrgSettings.Store.Get("ExpSok.DisplayEditToolStrip", false); }
             set { PrgSettings.Store.Set("ExpSok.DisplayEditToolStrip", value); }
         }
 
@@ -107,7 +107,7 @@ namespace ExpertSokoban
         /// </summary>
         public static string LevelFilename
         {
-            get { return PrgSettings.Store.Get("ExpSok.LevelFilename", (string)null); }
+            get { return PrgSettings.Store.Get("ExpSok.LevelFilename", "OriginalLevels.txt"); }
             set { PrgSettings.Store.Set("ExpSok.LevelFilename", value); }
         }
 

@@ -177,8 +177,8 @@ namespace ExpertSokoban
 
             // Toolbar visibility
             PlayToolStrip.Visible = ViewPlayToolStrip.Checked;
-            Edit1ToolStrip.Visible = ViewEditToolStrip.Checked;
             Edit2ToolStrip.Visible = ViewEditToolStrip.Checked;
+            Edit1ToolStrip.Visible = ViewEditToolStrip.Checked;
             EditLevelToolStrip.Visible = MainAreaEditing && ViewEditLevelToolStrip.Checked;
 
             // Toolbar buttons
