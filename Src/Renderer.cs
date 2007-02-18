@@ -402,19 +402,19 @@ namespace ExpertSokoban
             switch (ImageType)
             {
                 case SokobanImage.Piece:
-                    return Properties.Resources.ImgPiece;
+                    return Properties.Resources.Skin_Piece;
                 case SokobanImage.PieceOnTarget:
-                    return Properties.Resources.ImgPieceTarget;
+                    return Properties.Resources.Skin_PieceTarget;
                 case SokobanImage.PieceSelected:
-                    return Properties.Resources.ImgPieceSelected;
+                    return Properties.Resources.Skin_PieceSelected;
                 case SokobanImage.Sokoban:
-                    return Properties.Resources.ImgSokoban;
+                    return Properties.Resources.Skin_Sokoban;
                 case SokobanImage.Wall:
-                    return Properties.Resources.ImgWall;
+                    return Properties.Resources.Skin_Wall;
                 case SokobanImage.Target:
-                    return Properties.Resources.ImgTarget;
+                    return Properties.Resources.Skin_Target;
                 case SokobanImage.TargetUnderPiece:
-                    return Properties.Resources.ImgTargetUnder;
+                    return Properties.Resources.Skin_TargetUnder;
                 default:
                     throw new Exception("Unknown Sokoban image type");
             }

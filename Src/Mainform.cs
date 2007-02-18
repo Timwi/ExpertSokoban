@@ -32,9 +32,9 @@ namespace ExpertSokoban
             InitializeComponent();
 
             // Restore saved settings
-            LevelListToolStrip1.Visible = ViewToolStrip1.Checked = ExpSokSettings.DisplayToolStrip1;
-            LevelListToolStrip2.Visible = ViewToolStrip2.Checked = ExpSokSettings.DisplayToolStrip2;
+            ViewPlayToolStrip.Checked = ExpSokSettings.DisplayPlayToolStrip;
             ViewEditToolStrip.Checked = ExpSokSettings.DisplayEditToolStrip;
+            ViewEditLevelToolStrip.Checked = ExpSokSettings.DisplayEditLevelToolStrip;
             StatusBar.Visible = ViewStatusBar.Checked = ExpSokSettings.DisplayStatusBar;
             LevelListPanel.Width = ExpSokSettings.LevelListWidth < 50 ? 50 : ExpSokSettings.LevelListWidth;
             MovePathOptions.SetValue(ExpSokSettings.MoveDrawMode);
@@ -61,6 +61,7 @@ namespace ExpertSokoban
             }
 
             LevelList.PlayFirstUnsolved();
+            UpdateControls();
         }
 
         /// <summary>
@@ -158,9 +159,9 @@ namespace ExpertSokoban
 
             // "View" menu
             ViewLevelList.Enabled = true;
-            ViewToolStrip1.Enabled = LevelList.Visible;
-            ViewToolStrip2.Enabled = LevelList.Visible;
-            ViewEditToolStrip.Enabled = LevelList.Visible && MainAreaEditing;
+            ViewPlayToolStrip.Enabled = LevelList.Visible;
+            ViewEditToolStrip.Enabled = LevelList.Visible;
+            ViewEditLevelToolStrip.Enabled = LevelList.Visible && MainAreaEditing;
             ViewStatusBar.Enabled = true;
 
             ViewMoveNo.Enabled = !MainAreaEditing && !MainAreaNull;
@@ -174,14 +175,20 @@ namespace ExpertSokoban
 
             ViewEndPos.Enabled = !MainAreaEditing && !MainAreaNull;
 
-            // Other stuff
-            LevelListToolStrip1.Visible = ViewToolStrip1.Checked;
-            LevelListToolStrip2.Visible = ViewToolStrip2.Checked;
-            EditToolStrip.Visible = MainAreaEditing && ViewEditToolStrip.Checked;
+            // Toolbar visibility
+            PlayToolStrip.Visible = ViewPlayToolStrip.Checked;
+            Edit1ToolStrip.Visible = ViewEditToolStrip.Checked;
+            Edit2ToolStrip.Visible = ViewEditToolStrip.Checked;
+            EditLevelToolStrip.Visible = MainAreaEditing && ViewEditLevelToolStrip.Checked;
 
             // Toolbar buttons
+            LevelToolNext.Enabled = LevelNext.Enabled;
+            LevelToolNextUnsolved.Enabled = LevelNextUnsolved.Enabled;
+            LevelToolPrev.Enabled = LevelPrevious.Enabled;
+            LevelToolPrevUnsolved.Enabled = LevelPreviousUnsolved.Enabled;
             LevelToolNew.Enabled = LevelNew.Enabled;
             LevelToolOpen.Enabled = LevelOpen.Enabled;
+            LevelToolOpen2.Enabled = LevelOpen.Enabled;
             LevelToolSave.Enabled = LevelSave.Enabled;
             LevelToolNewLevel.Enabled = EditCreateLevel.Enabled;
             LevelToolEdit.Enabled = EditEdit.Enabled;
@@ -190,8 +197,6 @@ namespace ExpertSokoban
             LevelToolCopy.Enabled = EditCopy.Enabled;
             LevelToolPaste.Enabled = EditPaste.Enabled;
             LevelToolDelete.Enabled = EditDelete.Enabled;
-            LevelToolNext.Enabled = LevelNext.Enabled;
-            LevelToolNextUnsolved.Enabled = LevelNextUnsolved.Enabled;
         }
 
         /// <summary>
@@ -683,31 +688,31 @@ namespace ExpertSokoban
         }
 
         /// <summary>
-        /// Invoked by "View => Display file toolbar". Shows/hides the file toolbar.
+        /// Invoked by "View => Display playing toolbar". Shows/hides the playing toolbar.
         /// </summary>
-        private void ViewToolStrip1_Click(object sender, EventArgs e)
+        private void ViewPlayToolStrip_Click(object sender, EventArgs e)
         {
-            ViewToolStrip1.Checked = !ViewToolStrip1.Checked;
-            LevelListToolStrip1.Visible = ExpSokSettings.DisplayToolStrip1 = ViewToolStrip1.Checked;
+            ViewPlayToolStrip.Checked = !ViewPlayToolStrip.Checked;
+            Edit1ToolStrip.Visible = ExpSokSettings.DisplayPlayToolStrip = ViewPlayToolStrip.Checked;
         }
 
         /// <summary>
-        /// Invoked by "View => Display operations toolbar". Shows/hides the operations
-        /// toolbar.
-        /// </summary>
-        private void ViewToolStrip2_Click(object sender, EventArgs e)
-        {
-            ViewToolStrip2.Checked = !ViewToolStrip2.Checked;
-            LevelListToolStrip2.Visible = ExpSokSettings.DisplayToolStrip2 = ViewToolStrip2.Checked;
-        }
-
-        /// <summary>
-        /// Invoked by "View => Display edit toolbar". Shows/hides the edit toolbar.
+        /// Invoked by "View => Display editing toolbars (level pack)". Shows/hides the edit toolbar.
         /// </summary>
         private void ViewEditToolStrip_Click(object sender, EventArgs e)
         {
             ViewEditToolStrip.Checked = !ViewEditToolStrip.Checked;
-            EditToolStrip.Visible = ExpSokSettings.DisplayEditToolStrip = ViewEditToolStrip.Checked;
+            EditLevelToolStrip.Visible = ExpSokSettings.DisplayEditToolStrip = ViewEditToolStrip.Checked;
+        }
+
+        /// <summary>
+        /// Invoked by "View => Display editing toolbar (level)". Shows/hides the operations
+        /// toolbar.
+        /// </summary>
+        private void ViewEditLevelToolStrip_Click(object sender, EventArgs e)
+        {
+            ViewEditLevelToolStrip.Checked = !ViewEditLevelToolStrip.Checked;
+            Edit2ToolStrip.Visible = ExpSokSettings.DisplayEditLevelToolStrip = ViewEditLevelToolStrip.Checked;
         }
 
         /// <summary>

@@ -48,30 +48,30 @@ namespace ExpertSokoban
         }
 
         /// <summary>
-        /// Whether the file toolbar should be displayed
+        /// Whether the play toolbar should be displayed
         /// </summary>
-        public static bool DisplayToolStrip1
+        public static bool DisplayPlayToolStrip
         {
-            get { return PrgSettings.Store.Get("ExpSok.DisplayToolStrip1", true); }
-            set { PrgSettings.Store.Set("ExpSok.DisplayToolStrip1", value); }
+            get { return PrgSettings.Store.Get("ExpSok.DisplayPlayToolStrip", true); }
+            set { PrgSettings.Store.Set("ExpSok.DisplayPlayToolStrip", value); }
         }
 
         /// <summary>
-        /// Whether the operations toolbar should be displayed
-        /// </summary>
-        public static bool DisplayToolStrip2
-        {
-            get { return PrgSettings.Store.Get("ExpSok.DisplayToolStrip2", true); }
-            set { PrgSettings.Store.Set("ExpSok.DisplayToolStrip2", value); }
-        }
-
-        /// <summary>
-        /// Whether the edit toolbar should be displayed
+        /// Whether the edit toolbars (level pack) should be displayed
         /// </summary>
         public static bool DisplayEditToolStrip
         {
             get { return PrgSettings.Store.Get("ExpSok.DisplayEditToolStrip", true); }
             set { PrgSettings.Store.Set("ExpSok.DisplayEditToolStrip", value); }
+        }
+
+        /// <summary>
+        /// Whether the edit toolbar (level) should be displayed
+        /// </summary>
+        public static bool DisplayEditLevelToolStrip
+        {
+            get { return PrgSettings.Store.Get("ExpSok.DisplayEditLevelToolStrip", true); }
+            set { PrgSettings.Store.Set("ExpSok.DisplayEditLevelToolStrip", value); }
         }
 
         /// <summary>

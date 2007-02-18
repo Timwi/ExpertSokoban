@@ -60,30 +60,30 @@ namespace ExpertSokoban.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap ArrowDown {
+        internal static System.Drawing.Bitmap cancel {
             get {
-                object obj = ResourceManager.GetObject("ArrowDown", resourceCulture);
+                object obj = ResourceManager.GetObject("cancel", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap ArrowLeft {
+        internal static System.Drawing.Bitmap comment {
             get {
-                object obj = ResourceManager.GetObject("ArrowLeft", resourceCulture);
+                object obj = ResourceManager.GetObject("comment", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap ArrowRight {
+        internal static System.Drawing.Bitmap copy {
             get {
-                object obj = ResourceManager.GetObject("ArrowRight", resourceCulture);
+                object obj = ResourceManager.GetObject("copy", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap ArrowUp {
+        internal static System.Drawing.Bitmap cut {
             get {
-                object obj = ResourceManager.GetObject("ArrowUp", resourceCulture);
+                object obj = ResourceManager.GetObject("cut", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -95,58 +95,198 @@ namespace ExpertSokoban.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap ImgLevelSolved {
+        internal static System.Drawing.Bitmap lvl_add {
             get {
-                object obj = ResourceManager.GetObject("ImgLevelSolved", resourceCulture);
+                object obj = ResourceManager.GetObject("lvl_add", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap ImgPiece {
+        internal static System.Drawing.Bitmap lvl_del {
             get {
-                object obj = ResourceManager.GetObject("ImgPiece", resourceCulture);
+                object obj = ResourceManager.GetObject("lvl_del", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap ImgPieceSelected {
+        internal static System.Drawing.Bitmap lvl_edit {
             get {
-                object obj = ResourceManager.GetObject("ImgPieceSelected", resourceCulture);
+                object obj = ResourceManager.GetObject("lvl_edit", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap ImgPieceTarget {
+        internal static System.Drawing.Bitmap lvl_next {
             get {
-                object obj = ResourceManager.GetObject("ImgPieceTarget", resourceCulture);
+                object obj = ResourceManager.GetObject("lvl_next", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap ImgSokoban {
+        internal static System.Drawing.Bitmap lvl_next_unsolved {
             get {
-                object obj = ResourceManager.GetObject("ImgSokoban", resourceCulture);
+                object obj = ResourceManager.GetObject("lvl_next_unsolved", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap ImgTarget {
+        internal static System.Drawing.Bitmap lvl_prev {
             get {
-                object obj = ResourceManager.GetObject("ImgTarget", resourceCulture);
+                object obj = ResourceManager.GetObject("lvl_prev", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap ImgTargetUnder {
+        internal static System.Drawing.Bitmap lvl_prev_unsolved {
             get {
-                object obj = ResourceManager.GetObject("ImgTargetUnder", resourceCulture);
+                object obj = ResourceManager.GetObject("lvl_prev_unsolved", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap ImgWall {
+        internal static System.Drawing.Bitmap new_ {
             get {
-                object obj = ResourceManager.GetObject("ImgWall", resourceCulture);
+                object obj = ResourceManager.GetObject("new_", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap ok {
+            get {
+                object obj = ResourceManager.GetObject("ok", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap open {
+            get {
+                object obj = ResourceManager.GetObject("open", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap paste {
+            get {
+                object obj = ResourceManager.GetObject("paste", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap save {
+            get {
+                object obj = ResourceManager.GetObject("save", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Skin_ArrowDown {
+            get {
+                object obj = ResourceManager.GetObject("Skin_ArrowDown", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Skin_ArrowLeft {
+            get {
+                object obj = ResourceManager.GetObject("Skin_ArrowLeft", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Skin_ArrowRight {
+            get {
+                object obj = ResourceManager.GetObject("Skin_ArrowRight", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Skin_ArrowUp {
+            get {
+                object obj = ResourceManager.GetObject("Skin_ArrowUp", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Skin_LevelSolved {
+            get {
+                object obj = ResourceManager.GetObject("Skin_LevelSolved", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Skin_Piece {
+            get {
+                object obj = ResourceManager.GetObject("Skin_Piece", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Skin_PieceSelected {
+            get {
+                object obj = ResourceManager.GetObject("Skin_PieceSelected", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Skin_PieceTarget {
+            get {
+                object obj = ResourceManager.GetObject("Skin_PieceTarget", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Skin_Sokoban {
+            get {
+                object obj = ResourceManager.GetObject("Skin_Sokoban", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Skin_Target {
+            get {
+                object obj = ResourceManager.GetObject("Skin_Target", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Skin_TargetUnder {
+            get {
+                object obj = ResourceManager.GetObject("Skin_TargetUnder", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Skin_ToolBrick {
+            get {
+                object obj = ResourceManager.GetObject("Skin_ToolBrick", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Skin_ToolPiece {
+            get {
+                object obj = ResourceManager.GetObject("Skin_ToolPiece", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Skin_ToolSokoban {
+            get {
+                object obj = ResourceManager.GetObject("Skin_ToolSokoban", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Skin_ToolTarget {
+            get {
+                object obj = ResourceManager.GetObject("Skin_ToolTarget", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Skin_Wall {
+            get {
+                object obj = ResourceManager.GetObject("Skin_Wall", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

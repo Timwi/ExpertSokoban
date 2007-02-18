@@ -109,22 +109,7 @@
     <None Include="Resources\pieceplaced.wav" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\threaddone.wav" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\brick.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\piece.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\piece-selected.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\piece-target.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\sokoban.png" />
+    <None Include="Resources\editorclick.wav" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\RT.Util\Src\RT.Util.csproj">
@@ -133,28 +118,39 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\target-under.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\target.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Level solved.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Arrow up.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Arrow left.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Arrow right.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Arrow down.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Resources\ExpertSokoban.ico" />
+    <None Include="Resources\cancel.png" />
+    <None Include="Resources\comment.png" />
+    <None Include="Resources\copy.png" />
+    <None Include="Resources\cut.png" />
+    <None Include="Resources\ExpertSokoban.ico" />
+    <None Include="Resources\Skin_ToolTarget.png" />
+    <None Include="Resources\Skin_ToolSokoban.png" />
+    <None Include="Resources\Skin_ToolPiece.png" />
+    <None Include="Resources\Skin_ToolBrick.png" />
+    <None Include="Resources\Skin_Wall.png" />
+    <None Include="Resources\Skin_TargetUnder.png" />
+    <None Include="Resources\Skin_Target.png" />
+    <None Include="Resources\Skin_Sokoban.png" />
+    <None Include="Resources\Skin_PieceTarget.png" />
+    <None Include="Resources\Skin_PieceSelected.png" />
+    <None Include="Resources\Skin_Piece.png" />
+    <None Include="Resources\Skin_LevelSolved.png" />
+    <None Include="Resources\Skin_ArrowUp.png" />
+    <None Include="Resources\Skin_ArrowRight.png" />
+    <None Include="Resources\Skin_ArrowLeft.png" />
+    <None Include="Resources\Skin_ArrowDown.png" />
+    <None Include="Resources\lvl_prev_unsolved.png" />
+    <None Include="Resources\lvl_prev.png" />
+    <None Include="Resources\lvl_next_unsolved.png" />
+    <None Include="Resources\lvl_next.png" />
+    <None Include="Resources\lvl_edit.png" />
+    <None Include="Resources\lvl_del.png" />
+    <None Include="Resources\lvl_add.png" />
+    <None Include="Resources\new_.png" />
+    <None Include="Resources\save.png" />
+    <None Include="Resources\paste.png" />
+    <None Include="Resources\open.png" />
+    <None Include="Resources\ok.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

@@ -524,7 +524,7 @@ namespace ExpertSokoban
 
             if (FState == MainAreaState.Solved)
             {
-                Image ImgLevelSolved = Properties.Resources.ImgLevelSolved;
+                Image ImgLevelSolved = Properties.Resources.Skin_LevelSolved;
                 if (ClientSize.Width < ImgLevelSolved.Width)
                     e.Graphics.DrawImage(ImgLevelSolved,
                         0, (ClientSize.Height - ClientSize.Width * ImgLevelSolved.Height / ImgLevelSolved.Width)/2,
@@ -609,14 +609,14 @@ namespace ExpertSokoban
             if (ShowEndPos)
             {
                 // Draw Sokoban end position
-                GraphicsUtil.DrawImageAlpha(e.Graphics, Properties.Resources.ImgSokoban,
+                GraphicsUtil.DrawImageAlpha(e.Graphics, Properties.Resources.Skin_Sokoban,
                     RoundedRectangle(Renderer.CellRectForImage(CellSeqSokoban)), 0.5f);
 
                 // Draw piece end position
                 if (PushCellSequence.Length > 0)
                     GraphicsUtil.DrawImageAlpha(e.Graphics,
                         FLevel.Cell(PushCellSequence[PushCellSequence.Length-1]) == SokobanCell.Target
-                        ? Properties.Resources.ImgPieceTarget : Properties.Resources.ImgPiece,
+                        ? Properties.Resources.Skin_PieceTarget : Properties.Resources.Skin_Piece,
                         RoundedRectangle(Renderer.CellRectForImage(PushCellSequence[PushCellSequence.Length-1])), 0.5f);
             }
 
@@ -677,25 +677,25 @@ namespace ExpertSokoban
                 if (PrevCell.X == CellSequence[i].X && PrevCell.Y == CellSequence[i].Y-1)
                 {
                     CellRect.Offset(0, -Renderer.CellHeight/2);
-                    Image = Properties.Resources.ArrowDown;
+                    Image = Properties.Resources.Skin_ArrowDown;
                 }
                 // Moving right
                 else if (PrevCell.X == CellSequence[i].X-1 && PrevCell.Y == CellSequence[i].Y)
                 {
                     CellRect.Offset(-Renderer.CellWidth/2, 0);
-                    Image = Properties.Resources.ArrowRight;
+                    Image = Properties.Resources.Skin_ArrowRight;
                 }
                 // Moving left
                 else if (PrevCell.X == CellSequence[i].X+1 && PrevCell.Y == CellSequence[i].Y)
                 {
                     CellRect.Offset(Renderer.CellWidth/2, 0);
-                    Image = Properties.Resources.ArrowLeft;
+                    Image = Properties.Resources.Skin_ArrowLeft;
                 }
                 // Moving up
                 else
                 {
                     CellRect.Offset(0, Renderer.CellHeight/2);
-                    Image = Properties.Resources.ArrowUp;
+                    Image = Properties.Resources.Skin_ArrowUp;
                 }
 
                 if (InflateX != 0 && InflateY != 0)
