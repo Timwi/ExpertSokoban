@@ -4,11 +4,12 @@
 ;--------------------------------
 ;General
 
-  !define myName "ExpertSokoban"
+  !define myName "Expert Sokoban"
+  !define myNameNospaces "ExpertSokoban"
   !define myVer "1.0.0"
   !define myInstDir "$PROGRAMFILES\${myName}"
   !define myRegistryRoot "HKCU"
-  !define myRegistry "Software\ExpertSokoban"
+  !define myRegistry "Software\${myNameNospaces}"
 
   !define myPath "..\.."
   !define myPathBin "${myPath}\builds\Release-AnyCPU"
@@ -21,7 +22,7 @@
 
 
   Name "${myName}"
-  OutFile "${myName}-${myVer}.exe"
+  OutFile "${myNameNoSpaces}-${myVer}.exe"
   InstallDir "${myInstDir}"
 
   ;Get installation folder from registry if available
@@ -111,18 +112,18 @@ Section "GammaTool" MainSection
   WriteUninstaller "$INSTDIR\Uninstall.exe"
 
   ;Add/Remove Programs entry
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${myName}" \
-                   "DisplayName" "${myName} v${myVer}"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${myName}" \
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${myNameNoSpaces}" \
+                   "DisplayName" "${myName} ${myVer}"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${myNameNoSpaces}" \
                    "UninstallString" "$INSTDIR\Uninstall.exe"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${myName}" \
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${myNameNoSpaces}" \
                    "DisplayVersion" "${myVer}"
-  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${myName}" "NoModify" 1
-  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${myName}" "NoRepair" 1
+  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${myNameNoSpaces}" "NoModify" 1
+  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${myNameNoSpaces}" "NoRepair" 1
   ;Program-specific entries
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${myName}" \
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${myNameNoSpaces}" \
                    "DisplayIcon" "$INSTDIR\ExpSok.exe,0"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${myName}" \
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${myNameNoSpaces}" \
                    "URLInfoAbout" "http://www.cutebits.com/ExpSok"
 
   ;Create shortcuts
