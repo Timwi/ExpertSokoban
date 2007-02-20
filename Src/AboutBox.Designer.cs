@@ -158,6 +158,7 @@ namespace ExpertSokoban
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
+            this.CancelButton = this.OKButton;
             this.ClientSize = new System.Drawing.Size(429, 280);
             this.Controls.Add(this.MainLayoutPanel);
             this.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
