@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Expert Sokoban")]
 [assembly: AssemblyDescription("Expert Sokoban is Sokoban for Experts!")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("cutebits")]
+[assembly: AssemblyCompany("CuteBits")]
 [assembly: AssemblyProduct("Expert Sokoban")]
-[assembly: AssemblyCopyright("Copyright © 2006")]
+[assembly: AssemblyCopyright("Copyright © 2007")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
