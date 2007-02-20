@@ -175,6 +175,18 @@ namespace ExpertSokoban
 
             ViewEndPos.Enabled = !MainAreaEditing && !MainAreaNull;
 
+            // Level list context menu
+            ContextCut.Enabled = LevelList.SelectedLevel != null;
+            ContextCopyItem.Enabled = LevelList.SelectedLevel != null;
+            ContextDelete.Enabled = LevelList.SelectedLevel != null;
+            ContextEdit.Enabled = LevelList.SelectedLevel != null;
+            ContextHide.Enabled = LevelList.Visible;
+            ContextHighscores.Enabled = LevelList.SelectedLevel != null;
+            ContextNewComment.Enabled = LevelList.Visible;
+            ContextNewLevel.Enabled = LevelList.Visible;
+            ContextPaste.Enabled = LevelList.Visible;
+            ContextPlay.Enabled = LevelList.SelectedLevel != null;
+
             // Toolbar visibility
             PlayToolStrip.Visible = ViewPlayToolStrip.Checked;
             Edit2ToolStrip.Visible = ViewEditToolStrip.Checked;

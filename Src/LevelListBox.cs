@@ -247,7 +247,9 @@ namespace ExpertSokoban
         {
             if (e.Button == MouseButtons.Right)
             {
-                SelectedIndex = IndexFromPoint(e.Location);
+                int i = IndexFromPoint(e.Location);
+                if (i >= 0 && i < Items.Count)
+                    SelectedIndex = IndexFromPoint(e.Location);
                 Focus();
             }
         }
