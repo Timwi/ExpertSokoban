@@ -245,12 +245,16 @@ namespace ExpertSokoban
         }
 
         /// <summary>
-        /// Invoked by the user pressing Enter while the MainArea is in Solved state.
+        /// Invoked by the user pressing Space while the MainArea is in Solved state.
         /// This will open the next unsolved level.
         /// </summary>
         private void MainArea_KeyDown(object sender, KeyEventArgs e)
         {
-            if (MainArea.State == MainAreaState.Solved)
+            // IMPORTANT: We can't use Enter here unfortunately.
+            // If the user uses the keyboard to play the level, Enter will be
+            // the last key they press to place the last piece in the last target.
+            // That would already trigger this for the same keypress.
+            if (MainArea.State == MainAreaState.Solved && e.KeyCode == Keys.Space)
                 LevelList.PlayNext(true, true);
         }
 
