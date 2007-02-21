@@ -229,7 +229,6 @@ namespace ExpertSokoban
         private void EnterEditingMode()
         {
             LevelList.EditSelectedLevel();
-            MainArea.SetLevelEdit(LevelList.ActiveLevel);
         }
 
         #region MainArea events
@@ -330,7 +329,10 @@ namespace ExpertSokoban
 
             if (Status == SokobanLevelStatus.Valid)
             {
-                MainArea.SetLevel(LevelList.ActiveLevel);
+                if (LevelList.State == LevelListBox.LevelListBoxState.Editing)
+                    MainArea.SetLevelEdit(LevelList.ActiveLevel);
+                else
+                    MainArea.SetLevel(LevelList.ActiveLevel);
             }
             else
             {
@@ -555,8 +557,7 @@ namespace ExpertSokoban
         private void EditEdit_Click(object sender, EventArgs e)
         {
             if (LevelList.SelectedIndex >= 0 &&
-                LevelList.Items[LevelList.SelectedIndex] is SokobanLevel &&
-                MainArea.MayDestroy("Edit level"))
+                LevelList.Items[LevelList.SelectedIndex] is SokobanLevel)
             {
                 EnterEditingMode();
             }
