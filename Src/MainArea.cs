@@ -397,24 +397,24 @@ namespace ExpertSokoban
         /// <summary>
         /// Sound played when a level is solved.
         /// </summary>
-        private SoundPlayer SndLevelSolved;
+        private SoundPlayerAsync SndLevelSolved = new SoundPlayerAsync(Properties.Resources.SndLevelDone);
 
         /// <summary>
         /// Sound played when an invalid destination cell for a piece is clicked in
         /// playing mode, or when an invalid operation is attempted in editing mode.
         /// </summary>
-        private SoundPlayer SndMeep;
+        private SoundPlayerAsync SndMeep = new SoundPlayerAsync(Properties.Resources.SndMeep);
 
         /// <summary>
         /// Sound played when a move is performed in playing mode, or when a piece,
         /// target, or the Sokoban starting position is placed in editing mode.
         /// </summary>
-        private SoundPlayer SndPiecePlaced;
+        private SoundPlayerAsync SndPiecePlaced = new SoundPlayerAsync(Properties.Resources.SndPiecePlaced);
 
         /// <summary>
         /// Sound played when a wall is added or removed in editing mode.
         /// </summary>
-        private SoundPlayer SndEditorClick;
+        private SoundPlayerAsync SndEditorClick = new SoundPlayerAsync(Properties.Resources.SndEditorClick);
 
         /// <summary>
         /// The currently selected piece for pushing (or null if none).
@@ -492,10 +492,6 @@ namespace ExpertSokoban
             FLevel = null;
             Renderer = null;
             FState = MainAreaState.Null;
-            SndLevelSolved = new SoundPlayer(Properties.Resources.SndLevelDone);
-            SndMeep = new SoundPlayer(Properties.Resources.SndMeep);
-            SndPiecePlaced = new SoundPlayer(Properties.Resources.SndPiecePlaced);
-            SndEditorClick = new SoundPlayer(Properties.Resources.SndEditorClick);
             this.MouseDown += new MouseEventHandler(MainArea_MouseDown);
             this.MouseMove += new MouseEventHandler(MainArea_MouseMove);
             this.MouseUp += new MouseEventHandler(MainArea_MouseUp);
