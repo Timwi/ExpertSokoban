@@ -252,6 +252,35 @@ namespace ExpertSokoban
         }
 
         /// <summary>
+        /// Gets or sets whether the area the Sokoban can reach (the "move area")
+        /// should be displayed or not.
+        /// </summary>
+        public bool ShowAreaSokoban
+        {
+            get { return FShowAreaSokoban; }
+            set { FShowAreaSokoban = value; Invalidate(); }
+        }
+
+        /// <summary>
+        /// Gets or sets whether the area the selected piece can be pushed to
+        /// (the "push area") should be displayed or not.
+        /// </summary>
+        public bool ShowAreaPiece
+        {
+            get { return FShowAreaPiece; }
+            set { FShowAreaPiece = value; Invalidate(); }
+        }
+
+        /// <summary>
+        /// Gets or sets whether sound should be played or not.
+        /// </summary>
+        public bool SoundEnabled
+        {
+            get { return FSoundEnabled; }
+            set { FSoundEnabled = value; }
+        }
+
+        /// <summary>
         /// The currently selected tool while editing a level.
         /// </summary>
         public MainAreaTool Tool
@@ -334,6 +363,23 @@ namespace ExpertSokoban
         /// selecting a destination cell for a piece.
         /// </summary>
         private bool FShowEndPos;
+
+        /// <summary>
+        /// Whether the area reachable by the Sokoban (the "move area")
+        /// should be displayed.
+        /// </summary>
+        private bool FShowAreaSokoban;
+
+        /// <summary>
+        /// Whether the area reachable by the selected piece (the "push area")
+        /// should be displayed.
+        /// </summary>
+        private bool FShowAreaPiece;
+
+        /// <summary>
+        /// Whether sound is enabled or not.
+        /// </summary>
+        private bool FSoundEnabled;
 
         /// <summary>
         /// The brush used to fill the area that indicates where the Sokoban can move.
@@ -560,7 +606,7 @@ namespace ExpertSokoban
             e.Graphics.InterpolationMode = InterpolationMode.HighQualityBilinear;
 
             // Draw the region within which the Sokoban can move (if any)
-            if (MoveFinder != null && (FState == MainAreaState.Move || FState == MainAreaState.Push))
+            if (MoveFinder != null && (FState == MainAreaState.Move || FState == MainAreaState.Push) && FShowAreaSokoban)
             {
                 GraphicsPath Path = Renderer.ValidPath(MoveFinder);
                 e.Graphics.FillPath(MoveBrush, Path);
@@ -568,7 +614,7 @@ namespace ExpertSokoban
             }
 
             // Draw the region to which the selected piece can be pushed (if any)
-            if (PushFinder != null && FState == MainAreaState.Push)
+            if (PushFinder != null && FState == MainAreaState.Push && FShowAreaPiece)
             {
                 GraphicsPath Path = Renderer.ValidPath(PushFinder);
                 e.Graphics.FillPath(PushBrush, Path);
@@ -883,11 +929,13 @@ namespace ExpertSokoban
                 if (FLevel.SokobanPos != Cell)
                 {
                     FLevel.SetCell(Cell, CellType == SokobanCell.Wall ? SokobanCell.Blank : SokobanCell.Wall);
-                    SndEditorClick.Play();
+                    if (FSoundEnabled)
+                        SndEditorClick.Play();
                     FModified = true;
                 }
                 else
-                    SndMeep.Play();
+                    if (FSoundEnabled)
+                        SndMeep.Play();
             }
             else if (FTool == MainAreaTool.Piece)
             {
@@ -898,11 +946,13 @@ namespace ExpertSokoban
                         CellType == SokobanCell.Blank         ? SokobanCell.Piece :
                         CellType == SokobanCell.Target        ? SokobanCell.PieceOnTarget :
                                                                 SokobanCell.Blank);
-                    SndPiecePlaced.Play();
+                    if (FSoundEnabled)
+                        SndPiecePlaced.Play();
                     FModified = true;
                 }
                 else
-                    SndMeep.Play();
+                    if (FSoundEnabled)
+                        SndMeep.Play();
             }
             else if (FTool == MainAreaTool.Target)
             {
@@ -913,11 +963,13 @@ namespace ExpertSokoban
                         CellType == SokobanCell.Blank         ? SokobanCell.Target :
                         CellType == SokobanCell.Target        ? SokobanCell.Blank :
                                                                 SokobanCell.PieceOnTarget);
-                    SndPiecePlaced.Play();
+                    if (FSoundEnabled)
+                        SndPiecePlaced.Play();
                     FModified = true;
                 }
                 else
-                    SndMeep.Play();
+                    if (FSoundEnabled)
+                        SndMeep.Play();
             }
             else if (FTool == MainAreaTool.Sokoban)
             {
@@ -928,11 +980,13 @@ namespace ExpertSokoban
                     Point PrevSokobanPos = FLevel.SokobanPos;
                     FLevel.SetSokobanPos(Cell);
                     Renderer.RenderCell(Graphics.FromImage(Buffer), PrevSokobanPos);
-                    SndPiecePlaced.Play();
+                    if (FSoundEnabled)
+                        SndPiecePlaced.Play();
                     FModified = true;
                 }
                 else
-                    SndMeep.Play();
+                    if (FSoundEnabled)
+                        SndMeep.Play();
             }
             int PrevSizeX = FLevel.Width;
             int PrevSizeY = FLevel.Height;
@@ -959,7 +1013,8 @@ namespace ExpertSokoban
         {
             if (MoveCellSequence == null)
             {
-                SndMeep.Play();
+                if (FSoundEnabled)
+                    SndMeep.Play();
                 return;
             }
 
@@ -1018,7 +1073,8 @@ namespace ExpertSokoban
             {
                 FState = MainAreaState.Solved;
                 CursorPos = null;
-                SndLevelSolved.Play();
+                if (FSoundEnabled)
+                    SndLevelSolved.Play();
                 Refresh();
                 if (LevelSolved != null)
                     LevelSolved(this, new EventArgs());
@@ -1026,7 +1082,8 @@ namespace ExpertSokoban
             else
             {
                 // Play a sound
-                SndPiecePlaced.Play();
+                if (FSoundEnabled)
+                    SndPiecePlaced.Play();
 
                 // Add this action to the undo stack
                 if (OrigPushPos == null)
@@ -1321,7 +1378,8 @@ namespace ExpertSokoban
 
             // If the user selected an invalid cell, meep
             else
-                SndMeep.Play();
+                if (FSoundEnabled)
+                    SndMeep.Play();
         }
 
         /// <summary>

@@ -39,6 +39,35 @@ namespace ExpertSokoban
         }
 
         /// <summary>
+        /// Whether the area the Sokoban can move to (the "move area")
+        /// should be displayed or not.
+        /// </summary>
+        public static bool ShowAreaSokoban
+        {
+            get { return PrgSettings.Store.Get("ExpSok.ShowAreaSokoban", true); }
+            set { PrgSettings.Store.Set("ExpSok.ShowAreaSokoban", value); }
+        }
+
+        /// <summary>
+        /// Whether the area the selected piece can be pushed to
+        /// (the "push area") should be displayed or not.
+        /// </summary>
+        public static bool ShowAreaPiece
+        {
+            get { return PrgSettings.Store.Get("ExpSok.ShowAreaPiece", true); }
+            set { PrgSettings.Store.Set("ExpSok.ShowAreaPiece", value); }
+        }
+
+        /// <summary>
+        /// Whether sound is enabled.
+        /// </summary>
+        public static bool SoundEnabled
+        {
+            get { return PrgSettings.Store.Get("ExpSok.SoundEnabled", true); }
+            set { PrgSettings.Store.Set("ExpSok.SoundEnabled", value); }
+        }
+
+        /// <summary>
         /// Whether the level list should be displayed
         /// </summary>
         public static bool DisplayLevelList

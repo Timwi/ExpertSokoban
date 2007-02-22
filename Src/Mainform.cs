@@ -32,15 +32,15 @@ namespace ExpertSokoban
             InitializeComponent();
 
             // Restore saved settings
-            ViewPlayToolStrip.Checked = ExpSokSettings.DisplayPlayToolStrip;
-            ViewEditToolStrip.Checked = ExpSokSettings.DisplayEditToolStrip;
-            ViewEditLevelToolStrip.Checked = ExpSokSettings.DisplayEditLevelToolStrip;
-            StatusBar.Visible = ViewStatusBar.Checked = ExpSokSettings.DisplayStatusBar;
+            OptionsPlayToolStrip.Checked = ExpSokSettings.DisplayPlayToolStrip;
+            OptionsEditToolStrip.Checked = ExpSokSettings.DisplayEditToolStrip;
+            OptionsEditLevelToolStrip.Checked = ExpSokSettings.DisplayEditLevelToolStrip;
+            StatusBar.Visible = OptionsStatusBar.Checked = ExpSokSettings.DisplayStatusBar;
             LevelListPanel.Width = ExpSokSettings.LevelListWidth < 50 ? 50 : ExpSokSettings.LevelListWidth;
             MovePathOptions.SetValue(ExpSokSettings.MoveDrawMode);
             PushPathOptions.SetValue(ExpSokSettings.PushDrawMode);
             EditToolOptions.SetValue(ExpSokSettings.LastUsedTool);
-            ViewEndPos.Checked = MainArea.ShowEndPos = ExpSokSettings.ShowEndPos;
+            OptionsEndPos.Checked = MainArea.ShowEndPos = ExpSokSettings.ShowEndPos;
             ShowLevelList(ExpSokSettings.DisplayLevelList);
 
             if (ExpSokSettings.PlayerName == null || ExpSokSettings.PlayerName.Length == 0)
@@ -157,23 +157,23 @@ namespace ExpertSokoban
             EditTarget.Enabled = MainAreaEditing;
             EditSokoban.Enabled = MainAreaEditing;
 
-            // "View" menu
-            ViewLevelList.Enabled = true;
-            ViewPlayToolStrip.Enabled = LevelList.Visible;
-            ViewEditToolStrip.Enabled = LevelList.Visible;
-            ViewEditLevelToolStrip.Enabled = LevelList.Visible && MainAreaEditing;
-            ViewStatusBar.Enabled = true;
+            // "Options" menu
+            OptionsLevelList.Enabled = true;
+            OptionsPlayToolStrip.Enabled = LevelList.Visible;
+            OptionsEditToolStrip.Enabled = LevelList.Visible;
+            OptionsEditLevelToolStrip.Enabled = LevelList.Visible && MainAreaEditing;
+            OptionsStatusBar.Enabled = true;
 
-            ViewMoveNo.Enabled = !MainAreaEditing && !MainAreaNull;
-            ViewMoveLine.Enabled = !MainAreaEditing && !MainAreaNull;
-            ViewMoveDots.Enabled = !MainAreaEditing && !MainAreaNull;
-            ViewMoveArrows.Enabled = !MainAreaEditing && !MainAreaNull;
-            ViewPushNo.Enabled = !MainAreaEditing && !MainAreaNull;
-            ViewPushLine.Enabled = !MainAreaEditing && !MainAreaNull;
-            ViewPushDots.Enabled = !MainAreaEditing && !MainAreaNull;
-            ViewPushArrows.Enabled = !MainAreaEditing && !MainAreaNull;
+            OptionsMoveNo.Enabled = !MainAreaEditing && !MainAreaNull;
+            OptionsMoveLine.Enabled = !MainAreaEditing && !MainAreaNull;
+            OptionsMoveDots.Enabled = !MainAreaEditing && !MainAreaNull;
+            OptionsMoveArrows.Enabled = !MainAreaEditing && !MainAreaNull;
+            OptionsPushNo.Enabled = !MainAreaEditing && !MainAreaNull;
+            OptionsPushLine.Enabled = !MainAreaEditing && !MainAreaNull;
+            OptionsPushDots.Enabled = !MainAreaEditing && !MainAreaNull;
+            OptionsPushArrows.Enabled = !MainAreaEditing && !MainAreaNull;
 
-            ViewEndPos.Enabled = !MainAreaEditing && !MainAreaNull;
+            OptionsEndPos.Enabled = !MainAreaEditing && !MainAreaNull;
 
             // Level list context menu
             ContextCut.Enabled = LevelList.SelectedLevel != null;
@@ -188,10 +188,10 @@ namespace ExpertSokoban
             ContextPlay.Enabled = LevelList.SelectedLevel != null;
 
             // Toolbar visibility
-            PlayToolStrip.Visible = ViewPlayToolStrip.Checked;
-            Edit2ToolStrip.Visible = ViewEditToolStrip.Checked;
-            Edit1ToolStrip.Visible = ViewEditToolStrip.Checked;
-            EditLevelToolStrip.Visible = MainAreaEditing && ViewEditLevelToolStrip.Checked;
+            PlayToolStrip.Visible = OptionsPlayToolStrip.Checked;
+            Edit2ToolStrip.Visible = OptionsEditToolStrip.Checked;
+            Edit1ToolStrip.Visible = OptionsEditToolStrip.Checked;
+            EditLevelToolStrip.Visible = MainAreaEditing && OptionsEditLevelToolStrip.Checked;
 
             // Toolbar buttons
             LevelToolNext.Enabled = LevelNext.Enabled;
@@ -574,7 +574,7 @@ namespace ExpertSokoban
         private void EditAddComment_Click(object sender, EventArgs e)
         {
             if (!LevelListPanel.Visible)
-                ViewLevelList_Click(sender, e);
+                OptionsLevelList_Click(sender, e);
             string Comment = InputBox.GetLine("Please enter a comment:");
             if (Comment != null)
                 LevelList.AddLevelListItem(Comment);
@@ -693,58 +693,58 @@ namespace ExpertSokoban
 
         #endregion
 
-        #region "View" menu
+        #region "Options" menu
 
         /// <summary>
-        /// Invoked by "View => Display level list" or the LevelListClosePanel.
+        /// Invoked by "Options => Display level list" or the LevelListClosePanel.
         /// Shows or hides the level list.
         /// </summary>
-        private void ViewLevelList_Click(object sender, EventArgs e)
+        private void OptionsLevelList_Click(object sender, EventArgs e)
         {
             ShowLevelList(!LevelListPanel.Visible);
         }
 
         /// <summary>
-        /// Invoked by "View => Display playing toolbar". Shows/hides the playing toolbar.
+        /// Invoked by "Options => Display playing toolbar". Shows/hides the playing toolbar.
         /// </summary>
-        private void ViewPlayToolStrip_Click(object sender, EventArgs e)
+        private void OptionsPlayToolStrip_Click(object sender, EventArgs e)
         {
-            ViewPlayToolStrip.Checked = !ViewPlayToolStrip.Checked;
-            Edit1ToolStrip.Visible = ExpSokSettings.DisplayPlayToolStrip = ViewPlayToolStrip.Checked;
+            OptionsPlayToolStrip.Checked = !OptionsPlayToolStrip.Checked;
+            Edit1ToolStrip.Visible = ExpSokSettings.DisplayPlayToolStrip = OptionsPlayToolStrip.Checked;
         }
 
         /// <summary>
-        /// Invoked by "View => Display editing toolbars (level pack)". Shows/hides the edit toolbar.
+        /// Invoked by "Options => Display editing toolbars (level pack)". Shows/hides the edit toolbar.
         /// </summary>
-        private void ViewEditToolStrip_Click(object sender, EventArgs e)
+        private void OptionsEditToolStrip_Click(object sender, EventArgs e)
         {
-            ViewEditToolStrip.Checked = !ViewEditToolStrip.Checked;
-            EditLevelToolStrip.Visible = ExpSokSettings.DisplayEditToolStrip = ViewEditToolStrip.Checked;
+            OptionsEditToolStrip.Checked = !OptionsEditToolStrip.Checked;
+            EditLevelToolStrip.Visible = ExpSokSettings.DisplayEditToolStrip = OptionsEditToolStrip.Checked;
         }
 
         /// <summary>
-        /// Invoked by "View => Display editing toolbar (level)". Shows/hides the operations
+        /// Invoked by "Options => Display editing toolbar (level)". Shows/hides the operations
         /// toolbar.
         /// </summary>
-        private void ViewEditLevelToolStrip_Click(object sender, EventArgs e)
+        private void OptionsEditLevelToolStrip_Click(object sender, EventArgs e)
         {
-            ViewEditLevelToolStrip.Checked = !ViewEditLevelToolStrip.Checked;
-            Edit2ToolStrip.Visible = ExpSokSettings.DisplayEditLevelToolStrip = ViewEditLevelToolStrip.Checked;
+            OptionsEditLevelToolStrip.Checked = !OptionsEditLevelToolStrip.Checked;
+            Edit2ToolStrip.Visible = ExpSokSettings.DisplayEditLevelToolStrip = OptionsEditLevelToolStrip.Checked;
         }
 
         /// <summary>
-        /// Invoked by "View => Display status bar". Toggles the visibility of the
+        /// Invoked by "Options => Display status bar". Toggles the visibility of the
         /// status bar at the bottom of the window.
         /// </summary>
-        private void ViewStatusBar_Click(object sender, EventArgs e)
+        private void OptionsStatusBar_Click(object sender, EventArgs e)
         {
-            ViewStatusBar.Checked = !ViewStatusBar.Checked;
-            StatusBar.Visible = ExpSokSettings.DisplayStatusBar = ViewStatusBar.Checked;
+            OptionsStatusBar.Checked = !OptionsStatusBar.Checked;
+            StatusBar.Visible = ExpSokSettings.DisplayStatusBar = OptionsStatusBar.Checked;
         }
 
         /// <summary>
         /// Invoked (indirectly, via MovePathOptions) by any of the "Display move path
-        /// as..." menu items under "View". Sets the move path settings.
+        /// as..." menu items under "Options". Sets the move path settings.
         /// </summary>
         private void MovePathOptions_ValueChanged(object sender, EventArgs e)
         {
@@ -753,7 +753,7 @@ namespace ExpertSokoban
 
         /// <summary>
         /// Invoked (indirectly, via PushPathOptions) by any of the "Display push path
-        /// as..." menu items under "View". Sets the push path settings.
+        /// as..." menu items under "Options". Sets the push path settings.
         /// </summary>
         private void PushPathOptions_ValueChanged(object sender, EventArgs e)
         {
@@ -761,13 +761,13 @@ namespace ExpertSokoban
         }
 
         /// <summary>
-        /// Invoked by "View => Display end position of Sokoban and piece".
+        /// Invoked by "Options => Display end position of Sokoban and piece".
         /// Sets the option.
         /// </summary>
-        private void ViewEndPos_Click(object sender, EventArgs e)
+        private void OptionsEndPos_Click(object sender, EventArgs e)
         {
-            ViewEndPos.Checked = !ViewEndPos.Checked;
-            MainArea.ShowEndPos = ExpSokSettings.ShowEndPos = ViewEndPos.Checked;
+            OptionsEndPos.Checked = !OptionsEndPos.Checked;
+            MainArea.ShowEndPos = ExpSokSettings.ShowEndPos = OptionsEndPos.Checked;
         }
 
         /// <summary>
@@ -881,6 +881,35 @@ namespace ExpertSokoban
                     hsf.ShowDialog();
                 }
             }
+        }
+
+        /// <summary>
+        /// Invoked by "Options => Display reachable area for Sokoban".
+        /// Sets the option.
+        /// </summary>
+        private void OptionsAreaSokoban_Click(object sender, EventArgs e)
+        {
+            OptionsAreaSokoban.Checked = !OptionsAreaSokoban.Checked;
+            MainArea.ShowAreaSokoban = ExpSokSettings.ShowAreaSokoban = OptionsAreaSokoban.Checked;
+        }
+
+        /// <summary>
+        /// Invoked by "Options => Display reachable area for piece".
+        /// Sets the option.
+        /// </summary>
+        private void OptionsAreaPiece_Click(object sender, EventArgs e)
+        {
+            OptionsAreaPiece.Checked = !OptionsAreaPiece.Checked;
+            MainArea.ShowAreaPiece = ExpSokSettings.ShowAreaPiece = OptionsAreaPiece.Checked;
+        }
+
+        /// <summary>
+        /// Invoked by "Options => Enable sound". Sets the option.
+        /// </summary>
+        private void OptionsSound_Click(object sender, EventArgs e)
+        {
+            OptionsSound.Checked = !OptionsSound.Checked;
+            MainArea.SoundEnabled = ExpSokSettings.SoundEnabled = OptionsSound.Checked;
         }
     }
 }
