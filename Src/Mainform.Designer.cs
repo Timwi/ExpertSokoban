@@ -136,6 +136,9 @@ namespace ExpertSokoban
             this.OptionsPushArrows = new ExpertSokoban.MenuRadioItemPathDrawMode();
             this.OptionsSep3 = new System.Windows.Forms.ToolStripSeparator();
             this.OptionsEndPos = new System.Windows.Forms.ToolStripMenuItem();
+            this.OptionsAreaSokoban = new System.Windows.Forms.ToolStripMenuItem();
+            this.OptionsAreaPiece = new System.Windows.Forms.ToolStripMenuItem();
+            this.OptionsSound = new System.Windows.Forms.ToolStripMenuItem();
             this.OptionsUnusedHotkeys = new System.Windows.Forms.ToolStripMenuItem();
             this.HelpMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.HelpHelp = new System.Windows.Forms.ToolStripMenuItem();
@@ -154,9 +157,6 @@ namespace ExpertSokoban
             this.BugWorkaroundTimer = new System.Windows.Forms.Timer(this.components);
             this.UpdateControlsTimer = new System.Windows.Forms.Timer(this.components);
             this.OptionsSep4 = new System.Windows.Forms.ToolStripSeparator();
-            this.OptionsAreaSokoban = new System.Windows.Forms.ToolStripMenuItem();
-            this.OptionsAreaPiece = new System.Windows.Forms.ToolStripMenuItem();
-            this.OptionsSound = new System.Windows.Forms.ToolStripMenuItem();
             this.LevelListPanel.SuspendLayout();
             this.LevelContextMenu.SuspendLayout();
             this.EditLevelToolStrip.SuspendLayout();
@@ -1010,9 +1010,9 @@ namespace ExpertSokoban
             this.OptionsPushArrows,
             this.OptionsSep3,
             this.OptionsEndPos,
-            this.OptionsSep4,
             this.OptionsAreaSokoban,
             this.OptionsAreaPiece,
+            this.OptionsSep4,
             this.OptionsSound,
             this.OptionsUnusedHotkeys});
             this.OptionsMenu.Name = "OptionsMenu";
@@ -1150,12 +1150,33 @@ namespace ExpertSokoban
             this.OptionsEndPos.Text = "Display end p&osition of Sokoban and piece";
             this.OptionsEndPos.Click += new System.EventHandler(this.OptionsEndPos_Click);
             // 
+            // OptionsAreaSokoban
+            // 
+            this.OptionsAreaSokoban.Name = "OptionsAreaSokoban";
+            this.OptionsAreaSokoban.Size = new System.Drawing.Size(275, 22);
+            this.OptionsAreaSokoban.Text = "Display rea&chable area for Sokoban";
+            this.OptionsAreaSokoban.Click += new System.EventHandler(this.OptionsAreaSokoban_Click);
+            // 
+            // OptionsAreaPiece
+            // 
+            this.OptionsAreaPiece.Name = "OptionsAreaPiece";
+            this.OptionsAreaPiece.Size = new System.Drawing.Size(275, 22);
+            this.OptionsAreaPiece.Text = "Display reac&hable area for piece";
+            this.OptionsAreaPiece.Click += new System.EventHandler(this.OptionsAreaPiece_Click);
+            // 
+            // OptionsSound
+            // 
+            this.OptionsSound.Name = "OptionsSound";
+            this.OptionsSound.Size = new System.Drawing.Size(275, 22);
+            this.OptionsSound.Text = "Enable &sound";
+            this.OptionsSound.Click += new System.EventHandler(this.OptionsSound_Click);
+            // 
             // OptionsUnusedHotkeys
             // 
             this.OptionsUnusedHotkeys.Enabled = false;
             this.OptionsUnusedHotkeys.Name = "OptionsUnusedHotkeys";
             this.OptionsUnusedHotkeys.Size = new System.Drawing.Size(275, 22);
-            this.OptionsUnusedHotkeys.Text = "Unused hotkeys: bfjkoqvwxz";
+            this.OptionsUnusedHotkeys.Text = "Unused hotkeys: bfjkqvwxz";
             this.OptionsUnusedHotkeys.Visible = false;
             // 
             // HelpMenu
@@ -1281,8 +1302,11 @@ namespace ExpertSokoban
             this.MainArea.MoveDrawMode = ExpertSokoban.PathDrawMode.Line;
             this.MainArea.Name = "MainArea";
             this.MainArea.PushDrawMode = ExpertSokoban.PathDrawMode.Arrows;
+            this.MainArea.ShowAreaPiece = false;
+            this.MainArea.ShowAreaSokoban = false;
             this.MainArea.ShowEndPos = false;
             this.MainArea.Size = new System.Drawing.Size(485, 320);
+            this.MainArea.SoundEnabled = false;
             this.MainArea.TabIndex = 1;
             this.MainArea.TabStop = true;
             this.MainArea.Tool = ExpertSokoban.MainAreaTool.Wall;
@@ -1316,27 +1340,6 @@ namespace ExpertSokoban
             // 
             this.OptionsSep4.Name = "OptionsSep4";
             this.OptionsSep4.Size = new System.Drawing.Size(272, 6);
-            // 
-            // OptionsAreaSokoban
-            // 
-            this.OptionsAreaSokoban.Name = "OptionsAreaSokoban";
-            this.OptionsAreaSokoban.Size = new System.Drawing.Size(275, 22);
-            this.OptionsAreaSokoban.Text = "Display rea&chable area for Sokoban";
-            this.OptionsAreaSokoban.Click += new System.EventHandler(this.OptionsAreaSokoban_Click);
-            // 
-            // OptionsAreaPiece
-            // 
-            this.OptionsAreaPiece.Name = "OptionsAreaPiece";
-            this.OptionsAreaPiece.Size = new System.Drawing.Size(275, 22);
-            this.OptionsAreaPiece.Text = "Display reac&hable area for piece";
-            this.OptionsAreaPiece.Click += new System.EventHandler(this.OptionsAreaPiece_Click);
-            // 
-            // OptionsSound
-            // 
-            this.OptionsSound.Name = "OptionsSound";
-            this.OptionsSound.Size = new System.Drawing.Size(275, 22);
-            this.OptionsSound.Text = "Enable &sound";
-            this.OptionsSound.Click += new System.EventHandler(this.OptionsSound_Click);
             // 
             // Mainform
             // 
@@ -1505,10 +1508,10 @@ namespace ExpertSokoban
         private System.Windows.Forms.ToolStripButton LevelToolNextUnsolved;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripSeparator OptionsSep4;
         private System.Windows.Forms.ToolStripMenuItem OptionsAreaSokoban;
         private System.Windows.Forms.ToolStripMenuItem OptionsAreaPiece;
         private System.Windows.Forms.ToolStripMenuItem OptionsSound;
+        private System.Windows.Forms.ToolStripSeparator OptionsSep4;
     }
 }
 

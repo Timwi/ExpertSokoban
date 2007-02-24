@@ -94,7 +94,7 @@ namespace ExpertSokoban
                 if (FActiveLevelIndex == null)
                     return null;
                 // The following throws an exception if the index is out of bounds or
-                // not a sokoban level. Will tell us if FActiveLevelIndex got out of sync.
+                // not a Sokoban level. Will tell us if FActiveLevelIndex got out of sync.
                 return (SokobanLevel)Items[FActiveLevelIndex.Value];
             }
         }

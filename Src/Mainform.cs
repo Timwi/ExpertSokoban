@@ -41,6 +41,9 @@ namespace ExpertSokoban
             PushPathOptions.SetValue(ExpSokSettings.PushDrawMode);
             EditToolOptions.SetValue(ExpSokSettings.LastUsedTool);
             OptionsEndPos.Checked = MainArea.ShowEndPos = ExpSokSettings.ShowEndPos;
+            OptionsAreaSokoban.Checked = MainArea.ShowAreaSokoban = ExpSokSettings.ShowAreaSokoban;
+            OptionsAreaPiece.Checked = MainArea.ShowAreaPiece = ExpSokSettings.ShowAreaPiece;
+            OptionsSound.Checked = MainArea.SoundEnabled = ExpSokSettings.SoundEnabled;
             ShowLevelList(ExpSokSettings.DisplayLevelList);
 
             if (ExpSokSettings.PlayerName == null || ExpSokSettings.PlayerName.Length == 0)
