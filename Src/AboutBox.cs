@@ -113,5 +113,10 @@ namespace ExpertSokoban
             }
         }
         #endregion
+
+        private void URL_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start(URL.Text);
+        }
     }
 }

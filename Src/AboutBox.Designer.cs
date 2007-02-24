@@ -35,6 +35,7 @@ namespace ExpertSokoban
             this.ProductNameLabel = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.URL = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.Logo)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -93,9 +94,9 @@ namespace ExpertSokoban
             | System.Windows.Forms.AnchorStyles.Right)));
             this.OKButton.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.OKButton.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.OKButton.Location = new System.Drawing.Point(9, 145);
+            this.OKButton.Location = new System.Drawing.Point(9, 148);
             this.OKButton.Name = "OKButton";
-            this.OKButton.Size = new System.Drawing.Size(127, 26);
+            this.OKButton.Size = new System.Drawing.Size(177, 26);
             this.OKButton.TabIndex = 24;
             this.OKButton.Text = "OK";
             // 
@@ -115,7 +116,7 @@ namespace ExpertSokoban
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(6, 74);
+            this.label1.Location = new System.Drawing.Point(6, 88);
             this.label1.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(72, 51);
@@ -127,6 +128,7 @@ namespace ExpertSokoban
             // 
             this.panel1.AutoSize = true;
             this.panel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.panel1.Controls.Add(this.URL);
             this.panel1.Controls.Add(this.ProductNameLabel);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.VersionLabel);
@@ -134,17 +136,30 @@ namespace ExpertSokoban
             this.panel1.Controls.Add(this.CopyrightLabel);
             this.panel1.Location = new System.Drawing.Point(139, 12);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(139, 174);
+            this.panel1.Size = new System.Drawing.Size(189, 174);
             this.panel1.TabIndex = 26;
+            // 
+            // URL
+            // 
+            this.URL.AutoSize = true;
+            this.URL.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.URL.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.URL.ForeColor = System.Drawing.Color.Blue;
+            this.URL.Location = new System.Drawing.Point(6, 65);
+            this.URL.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
+            this.URL.Name = "URL";
+            this.URL.Size = new System.Drawing.Size(180, 15);
+            this.URL.TabIndex = 26;
+            this.URL.Text = "http://www.cutebits.com/ExpSok";
+            this.URL.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.URL.Click += new System.EventHandler(this.URL_Click);
             // 
             // AboutBox
             // 
-            this.AcceptButton = this.OKButton;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.CancelButton = this.OKButton;
-            this.ClientSize = new System.Drawing.Size(319, 214);
+            this.ClientSize = new System.Drawing.Size(487, 214);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.CompanyNameLabel);
             this.Controls.Add(this.Logo);
@@ -152,7 +167,7 @@ namespace ExpertSokoban
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AboutBox";
-            this.Padding = new System.Windows.Forms.Padding(9, 9, 9, 9);
+            this.Padding = new System.Windows.Forms.Padding(9);
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
@@ -175,5 +190,6 @@ namespace ExpertSokoban
         private System.Windows.Forms.Label ProductNameLabel;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label URL;
     }
 }
