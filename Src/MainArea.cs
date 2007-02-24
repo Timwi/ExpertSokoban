@@ -1178,6 +1178,8 @@ namespace ExpertSokoban
 
             SelectedPiece = null;
             FState = MainAreaState.Move;
+            if (FUndo.Count == 0)
+                FModified = false;
             ReinitMoveFinder();
             Refresh();
         }
@@ -1211,6 +1213,7 @@ namespace ExpertSokoban
             else
                 return;
 
+            FModified = true;
             SelectedPiece = null;
             FState = MainAreaState.Move;
             ReinitMoveFinder();
