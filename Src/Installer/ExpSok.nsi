@@ -55,6 +55,8 @@
 ;--------------------------------
 ;Pages
 
+  !define MUI_PAGE_HEADER_TEXT "Information about Expert Sokoban"
+  !define MUI_PAGE_HEADER_SUBTEXT "This tells you what it is you are about to install"
   !define MUI_LICENSEPAGE_TEXT_TOP "Welcome to Expert Sokoban installer!"
   !define MUI_LICENSEPAGE_TEXT_BOTTOM "Please press ''Next'' to continue."
   !define MUI_LICENSEPAGE_BUTTON "Next >"
@@ -141,8 +143,12 @@ SectionEnd
 
 Section "Uninstall"
 
-  Delete "$INSTDIR\ExpSok.exe"
+  IfFileExists "$INSTDIR\ExpSok.Settings.dat" 0 delconfig_no
+  MessageBox MB_YESNOCANCEL|MB_ICONQUESTION  "Would you also like to delete Expert Sokoban highscores and settings?" IDNO delconfig_no IDCANCEL delconfig_cancel
   Delete "$INSTDIR\ExpSok.Settings.dat"
+delconfig_no:
+
+  Delete "$INSTDIR\ExpSok.exe"
   Delete "$INSTDIR\RT.Util.dll"
   Delete "$INSTDIR\OriginalLevels.txt"
   Delete "$INSTDIR\Timwi.txt"
@@ -162,4 +168,10 @@ Section "Uninstall"
   ; Clean up the registry
   DeleteRegKey ${myRegistryRoot} ${myRegistry}
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${myName}"
+  GoTo done
+
+delconfig_cancel:
+  Abort "Uninstaller was aborted by the user."
+
+done:
 SectionEnd
