@@ -20,9 +20,9 @@ namespace ExpertSokoban
             //  Change assembly information settings for your application through either:
             //  - Project->Properties->Application->Assembly Information
             //  - AssemblyInfo.cs
-            this.Text = String.Format("About {0}", AssemblyTitle);
+            this.Text = string.Format("About {0}", AssemblyTitle);
             this.ProductNameLabel.Text = AssemblyProduct;
-            this.VersionLabel.Text = String.Format("Version {0}", AssemblyVersion);
+            this.VersionLabel.Text = string.Format("Version {0}.{1}.{2}", AssemblyVersion.Major, AssemblyVersion.Minor, AssemblyVersion.Revision);
             this.CopyrightLabel.Text = AssemblyCopyright;
             this.CompanyNameLabel.Text = AssemblyCompany;
         }
@@ -49,11 +49,11 @@ namespace ExpertSokoban
             }
         }
 
-        public string AssemblyVersion
+        public Version AssemblyVersion
         {
             get
             {
-                return Assembly.GetExecutingAssembly().GetName().Version.ToString();
+                return Assembly.GetExecutingAssembly().GetName().Version;
             }
         }
 
