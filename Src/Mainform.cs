@@ -774,19 +774,6 @@ namespace ExpertSokoban
         }
 
         /// <summary>
-        /// Invoked by "Help => Online Help". Pops up a dialog inviting the user to
-        /// visit our website.
-        /// </summary>
-        private void HelpHelp_Click(object sender, EventArgs e)
-        {
-            string helpfile = Ut.AppPath + "ExpSok.chm";
-            if (File.Exists(helpfile))
-                Help.ShowHelp(this, helpfile);
-            else
-                DlgMessage.ShowWarning("Help file not found. Attempted to open from:\n" + helpfile, null);
-        }
-
-        /// <summary>
         /// Invoked by "Help => Keyboard shortcuts". Displays a message box outlining
         /// the keyboard shortcuts that are not directly documented in the menus.
         /// </summary>

@@ -142,7 +142,6 @@ namespace ExpertSokoban
             this.OptionsSound = new System.Windows.Forms.ToolStripMenuItem();
             this.OptionsUnusedHotkeys = new System.Windows.Forms.ToolStripMenuItem();
             this.HelpMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.HelpHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.HelpKeyboard = new System.Windows.Forms.ToolStripMenuItem();
             this.HelpAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.MainToolStripContainer = new System.Windows.Forms.ToolStripContainer();
@@ -1187,33 +1186,25 @@ namespace ExpertSokoban
             // HelpMenu
             // 
             this.HelpMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.HelpHelp,
             this.HelpKeyboard,
             this.HelpAbout});
             this.HelpMenu.Name = "HelpMenu";
             this.HelpMenu.Size = new System.Drawing.Size(45, 20);
             this.HelpMenu.Text = "&Help";
             // 
-            // HelpHelp
-            // 
-            this.HelpHelp.Image = global::ExpertSokoban.Properties.Resources.help;
-            this.HelpHelp.Name = "HelpHelp";
-            this.HelpHelp.ShortcutKeys = System.Windows.Forms.Keys.F1;
-            this.HelpHelp.Size = new System.Drawing.Size(210, 22);
-            this.HelpHelp.Text = "&Help";
-            this.HelpHelp.Click += new System.EventHandler(this.HelpHelp_Click);
-            // 
             // HelpKeyboard
             // 
+            this.HelpKeyboard.Image = global::ExpertSokoban.Properties.Resources.help;
             this.HelpKeyboard.Name = "HelpKeyboard";
-            this.HelpKeyboard.Size = new System.Drawing.Size(210, 22);
-            this.HelpKeyboard.Text = "&Keyboard shortcuts...";
+            this.HelpKeyboard.ShortcutKeys = System.Windows.Forms.Keys.F1;
+            this.HelpKeyboard.Size = new System.Drawing.Size(220, 22);
+            this.HelpKeyboard.Text = "&Keyboard shortcuts";
             this.HelpKeyboard.Click += new System.EventHandler(this.HelpKeyboard_Click);
             // 
             // HelpAbout
             // 
             this.HelpAbout.Name = "HelpAbout";
-            this.HelpAbout.Size = new System.Drawing.Size(210, 22);
+            this.HelpAbout.Size = new System.Drawing.Size(220, 22);
             this.HelpAbout.Text = "&About";
             this.HelpAbout.Click += new System.EventHandler(this.HelpAbout_Click);
             // 
@@ -1457,7 +1448,6 @@ namespace ExpertSokoban
         private System.Windows.Forms.ToolStripSeparator LevelSep2;
         private System.Windows.Forms.ToolStripMenuItem HelpMenu;
         private System.Windows.Forms.ToolStripMenuItem HelpAbout;
-        private System.Windows.Forms.ToolStripMenuItem HelpHelp;
         private System.Windows.Forms.ToolStripMenuItem LevelNext;
         private System.Windows.Forms.ToolStripMenuItem LevelNextUnsolved;
         private System.Windows.Forms.ToolStripSeparator LevelSep3;
