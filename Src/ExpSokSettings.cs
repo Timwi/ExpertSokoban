@@ -166,6 +166,15 @@ namespace ExpertSokoban
         }
 
         /// <summary>
+        /// Remembers the path where a file was last opened from or saved to.
+            /// </summary>
+        public static string LastOpenSaveDirectory
+        {
+            get { return PrgSettings.Store.GetString("ExpSok.LastOpenSaveDirectory", Ut.AppPath); }
+            set { PrgSettings.Store.SetString("ExpSok.LastOpenSaveDirectory", value); }
+        }
+
+        /// <summary>
         /// Helper method to determine whether the current player has solved the given level
         /// </summary>
         /// <param name="Level">String representation of the level to check.</param>

@@ -451,6 +451,8 @@ namespace ExpertSokoban
                 if (ExpSokSettings.IsSolved(Items[e.Index].ToString()))
                     e.ItemHeight += (int)e.Graphics.MeasureString("Solved", Font).Height + 5;
             }
+            else if (Items[e.Index] is string && (Items[e.Index] as string).Length == 0)
+                e.ItemHeight = (int)e.Graphics.MeasureString("Mg", Font).Height + 10;
             else if (Items[e.Index] is string)
                 e.ItemHeight = (int)e.Graphics.MeasureString((string)Items[e.Index], Font).Height + 10;
             else
@@ -588,6 +590,9 @@ namespace ExpertSokoban
             if (ForceDialog || ExpSokSettings.LevelFilename == null)
             {
                 SaveFileDialog SaveDialog = new SaveFileDialog();
+                SaveDialog.DefaultExt = "txt";
+                SaveDialog.Filter = "Text files|*.txt|All files|*.*";
+                SaveDialog.InitialDirectory = ExpSokSettings.LastOpenSaveDirectory;
                 DialogResult Result = SaveDialog.ShowDialog();
 
                 // If the user cancelled the dialog, bail out
@@ -595,6 +600,7 @@ namespace ExpertSokoban
                     return false;
 
                 // Update the current filename
+                ExpSokSettings.LastOpenSaveDirectory = Path.GetDirectoryName(SaveDialog.FileName);
                 ExpSokSettings.LevelFilename = SaveDialog.FileName;
             }
 
@@ -660,6 +666,7 @@ namespace ExpertSokoban
             ExpSokSettings.LevelFilename = null;
             Items.Clear();
             ActiveLevelIndex = null;
+            Modified = false;
         }
 
         /// <summary>

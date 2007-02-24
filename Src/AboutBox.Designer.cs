@@ -54,7 +54,7 @@ namespace ExpertSokoban
             // 
             this.VersionLabel.AutoSize = true;
             this.VersionLabel.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.VersionLabel.Location = new System.Drawing.Point(6, 17);
+            this.VersionLabel.Location = new System.Drawing.Point(6, 18);
             this.VersionLabel.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
             this.VersionLabel.Name = "VersionLabel";
             this.VersionLabel.Size = new System.Drawing.Size(57, 17);
@@ -66,7 +66,7 @@ namespace ExpertSokoban
             // 
             this.CopyrightLabel.AutoSize = true;
             this.CopyrightLabel.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.CopyrightLabel.Location = new System.Drawing.Point(6, 45);
+            this.CopyrightLabel.Location = new System.Drawing.Point(6, 48);
             this.CopyrightLabel.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
             this.CopyrightLabel.Name = "CopyrightLabel";
             this.CopyrightLabel.Size = new System.Drawing.Size(70, 17);
@@ -90,13 +90,11 @@ namespace ExpertSokoban
             // 
             // OKButton
             // 
-            this.OKButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.OKButton.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.OKButton.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.OKButton.Location = new System.Drawing.Point(9, 148);
+            this.OKButton.Location = new System.Drawing.Point(148, 188);
             this.OKButton.Name = "OKButton";
-            this.OKButton.Size = new System.Drawing.Size(177, 26);
+            this.OKButton.Size = new System.Drawing.Size(213, 26);
             this.OKButton.TabIndex = 24;
             this.OKButton.Text = "OK";
             // 
@@ -119,24 +117,23 @@ namespace ExpertSokoban
             this.label1.Location = new System.Drawing.Point(6, 88);
             this.label1.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(72, 51);
+            this.label1.Size = new System.Drawing.Size(216, 68);
             this.label1.TabIndex = 25;
-            this.label1.Text = "Credits:\r\n    Timwi\r\n    Roman";
+            this.label1.Text = "Credits:\r\n    Programming: Timwi, Roman\r\n    Graphics: Roman, Timwi\r\n    Testing:" +
+    " Hawthorn";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // panel1
             // 
-            this.panel1.AutoSize = true;
             this.panel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.panel1.Controls.Add(this.URL);
             this.panel1.Controls.Add(this.ProductNameLabel);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.VersionLabel);
-            this.panel1.Controls.Add(this.OKButton);
             this.panel1.Controls.Add(this.CopyrightLabel);
             this.panel1.Location = new System.Drawing.Point(139, 12);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(189, 174);
+            this.panel1.Size = new System.Drawing.Size(225, 170);
             this.panel1.TabIndex = 26;
             // 
             // URL
@@ -159,10 +156,11 @@ namespace ExpertSokoban
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(487, 214);
+            this.ClientSize = new System.Drawing.Size(372, 224);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.CompanyNameLabel);
             this.Controls.Add(this.Logo);
+            this.Controls.Add(this.OKButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;

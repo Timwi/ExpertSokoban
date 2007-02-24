@@ -131,9 +131,10 @@ namespace ExpertSokoban
             LevelSave.Enabled = true;
             LevelSaveAs.Enabled = true;
 
-            LevelUndo.Enabled = !MainAreaEditing;
-            LevelRedo.Enabled = !MainAreaEditing;
-            LevelRetry.Enabled = !MainAreaEditing;
+            LevelUndo.Enabled = !MainAreaEditing && !MainAreaNull;
+            LevelRedo.Enabled = !MainAreaEditing && !MainAreaNull;
+            LevelRetry.Enabled = !MainAreaEditing && !MainAreaNull;
+            LevelHighscores.Enabled = LevelList.ActiveLevel != null;
 
             LevelPrevious.Enabled = !MainAreaEditing && LevelList.Items.Count > 0;
             LevelNext.Enabled = !MainAreaEditing && LevelList.Items.Count > 0;
@@ -179,16 +180,16 @@ namespace ExpertSokoban
             OptionsEndPos.Enabled = !MainAreaEditing && !MainAreaNull;
 
             // Level list context menu
+            ContextPlay.Enabled = LevelList.SelectedLevel != null;
+            ContextEdit.Enabled = LevelList.SelectedLevel != null;
+            ContextHighscores.Enabled = LevelList.SelectedLevel != null;
+            ContextNewLevel.Enabled = LevelList.Visible;
+            ContextNewComment.Enabled = LevelList.Visible;
             ContextCut.Enabled = LevelList.SelectedLevel != null;
             ContextCopyItem.Enabled = LevelList.SelectedLevel != null;
-            ContextDelete.Enabled = LevelList.SelectedLevel != null;
-            ContextEdit.Enabled = LevelList.SelectedLevel != null;
-            ContextHide.Enabled = LevelList.Visible;
-            ContextHighscores.Enabled = LevelList.SelectedLevel != null;
-            ContextNewComment.Enabled = LevelList.Visible;
-            ContextNewLevel.Enabled = LevelList.Visible;
             ContextPaste.Enabled = LevelList.Visible;
-            ContextPlay.Enabled = LevelList.SelectedLevel != null;
+            ContextDelete.Enabled = LevelList.SelectedIndex >= 0;
+            ContextHide.Enabled = LevelList.Visible;
 
             // Toolbar visibility
             PlayToolStrip.Visible = OptionsPlayToolStrip.Checked;
@@ -429,9 +430,13 @@ namespace ExpertSokoban
                 return;
 
             OpenFileDialog OpenDialog = new OpenFileDialog();
+            OpenDialog.DefaultExt = "txt";
+            OpenDialog.Filter = "Text files|*.txt|All files|*.*";
+            OpenDialog.InitialDirectory = ExpSokSettings.LastOpenSaveDirectory;
             if (OpenDialog.ShowDialog() != DialogResult.OK)
                 return;
 
+            ExpSokSettings.LastOpenSaveDirectory = Path.GetDirectoryName(OpenDialog.FileName);
             MainArea.Modified = false;
             ShowLevelList(true);
             LevelList.LoadLevelPack(OpenDialog.FileName);
@@ -482,7 +487,8 @@ namespace ExpertSokoban
             if (!MainArea.MayDestroy("Retry level"))
                 return;
 
-            MainArea.SetLevel(LevelList.ActiveLevel);
+            if (LevelList.ActiveLevel != null && MainArea.State != MainAreaState.Null)
+                MainArea.SetLevel(LevelList.ActiveLevel);
         }
 
         /// <summary>
@@ -696,7 +702,7 @@ namespace ExpertSokoban
 
         #endregion
 
-        #region "Options" menu
+        #region "Options" and "Help" menus
 
         /// <summary>
         /// Invoked by "Options => Display level list" or the LevelListClosePanel.
@@ -774,6 +780,35 @@ namespace ExpertSokoban
         }
 
         /// <summary>
+        /// Invoked by "Options => Display reachable area for Sokoban".
+        /// Sets the option.
+        /// </summary>
+        private void OptionsAreaSokoban_Click(object sender, EventArgs e)
+        {
+            OptionsAreaSokoban.Checked = !OptionsAreaSokoban.Checked;
+            MainArea.ShowAreaSokoban = ExpSokSettings.ShowAreaSokoban = OptionsAreaSokoban.Checked;
+        }
+
+        /// <summary>
+        /// Invoked by "Options => Display reachable area for piece".
+        /// Sets the option.
+        /// </summary>
+        private void OptionsAreaPiece_Click(object sender, EventArgs e)
+        {
+            OptionsAreaPiece.Checked = !OptionsAreaPiece.Checked;
+            MainArea.ShowAreaPiece = ExpSokSettings.ShowAreaPiece = OptionsAreaPiece.Checked;
+        }
+
+        /// <summary>
+        /// Invoked by "Options => Enable sound". Sets the option.
+        /// </summary>
+        private void OptionsSound_Click(object sender, EventArgs e)
+        {
+            OptionsSound.Checked = !OptionsSound.Checked;
+            MainArea.SoundEnabled = ExpSokSettings.SoundEnabled = OptionsSound.Checked;
+        }
+
+        /// <summary>
         /// Invoked by "Help => Keyboard shortcuts". Displays a message box outlining
         /// the keyboard shortcuts that are not directly documented in the menus.
         /// </summary>
@@ -835,35 +870,6 @@ namespace ExpertSokoban
                     hsf.ShowDialog();
                 }
             }
-        }
-
-        /// <summary>
-        /// Invoked by "Options => Display reachable area for Sokoban".
-        /// Sets the option.
-        /// </summary>
-        private void OptionsAreaSokoban_Click(object sender, EventArgs e)
-        {
-            OptionsAreaSokoban.Checked = !OptionsAreaSokoban.Checked;
-            MainArea.ShowAreaSokoban = ExpSokSettings.ShowAreaSokoban = OptionsAreaSokoban.Checked;
-        }
-
-        /// <summary>
-        /// Invoked by "Options => Display reachable area for piece".
-        /// Sets the option.
-        /// </summary>
-        private void OptionsAreaPiece_Click(object sender, EventArgs e)
-        {
-            OptionsAreaPiece.Checked = !OptionsAreaPiece.Checked;
-            MainArea.ShowAreaPiece = ExpSokSettings.ShowAreaPiece = OptionsAreaPiece.Checked;
-        }
-
-        /// <summary>
-        /// Invoked by "Options => Enable sound". Sets the option.
-        /// </summary>
-        private void OptionsSound_Click(object sender, EventArgs e)
-        {
-            OptionsSound.Checked = !OptionsSound.Checked;
-            MainArea.SoundEnabled = ExpSokSettings.SoundEnabled = OptionsSound.Checked;
         }
     }
 }

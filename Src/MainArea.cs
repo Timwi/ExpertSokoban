@@ -1153,8 +1153,8 @@ namespace ExpertSokoban
         /// </summary>
         public void Undo()
         {
-            if (FState == MainAreaState.Editing || FState == MainAreaState.Solved ||
-                FUndo.Count == 0 || FLevel == null)
+            if (FState == MainAreaState.Editing || FState == MainAreaState.Solved || 
+                FState == MainAreaState.Null || FUndo.Count == 0 || FLevel == null)
                 return;
 
             UndoItem Item = FUndo.Pop();
@@ -1189,7 +1189,7 @@ namespace ExpertSokoban
         public void Redo()
         {
             if (FState == MainAreaState.Editing || FState == MainAreaState.Solved ||
-                FRedo.Count == 0 || FLevel == null)
+                FState == MainAreaState.Null || FRedo.Count == 0 || FLevel == null)
                 return;
 
             UndoItem Item = FRedo.Pop();
