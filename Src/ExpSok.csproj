@@ -172,4 +172,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <PreBuildEvent>copy $(SolutionDir)Help\expsok.chm $(TargetDir)ExpSok.chm</PreBuildEvent>
+  </PropertyGroup>
 </Project>

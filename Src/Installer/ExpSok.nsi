@@ -103,7 +103,7 @@ Section "ExpSok" MainSection
   File "${myPathBin}\RT.Util.dll"
   File "..\OriginalLevels.txt"
   File "..\Timwi.txt"
-  File /oname=ExpSok.chm "..\Help\expsok.chm"
+  File "${myPathBin}\ExpSok.chm"
   
   ;Store installation folder
   WriteRegStr ${myRegistryRoot} ${myRegistry} "Install location" $INSTDIR
