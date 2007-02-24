@@ -138,6 +138,7 @@ namespace ExpertSokoban
             this.OptionsEndPos = new System.Windows.Forms.ToolStripMenuItem();
             this.OptionsAreaSokoban = new System.Windows.Forms.ToolStripMenuItem();
             this.OptionsAreaPiece = new System.Windows.Forms.ToolStripMenuItem();
+            this.OptionsSep4 = new System.Windows.Forms.ToolStripSeparator();
             this.OptionsSound = new System.Windows.Forms.ToolStripMenuItem();
             this.OptionsUnusedHotkeys = new System.Windows.Forms.ToolStripMenuItem();
             this.HelpMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -156,7 +157,6 @@ namespace ExpertSokoban
             this.LevelListSplitter = new System.Windows.Forms.Splitter();
             this.BugWorkaroundTimer = new System.Windows.Forms.Timer(this.components);
             this.UpdateControlsTimer = new System.Windows.Forms.Timer(this.components);
-            this.OptionsSep4 = new System.Windows.Forms.ToolStripSeparator();
             this.LevelListPanel.SuspendLayout();
             this.LevelContextMenu.SuspendLayout();
             this.EditLevelToolStrip.SuspendLayout();
@@ -221,13 +221,13 @@ namespace ExpertSokoban
             this.ContextSep3,
             this.ContextHide});
             this.LevelContextMenu.Name = "LevelContextMenu";
-            this.LevelContextMenu.Size = new System.Drawing.Size(228, 242);
+            this.LevelContextMenu.Size = new System.Drawing.Size(270, 242);
             // 
             // ContextPlay
             // 
             this.ContextPlay.Name = "ContextPlay";
             this.ContextPlay.ShortcutKeyDisplayString = "Enter";
-            this.ContextPlay.Size = new System.Drawing.Size(227, 22);
+            this.ContextPlay.Size = new System.Drawing.Size(269, 22);
             this.ContextPlay.Text = "Pl&ay this level";
             this.ContextPlay.Click += new System.EventHandler(this.ContextPlay_Click);
             // 
@@ -235,7 +235,7 @@ namespace ExpertSokoban
             // 
             this.ContextEdit.Name = "ContextEdit";
             this.ContextEdit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
-            this.ContextEdit.Size = new System.Drawing.Size(227, 22);
+            this.ContextEdit.Size = new System.Drawing.Size(269, 22);
             this.ContextEdit.Text = "&Edit this level";
             this.ContextEdit.Click += new System.EventHandler(this.EditEdit_Click);
             // 
@@ -243,20 +243,20 @@ namespace ExpertSokoban
             // 
             this.ContextHighscores.Name = "ContextHighscores";
             this.ContextHighscores.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.H)));
-            this.ContextHighscores.Size = new System.Drawing.Size(227, 22);
+            this.ContextHighscores.Size = new System.Drawing.Size(269, 22);
             this.ContextHighscores.Text = "Show &highscores";
             this.ContextHighscores.Click += new System.EventHandler(this.LevelHighscores_Click);
             // 
             // ContextSep1
             // 
             this.ContextSep1.Name = "ContextSep1";
-            this.ContextSep1.Size = new System.Drawing.Size(224, 6);
+            this.ContextSep1.Size = new System.Drawing.Size(266, 6);
             // 
             // ContextNewLevel
             // 
             this.ContextNewLevel.Name = "ContextNewLevel";
             this.ContextNewLevel.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
-            this.ContextNewLevel.Size = new System.Drawing.Size(227, 22);
+            this.ContextNewLevel.Size = new System.Drawing.Size(269, 22);
             this.ContextNewLevel.Text = "C&reate a new level here";
             this.ContextNewLevel.Click += new System.EventHandler(this.EditCreateLevel_Click);
             // 
@@ -264,20 +264,20 @@ namespace ExpertSokoban
             // 
             this.ContextNewComment.Name = "ContextNewComment";
             this.ContextNewComment.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.M)));
-            this.ContextNewComment.Size = new System.Drawing.Size(227, 22);
+            this.ContextNewComment.Size = new System.Drawing.Size(269, 22);
             this.ContextNewComment.Text = "&Insert a comment here";
             this.ContextNewComment.Click += new System.EventHandler(this.EditAddComment_Click);
             // 
             // ContextSep2
             // 
             this.ContextSep2.Name = "ContextSep2";
-            this.ContextSep2.Size = new System.Drawing.Size(224, 6);
+            this.ContextSep2.Size = new System.Drawing.Size(266, 6);
             // 
             // ContextCut
             // 
             this.ContextCut.Name = "ContextCut";
             this.ContextCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.ContextCut.Size = new System.Drawing.Size(227, 22);
+            this.ContextCut.Size = new System.Drawing.Size(269, 22);
             this.ContextCut.Text = "C&ut";
             this.ContextCut.Click += new System.EventHandler(this.EditCut_Click);
             // 
@@ -285,7 +285,7 @@ namespace ExpertSokoban
             // 
             this.ContextCopyItem.Name = "ContextCopyItem";
             this.ContextCopyItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.ContextCopyItem.Size = new System.Drawing.Size(227, 22);
+            this.ContextCopyItem.Size = new System.Drawing.Size(269, 22);
             this.ContextCopyItem.Text = "&Copy";
             this.ContextCopyItem.Click += new System.EventHandler(this.EditCopy_Click);
             // 
@@ -293,7 +293,7 @@ namespace ExpertSokoban
             // 
             this.ContextPaste.Name = "ContextPaste";
             this.ContextPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.ContextPaste.Size = new System.Drawing.Size(227, 22);
+            this.ContextPaste.Size = new System.Drawing.Size(269, 22);
             this.ContextPaste.Text = "&Paste";
             this.ContextPaste.Click += new System.EventHandler(this.EditPaste_Click);
             // 
@@ -301,20 +301,20 @@ namespace ExpertSokoban
             // 
             this.ContextDelete.Name = "ContextDelete";
             this.ContextDelete.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.ContextDelete.Size = new System.Drawing.Size(227, 22);
+            this.ContextDelete.Size = new System.Drawing.Size(269, 22);
             this.ContextDelete.Text = "&Delete";
             this.ContextDelete.Click += new System.EventHandler(this.EditDelete_Click);
             // 
             // ContextSep3
             // 
             this.ContextSep3.Name = "ContextSep3";
-            this.ContextSep3.Size = new System.Drawing.Size(224, 6);
+            this.ContextSep3.Size = new System.Drawing.Size(266, 6);
             // 
             // ContextHide
             // 
             this.ContextHide.Name = "ContextHide";
             this.ContextHide.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
-            this.ContextHide.Size = new System.Drawing.Size(227, 22);
+            this.ContextHide.Size = new System.Drawing.Size(269, 22);
             this.ContextHide.Text = "Hide &level list";
             this.ContextHide.Click += new System.EventHandler(this.OptionsLevelList_Click);
             // 
@@ -653,7 +653,7 @@ namespace ExpertSokoban
             this.LevelUnusedHotkeys,
             this.UnusedCTRLShortcuts});
             this.LevelMenu.Name = "LevelMenu";
-            this.LevelMenu.Size = new System.Drawing.Size(44, 20);
+            this.LevelMenu.Size = new System.Drawing.Size(49, 20);
             this.LevelMenu.Text = "&Level";
             // 
             // LevelNew
@@ -661,7 +661,7 @@ namespace ExpertSokoban
             this.LevelNew.Image = global::ExpertSokoban.Properties.Resources.new_;
             this.LevelNew.Name = "LevelNew";
             this.LevelNew.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.LevelNew.Size = new System.Drawing.Size(225, 22);
+            this.LevelNew.Size = new System.Drawing.Size(265, 22);
             this.LevelNew.Text = "&New level file";
             this.LevelNew.Click += new System.EventHandler(this.LevelNew_Click);
             // 
@@ -670,7 +670,7 @@ namespace ExpertSokoban
             this.LevelOpen.Image = global::ExpertSokoban.Properties.Resources.open;
             this.LevelOpen.Name = "LevelOpen";
             this.LevelOpen.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.LevelOpen.Size = new System.Drawing.Size(225, 22);
+            this.LevelOpen.Size = new System.Drawing.Size(265, 22);
             this.LevelOpen.Text = "&Open level file...";
             this.LevelOpen.Click += new System.EventHandler(this.LevelOpen_Click);
             // 
@@ -679,28 +679,28 @@ namespace ExpertSokoban
             this.LevelSave.Image = global::ExpertSokoban.Properties.Resources.save;
             this.LevelSave.Name = "LevelSave";
             this.LevelSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.LevelSave.Size = new System.Drawing.Size(225, 22);
+            this.LevelSave.Size = new System.Drawing.Size(265, 22);
             this.LevelSave.Text = "&Save level file";
             this.LevelSave.Click += new System.EventHandler(this.LevelSave_Click);
             // 
             // LevelSaveAs
             // 
             this.LevelSaveAs.Name = "LevelSaveAs";
-            this.LevelSaveAs.Size = new System.Drawing.Size(225, 22);
+            this.LevelSaveAs.Size = new System.Drawing.Size(265, 22);
             this.LevelSaveAs.Text = "Save level file &as...";
             this.LevelSaveAs.Click += new System.EventHandler(this.LevelSaveAs_Click);
             // 
             // LevelSep1
             // 
             this.LevelSep1.Name = "LevelSep1";
-            this.LevelSep1.Size = new System.Drawing.Size(222, 6);
+            this.LevelSep1.Size = new System.Drawing.Size(262, 6);
             // 
             // LevelUndo
             // 
             this.LevelUndo.Image = global::ExpertSokoban.Properties.Resources.undo;
             this.LevelUndo.Name = "LevelUndo";
             this.LevelUndo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.LevelUndo.Size = new System.Drawing.Size(225, 22);
+            this.LevelUndo.Size = new System.Drawing.Size(265, 22);
             this.LevelUndo.Text = "&Undo move";
             this.LevelUndo.Click += new System.EventHandler(this.LevelUndo_Click);
             // 
@@ -709,7 +709,7 @@ namespace ExpertSokoban
             this.LevelRedo.Image = global::ExpertSokoban.Properties.Resources.redo;
             this.LevelRedo.Name = "LevelRedo";
             this.LevelRedo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.LevelRedo.Size = new System.Drawing.Size(225, 22);
+            this.LevelRedo.Size = new System.Drawing.Size(265, 22);
             this.LevelRedo.Text = "Redo &move";
             this.LevelRedo.Click += new System.EventHandler(this.LevelRedo_Click);
             // 
@@ -718,7 +718,7 @@ namespace ExpertSokoban
             this.LevelRetry.Image = global::ExpertSokoban.Properties.Resources.restart;
             this.LevelRetry.Name = "LevelRetry";
             this.LevelRetry.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
-            this.LevelRetry.Size = new System.Drawing.Size(225, 22);
+            this.LevelRetry.Size = new System.Drawing.Size(265, 22);
             this.LevelRetry.Text = "&Retry level";
             this.LevelRetry.Click += new System.EventHandler(this.LevelRetry_Click);
             // 
@@ -726,21 +726,21 @@ namespace ExpertSokoban
             // 
             this.LevelHighscores.Name = "LevelHighscores";
             this.LevelHighscores.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.H)));
-            this.LevelHighscores.Size = new System.Drawing.Size(225, 22);
+            this.LevelHighscores.Size = new System.Drawing.Size(265, 22);
             this.LevelHighscores.Text = "Show &highscores";
             this.LevelHighscores.Click += new System.EventHandler(this.LevelHighscores_Click);
             // 
             // LevelSep2
             // 
             this.LevelSep2.Name = "LevelSep2";
-            this.LevelSep2.Size = new System.Drawing.Size(222, 6);
+            this.LevelSep2.Size = new System.Drawing.Size(262, 6);
             // 
             // LevelPrevious
             // 
             this.LevelPrevious.Image = global::ExpertSokoban.Properties.Resources.lvl_prev;
             this.LevelPrevious.Name = "LevelPrevious";
             this.LevelPrevious.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Up)));
-            this.LevelPrevious.Size = new System.Drawing.Size(225, 22);
+            this.LevelPrevious.Size = new System.Drawing.Size(265, 22);
             this.LevelPrevious.Text = "&Previous level";
             this.LevelPrevious.Click += new System.EventHandler(this.LevelPrevious_Click);
             // 
@@ -749,7 +749,7 @@ namespace ExpertSokoban
             this.LevelNext.Image = global::ExpertSokoban.Properties.Resources.lvl_next;
             this.LevelNext.Name = "LevelNext";
             this.LevelNext.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Down)));
-            this.LevelNext.Size = new System.Drawing.Size(225, 22);
+            this.LevelNext.Size = new System.Drawing.Size(265, 22);
             this.LevelNext.Text = "N&ext level";
             this.LevelNext.Click += new System.EventHandler(this.LevelNext_Click);
             // 
@@ -758,7 +758,7 @@ namespace ExpertSokoban
             this.LevelPreviousUnsolved.Image = global::ExpertSokoban.Properties.Resources.lvl_prev_unsolved;
             this.LevelPreviousUnsolved.Name = "LevelPreviousUnsolved";
             this.LevelPreviousUnsolved.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
-            this.LevelPreviousUnsolved.Size = new System.Drawing.Size(225, 22);
+            this.LevelPreviousUnsolved.Size = new System.Drawing.Size(265, 22);
             this.LevelPreviousUnsolved.Text = "Pre&vious unsolved level";
             this.LevelPreviousUnsolved.Click += new System.EventHandler(this.LevelPreviousUnsolved_Click);
             // 
@@ -767,32 +767,32 @@ namespace ExpertSokoban
             this.LevelNextUnsolved.Image = global::ExpertSokoban.Properties.Resources.lvl_next_unsolved;
             this.LevelNextUnsolved.Name = "LevelNextUnsolved";
             this.LevelNextUnsolved.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.LevelNextUnsolved.Size = new System.Drawing.Size(225, 22);
+            this.LevelNextUnsolved.Size = new System.Drawing.Size(265, 22);
             this.LevelNextUnsolved.Text = "Next unsolve&d level";
             this.LevelNextUnsolved.Click += new System.EventHandler(this.LevelNextUnsolved_Click);
             // 
             // LevelSep3
             // 
             this.LevelSep3.Name = "LevelSep3";
-            this.LevelSep3.Size = new System.Drawing.Size(222, 6);
+            this.LevelSep3.Size = new System.Drawing.Size(262, 6);
             // 
             // LevelChangePlayer
             // 
             this.LevelChangePlayer.Name = "LevelChangePlayer";
             this.LevelChangePlayer.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.J)));
-            this.LevelChangePlayer.Size = new System.Drawing.Size(225, 22);
+            this.LevelChangePlayer.Size = new System.Drawing.Size(265, 22);
             this.LevelChangePlayer.Text = "&Change player name...";
             this.LevelChangePlayer.Click += new System.EventHandler(this.LevelChangePlayer_Click);
             // 
             // LevelSep4
             // 
             this.LevelSep4.Name = "LevelSep4";
-            this.LevelSep4.Size = new System.Drawing.Size(222, 6);
+            this.LevelSep4.Size = new System.Drawing.Size(262, 6);
             // 
             // LevelExit
             // 
             this.LevelExit.Name = "LevelExit";
-            this.LevelExit.Size = new System.Drawing.Size(225, 22);
+            this.LevelExit.Size = new System.Drawing.Size(265, 22);
             this.LevelExit.Text = "E&xit";
             this.LevelExit.Click += new System.EventHandler(this.LevelExit_Click);
             // 
@@ -800,7 +800,7 @@ namespace ExpertSokoban
             // 
             this.LevelUnusedHotkeys.Enabled = false;
             this.LevelUnusedHotkeys.Name = "LevelUnusedHotkeys";
-            this.LevelUnusedHotkeys.Size = new System.Drawing.Size(225, 22);
+            this.LevelUnusedHotkeys.Size = new System.Drawing.Size(265, 22);
             this.LevelUnusedHotkeys.Text = "Unused hotkeys: bfgijklqtwyz";
             this.LevelUnusedHotkeys.Visible = false;
             // 
@@ -808,7 +808,7 @@ namespace ExpertSokoban
             // 
             this.UnusedCTRLShortcuts.Enabled = false;
             this.UnusedCTRLShortcuts.Name = "UnusedCTRLShortcuts";
-            this.UnusedCTRLShortcuts.Size = new System.Drawing.Size(225, 22);
+            this.UnusedCTRLShortcuts.Size = new System.Drawing.Size(265, 22);
             this.UnusedCTRLShortcuts.Text = "Unused CTRL shortcuts: agiq";
             this.UnusedCTRLShortcuts.Visible = false;
             // 
@@ -833,7 +833,7 @@ namespace ExpertSokoban
             this.EditSokoban,
             this.EditUnusedHotkeys});
             this.EditMenu.Name = "EditMenu";
-            this.EditMenu.Size = new System.Drawing.Size(37, 20);
+            this.EditMenu.Size = new System.Drawing.Size(41, 20);
             this.EditMenu.Text = "&Edit";
             // 
             // EditCreateLevel
@@ -841,7 +841,7 @@ namespace ExpertSokoban
             this.EditCreateLevel.Image = global::ExpertSokoban.Properties.Resources.lvl_add;
             this.EditCreateLevel.Name = "EditCreateLevel";
             this.EditCreateLevel.ShortcutKeys = System.Windows.Forms.Keys.Insert;
-            this.EditCreateLevel.Size = new System.Drawing.Size(225, 22);
+            this.EditCreateLevel.Size = new System.Drawing.Size(264, 22);
             this.EditCreateLevel.Text = "Create &new level";
             this.EditCreateLevel.Click += new System.EventHandler(this.EditCreateLevel_Click);
             // 
@@ -851,7 +851,7 @@ namespace ExpertSokoban
             this.EditDelete.Name = "EditDelete";
             this.EditDelete.ShortcutKeyDisplayString = "";
             this.EditDelete.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.EditDelete.Size = new System.Drawing.Size(225, 22);
+            this.EditDelete.Size = new System.Drawing.Size(264, 22);
             this.EditDelete.Text = "&Delete level";
             this.EditDelete.Click += new System.EventHandler(this.EditDelete_Click);
             // 
@@ -860,7 +860,7 @@ namespace ExpertSokoban
             this.EditEdit.Image = global::ExpertSokoban.Properties.Resources.lvl_edit;
             this.EditEdit.Name = "EditEdit";
             this.EditEdit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
-            this.EditEdit.Size = new System.Drawing.Size(225, 22);
+            this.EditEdit.Size = new System.Drawing.Size(264, 22);
             this.EditEdit.Text = "&Edit level";
             this.EditEdit.Click += new System.EventHandler(this.EditEdit_Click);
             // 
@@ -870,21 +870,21 @@ namespace ExpertSokoban
             this.EditAddComment.Name = "EditAddComment";
             this.EditAddComment.ShortcutKeyDisplayString = "";
             this.EditAddComment.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.M)));
-            this.EditAddComment.Size = new System.Drawing.Size(225, 22);
+            this.EditAddComment.Size = new System.Drawing.Size(264, 22);
             this.EditAddComment.Text = "Add a co&mment...";
             this.EditAddComment.Click += new System.EventHandler(this.EditAddComment_Click);
             // 
             // EditSep1
             // 
             this.EditSep1.Name = "EditSep1";
-            this.EditSep1.Size = new System.Drawing.Size(222, 6);
+            this.EditSep1.Size = new System.Drawing.Size(261, 6);
             // 
             // EditCut
             // 
             this.EditCut.Image = global::ExpertSokoban.Properties.Resources.cut;
             this.EditCut.Name = "EditCut";
             this.EditCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.EditCut.Size = new System.Drawing.Size(225, 22);
+            this.EditCut.Size = new System.Drawing.Size(264, 22);
             this.EditCut.Text = "C&ut";
             this.EditCut.Click += new System.EventHandler(this.EditCut_Click);
             // 
@@ -893,7 +893,7 @@ namespace ExpertSokoban
             this.EditCopy.Image = global::ExpertSokoban.Properties.Resources.copy;
             this.EditCopy.Name = "EditCopy";
             this.EditCopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.EditCopy.Size = new System.Drawing.Size(225, 22);
+            this.EditCopy.Size = new System.Drawing.Size(264, 22);
             this.EditCopy.Text = "&Copy";
             this.EditCopy.Click += new System.EventHandler(this.EditCopy_Click);
             // 
@@ -902,21 +902,21 @@ namespace ExpertSokoban
             this.EditPaste.Image = global::ExpertSokoban.Properties.Resources.paste;
             this.EditPaste.Name = "EditPaste";
             this.EditPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.EditPaste.Size = new System.Drawing.Size(225, 22);
+            this.EditPaste.Size = new System.Drawing.Size(264, 22);
             this.EditPaste.Text = "&Paste";
             this.EditPaste.Click += new System.EventHandler(this.EditPaste_Click);
             // 
             // EditSep2
             // 
             this.EditSep2.Name = "EditSep2";
-            this.EditSep2.Size = new System.Drawing.Size(222, 6);
+            this.EditSep2.Size = new System.Drawing.Size(261, 6);
             // 
             // EditFinish
             // 
             this.EditFinish.Image = global::ExpertSokoban.Properties.Resources.ok;
             this.EditFinish.Name = "EditFinish";
             this.EditFinish.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Return)));
-            this.EditFinish.Size = new System.Drawing.Size(225, 22);
+            this.EditFinish.Size = new System.Drawing.Size(264, 22);
             this.EditFinish.Text = "&Finish editing";
             this.EditFinish.Click += new System.EventHandler(this.EditFinish_Click);
             // 
@@ -925,14 +925,14 @@ namespace ExpertSokoban
             this.EditCancel.Image = global::ExpertSokoban.Properties.Resources.cancel;
             this.EditCancel.Name = "EditCancel";
             this.EditCancel.ShortcutKeyDisplayString = "";
-            this.EditCancel.Size = new System.Drawing.Size(225, 22);
+            this.EditCancel.Size = new System.Drawing.Size(264, 22);
             this.EditCancel.Text = "C&ancel editing";
             this.EditCancel.Click += new System.EventHandler(this.EditCancel_Click);
             // 
             // EditSep3
             // 
             this.EditSep3.Name = "EditSep3";
-            this.EditSep3.Size = new System.Drawing.Size(222, 6);
+            this.EditSep3.Size = new System.Drawing.Size(261, 6);
             // 
             // EditWall
             // 
@@ -941,7 +941,7 @@ namespace ExpertSokoban
             this.EditWall.ParentGroup = this.EditToolOptions;
             this.EditWall.ShortcutKeyDisplayString = "";
             this.EditWall.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
-            this.EditWall.Size = new System.Drawing.Size(225, 22);
+            this.EditWall.Size = new System.Drawing.Size(264, 22);
             this.EditWall.Text = "&Wall tool";
             this.EditWall.Value = ExpertSokoban.MainAreaTool.Wall;
             // 
@@ -956,7 +956,7 @@ namespace ExpertSokoban
             this.EditPiece.ParentGroup = this.EditToolOptions;
             this.EditPiece.ShortcutKeyDisplayString = "";
             this.EditPiece.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-            this.EditPiece.Size = new System.Drawing.Size(225, 22);
+            this.EditPiece.Size = new System.Drawing.Size(264, 22);
             this.EditPiece.Text = "P&iece tool";
             this.EditPiece.Value = ExpertSokoban.MainAreaTool.Piece;
             // 
@@ -967,7 +967,7 @@ namespace ExpertSokoban
             this.EditTarget.ParentGroup = this.EditToolOptions;
             this.EditTarget.ShortcutKeyDisplayString = "";
             this.EditTarget.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
-            this.EditTarget.Size = new System.Drawing.Size(225, 22);
+            this.EditTarget.Size = new System.Drawing.Size(264, 22);
             this.EditTarget.Text = "&Target tool";
             this.EditTarget.Value = ExpertSokoban.MainAreaTool.Target;
             // 
@@ -978,7 +978,7 @@ namespace ExpertSokoban
             this.EditSokoban.ParentGroup = this.EditToolOptions;
             this.EditSokoban.ShortcutKeyDisplayString = "";
             this.EditSokoban.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.K)));
-            this.EditSokoban.Size = new System.Drawing.Size(225, 22);
+            this.EditSokoban.Size = new System.Drawing.Size(264, 22);
             this.EditSokoban.Text = "&Sokoban tool";
             this.EditSokoban.Value = ExpertSokoban.MainAreaTool.Sokoban;
             // 
@@ -986,7 +986,7 @@ namespace ExpertSokoban
             // 
             this.EditUnusedHotkeys.Enabled = false;
             this.EditUnusedHotkeys.Name = "EditUnusedHotkeys";
-            this.EditUnusedHotkeys.Size = new System.Drawing.Size(225, 22);
+            this.EditUnusedHotkeys.Size = new System.Drawing.Size(264, 22);
             this.EditUnusedHotkeys.Text = "Unused hotkeys: bghjkloqrvxyz";
             this.EditUnusedHotkeys.Visible = false;
             // 
@@ -1016,35 +1016,35 @@ namespace ExpertSokoban
             this.OptionsSound,
             this.OptionsUnusedHotkeys});
             this.OptionsMenu.Name = "OptionsMenu";
-            this.OptionsMenu.Size = new System.Drawing.Size(56, 20);
+            this.OptionsMenu.Size = new System.Drawing.Size(63, 20);
             this.OptionsMenu.Text = "&Options";
             // 
             // OptionsLevelList
             // 
             this.OptionsLevelList.Name = "OptionsLevelList";
             this.OptionsLevelList.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
-            this.OptionsLevelList.Size = new System.Drawing.Size(275, 22);
+            this.OptionsLevelList.Size = new System.Drawing.Size(329, 22);
             this.OptionsLevelList.Text = "Display &level list";
             this.OptionsLevelList.Click += new System.EventHandler(this.OptionsLevelList_Click);
             // 
             // OptionsPlayToolStrip
             // 
             this.OptionsPlayToolStrip.Name = "OptionsPlayToolStrip";
-            this.OptionsPlayToolStrip.Size = new System.Drawing.Size(275, 22);
+            this.OptionsPlayToolStrip.Size = new System.Drawing.Size(329, 22);
             this.OptionsPlayToolStrip.Text = "Display pla&ying toolbar";
             this.OptionsPlayToolStrip.Click += new System.EventHandler(this.OptionsPlayToolStrip_Click);
             // 
             // OptionsEditToolStrip
             // 
             this.OptionsEditToolStrip.Name = "OptionsEditToolStrip";
-            this.OptionsEditToolStrip.Size = new System.Drawing.Size(275, 22);
+            this.OptionsEditToolStrip.Size = new System.Drawing.Size(329, 22);
             this.OptionsEditToolStrip.Text = "Display &editing toolbars (level pack)";
             this.OptionsEditToolStrip.Click += new System.EventHandler(this.OptionsEditToolStrip_Click);
             // 
             // OptionsEditLevelToolStrip
             // 
             this.OptionsEditLevelToolStrip.Name = "OptionsEditLevelToolStrip";
-            this.OptionsEditLevelToolStrip.Size = new System.Drawing.Size(275, 22);
+            this.OptionsEditLevelToolStrip.Size = new System.Drawing.Size(329, 22);
             this.OptionsEditLevelToolStrip.Text = "Display editin&g toolbar (level)";
             this.OptionsEditLevelToolStrip.Click += new System.EventHandler(this.OptionsEditLevelToolStrip_Click);
             // 
@@ -1052,20 +1052,20 @@ namespace ExpertSokoban
             // 
             this.OptionsStatusBar.Name = "OptionsStatusBar";
             this.OptionsStatusBar.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.U)));
-            this.OptionsStatusBar.Size = new System.Drawing.Size(275, 22);
+            this.OptionsStatusBar.Size = new System.Drawing.Size(329, 22);
             this.OptionsStatusBar.Text = "Display stat&us bar";
             this.OptionsStatusBar.Click += new System.EventHandler(this.OptionsStatusBar_Click);
             // 
             // OptionsSep1
             // 
             this.OptionsSep1.Name = "OptionsSep1";
-            this.OptionsSep1.Size = new System.Drawing.Size(272, 6);
+            this.OptionsSep1.Size = new System.Drawing.Size(326, 6);
             // 
             // OptionsMoveNo
             // 
             this.OptionsMoveNo.Name = "OptionsMoveNo";
             this.OptionsMoveNo.ParentGroup = this.MovePathOptions;
-            this.OptionsMoveNo.Size = new System.Drawing.Size(275, 22);
+            this.OptionsMoveNo.Size = new System.Drawing.Size(329, 22);
             this.OptionsMoveNo.Text = "Don\'t display &move path";
             this.OptionsMoveNo.Value = ExpertSokoban.PathDrawMode.None;
             // 
@@ -1077,7 +1077,7 @@ namespace ExpertSokoban
             // 
             this.OptionsMoveLine.Name = "OptionsMoveLine";
             this.OptionsMoveLine.ParentGroup = this.MovePathOptions;
-            this.OptionsMoveLine.Size = new System.Drawing.Size(275, 22);
+            this.OptionsMoveLine.Size = new System.Drawing.Size(329, 22);
             this.OptionsMoveLine.Text = "Display move path as li&ne";
             this.OptionsMoveLine.Value = ExpertSokoban.PathDrawMode.Line;
             // 
@@ -1085,7 +1085,7 @@ namespace ExpertSokoban
             // 
             this.OptionsMoveDots.Name = "OptionsMoveDots";
             this.OptionsMoveDots.ParentGroup = this.MovePathOptions;
-            this.OptionsMoveDots.Size = new System.Drawing.Size(275, 22);
+            this.OptionsMoveDots.Size = new System.Drawing.Size(329, 22);
             this.OptionsMoveDots.Text = "Display move path as &dots";
             this.OptionsMoveDots.Value = ExpertSokoban.PathDrawMode.Dots;
             // 
@@ -1093,20 +1093,20 @@ namespace ExpertSokoban
             // 
             this.OptionsMoveArrows.Name = "OptionsMoveArrows";
             this.OptionsMoveArrows.ParentGroup = this.MovePathOptions;
-            this.OptionsMoveArrows.Size = new System.Drawing.Size(275, 22);
+            this.OptionsMoveArrows.Size = new System.Drawing.Size(329, 22);
             this.OptionsMoveArrows.Text = "Display move path as &arrows";
             this.OptionsMoveArrows.Value = ExpertSokoban.PathDrawMode.Arrows;
             // 
             // OptionsSep2
             // 
             this.OptionsSep2.Name = "OptionsSep2";
-            this.OptionsSep2.Size = new System.Drawing.Size(272, 6);
+            this.OptionsSep2.Size = new System.Drawing.Size(326, 6);
             // 
             // OptionsPushNo
             // 
             this.OptionsPushNo.Name = "OptionsPushNo";
             this.OptionsPushNo.ParentGroup = this.PushPathOptions;
-            this.OptionsPushNo.Size = new System.Drawing.Size(275, 22);
+            this.OptionsPushNo.Size = new System.Drawing.Size(329, 22);
             this.OptionsPushNo.Text = "Don\'t display &push path";
             this.OptionsPushNo.Value = ExpertSokoban.PathDrawMode.None;
             // 
@@ -1118,7 +1118,7 @@ namespace ExpertSokoban
             // 
             this.OptionsPushLine.Name = "OptionsPushLine";
             this.OptionsPushLine.ParentGroup = this.PushPathOptions;
-            this.OptionsPushLine.Size = new System.Drawing.Size(275, 22);
+            this.OptionsPushLine.Size = new System.Drawing.Size(329, 22);
             this.OptionsPushLine.Text = "Display push path as l&ine";
             this.OptionsPushLine.Value = ExpertSokoban.PathDrawMode.Line;
             // 
@@ -1126,7 +1126,7 @@ namespace ExpertSokoban
             // 
             this.OptionsPushDots.Name = "OptionsPushDots";
             this.OptionsPushDots.ParentGroup = this.PushPathOptions;
-            this.OptionsPushDots.Size = new System.Drawing.Size(275, 22);
+            this.OptionsPushDots.Size = new System.Drawing.Size(329, 22);
             this.OptionsPushDots.Text = "Display push path as do&ts";
             this.OptionsPushDots.Value = ExpertSokoban.PathDrawMode.Dots;
             // 
@@ -1134,40 +1134,45 @@ namespace ExpertSokoban
             // 
             this.OptionsPushArrows.Name = "OptionsPushArrows";
             this.OptionsPushArrows.ParentGroup = this.PushPathOptions;
-            this.OptionsPushArrows.Size = new System.Drawing.Size(275, 22);
+            this.OptionsPushArrows.Size = new System.Drawing.Size(329, 22);
             this.OptionsPushArrows.Text = "Display push path as a&rrows";
             this.OptionsPushArrows.Value = ExpertSokoban.PathDrawMode.Arrows;
             // 
             // OptionsSep3
             // 
             this.OptionsSep3.Name = "OptionsSep3";
-            this.OptionsSep3.Size = new System.Drawing.Size(272, 6);
+            this.OptionsSep3.Size = new System.Drawing.Size(326, 6);
             // 
             // OptionsEndPos
             // 
             this.OptionsEndPos.Name = "OptionsEndPos";
-            this.OptionsEndPos.Size = new System.Drawing.Size(275, 22);
+            this.OptionsEndPos.Size = new System.Drawing.Size(329, 22);
             this.OptionsEndPos.Text = "Display end p&osition of Sokoban and piece";
             this.OptionsEndPos.Click += new System.EventHandler(this.OptionsEndPos_Click);
             // 
             // OptionsAreaSokoban
             // 
             this.OptionsAreaSokoban.Name = "OptionsAreaSokoban";
-            this.OptionsAreaSokoban.Size = new System.Drawing.Size(275, 22);
+            this.OptionsAreaSokoban.Size = new System.Drawing.Size(329, 22);
             this.OptionsAreaSokoban.Text = "Display rea&chable area for Sokoban";
             this.OptionsAreaSokoban.Click += new System.EventHandler(this.OptionsAreaSokoban_Click);
             // 
             // OptionsAreaPiece
             // 
             this.OptionsAreaPiece.Name = "OptionsAreaPiece";
-            this.OptionsAreaPiece.Size = new System.Drawing.Size(275, 22);
+            this.OptionsAreaPiece.Size = new System.Drawing.Size(329, 22);
             this.OptionsAreaPiece.Text = "Display reac&hable area for piece";
             this.OptionsAreaPiece.Click += new System.EventHandler(this.OptionsAreaPiece_Click);
+            // 
+            // OptionsSep4
+            // 
+            this.OptionsSep4.Name = "OptionsSep4";
+            this.OptionsSep4.Size = new System.Drawing.Size(326, 6);
             // 
             // OptionsSound
             // 
             this.OptionsSound.Name = "OptionsSound";
-            this.OptionsSound.Size = new System.Drawing.Size(275, 22);
+            this.OptionsSound.Size = new System.Drawing.Size(329, 22);
             this.OptionsSound.Text = "Enable &sound";
             this.OptionsSound.Click += new System.EventHandler(this.OptionsSound_Click);
             // 
@@ -1175,7 +1180,7 @@ namespace ExpertSokoban
             // 
             this.OptionsUnusedHotkeys.Enabled = false;
             this.OptionsUnusedHotkeys.Name = "OptionsUnusedHotkeys";
-            this.OptionsUnusedHotkeys.Size = new System.Drawing.Size(275, 22);
+            this.OptionsUnusedHotkeys.Size = new System.Drawing.Size(329, 22);
             this.OptionsUnusedHotkeys.Text = "Unused hotkeys: bfjkqvwxz";
             this.OptionsUnusedHotkeys.Visible = false;
             // 
@@ -1186,29 +1191,29 @@ namespace ExpertSokoban
             this.HelpKeyboard,
             this.HelpAbout});
             this.HelpMenu.Name = "HelpMenu";
-            this.HelpMenu.Size = new System.Drawing.Size(40, 20);
+            this.HelpMenu.Size = new System.Drawing.Size(45, 20);
             this.HelpMenu.Text = "&Help";
             // 
             // HelpHelp
             // 
             this.HelpHelp.Image = global::ExpertSokoban.Properties.Resources.help;
             this.HelpHelp.Name = "HelpHelp";
-            this.HelpHelp.Size = new System.Drawing.Size(199, 22);
-            this.HelpHelp.Text = "&Online Help...";
+            this.HelpHelp.ShortcutKeys = System.Windows.Forms.Keys.F1;
+            this.HelpHelp.Size = new System.Drawing.Size(210, 22);
+            this.HelpHelp.Text = "&Help";
             this.HelpHelp.Click += new System.EventHandler(this.HelpHelp_Click);
             // 
             // HelpKeyboard
             // 
             this.HelpKeyboard.Name = "HelpKeyboard";
-            this.HelpKeyboard.ShortcutKeys = System.Windows.Forms.Keys.F1;
-            this.HelpKeyboard.Size = new System.Drawing.Size(199, 22);
+            this.HelpKeyboard.Size = new System.Drawing.Size(210, 22);
             this.HelpKeyboard.Text = "&Keyboard shortcuts...";
             this.HelpKeyboard.Click += new System.EventHandler(this.HelpKeyboard_Click);
             // 
             // HelpAbout
             // 
             this.HelpAbout.Name = "HelpAbout";
-            this.HelpAbout.Size = new System.Drawing.Size(199, 22);
+            this.HelpAbout.Size = new System.Drawing.Size(210, 22);
             this.HelpAbout.Text = "&About";
             this.HelpAbout.Click += new System.EventHandler(this.HelpAbout_Click);
             // 
@@ -1254,42 +1259,42 @@ namespace ExpertSokoban
             // StatusMoves
             // 
             this.StatusMoves.Name = "StatusMoves";
-            this.StatusMoves.Size = new System.Drawing.Size(51, 17);
+            this.StatusMoves.Size = new System.Drawing.Size(60, 17);
             this.StatusMoves.Text = "Moves: 0";
             this.StatusMoves.Visible = false;
             // 
             // StatusPushes
             // 
             this.StatusPushes.Name = "StatusPushes";
-            this.StatusPushes.Size = new System.Drawing.Size(54, 17);
+            this.StatusPushes.Size = new System.Drawing.Size(64, 17);
             this.StatusPushes.Text = "Pushes: 0";
             this.StatusPushes.Visible = false;
             // 
             // StatusPieces
             // 
             this.StatusPieces.Name = "StatusPieces";
-            this.StatusPieces.Size = new System.Drawing.Size(102, 17);
+            this.StatusPieces.Size = new System.Drawing.Size(124, 17);
             this.StatusPieces.Text = "Remaining pieces: 0";
             this.StatusPieces.Visible = false;
             // 
             // StatusEdit
             // 
             this.StatusEdit.Name = "StatusEdit";
-            this.StatusEdit.Size = new System.Drawing.Size(174, 17);
+            this.StatusEdit.Size = new System.Drawing.Size(206, 17);
             this.StatusEdit.Text = "You are currently editing this level.";
             this.StatusEdit.Visible = false;
             // 
             // StatusSolved
             // 
             this.StatusSolved.Name = "StatusSolved";
-            this.StatusSolved.Size = new System.Drawing.Size(217, 17);
+            this.StatusSolved.Size = new System.Drawing.Size(253, 17);
             this.StatusSolved.Text = "You have solved the level. Congratulations!";
             this.StatusSolved.Visible = false;
             // 
             // StatusNull
             // 
             this.StatusNull.Name = "StatusNull";
-            this.StatusNull.Size = new System.Drawing.Size(337, 17);
+            this.StatusNull.Size = new System.Drawing.Size(401, 17);
             this.StatusNull.Text = "No level s currently selected. Select a level from the level list to play.";
             this.StatusNull.Visible = false;
             // 
@@ -1335,11 +1340,6 @@ namespace ExpertSokoban
             this.UpdateControlsTimer.Enabled = true;
             this.UpdateControlsTimer.Interval = 10;
             this.UpdateControlsTimer.Tick += new System.EventHandler(this.UpdateControlsTimer_Tick);
-            // 
-            // OptionsSep4
-            // 
-            this.OptionsSep4.Name = "OptionsSep4";
-            this.OptionsSep4.Size = new System.Drawing.Size(272, 6);
             // 
             // Mainform
             // 

@@ -92,7 +92,7 @@ FunctionEnd
 ;--------------------------------
 ;Installer Sections
 
-Section "GammaTool" MainSection
+Section "ExpSok" MainSection
 
   SectionIn RO
 
@@ -103,7 +103,7 @@ Section "GammaTool" MainSection
   File "${myPathBin}\RT.Util.dll"
   File "..\OriginalLevels.txt"
   File "..\Timwi.txt"
-  ;File /oname=ExpSok.chm "..\Help\expsok.chm"
+  File /oname=ExpSok.chm "..\Help\expsok.chm"
   
   ;Store installation folder
   WriteRegStr ${myRegistryRoot} ${myRegistry} "Install location" $INSTDIR
@@ -131,7 +131,7 @@ Section "GammaTool" MainSection
     CreateDirectory "$SMPROGRAMS\$STARTMENU_FOLDER"
     CreateShortCut "$SMPROGRAMS\$STARTMENU_FOLDER\Uninstall.lnk" "$INSTDIR\Uninstall.exe"
     CreateShortCut "$SMPROGRAMS\$STARTMENU_FOLDER\Expert Sokoban.lnk" "$INSTDIR\ExpSok.exe"
-    ;CreateShortCut "$SMPROGRAMS\$STARTMENU_FOLDER\Expert Sokoban Help.lnk" "$INSTDIR\ExpSok.chm"
+    CreateShortCut "$SMPROGRAMS\$STARTMENU_FOLDER\Expert Sokoban Help.lnk" "$INSTDIR\ExpSok.chm"
   !insertmacro MUI_STARTMENU_WRITE_END
 
 SectionEnd
@@ -146,7 +146,7 @@ Section "Uninstall"
   Delete "$INSTDIR\RT.Util.dll"
   Delete "$INSTDIR\OriginalLevels.txt"
   Delete "$INSTDIR\Timwi.txt"
-  ;Delete "$INSTDIR\ExpSok.chm"
+  Delete "$INSTDIR\ExpSok.chm"
 
   Delete "$INSTDIR\Uninstall.exe"
 
@@ -156,7 +156,7 @@ Section "Uninstall"
   !insertmacro MUI_STARTMENU_GETFOLDER Application $MUI_TEMP
   Delete "$SMPROGRAMS\$MUI_TEMP\Uninstall.lnk"
   Delete "$SMPROGRAMS\$MUI_TEMP\Expert Sokoban.lnk"
-  ;Delete "$SMPROGRAMS\$MUI_TEMP\Expert Sokoban Help.lnk"
+  Delete "$SMPROGRAMS\$MUI_TEMP\Expert Sokoban Help.lnk"
   RMDir "$SMPROGRAMS\$MUI_TEMP"
 
   ; Clean up the registry
