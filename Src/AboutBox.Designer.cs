@@ -44,8 +44,8 @@ namespace ExpertSokoban
             // 
             this.MainLayoutPanel.AutoSize = true;
             this.MainLayoutPanel.ColumnCount = 2;
-            this.MainLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 38.2F));
-            this.MainLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 61.8F));
+            this.MainLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.MainLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.MainLayoutPanel.Controls.Add(this.Logo, 0, 0);
             this.MainLayoutPanel.Controls.Add(this.ProductNameLabel, 1, 0);
             this.MainLayoutPanel.Controls.Add(this.VersionLabel, 1, 1);
@@ -54,25 +54,24 @@ namespace ExpertSokoban
             this.MainLayoutPanel.Controls.Add(this.DescriptionBox, 1, 4);
             this.MainLayoutPanel.Controls.Add(this.OKButton, 1, 5);
             this.MainLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.MainLayoutPanel.Location = new System.Drawing.Point(10, 11);
-            this.MainLayoutPanel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.MainLayoutPanel.Location = new System.Drawing.Point(13, 12);
+            this.MainLayoutPanel.Margin = new System.Windows.Forms.Padding(4);
             this.MainLayoutPanel.Name = "MainLayoutPanel";
             this.MainLayoutPanel.RowCount = 6;
-            this.MainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
-            this.MainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
-            this.MainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
-            this.MainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
-            this.MainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 55.55556F));
-            this.MainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.MainLayoutPanel.Size = new System.Drawing.Size(409, 258);
+            this.MainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.MainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.MainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.MainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.MainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.MainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.MainLayoutPanel.Size = new System.Drawing.Size(526, 258);
             this.MainLayoutPanel.TabIndex = 0;
             // 
             // Logo
             // 
-            this.Logo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Logo.Image = ((System.Drawing.Image)(resources.GetObject("Logo.Image")));
-            this.Logo.Location = new System.Drawing.Point(3, 4);
-            this.Logo.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.Logo.Location = new System.Drawing.Point(4, 4);
+            this.Logo.Margin = new System.Windows.Forms.Padding(4);
             this.Logo.Name = "Logo";
             this.MainLayoutPanel.SetRowSpan(this.Logo, 6);
             this.Logo.Size = new System.Drawing.Size(150, 250);
@@ -83,11 +82,11 @@ namespace ExpertSokoban
             // ProductNameLabel
             // 
             this.ProductNameLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ProductNameLabel.Location = new System.Drawing.Point(163, 0);
-            this.ProductNameLabel.Margin = new System.Windows.Forms.Padding(7, 0, 3, 0);
-            this.ProductNameLabel.MaximumSize = new System.Drawing.Size(0, 21);
+            this.ProductNameLabel.Location = new System.Drawing.Point(167, 0);
+            this.ProductNameLabel.Margin = new System.Windows.Forms.Padding(9, 0, 4, 0);
+            this.ProductNameLabel.MaximumSize = new System.Drawing.Size(0, 24);
             this.ProductNameLabel.Name = "ProductNameLabel";
-            this.ProductNameLabel.Size = new System.Drawing.Size(243, 21);
+            this.ProductNameLabel.Size = new System.Drawing.Size(355, 24);
             this.ProductNameLabel.TabIndex = 19;
             this.ProductNameLabel.Text = "Product Name";
             this.ProductNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -95,11 +94,11 @@ namespace ExpertSokoban
             // VersionLabel
             // 
             this.VersionLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.VersionLabel.Location = new System.Drawing.Point(163, 25);
-            this.VersionLabel.Margin = new System.Windows.Forms.Padding(7, 0, 3, 0);
-            this.VersionLabel.MaximumSize = new System.Drawing.Size(0, 21);
+            this.VersionLabel.Location = new System.Drawing.Point(167, 24);
+            this.VersionLabel.Margin = new System.Windows.Forms.Padding(9, 0, 4, 0);
+            this.VersionLabel.MaximumSize = new System.Drawing.Size(0, 24);
             this.VersionLabel.Name = "VersionLabel";
-            this.VersionLabel.Size = new System.Drawing.Size(243, 21);
+            this.VersionLabel.Size = new System.Drawing.Size(355, 24);
             this.VersionLabel.TabIndex = 0;
             this.VersionLabel.Text = "Version";
             this.VersionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -107,11 +106,11 @@ namespace ExpertSokoban
             // CopyrightLabel
             // 
             this.CopyrightLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.CopyrightLabel.Location = new System.Drawing.Point(163, 50);
-            this.CopyrightLabel.Margin = new System.Windows.Forms.Padding(7, 0, 3, 0);
-            this.CopyrightLabel.MaximumSize = new System.Drawing.Size(0, 21);
+            this.CopyrightLabel.Location = new System.Drawing.Point(167, 48);
+            this.CopyrightLabel.Margin = new System.Windows.Forms.Padding(9, 0, 4, 0);
+            this.CopyrightLabel.MaximumSize = new System.Drawing.Size(0, 24);
             this.CopyrightLabel.Name = "CopyrightLabel";
-            this.CopyrightLabel.Size = new System.Drawing.Size(243, 21);
+            this.CopyrightLabel.Size = new System.Drawing.Size(355, 24);
             this.CopyrightLabel.TabIndex = 21;
             this.CopyrightLabel.Text = "Copyright";
             this.CopyrightLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -119,24 +118,25 @@ namespace ExpertSokoban
             // CompanyNameLabel
             // 
             this.CompanyNameLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.CompanyNameLabel.Location = new System.Drawing.Point(163, 75);
-            this.CompanyNameLabel.Margin = new System.Windows.Forms.Padding(7, 0, 3, 0);
-            this.CompanyNameLabel.MaximumSize = new System.Drawing.Size(0, 21);
+            this.CompanyNameLabel.Location = new System.Drawing.Point(167, 72);
+            this.CompanyNameLabel.Margin = new System.Windows.Forms.Padding(9, 0, 4, 0);
+            this.CompanyNameLabel.MaximumSize = new System.Drawing.Size(0, 24);
             this.CompanyNameLabel.Name = "CompanyNameLabel";
-            this.CompanyNameLabel.Size = new System.Drawing.Size(243, 21);
+            this.CompanyNameLabel.Size = new System.Drawing.Size(355, 24);
             this.CompanyNameLabel.TabIndex = 22;
             this.CompanyNameLabel.Text = "Company Name";
             this.CompanyNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // DescriptionBox
             // 
+            this.DescriptionBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.DescriptionBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DescriptionBox.Location = new System.Drawing.Point(163, 104);
-            this.DescriptionBox.Margin = new System.Windows.Forms.Padding(7, 4, 3, 4);
+            this.DescriptionBox.Location = new System.Drawing.Point(167, 100);
+            this.DescriptionBox.Margin = new System.Windows.Forms.Padding(9, 4, 4, 4);
             this.DescriptionBox.Multiline = true;
             this.DescriptionBox.Name = "DescriptionBox";
             this.DescriptionBox.ReadOnly = true;
-            this.DescriptionBox.Size = new System.Drawing.Size(243, 118);
+            this.DescriptionBox.Size = new System.Drawing.Size(355, 120);
             this.DescriptionBox.TabIndex = 23;
             this.DescriptionBox.TabStop = false;
             this.DescriptionBox.Text = "Credits:\r\n\r\nProgramming: Timwi, Roman\r\nGraphics: Roman, Timwi\r\n";
@@ -145,29 +145,30 @@ namespace ExpertSokoban
             // 
             this.OKButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.OKButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.OKButton.Location = new System.Drawing.Point(319, 231);
-            this.OKButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.OKButton.Location = new System.Drawing.Point(410, 228);
+            this.OKButton.Margin = new System.Windows.Forms.Padding(4);
             this.OKButton.Name = "OKButton";
-            this.OKButton.Size = new System.Drawing.Size(87, 23);
+            this.OKButton.Size = new System.Drawing.Size(112, 26);
             this.OKButton.TabIndex = 24;
             this.OKButton.Text = "OK";
             // 
             // AboutBox
             // 
             this.AcceptButton = this.OKButton;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.CancelButton = this.OKButton;
-            this.ClientSize = new System.Drawing.Size(429, 280);
+            this.ClientSize = new System.Drawing.Size(552, 282);
             this.Controls.Add(this.MainLayoutPanel);
-            this.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.Font = new System.Drawing.Font("Arial", 12F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AboutBox";
-            this.Padding = new System.Windows.Forms.Padding(10, 11, 10, 11);
+            this.Padding = new System.Windows.Forms.Padding(13, 12, 13, 12);
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
