@@ -34,7 +34,8 @@ namespace ExpertSokoban
 
             LevelPicture.ClientSize = new Size(LevelPicture.ClientSize.Width,
                 (int)(LevelPicture.ClientSize.Width*Level.Height/Level.Width));
-            CurLevel = Level;
+            CurLevel = Level.Clone();
+            CurLevel.EnsureSpace(1);
 
             List<string> PlayerNames = new List<string>();
             foreach (string s in Highscores.Keys)
