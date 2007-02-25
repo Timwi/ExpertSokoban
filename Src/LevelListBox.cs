@@ -473,18 +473,23 @@ namespace ExpertSokoban
         private enum LevelReaderState { Empty, Comment, Level }
 
         /// <summary>
-        /// Loads a level pack from the level list. Returns an index to the first unsolved
-        /// level, or if all solved - the first valid level, or if all invalid - null.
+        /// The exception thrown by LoadLevelPack() if the level file is invalid.
         /// </summary>
-        public int? LoadLevelPack(string FileName)
+        public class InvalidLevelException : Exception
         {
-            BeginUpdate();
-            Items.Clear();
+            public InvalidLevelException() { }
+        }
 
-            // Have we encountered a valid level yet?
-            int? FoundValidLevel = null;
-            // Have we encountered a valid unsolved level yet?
-            int? FoundUnsolvedLevel = null;
+        /// <summary>
+        /// Loads a level pack from the level list.
+        /// </summary>
+        public void LoadLevelPack(string FileName)
+        {
+            // Will contain the list of levels and comments that we have loaded.
+            // (We only want to add them to the listbox at the end in case we
+            // throw an exception, because then we want to keep the old file.)
+            List<object> LoadedItems = new List<object>();
+
             // Class to read from the text file
             StreamReader StreamReader = new StreamReader(FileName, Encoding.UTF8);
             // State we're in (Empty, Comment or Level)
@@ -500,6 +505,19 @@ namespace ExpertSokoban
             {
                 Line = StreamReader.ReadLine();
 
+                // If this line begins with a semicolon (';'), it's a comment.
+                // Otherwise, it is considered part of the level and must
+                // contain only the characters #@$.*+ or space.
+                if (Line != null && Line.Length > 0 && Line[0] != ';')
+                {
+                    // check for invalid characters
+                    for (int i = 0; i < Line.Length; i++)
+                        if (Line[i] != ' ' && Line[i] != '#' && Line[i] != '@' &&
+                            Line[i] != '$' && Line[i] != '.' && Line[i] != '*' &&
+                            Line[i] != '+')
+                            throw new InvalidLevelException();
+                }
+
                 // Decide whether this line belongs to a level or comment
                 LevelReaderState NewState =
                             (Line == null || Line.Length == 0) ? LevelReaderState.Empty :
@@ -512,22 +530,15 @@ namespace ExpertSokoban
 
                 if (NewState != State && State == LevelReaderState.Comment)
                 {
-                    Items.Add(Comment);
+                    LoadedItems.Add(Comment);
                     Comment = "";
                 }
                 else if (NewState != State && State == LevelReaderState.Level)
                 {
                     SokobanLevel NewLevel = new SokobanLevel(LevelEncoded);
                     NewLevel.EnsureSpace(0);
-                    Items.Add(NewLevel);
+                    LoadedItems.Add(NewLevel);
                     LevelEncoded = "";
-                    if (NewLevel.Validity == SokobanLevelStatus.Valid)
-                    {
-                        if (FoundValidLevel == null)
-                            FoundValidLevel = Items.Count-1;
-                        if (FoundUnsolvedLevel == null && !ExpSokSettings.IsSolved(NewLevel.ToString()))
-                            FoundUnsolvedLevel = Items.Count-1;
-                    }
                 }
 
                 // Append the line we just read to the relevant variable
@@ -540,21 +551,16 @@ namespace ExpertSokoban
                 State = NewState;
             } while (Line != null);
 
+            BeginUpdate();
+            Items.Clear();
+            foreach (object Item in LoadedItems)
+                Items.Add(Item);
             EndUpdate();
             StreamReader.Close();
 
             FModified = false;
 
             ExpSokSettings.LevelFilename = FileName;
-
-            if (FoundUnsolvedLevel != null)
-                // If we found a valid unsolved level, display it and let the player play it.
-                return FoundUnsolvedLevel.Value;
-            else if (FoundValidLevel != null)
-                // If not, but we found a valid level, display that instead.
-                return FoundValidLevel.Value;
-            else
-                return null;
         }
 
         /// <summary>

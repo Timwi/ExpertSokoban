@@ -436,10 +436,20 @@ namespace ExpertSokoban
             if (OpenDialog.ShowDialog() != DialogResult.OK)
                 return;
 
+            try
+            {
+                LevelList.LoadLevelPack(OpenDialog.FileName);
+            }
+            catch (LevelListBox.InvalidLevelException)
+            {
+                DlgMessage.ShowError("The selected file is not a valid Sokoban level file.",
+                    "Error opening level file");
+                return;
+            }
+
             ExpSokSettings.LastOpenSaveDirectory = Path.GetDirectoryName(OpenDialog.FileName);
             MainArea.Modified = false;
             ShowLevelList(true);
-            LevelList.LoadLevelPack(OpenDialog.FileName);
             LevelList.PlayFirstUnsolved();
         }
 
@@ -536,6 +546,27 @@ namespace ExpertSokoban
 
             ExpSokSettings.PlayerName = Result;
             LevelList.RefreshItems();
+        }
+
+        /// <summary>
+        /// Invoked by "Level => Show highscores". Displays the highscores for the
+        /// currently selected level.
+        /// </summary>
+        private void LevelHighscores_Click(object sender, EventArgs e)
+        {
+            if (LevelList.SelectedLevel != null)
+            {
+                string l = LevelList.SelectedLevel.ToString();
+                if (!ExpSokSettings.Highscores.ContainsKey(l))
+                    DlgMessage.ShowInfo("The selected level does not have any highscores associated with it yet.",
+                        "No highscores for this level");
+                else
+                {
+                    HighscoresForm hsf = new HighscoresForm();
+                    hsf.SetContents(ExpSokSettings.Highscores[l], LevelList.SelectedLevel);
+                    hsf.ShowDialog();
+                }
+            }
         }
 
         /// <summary>
@@ -854,22 +885,5 @@ namespace ExpertSokoban
         }
 
         #endregion
-
-        private void LevelHighscores_Click(object sender, EventArgs e)
-        {
-            if (LevelList.SelectedLevel != null)
-            {
-                string l = LevelList.SelectedLevel.ToString();
-                if (!ExpSokSettings.Highscores.ContainsKey(l))
-                    DlgMessage.ShowInfo("The selected level does not have any highscores associated with it yet.",
-                        "No highscores for this level");
-                else
-                {
-                    HighscoresForm hsf = new HighscoresForm();
-                    hsf.SetContents(ExpSokSettings.Highscores[l], LevelList.SelectedLevel);
-                    hsf.ShowDialog();
-                }
-            }
-        }
     }
 }
