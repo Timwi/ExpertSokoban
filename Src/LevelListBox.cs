@@ -841,7 +841,7 @@ namespace ExpertSokoban
             if (Items.Count < 1)
                 return null;
 
-            int StartIndex = SelectedIndex == -1 ? (Forward ? Items.Count-1 : 0) : SelectedIndex;
+            int StartIndex = FActiveLevelIndex == null ? (Forward ? Items.Count-1 : 0) : FActiveLevelIndex.Value;
             int i = StartIndex;
             for (; ; )
             {
@@ -860,8 +860,6 @@ namespace ExpertSokoban
             }
         }
 
-        #endregion
-
         /// <summary>
         /// Selects the currently active level in the level list. If no level is
         /// currently active, the selection does not change.
@@ -874,6 +872,16 @@ namespace ExpertSokoban
             if (FActiveLevelIndex != null)
                 SelectedIndex = FActiveLevelIndex.Value;
         }
+
+        /// <summary>
+        /// Determines whether the selected level is the active level or not.
+        /// </summary>
+        public bool SelectedLevelActive()
+        {
+            return SelectedIndex == FActiveLevelIndex;
+        }
+
+        #endregion
 
         /// <summary>
         /// Determines (by asking the user if necessary) whether we are allowed to
@@ -953,14 +961,6 @@ namespace ExpertSokoban
                     return false;
             }
             return true;
-        }
-
-        /// <summary>
-        /// Determines whether the selected level is the active level or not.
-        /// </summary>
-        public bool SelectedLevelActive()
-        {
-            return SelectedIndex == FActiveLevelIndex;
         }
     }
 }
