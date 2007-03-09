@@ -551,6 +551,7 @@ namespace ExpertSokoban
                 State = NewState;
             } while (Line != null);
 
+            FActiveLevelIndex = null;
             BeginUpdate();
             Items.Clear();
             foreach (object Item in LoadedItems)
