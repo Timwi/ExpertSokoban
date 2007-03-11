@@ -574,7 +574,8 @@ namespace ExpertSokoban
         /// </summary>
         private void LevelExit_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            // Can't use Application.Exit() because of a bug in .NET 3.0.
+            Close();
         }
 
         #endregion
