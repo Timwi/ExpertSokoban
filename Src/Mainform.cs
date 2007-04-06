@@ -303,6 +303,7 @@ namespace ExpertSokoban
 
             LevelListPanel.Visible = Show;
             LevelListSplitter.Visible = Show;
+            OptionsLevelList.Checked = Show;
 
             if (Show)
             {

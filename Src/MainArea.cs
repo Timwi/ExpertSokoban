@@ -1452,7 +1452,7 @@ namespace ExpertSokoban
 
             // Enter: if in push mode and valid destination is selected, execute the push
             // (if the selected destination is not valid, this will automatically meep)
-            else if (e.KeyCode == Keys.Enter && CursorPos != null)
+            else if (e.KeyCode == Keys.Enter && CursorPos != null && FState == MainAreaState.Push)
                 ExecutePush();
         }
 

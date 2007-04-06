@@ -212,8 +212,8 @@ namespace ExpertSokoban
 
             if (SelectedItem is SokobanLevel)
             {
-                ActiveLevelIndex = SelectedIndex;
                 FState = LevelListBoxState.Playing;
+                ActiveLevelIndex = SelectedIndex;
             }
             else
             {
