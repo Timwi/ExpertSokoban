@@ -6,7 +6,7 @@
 
   !define myName "Expert Sokoban"
   !define myNameNospaces "ExpertSokoban"
-  !define myVer "1.0.0"
+  !define myVer "1.0.2"
   !define myInstDir "$PROGRAMFILES\${myName}"
   !define myRegistryRoot "HKCU"
   !define myRegistry "Software\${myNameNospaces}"
@@ -31,7 +31,7 @@
   !define MUI_STARTMENUPAGE_REGISTRY_ROOT "${myRegistryRoot}"
   !define MUI_STARTMENUPAGE_REGISTRY_KEY "${myRegistry}"
   !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "Start menu folder"
-  
+
   BrandingText "${myName} Installer"
 
   SetCompressor /SOLID lzma
@@ -65,13 +65,13 @@
   !insertmacro MUI_PAGE_DIRECTORY
   !insertmacro MUI_PAGE_STARTMENU Application $STARTMENU_FOLDER
   !insertmacro MUI_PAGE_INSTFILES
-  
+
   !insertmacro MUI_UNPAGE_CONFIRM
   !insertmacro MUI_UNPAGE_INSTFILES
-  
+
 ;--------------------------------
 ;Languages
- 
+
   !insertmacro MUI_LANGUAGE "English"
 
 
@@ -82,7 +82,7 @@
 Function .onInit
   System::Call 'kernel32::CreateMutexA(i 0, i 0, t "a2hpm9ef8sfsh2") i .r1 ?e'
   Pop $R0
-  
+
   StrCmp $R0 0 +3
     MessageBox MB_OK|MB_ICONEXCLAMATION "The installer is already running."
     Abort
@@ -106,10 +106,10 @@ Section "ExpSok" MainSection
   File "..\OriginalLevels.txt"
   File "..\Timwi.txt"
   File "${myPathBin}\ExpSok.chm"
-  
+
   ;Store installation folder
   WriteRegStr ${myRegistryRoot} ${myRegistry} "Install location" $INSTDIR
-  
+
   ;Create uninstaller
   WriteUninstaller "$INSTDIR\Uninstall.exe"
 
