@@ -336,7 +336,7 @@ namespace ExpertSokoban
 
             SokobanLevelStatus Status = LevelList.ActiveLevel.Validity;
 
-            if (Status == SokobanLevelStatus.Valid)
+            if (Status == SokobanLevelStatus.Valid || LevelList.State == LevelListBox.LevelListBoxState.Editing)
             {
                 if (LevelList.State == LevelListBox.LevelListBoxState.Editing)
                     MainArea.SetLevelEdit(LevelList.ActiveLevel);

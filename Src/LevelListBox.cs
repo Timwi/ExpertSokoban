@@ -64,8 +64,6 @@ namespace ExpertSokoban
                         return;
                 }
 
-                FState = State;
-
                 if (value == null)
                     FActiveLevelIndex = null;
                 else if (value.Value < 0 || value.Value >= Items.Count || !(Items[value.Value] is SokobanLevel))
