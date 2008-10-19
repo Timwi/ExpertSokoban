@@ -9,6 +9,7 @@ using System.Drawing.Imaging;
 using RT.Util;
 using RT.Util.Controls;
 using RT.Util.Dialogs;
+using RT.Util.Drawing;
 
 namespace ExpertSokoban
 {

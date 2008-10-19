@@ -4,6 +4,7 @@ using System.Text;
 using System.Drawing;
 using RT.Util;
 using System.Drawing.Drawing2D;
+using RT.Util.Drawing;
 
 namespace ExpertSokoban
 {
