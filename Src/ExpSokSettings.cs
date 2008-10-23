@@ -5,7 +5,7 @@ using System.Text;
 using RT.Util;
 using RT.Util.Settings;
 
-using Score=RT.Util.Tuple<int /* pushes */, int /* moves */>;
+using Score=RT.Util.Collections.Tuple<int /* pushes */, int /* moves */>;
 
 namespace ExpertSokoban
 {
