@@ -1,7 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using RT.Util;
 using RT.Util.Settings;
 
@@ -170,7 +168,7 @@ namespace ExpertSokoban
             /// </summary>
         public static string LastOpenSaveDirectory
         {
-            get { return PrgSettings.Store.GetString("ExpSok.LastOpenSaveDirectory", Ut.AppPath); }
+            get { return PrgSettings.Store.GetString("ExpSok.LastOpenSaveDirectory", PathUtil.AppPath); }
             set { PrgSettings.Store.SetString("ExpSok.LastOpenSaveDirectory", value); }
         }
 

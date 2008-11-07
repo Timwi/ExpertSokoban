@@ -1,17 +1,9 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.IO.Compression;
-using System.Text;
 using System.Windows.Forms;
 using RT.Util;
 using RT.Util.Dialogs;
 using RT.Util.Forms;
-using RT.Util.Settings;
 
 namespace ExpertSokoban
 {
@@ -847,7 +839,7 @@ namespace ExpertSokoban
         /// </summary>
         private void HelpKeyboard_Click(object sender, EventArgs e)
         {
-            string helpfile = Ut.AppPath + "ExpSok.chm";
+            string helpfile = PathUtil.AppPath + "ExpSok.chm";
             if (File.Exists(helpfile))
                 Help.ShowHelp(this, helpfile, HelpNavigator.TopicId, "30");
             else
