@@ -1,0 +1,17 @@
+<LanguagePack>
+    <Meta>
+        <LanguageCode>eng-GB</LanguageCode>
+        <LanguageName>English (UK)</LanguageName>
+        <ParentLanguageCode>*</ParentLanguageCode>
+        <Version>0.1</Version>
+        <IsRepository>false</IsRepository>
+        <CardinalNumbers>=1|&amp;; *|&amp;</CardinalNumbers>
+        <OrdinalNumbers>'1 "11|&amp;st, '2 "12|&amp;nd, '3 "13|&amp;rd, *|&amp;th</OrdinalNumbers>
+        <Author>Timwi</Author>
+        <Created>Fr 27 Feb 2009</Created>
+        <Modified>Fr 27 Feb 2009</Modified>
+    </Meta>
+    <Main>
+      <String code='test' var1='variable' val1='1'>This is the [[variable]] attempt.</String>
+    </Main>
+</LanguagePack>
