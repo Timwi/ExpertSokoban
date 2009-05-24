@@ -2,17 +2,27 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using RT.Util.Settings;
+using RT.Util.Xml;
+using System.IO;
 
 namespace ExpertSokoban
 {
-    static class Program
+    public static class Program
     {
+        public static Translation Translation = new Translation();
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        public static void Main()
         {
+#if DEBUG
+            XmlClassify.SaveObjectToXmlFile(Translation, Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), @"ExpSok-translation.template.xml"));
+            var tr_de = XmlClassify.LoadObjectFromXmlFile<Translation>(@"C:\c\main\ExpSok\Translations\ExpSok.de.xml");
+            XmlClassify.SaveObjectToXmlFile(tr_de, @"C:\c\main\ExpSok\Translations\ExpSok.de.xml");
+#endif
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 

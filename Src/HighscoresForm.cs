@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
+using RT.Util;
 using RT.Util.Forms;
 
 namespace ExpertSokoban
@@ -16,6 +14,7 @@ namespace ExpertSokoban
         public HighscoresForm()
         {
             InitializeComponent();
+            Lingo.TranslateControl(this, Program.Translation);
         }
 
         private void OKButton_Click(object sender, EventArgs e)
@@ -30,10 +29,10 @@ namespace ExpertSokoban
         /// <param name="Level">The level whose highscores are being displayed.</param>
         public void SetContents(Dictionary<string, Highscore> Highscores, SokobanLevel Level)
         {
-            HighscoresTable.ColumnCount = 3;
+            pnlHighscores.ColumnCount = 3;
 
-            LevelPicture.ClientSize = new Size(LevelPicture.ClientSize.Width,
-                (int)(LevelPicture.ClientSize.Width*Level.Height/Level.Width));
+            ctLevelPicture.ClientSize = new Size(ctLevelPicture.ClientSize.Width,
+                (int) (ctLevelPicture.ClientSize.Width * Level.Height / Level.Width));
             CurLevel = Level.Clone();
             CurLevel.EnsureSpace(1);
 
@@ -53,29 +52,29 @@ namespace ExpertSokoban
                 PlayerNameLabel.Text = PlayerNames[i];
                 PlayerNameLabel.AutoSize = true;
                 PlayerNameLabel.Margin = new Padding(5);
-                HighscoresTable.Controls.Add(PlayerNameLabel, 1, i);
+                pnlHighscores.Controls.Add(PlayerNameLabel, 1, i);
 
                 Highscore h = Highscores[PlayerNames[i]];
                 Label ScoreLabel = new Label();
                 ScoreLabel.Text = h.BestPushScore.E1 + " pushes, " + h.BestPushScore.E2 + " moves";
                 ScoreLabel.AutoSize = true;
                 ScoreLabel.Margin = new Padding(5);
-                HighscoresTable.Controls.Add(ScoreLabel, 2, i);
+                pnlHighscores.Controls.Add(ScoreLabel, 2, i);
             }
-            HighscoresTable.Controls.Add(OKButton, 2, PlayerNames.Count);
+            pnlHighscores.Controls.Add(btnOK, 2, PlayerNames.Count);
 
-            HighscoresTable.Controls.Add(LevelPicture, 0, 0);
-            HighscoresTable.SetRowSpan(LevelPicture, PlayerNames.Count+1);
+            pnlHighscores.Controls.Add(ctLevelPicture, 0, 0);
+            pnlHighscores.SetRowSpan(ctLevelPicture, PlayerNames.Count + 1);
 
-            while (HighscoresTable.ColumnStyles.Count < 3)
-                HighscoresTable.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
-            while (HighscoresTable.RowStyles.Count < PlayerNames.Count+1)
-                HighscoresTable.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            while (pnlHighscores.ColumnStyles.Count < 3)
+                pnlHighscores.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+            while (pnlHighscores.RowStyles.Count < PlayerNames.Count + 1)
+                pnlHighscores.RowStyles.Add(new RowStyle(SizeType.AutoSize));
         }
 
         private void LevelPicture_Paint(object sender, PaintEventArgs e)
         {
-            Renderer Render = new Renderer(CurLevel, LevelPicture.Width, LevelPicture.Height);
+            Renderer Render = new Renderer(CurLevel, ctLevelPicture.Width, ctLevelPicture.Height);
             Render.Render(e.Graphics);
         }
     }

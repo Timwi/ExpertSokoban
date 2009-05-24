@@ -28,66 +28,66 @@ namespace ExpertSokoban
         /// </summary>
         private void InitializeComponent()
         {
-            this.HighscoresTable = new System.Windows.Forms.TableLayoutPanel();
-            this.OKButton = new System.Windows.Forms.Button();
-            this.LevelPicture = new System.Windows.Forms.PictureBox();
-            this.HighscoresTable.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.LevelPicture)).BeginInit();
+            this.pnlHighscores = new System.Windows.Forms.TableLayoutPanel();
+            this.btnOK = new System.Windows.Forms.Button();
+            this.ctLevelPicture = new System.Windows.Forms.PictureBox();
+            this.pnlHighscores.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize) (this.ctLevelPicture)).BeginInit();
             this.SuspendLayout();
             // 
-            // HighscoresTable
+            // pnlHighscores
             // 
-            this.HighscoresTable.AutoSize = true;
-            this.HighscoresTable.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.HighscoresTable.ColumnCount = 1;
-            this.HighscoresTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.HighscoresTable.Controls.Add(this.OKButton, 0, 0);
-            this.HighscoresTable.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.HighscoresTable.Location = new System.Drawing.Point(0, 0);
-            this.HighscoresTable.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.HighscoresTable.Name = "HighscoresTable";
-            this.HighscoresTable.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
-            this.HighscoresTable.RowCount = 1;
-            this.HighscoresTable.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.HighscoresTable.Size = new System.Drawing.Size(341, 336);
-            this.HighscoresTable.TabIndex = 0;
+            this.pnlHighscores.AutoSize = true;
+            this.pnlHighscores.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.pnlHighscores.ColumnCount = 1;
+            this.pnlHighscores.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.pnlHighscores.Controls.Add(this.btnOK, 0, 0);
+            this.pnlHighscores.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlHighscores.Location = new System.Drawing.Point(0, 0);
+            this.pnlHighscores.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.pnlHighscores.Name = "pnlHighscores";
+            this.pnlHighscores.Padding = new System.Windows.Forms.Padding(6);
+            this.pnlHighscores.RowCount = 1;
+            this.pnlHighscores.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.pnlHighscores.Size = new System.Drawing.Size(341, 336);
+            this.pnlHighscores.TabIndex = 0;
             // 
-            // OKButton
+            // btnOK
             // 
-            this.OKButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.OKButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.OKButton.Location = new System.Drawing.Point(234, 299);
-            this.OKButton.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
-            this.OKButton.Name = "OKButton";
-            this.OKButton.Size = new System.Drawing.Size(95, 25);
-            this.OKButton.TabIndex = 0;
-            this.OKButton.Text = "OK";
-            this.OKButton.UseVisualStyleBackColor = true;
-            this.OKButton.Click += new System.EventHandler(this.OKButton_Click);
+            this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.btnOK.Location = new System.Drawing.Point(234, 299);
+            this.btnOK.Margin = new System.Windows.Forms.Padding(6);
+            this.btnOK.Name = "btnOK";
+            this.btnOK.Size = new System.Drawing.Size(95, 25);
+            this.btnOK.TabIndex = 0;
+            this.btnOK.Text = "OK";
+            this.btnOK.UseVisualStyleBackColor = true;
+            this.btnOK.Click += new System.EventHandler(this.OKButton_Click);
             // 
-            // LevelPicture
+            // ctLevelPicture
             // 
-            this.LevelPicture.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.LevelPicture.Location = new System.Drawing.Point(0, 0);
-            this.LevelPicture.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.LevelPicture.Name = "LevelPicture";
-            this.LevelPicture.Size = new System.Drawing.Size(233, 61);
-            this.LevelPicture.TabIndex = 1;
-            this.LevelPicture.TabStop = false;
-            this.LevelPicture.Paint += new System.Windows.Forms.PaintEventHandler(this.LevelPicture_Paint);
+            this.ctLevelPicture.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ctLevelPicture.Location = new System.Drawing.Point(0, 0);
+            this.ctLevelPicture.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.ctLevelPicture.Name = "ctLevelPicture";
+            this.ctLevelPicture.Size = new System.Drawing.Size(233, 61);
+            this.ctLevelPicture.TabIndex = 1;
+            this.ctLevelPicture.TabStop = false;
+            this.ctLevelPicture.Paint += new System.Windows.Forms.PaintEventHandler(this.LevelPicture_Paint);
             // 
             // HighscoresForm
             // 
-            this.AcceptButton = this.OKButton;
+            this.AcceptButton = this.btnOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.CancelButton = this.OKButton;
+            this.CancelButton = this.btnOK;
             this.ClientSize = new System.Drawing.Size(341, 336);
-            this.Controls.Add(this.LevelPicture);
-            this.Controls.Add(this.HighscoresTable);
-            this.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.Controls.Add(this.ctLevelPicture);
+            this.Controls.Add(this.pnlHighscores);
+            this.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.MaximizeBox = false;
@@ -96,8 +96,8 @@ namespace ExpertSokoban
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.Text = "Highscores";
-            this.HighscoresTable.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.LevelPicture)).EndInit();
+            this.pnlHighscores.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize) (this.ctLevelPicture)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -105,8 +105,8 @@ namespace ExpertSokoban
 
         #endregion
 
-        private System.Windows.Forms.TableLayoutPanel HighscoresTable;
-        private System.Windows.Forms.Button OKButton;
-        private System.Windows.Forms.PictureBox LevelPicture;
+        private System.Windows.Forms.TableLayoutPanel pnlHighscores;
+        private System.Windows.Forms.Button btnOK;
+        private System.Windows.Forms.PictureBox ctLevelPicture;
     }
 }

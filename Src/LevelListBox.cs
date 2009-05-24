@@ -9,6 +9,7 @@ using System.IO;
 using RT.Util.Dialogs;
 using System.Diagnostics;
 using RT.Util;
+using RT.Util.ExtensionMethods;
 
 namespace ExpertSokoban
 {
@@ -93,7 +94,7 @@ namespace ExpertSokoban
                     return null;
                 // The following throws an exception if the index is out of bounds or
                 // not a Sokoban level. Will tell us if FActiveLevelIndex got out of sync.
-                return (SokobanLevel)Items[FActiveLevelIndex.Value];
+                return (SokobanLevel) Items[FActiveLevelIndex.Value];
             }
         }
 
@@ -108,7 +109,7 @@ namespace ExpertSokoban
                 if (SelectedIndex < 0)
                     return null;
                 if (Items[SelectedIndex] is SokobanLevel)
-                    return (SokobanLevel)Items[SelectedIndex];
+                    return (SokobanLevel) Items[SelectedIndex];
                 return null;
             }
         }
@@ -120,7 +121,7 @@ namespace ExpertSokoban
         /// </summary>
         private int? EditingIndex
         {
-            get { return FState == LevelListBoxState.Editing ? (int?)FActiveLevelIndex : null; }
+            get { return FState == LevelListBoxState.Editing ? (int?) FActiveLevelIndex : null; }
             set { FState = LevelListBoxState.Editing; ActiveLevelIndex = value; }
         }
 
@@ -131,8 +132,11 @@ namespace ExpertSokoban
         /// </summary>
         private int? PlayingIndex
         {
-            get { return FState == LevelListBoxState.Playing ? (int?)FActiveLevelIndex : 
-                         FState == LevelListBoxState.JustSolved ? (int?)FActiveLevelIndex : null; }
+            get
+            {
+                return FState == LevelListBoxState.Playing ? (int?) FActiveLevelIndex :
+                       FState == LevelListBoxState.JustSolved ? (int?) FActiveLevelIndex : null;
+            }
             set { FState = LevelListBoxState.Playing; ActiveLevelIndex = value; }
         }
 
@@ -215,7 +219,7 @@ namespace ExpertSokoban
             }
             else
             {
-                string NewComment = InputBox.GetLine("Please enter the revised comment:", (string)SelectedItem);
+                string NewComment = InputBox.GetLine(Program.Translation.LevelList_NewComment_Prompt, (string) SelectedItem);
                 if (NewComment != null)
                 {
                     Items[SelectedIndex] = NewComment;
@@ -272,7 +276,7 @@ namespace ExpertSokoban
         /// The colour used to represent an item if it is currently being edited.
         /// </summary>
         private Color EditingColor = Color.FromArgb(255, 192, 128);
-        
+
         /// <summary>
         /// The colour used to represent an item if it is currently being played.
         /// </summary>
@@ -304,22 +308,22 @@ namespace ExpertSokoban
                 string Key = Items[e.Index].ToString();
                 bool IsSolved = ExpSokSettings.IsSolved(Key);
                 string SolvedMessage = IsSolved
-                        ?   "Solved (" + 
+                        ? Program.Translation.LevelList_LevelSolved + " (" +
                             ExpSokSettings.Highscores[Key][ExpSokSettings.PlayerName].BestPushScore.E1 + "/" +
                             ExpSokSettings.Highscores[Key][ExpSokSettings.PlayerName].BestPushScore.E2 + ")"
-                        :   "";
+                        : "";
                 bool IsPlaying = (e.Index == PlayingIndex) && State == LevelListBoxState.Playing;
                 bool IsJustSolved = (e.Index == PlayingIndex) && State == LevelListBoxState.JustSolved;
                 bool IsEditing = (e.Index == EditingIndex);
 
-                int UseHeight = e.Bounds.Height-10;
+                int UseHeight = e.Bounds.Height - 10;
                 SizeF MessageSize1 = new SizeF(0, 0);
                 SizeF MessageSize2 = new SizeF(0, 0);
                 if (IsPlaying || IsEditing || IsJustSolved)
                 {
                     MessageSize1 = e.Graphics.MeasureString(
-                        IsEditing ? "Currently editing" :
-                        IsJustSolved ? "Just solved" : "Currently playing", Font);
+                        IsEditing ? Program.Translation.LevelList_CurrentlyEditing :
+                        IsJustSolved ? Program.Translation.LevelList_JustSolved : Program.Translation.LevelList_CurrentlyPlaying, Font);
                     MessageSize1.Height += 5;
                 }
                 if (IsSolved)
@@ -328,8 +332,8 @@ namespace ExpertSokoban
                     MessageSize2.Height += 5;
                 }
 
-                Image Rendering = GetRendering((SokobanLevel)Items[e.Index], e.Bounds.Width-10,
-                    e.Bounds.Height-10-(int)MessageSize1.Height-(int)MessageSize2.Height);
+                Image Rendering = GetRendering((SokobanLevel) Items[e.Index], e.Bounds.Width - 10,
+                    e.Bounds.Height - 10 - (int) MessageSize1.Height - (int) MessageSize2.Height);
                 e.DrawBackground();
                 e.DrawFocusRectangle();
                 if ((e.State & DrawItemState.Selected) != DrawItemState.Selected)
@@ -347,19 +351,19 @@ namespace ExpertSokoban
                 {
                     e.Graphics.FillRectangle(
                         new LinearGradientBrush(
-                            new RectangleF(e.Bounds.Left+5, e.Bounds.Top+4, e.Bounds.Width-10, MessageSize1.Height-3),
+                            new RectangleF(e.Bounds.Left + 5, e.Bounds.Top + 4, e.Bounds.Width - 10, MessageSize1.Height - 3),
                             IsEditing ? EditingColor : PlayingColor,
                             Color.White,
                             90,
                             false
                         ),
-                        new RectangleF(e.Bounds.Left+5, e.Bounds.Top+5, e.Bounds.Width-10, MessageSize1.Height-5)
+                        new RectangleF(e.Bounds.Left + 5, e.Bounds.Top + 5, e.Bounds.Width - 10, MessageSize1.Height - 5)
                     );
                     e.Graphics.DrawString(
-                        IsEditing ? "Currently editing" : IsJustSolved ? "Just Solved" : "Currently playing",
+                        IsEditing ? Program.Translation.LevelList_CurrentlyEditing : IsJustSolved ? Program.Translation.LevelList_JustSolved : Program.Translation.LevelList_CurrentlyPlaying,
                         Font,
                         new SolidBrush(Color.Black),
-                        e.Bounds.Left + e.Bounds.Width/2 - MessageSize1.Width/2,
+                        e.Bounds.Left + e.Bounds.Width / 2 - MessageSize1.Width / 2,
                         e.Bounds.Top + 5
                     );
                 }
@@ -367,14 +371,14 @@ namespace ExpertSokoban
                 {
                     e.Graphics.FillRectangle(
                         new LinearGradientBrush(
-                            new RectangleF(e.Bounds.Left+5, e.Bounds.Top+4+MessageSize1.Height,
-                                e.Bounds.Width-10, MessageSize2.Height-3),
+                            new RectangleF(e.Bounds.Left + 5, e.Bounds.Top + 4 + MessageSize1.Height,
+                                e.Bounds.Width - 10, MessageSize2.Height - 3),
                             SolvedColor, Color.White, 90, false),
-                        new RectangleF(e.Bounds.Left+5, e.Bounds.Top+5+MessageSize1.Height,
-                            e.Bounds.Width-10, MessageSize2.Height-5)
+                        new RectangleF(e.Bounds.Left + 5, e.Bounds.Top + 5 + MessageSize1.Height,
+                            e.Bounds.Width - 10, MessageSize2.Height - 5)
                     );
                     e.Graphics.DrawString(SolvedMessage, Font, new SolidBrush(Color.Black),
-                        e.Bounds.Left + e.Bounds.Width/2 - MessageSize2.Width/2,
+                        e.Bounds.Left + e.Bounds.Width / 2 - MessageSize2.Width / 2,
                         e.Bounds.Top + 5 + MessageSize1.Height
                     );
                 }
@@ -386,7 +390,7 @@ namespace ExpertSokoban
             {
                 e.DrawBackground();
                 e.DrawFocusRectangle();
-                string Str = Items[e.Index] is string ? (string)Items[e.Index] : Items[e.Index].ToString();
+                string Str = Items[e.Index] is string ? (string) Items[e.Index] : Items[e.Index].ToString();
                 if ((e.State & DrawItemState.Selected) != DrawItemState.Selected)
                     e.Graphics.FillRectangle(new LinearGradientBrush(e.Bounds, Color.White, Color.Silver, 90, false), e.Bounds);
                 e.Graphics.DrawString(Str, Font, new SolidBrush(e.ForeColor), e.Bounds.Left + 5, e.Bounds.Top + 5);
@@ -403,7 +407,7 @@ namespace ExpertSokoban
         private Image GetRendering(SokobanLevel Level, int Width, int Height)
         {
             if (FCachedRenderings.ContainsKey(Level))
-                return (Image)FCachedRenderings[Level];
+                return (Image) FCachedRenderings[Level];
 
             Image Rendering = new Bitmap(Width, Height);
             new Renderer(Level, Width, Height, new SolidBrush(Color.Transparent)).Render(Graphics.FromImage(Rendering));
@@ -438,23 +442,23 @@ namespace ExpertSokoban
 
             if (Items[e.Index] is SokobanLevel)
             {
-                SokobanLevel Level = (SokobanLevel)Items[e.Index];
-                e.ItemHeight = (ClientSize.Width-10)*Level.Height/Level.Width + 10;
+                SokobanLevel Level = (SokobanLevel) Items[e.Index];
+                e.ItemHeight = (ClientSize.Width - 10) * Level.Height / Level.Width + 10;
 
                 if (e.Index == PlayingIndex)    // also covers "Just Solved"
-                    e.ItemHeight += (int)e.Graphics.MeasureString("Currently playing", Font).Height + 5;
+                    e.ItemHeight += (int) e.Graphics.MeasureString(Program.Translation.LevelList_CurrentlyPlaying, Font).Height + 5;
                 else if (e.Index == EditingIndex)
-                    e.ItemHeight += (int)e.Graphics.MeasureString("Currently editing", Font).Height + 5;
+                    e.ItemHeight += (int) e.Graphics.MeasureString(Program.Translation.LevelList_CurrentlyEditing, Font).Height + 5;
 
                 if (ExpSokSettings.IsSolved(Items[e.Index].ToString()))
-                    e.ItemHeight += (int)e.Graphics.MeasureString("Solved", Font).Height + 5;
+                    e.ItemHeight += (int) e.Graphics.MeasureString(Program.Translation.LevelList_LevelSolved, Font).Height + 5;
             }
             else if (Items[e.Index] is string && (Items[e.Index] as string).Length == 0)
-                e.ItemHeight = (int)e.Graphics.MeasureString("Mg", Font).Height + 10;
+                e.ItemHeight = (int) e.Graphics.MeasureString("Mg", Font).Height + 10;
             else if (Items[e.Index] is string)
-                e.ItemHeight = (int)e.Graphics.MeasureString((string)Items[e.Index], Font).Height + 10;
+                e.ItemHeight = (int) e.Graphics.MeasureString((string) Items[e.Index], Font).Height + 10;
             else
-                e.ItemHeight = (int)e.Graphics.MeasureString(Items[e.Index].ToString(), Font).Height + 10;
+                e.ItemHeight = (int) e.Graphics.MeasureString(Items[e.Index].ToString(), Font).Height + 10;
 
             if (e.ItemHeight > 255)
                 e.ItemHeight = 255;
@@ -596,7 +600,7 @@ namespace ExpertSokoban
             {
                 SaveFileDialog SaveDialog = new SaveFileDialog();
                 SaveDialog.DefaultExt = "txt";
-                SaveDialog.Filter = "Text files|*.txt|All files|*.*";
+                SaveDialog.Filter = Program.Translation.Save_FileType_TextFiles + "|*.txt|" + Program.Translation.Save_FileType_AllFiles + "|*.*";
                 SaveDialog.InitialDirectory = ExpSokSettings.LastOpenSaveDirectory;
                 DialogResult Result = SaveDialog.ShowDialog();
 
@@ -619,7 +623,7 @@ namespace ExpertSokoban
             {
                 // If anything fails here, don't crash. Just tell the caller that save
                 // hasn't actually happened.
-                DlgMessage.ShowError("The settings could not be saved.\n" + e.Message, "Error saving settings");
+                DlgMessage.ShowError(Program.Translation.LevelList_Message_CannotSaveSettings + "\n" + e.Message, Program.Translation.LevelList_Message_CannotSaveSettings_Title);
                 return false;
             }
         }
@@ -802,11 +806,11 @@ namespace ExpertSokoban
             if (i == null)
             {
                 if (CongratulateIfAll)
-                    DlgMessage.ShowInfo("You have solved all levels in this level pack!", "Congratulations!");
+                    DlgMessage.ShowInfo(Program.Translation.LevelList_Message_AllSolved, Program.Translation.LevelList_Message_AllSolved_Title);
                 else if (MustBeUnsolved)
-                    DlgMessage.ShowInfo("There are no more unsolved levels in this level file.", "Next unsolved level");
+                    DlgMessage.ShowInfo(Program.Translation.LevelList_Message_NoMoreUnsolved, Program.Translation.LevelList_Message_NextUnsolved_Title);
                 else
-                    DlgMessage.ShowInfo("There is no other level in the level file.", "Next level");
+                    DlgMessage.ShowInfo(Program.Translation.LevelList_Message_NoOtherLevel, Program.Translation.LevelList_Message_Next_Title);
             }
             else
                 PlayingIndex = i.Value;
@@ -826,8 +830,8 @@ namespace ExpertSokoban
 
             if (i == null)
                 DlgMessage.ShowInfo(
-                    MustBeUnsolved ? "There are no more unsolved levels in this level file." : "There is no other level in the level file.",
-                    MustBeUnsolved ? "Previous unsolved level" : "Previous level");
+                    MustBeUnsolved ? Program.Translation.LevelList_Message_NoMoreUnsolved : Program.Translation.LevelList_Message_NoOtherLevel,
+                    MustBeUnsolved ? Program.Translation.LevelList_Message_PrevUnsolved_Title : Program.Translation.LevelList_Message_Prev_Title);
             else
                 PlayingIndex = i.Value;
         }
@@ -846,7 +850,7 @@ namespace ExpertSokoban
             if (Items.Count < 1)
                 return null;
 
-            int StartIndex = FActiveLevelIndex == null ? (Forward ? Items.Count-1 : 0) : FActiveLevelIndex.Value;
+            int StartIndex = FActiveLevelIndex == null ? (Forward ? Items.Count - 1 : 0) : FActiveLevelIndex.Value;
             int i = StartIndex;
             for (; ; )
             {
@@ -901,10 +905,12 @@ namespace ExpertSokoban
                 return true;
 
             // Ask the user if they want to save their changes to the level file.
-            int Result = DlgMessage.Show("You have made changes to "
-                + (ExpSokSettings.LevelFilename == null ? "(untitled)" : Path.GetFileName(ExpSokSettings.LevelFilename)) +
-                ". Would you like to save those changes?", Caption, DlgType.Question,
-                "Save changes", "&Discard changes", "Cancel");
+            int Result = DlgMessage.Show(Program.Translation.LevelList_Message_SaveChanges.Fmt(
+                    (ExpSokSettings.LevelFilename == null ? Program.Translation.FileName_Untitled : Path.GetFileName(ExpSokSettings.LevelFilename))
+                ), Caption, DlgType.Question,
+                Program.Translation.LevelList_Message_SaveChanges_btnSave,
+                Program.Translation.LevelList_Message_SaveChanges_btnDiscard,
+                Program.Translation.Dialogs_btnCancel);
 
             // If they said "Cancel", bail out immediately.
             if (Result == 2)
@@ -943,26 +949,23 @@ namespace ExpertSokoban
             // Confirmation message if user is currently editing the selected level
             if (Item is SokobanLevel && SelectedIndex == EditingIndex)
             {
-                if (DlgMessage.Show("You are currently editing this level.\n\n" +
-                    "If you delete this level now, all your modifications will be discarded.\n\n" +
-                    "Are you sure you wish to do this?", "Delete level",
-                    DlgType.Warning, "Discard changes", "Cancel") == 1)
+                if (DlgMessage.Show(Program.Translation.LevelList_Message_DeleteLevel_CurrentlyEditing, Program.Translation.LevelList_Message_DeleteLevel_Title,
+                    DlgType.Warning, Program.Translation.Dialogs_btnDiscard, Program.Translation.Dialogs_btnCancel) == 1)
                     return false;
             }
             // Confirmation message if user is currently playing the selected level
             else if (Item is SokobanLevel && SelectedIndex == PlayingIndex)
             {
-                if (DlgMessage.Show("You are currently playing this level.\n\n" +
-                    "Are you sure you wish to give up?", "Delete level",
-                    DlgType.Warning, "Give up", "Cancel") == 1)
+                if (DlgMessage.Show(Program.Translation.LevelList_Message_DeleteLevel_CurrentlyPlaying, Program.Translation.LevelList_Message_DeleteLevel_Title,
+                    DlgType.Warning, Program.Translation.Dialogs_btnGiveUp, Program.Translation.Dialogs_btnCancel) == 1)
                     return false;
             }
             // Confirmation message if neither of the two cases apply
             else if (Item is SokobanLevel)
             {
                 if (NormalConfirmation && DlgMessage.Show(
-                    "Are you sure you wish to delete this level?",
-                    "Delete level", DlgType.Question, "Delete level", "Cancel") == 1)
+                    Program.Translation.LevelList_Message_DeleteLevel_Sure,
+                    Program.Translation.LevelList_Message_DeleteLevel_Title, DlgType.Question, Program.Translation.LevelList_Message_DeleteLevel_btnDelete, Program.Translation.Dialogs_btnCancel) == 1)
                     return false;
             }
             return true;

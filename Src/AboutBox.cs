@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Reflection;
+using RT.Util;
 
 namespace ExpertSokoban
 {
@@ -15,16 +16,17 @@ namespace ExpertSokoban
         public AboutBox()
         {
             InitializeComponent();
+            Lingo.TranslateControl(this, Program.Translation.AboutBox);
 
             //  Initialize the AboutBox to display the product information from the assembly information.
             //  Change assembly information settings for your application through either:
             //  - Project->Properties->Application->Assembly Information
             //  - AssemblyInfo.cs
             this.Text = string.Format("About {0}", AssemblyTitle);
-            this.ProductNameLabel.Text = AssemblyProduct;
-            this.VersionLabel.Text = string.Format("Version {0}.{1}.{2}", AssemblyVersion.Major, AssemblyVersion.Minor, AssemblyVersion.Revision);
-            this.CopyrightLabel.Text = AssemblyCopyright;
-            this.CompanyNameLabel.Text = AssemblyCompany;
+            this.lblProductName.Text = AssemblyProduct;
+            this.lblVersion.Text = string.Format("Version {0}.{1}.{2}", AssemblyVersion.Major, AssemblyVersion.Minor, AssemblyVersion.Revision);
+            this.lblCopyright.Text = AssemblyCopyright;
+            this.lblCompanyName.Text = AssemblyCompany;
         }
 
         #region Assembly Attribute Accessors
@@ -116,7 +118,7 @@ namespace ExpertSokoban
 
         private void URL_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start(URL.Text);
+            System.Diagnostics.Process.Start(lblURL.Text);
         }
     }
 }

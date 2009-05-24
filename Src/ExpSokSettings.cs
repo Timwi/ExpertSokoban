@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using RT.Util;
 using RT.Util.Settings;
 
-using Score=RT.Util.Collections.Tuple<int /* pushes */, int /* moves */>;
+using Score = RT.Util.Collections.Tuple<int /* pushes */, int /* moves */>;
 
 namespace ExpertSokoban
 {
@@ -75,19 +75,21 @@ namespace ExpertSokoban
         }
 
         /// <summary>
-        /// Whether the play toolbar should be displayed
+        /// Whether the playing toolbar should be displayed
         /// </summary>
-        public static bool DisplayPlayToolStrip
+        public static bool DisplayPlayingToolbar
         {
+            // The name of the setting differs for historical reasons
             get { return PrgSettings.Store.Get("ExpSok.DisplayPlayToolStrip", true); }
             set { PrgSettings.Store.Set("ExpSok.DisplayPlayToolStrip", value); }
         }
 
         /// <summary>
-        /// Whether the edit toolbars (level pack) should be displayed
+        /// Whether the level pack toolbars should be displayed
         /// </summary>
-        public static bool DisplayEditToolStrip
+        public static bool DisplayFileToolbars
         {
+            // The name of the setting differs for historical reasons
             get { return PrgSettings.Store.Get("ExpSok.DisplayEditToolStrip", false); }
             set { PrgSettings.Store.Set("ExpSok.DisplayEditToolStrip", value); }
         }
@@ -95,8 +97,9 @@ namespace ExpertSokoban
         /// <summary>
         /// Whether the edit toolbar (level) should be displayed
         /// </summary>
-        public static bool DisplayEditLevelToolStrip
+        public static bool DisplayEditLevelToolbar
         {
+            // The name of the setting differs for historical reasons
             get { return PrgSettings.Store.Get("ExpSok.DisplayEditLevelToolStrip", true); }
             set { PrgSettings.Store.Set("ExpSok.DisplayEditLevelToolStrip", value); }
         }
@@ -143,7 +146,7 @@ namespace ExpertSokoban
         /// </summary>
         public static string PlayerName
         {
-            get { return PrgSettings.Store.Get("ExpSok.PlayerName", (string)null); }
+            get { return PrgSettings.Store.Get("ExpSok.PlayerName", (string) null); }
             set { PrgSettings.Store.Set("ExpSok.PlayerName", value); }
         }
 
@@ -165,11 +168,20 @@ namespace ExpertSokoban
 
         /// <summary>
         /// Remembers the path where a file was last opened from or saved to.
-            /// </summary>
+        /// </summary>
         public static string LastOpenSaveDirectory
         {
             get { return PrgSettings.Store.GetString("ExpSok.LastOpenSaveDirectory", PathUtil.AppPath); }
             set { PrgSettings.Store.SetString("ExpSok.LastOpenSaveDirectory", value); }
+        }
+
+        /// <summary>
+        /// Remembers the path where a file was last opened from or saved to.
+        /// </summary>
+        public static string Language
+        {
+            get { return PrgSettings.Store.GetString("ExpSok.Language", null); }
+            set { PrgSettings.Store.SetString("ExpSok.Language", value); }
         }
 
         /// <summary>
@@ -179,7 +191,7 @@ namespace ExpertSokoban
         /// <returns>True if the level has ever been solved by the current player.</returns>
         public static bool IsSolved(string Level)
         {
-            if (PlayerName == null || PlayerName.Length == 0)
+            if (string.IsNullOrEmpty(PlayerName))
                 return false;
             return Highscores.ContainsKey(Level) && Highscores[Level].ContainsKey(PlayerName);
         }
@@ -190,7 +202,7 @@ namespace ExpertSokoban
         /// <param name="Level">String representation of the level</param>
         public static void UpdateHighscore(string Level, int Moves, int Pushes)
         {
-            if (PlayerName == null || PlayerName.Length == 0)
+            if (string.IsNullOrEmpty(PlayerName))
                 throw new Exception("Player name is not set.");
             if (!Highscores.ContainsKey(Level))
                 Highscores[Level] = new Dictionary<string, Highscore>();

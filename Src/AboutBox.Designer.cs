@@ -27,166 +27,174 @@ namespace ExpertSokoban
         /// </summary>
         private void InitializeComponent()
         {
-            this.Logo = new System.Windows.Forms.PictureBox();
-            this.VersionLabel = new System.Windows.Forms.Label();
-            this.CopyrightLabel = new System.Windows.Forms.Label();
-            this.CompanyNameLabel = new System.Windows.Forms.Label();
-            this.OKButton = new System.Windows.Forms.Button();
-            this.ProductNameLabel = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.URL = new System.Windows.Forms.Label();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.label1 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.Logo)).BeginInit();
-            this.panel1.SuspendLayout();
-            this.tableLayoutPanel1.SuspendLayout();
+            this.ctLogo = new System.Windows.Forms.PictureBox();
+            this.lblVersion = new System.Windows.Forms.Label();
+            this.lblCopyright = new System.Windows.Forms.Label();
+            this.lblCompanyName = new System.Windows.Forms.Label();
+            this.btnOK = new System.Windows.Forms.Button();
+            this.lblProductName = new System.Windows.Forms.Label();
+            this.pnlProduct = new System.Windows.Forms.Panel();
+            this.lblURL = new System.Windows.Forms.Label();
+            this.pnlMain = new System.Windows.Forms.TableLayoutPanel();
+            this.lblCredits = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize) (this.ctLogo)).BeginInit();
+            this.pnlProduct.SuspendLayout();
+            this.pnlMain.SuspendLayout();
             this.SuspendLayout();
             // 
-            // Logo
+            // ctLogo
             // 
-            this.Logo.Image = global::ExpertSokoban.Properties.Resources.Skin_Sokoban;
-            this.Logo.Location = new System.Drawing.Point(10, 10);
-            this.Logo.Margin = new System.Windows.Forms.Padding(0);
-            this.Logo.Name = "Logo";
-            this.Logo.Size = new System.Drawing.Size(150, 150);
-            this.Logo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.Logo.TabIndex = 12;
-            this.Logo.TabStop = false;
+            this.ctLogo.Image = global::ExpertSokoban.Properties.Resources.Skin_Sokoban;
+            this.ctLogo.Location = new System.Drawing.Point(10, 10);
+            this.ctLogo.Margin = new System.Windows.Forms.Padding(0);
+            this.ctLogo.Name = "ctLogo";
+            this.ctLogo.Size = new System.Drawing.Size(150, 150);
+            this.ctLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.ctLogo.TabIndex = 12;
+            this.ctLogo.TabStop = false;
+            this.ctLogo.Tag = "notranslate";
             // 
-            // VersionLabel
+            // lblVersion
             // 
-            this.VersionLabel.AutoSize = true;
-            this.VersionLabel.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.VersionLabel.Location = new System.Drawing.Point(-3, 18);
-            this.VersionLabel.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
-            this.VersionLabel.Name = "VersionLabel";
-            this.VersionLabel.Size = new System.Drawing.Size(57, 17);
-            this.VersionLabel.TabIndex = 0;
-            this.VersionLabel.Text = "Version";
-            this.VersionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblVersion.AutoSize = true;
+            this.lblVersion.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
+            this.lblVersion.Location = new System.Drawing.Point(-3, 18);
+            this.lblVersion.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
+            this.lblVersion.Name = "lblVersion";
+            this.lblVersion.Size = new System.Drawing.Size(57, 17);
+            this.lblVersion.TabIndex = 0;
+            this.lblVersion.Tag = "notranslate";
+            this.lblVersion.Text = "Version";
+            this.lblVersion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // CopyrightLabel
+            // lblCopyright
             // 
-            this.CopyrightLabel.AutoSize = true;
-            this.CopyrightLabel.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.CopyrightLabel.Location = new System.Drawing.Point(-3, 48);
-            this.CopyrightLabel.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
-            this.CopyrightLabel.Name = "CopyrightLabel";
-            this.CopyrightLabel.Size = new System.Drawing.Size(70, 17);
-            this.CopyrightLabel.TabIndex = 21;
-            this.CopyrightLabel.Text = "Copyright";
-            this.CopyrightLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblCopyright.AutoSize = true;
+            this.lblCopyright.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
+            this.lblCopyright.Location = new System.Drawing.Point(-3, 48);
+            this.lblCopyright.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
+            this.lblCopyright.Name = "lblCopyright";
+            this.lblCopyright.Size = new System.Drawing.Size(70, 17);
+            this.lblCopyright.TabIndex = 21;
+            this.lblCopyright.Tag = "notranslate";
+            this.lblCopyright.Text = "Copyright";
+            this.lblCopyright.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // CompanyNameLabel
+            // lblCompanyName
             // 
-            this.CompanyNameLabel.AutoSize = true;
-            this.CompanyNameLabel.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.CompanyNameLabel.Location = new System.Drawing.Point(10, 166);
-            this.CompanyNameLabel.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
-            this.CompanyNameLabel.MaximumSize = new System.Drawing.Size(0, 17);
-            this.CompanyNameLabel.Name = "CompanyNameLabel";
-            this.CompanyNameLabel.Size = new System.Drawing.Size(114, 17);
-            this.CompanyNameLabel.TabIndex = 22;
-            this.CompanyNameLabel.Text = "Company Name";
-            this.CompanyNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.CompanyNameLabel.Visible = false;
+            this.lblCompanyName.AutoSize = true;
+            this.lblCompanyName.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
+            this.lblCompanyName.Location = new System.Drawing.Point(10, 166);
+            this.lblCompanyName.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
+            this.lblCompanyName.MaximumSize = new System.Drawing.Size(0, 17);
+            this.lblCompanyName.Name = "lblCompanyName";
+            this.lblCompanyName.Size = new System.Drawing.Size(114, 17);
+            this.lblCompanyName.TabIndex = 22;
+            this.lblCompanyName.Tag = "notranslate";
+            this.lblCompanyName.Text = "Company Name";
+            this.lblCompanyName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblCompanyName.Visible = false;
             // 
-            // OKButton
+            // btnOK
             // 
-            this.OKButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.OKButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.OKButton.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.OKButton.Location = new System.Drawing.Point(0, 169);
-            this.OKButton.Margin = new System.Windows.Forms.Padding(0);
-            this.OKButton.Name = "OKButton";
-            this.OKButton.Size = new System.Drawing.Size(208, 26);
-            this.OKButton.TabIndex = 24;
-            this.OKButton.Text = "OK";
+            this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles) (((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.btnOK.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
+            this.btnOK.Location = new System.Drawing.Point(0, 169);
+            this.btnOK.Margin = new System.Windows.Forms.Padding(0);
+            this.btnOK.Name = "btnOK";
+            this.btnOK.Size = new System.Drawing.Size(208, 26);
+            this.btnOK.TabIndex = 24;
+            this.btnOK.Text = "OK";
             // 
-            // ProductNameLabel
+            // lblProductName
             // 
-            this.ProductNameLabel.AutoSize = true;
-            this.ProductNameLabel.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.ProductNameLabel.Location = new System.Drawing.Point(-3, 0);
-            this.ProductNameLabel.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
-            this.ProductNameLabel.Name = "ProductNameLabel";
-            this.ProductNameLabel.Size = new System.Drawing.Size(108, 18);
-            this.ProductNameLabel.TabIndex = 20;
-            this.ProductNameLabel.Text = "Product Name";
-            this.ProductNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblProductName.AutoSize = true;
+            this.lblProductName.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
+            this.lblProductName.Location = new System.Drawing.Point(-3, 0);
+            this.lblProductName.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
+            this.lblProductName.Name = "lblProductName";
+            this.lblProductName.Size = new System.Drawing.Size(108, 18);
+            this.lblProductName.TabIndex = 20;
+            this.lblProductName.Tag = "notranslate";
+            this.lblProductName.Text = "Product Name";
+            this.lblProductName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // panel1
+            // pnlProduct
             // 
-            this.panel1.AutoSize = true;
-            this.panel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.panel1.Controls.Add(this.URL);
-            this.panel1.Controls.Add(this.ProductNameLabel);
-            this.panel1.Controls.Add(this.VersionLabel);
-            this.panel1.Controls.Add(this.CopyrightLabel);
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Margin = new System.Windows.Forms.Padding(0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(180, 80);
-            this.panel1.TabIndex = 26;
+            this.pnlProduct.AutoSize = true;
+            this.pnlProduct.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.pnlProduct.Controls.Add(this.lblURL);
+            this.pnlProduct.Controls.Add(this.lblProductName);
+            this.pnlProduct.Controls.Add(this.lblVersion);
+            this.pnlProduct.Controls.Add(this.lblCopyright);
+            this.pnlProduct.Location = new System.Drawing.Point(0, 0);
+            this.pnlProduct.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlProduct.Name = "pnlProduct";
+            this.pnlProduct.Size = new System.Drawing.Size(180, 80);
+            this.pnlProduct.TabIndex = 26;
+            this.pnlProduct.Tag = "notranslate";
             // 
-            // URL
+            // lblURL
             // 
-            this.URL.AutoSize = true;
-            this.URL.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.URL.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.URL.ForeColor = System.Drawing.Color.Blue;
-            this.URL.Location = new System.Drawing.Point(-3, 65);
-            this.URL.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
-            this.URL.Name = "URL";
-            this.URL.Size = new System.Drawing.Size(180, 15);
-            this.URL.TabIndex = 26;
-            this.URL.Text = "http://www.cutebits.com/ExpSok";
-            this.URL.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.URL.Click += new System.EventHandler(this.URL_Click);
+            this.lblURL.AutoSize = true;
+            this.lblURL.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lblURL.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
+            this.lblURL.ForeColor = System.Drawing.Color.Blue;
+            this.lblURL.Location = new System.Drawing.Point(-3, 65);
+            this.lblURL.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
+            this.lblURL.Name = "lblURL";
+            this.lblURL.Size = new System.Drawing.Size(180, 15);
+            this.lblURL.TabIndex = 26;
+            this.lblURL.Tag = "notranslate";
+            this.lblURL.Text = "http://www.cutebits.com/ExpSok";
+            this.lblURL.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblURL.Click += new System.EventHandler(this.URL_Click);
             // 
-            // tableLayoutPanel1
+            // pnlMain
             // 
-            this.tableLayoutPanel1.AutoSize = true;
-            this.tableLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.tableLayoutPanel1.ColumnCount = 1;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.OKButton, 0, 2);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(127, 10);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 3;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(208, 195);
-            this.tableLayoutPanel1.TabIndex = 27;
+            this.pnlMain.AutoSize = true;
+            this.pnlMain.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.pnlMain.ColumnCount = 1;
+            this.pnlMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.pnlMain.Controls.Add(this.lblCredits, 0, 1);
+            this.pnlMain.Controls.Add(this.pnlProduct, 0, 0);
+            this.pnlMain.Controls.Add(this.btnOK, 0, 2);
+            this.pnlMain.Location = new System.Drawing.Point(163, 10);
+            this.pnlMain.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlMain.Name = "pnlMain";
+            this.pnlMain.RowCount = 3;
+            this.pnlMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.pnlMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.pnlMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.pnlMain.Size = new System.Drawing.Size(208, 195);
+            this.pnlMain.TabIndex = 27;
+            this.pnlMain.Tag = "notranslate";
             // 
-            // label1
+            // lblCredits
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(0, 90);
-            this.label1.Margin = new System.Windows.Forms.Padding(0, 10, 0, 15);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(191, 64);
-            this.label1.TabIndex = 26;
-            this.label1.Text = "Credits:\r\n    Programming: Timwi, Roman\r\n    Graphics: Roman, Timwi\r\n    Testing:" +
-    " Hawthorn";
+            this.lblCredits.AutoSize = true;
+            this.lblCredits.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
+            this.lblCredits.Location = new System.Drawing.Point(0, 90);
+            this.lblCredits.Margin = new System.Windows.Forms.Padding(0, 10, 0, 15);
+            this.lblCredits.Name = "lblCredits";
+            this.lblCredits.Size = new System.Drawing.Size(191, 64);
+            this.lblCredits.TabIndex = 26;
+            this.lblCredits.Text = "Credits:\r\n    Programming: Timwi, Roman\r\n    Graphics: Roman, Timwi\r\n    Testing:" +
+                " Hawthorn";
             // 
             // AboutBox
             // 
-            this.AcceptButton = this.OKButton;
+            this.AcceptButton = this.btnOK;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.CancelButton = this.OKButton;
+            this.CancelButton = this.btnOK;
             this.ClientSize = new System.Drawing.Size(431, 284);
-            this.Controls.Add(this.tableLayoutPanel1);
-            this.Controls.Add(this.CompanyNameLabel);
-            this.Controls.Add(this.Logo);
+            this.Controls.Add(this.pnlMain);
+            this.Controls.Add(this.lblCompanyName);
+            this.Controls.Add(this.ctLogo);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -196,11 +204,11 @@ namespace ExpertSokoban
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "About Expert Sokoban";
-            ((System.ComponentModel.ISupportInitialize)(this.Logo)).EndInit();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize) (this.ctLogo)).EndInit();
+            this.pnlProduct.ResumeLayout(false);
+            this.pnlProduct.PerformLayout();
+            this.pnlMain.ResumeLayout(false);
+            this.pnlMain.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -208,15 +216,15 @@ namespace ExpertSokoban
 
         #endregion
 
-        private System.Windows.Forms.PictureBox Logo;
-        private System.Windows.Forms.Label VersionLabel;
-        private System.Windows.Forms.Label CopyrightLabel;
-        private System.Windows.Forms.Label CompanyNameLabel;
-        private System.Windows.Forms.Button OKButton;
-        private System.Windows.Forms.Label ProductNameLabel;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label URL;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.PictureBox ctLogo;
+        private System.Windows.Forms.Label lblVersion;
+        private System.Windows.Forms.Label lblCopyright;
+        private System.Windows.Forms.Label lblCompanyName;
+        private System.Windows.Forms.Button btnOK;
+        private System.Windows.Forms.Label lblProductName;
+        private System.Windows.Forms.Panel pnlProduct;
+        private System.Windows.Forms.Label lblURL;
+        private System.Windows.Forms.TableLayoutPanel pnlMain;
+        private System.Windows.Forms.Label lblCredits;
     }
 }

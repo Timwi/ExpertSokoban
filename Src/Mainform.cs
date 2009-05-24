@@ -1,9 +1,11 @@
 using System;
+using System.Linq;
 using System.IO;
 using System.Windows.Forms;
 using RT.Util;
 using RT.Util.Dialogs;
 using RT.Util.Forms;
+using RT.Util.ExtensionMethods;
 
 namespace ExpertSokoban
 {
@@ -22,41 +24,46 @@ namespace ExpertSokoban
         public Mainform()
         {
             InitializeComponent();
+            Lingo.TranslateControl(this, Program.Translation);
+            mnuOptionsChangeLanguage.DropDownItems.AddRange(RT.Util.Lingo.LanguageToolStripMenuItems<Translation>("ExpSok.*.xml", @"^ExpSok\.(.*)\.xml$", t => t.ThisLanguage, (t, m) =>
+            {
+                ExpSokSettings.Language = m == null ? null : m.Groups[1].Value;
+                Program.Translation = t;
+                Lingo.TranslateControl(this, Program.Translation);
+            }).ToArray());
 
             // Restore saved settings
-            OptionsPlayToolStrip.Checked = ExpSokSettings.DisplayPlayToolStrip;
-            OptionsEditToolStrip.Checked = ExpSokSettings.DisplayEditToolStrip;
-            OptionsEditLevelToolStrip.Checked = ExpSokSettings.DisplayEditLevelToolStrip;
-            StatusBar.Visible = OptionsStatusBar.Checked = ExpSokSettings.DisplayStatusBar;
-            LevelListPanel.Width = ExpSokSettings.LevelListWidth < 50 ? 50 : ExpSokSettings.LevelListWidth;
-            MovePathOptions.SetValue(ExpSokSettings.MoveDrawMode);
-            PushPathOptions.SetValue(ExpSokSettings.PushDrawMode);
-            EditToolOptions.SetValue(ExpSokSettings.LastUsedTool);
-            OptionsEndPos.Checked = MainArea.ShowEndPos = ExpSokSettings.ShowEndPos;
-            OptionsAreaSokoban.Checked = MainArea.ShowAreaSokoban = ExpSokSettings.ShowAreaSokoban;
-            OptionsAreaPiece.Checked = MainArea.ShowAreaPiece = ExpSokSettings.ShowAreaPiece;
-            OptionsSound.Checked = MainArea.SoundEnabled = ExpSokSettings.SoundEnabled;
-            ShowLevelList(ExpSokSettings.DisplayLevelList);
+            mnuOptionsPlayingToolbar.Checked = ExpSokSettings.DisplayPlayingToolbar;
+            mnuOptionsFileToolbars.Checked = ExpSokSettings.DisplayFileToolbars;
+            mnuOptionsEditLevelToolbar.Checked = ExpSokSettings.DisplayEditLevelToolbar;
+            ctStatusBar.Visible = mnuOptionsStatusBar.Checked = ExpSokSettings.DisplayStatusBar;
+            pnlLevelList.Width = ExpSokSettings.LevelListWidth < 50 ? 50 : ExpSokSettings.LevelListWidth;
+            grpMovePathOptions.SetValue(ExpSokSettings.MoveDrawMode);
+            grpPushPathOptions.SetValue(ExpSokSettings.PushDrawMode);
+            grpEditTool.SetValue(ExpSokSettings.LastUsedTool);
+            mnuOptionsEndPos.Checked = ctMainArea.ShowEndPos = ExpSokSettings.ShowEndPos;
+            mnuOptionsAreaSokoban.Checked = ctMainArea.ShowAreaSokoban = ExpSokSettings.ShowAreaSokoban;
+            mnuOptionsAreaPiece.Checked = ctMainArea.ShowAreaPiece = ExpSokSettings.ShowAreaPiece;
+            mnuOptionsSound.Checked = ctMainArea.SoundEnabled = ExpSokSettings.SoundEnabled;
+            showLevelList(ExpSokSettings.DisplayLevelList);
 
             if (ExpSokSettings.PlayerName == null || ExpSokSettings.PlayerName.Length == 0)
-                ExpSokSettings.PlayerName = InputBox.GetLine("Please choose a name which will be used to identify " +
-                    "you in highscore tables.\nYou can change this name later by selecting \"Change player name\" " +
-                    "from the \"Level\" menu.", "", "Expert Sokoban");
+                ExpSokSettings.PlayerName = InputBox.GetLine(Program.Translation.Mainform_ChooseName_FirstRun, "", Program.Translation.ProgramName);
 
             // Restore the last used level pack
             try
             {
-                LevelList.LoadLevelPack(ExpSokSettings.LevelFilename);
+                lstLevels.LoadLevelPack(ExpSokSettings.LevelFilename);
             }
             catch
             {
-                LevelList.NewList();
-                LevelList.AddLevelListItem(SokobanLevel.TestLevel());
-                LevelList.Modified = false;
+                lstLevels.NewList();
+                lstLevels.AddLevelListItem(SokobanLevel.TestLevel());
+                lstLevels.Modified = false;
             }
 
-            LevelList.PlayFirstUnsolved();
-            UpdateControls();
+            lstLevels.PlayFirstUnsolved();
+            updateControls();
         }
 
         /// <summary>
@@ -64,9 +71,9 @@ namespace ExpertSokoban
         /// if the current level has been played or edited, and if the current level
         /// file has been modified.
         /// </summary>
-        private void Mainform_FormClosing(object sender, FormClosingEventArgs e)
+        private void formClosing(object sender, FormClosingEventArgs e)
         {
-            if (!MayDestroyEverything("Exit Expert Sokoban"))
+            if (!mayDestroyEverything(Program.Translation.Mainform_MessageTitle_Exit))
                 e.Cancel = true;
         }
 
@@ -75,136 +82,136 @@ namespace ExpertSokoban
         /// <summary>
         /// Updates various GUI controls to reflect the current program state.
         /// </summary>
-        private void UpdateControls()
+        private void updateControls()
         {
-            bool MainAreaNull = MainArea.State == MainAreaState.Null;
-            bool MainAreaPlaying = MainArea.State == MainAreaState.Move || MainArea.State == MainAreaState.Push;
-            bool MainAreaEditing = MainArea.State == MainAreaState.Editing;
-            bool MainAreaSolved = MainArea.State == MainAreaState.Solved;
+            bool MainAreaNull = ctMainArea.State == MainAreaState.Null;
+            bool MainAreaPlaying = ctMainArea.State == MainAreaState.Move || ctMainArea.State == MainAreaState.Push;
+            bool MainAreaEditing = ctMainArea.State == MainAreaState.Editing;
+            bool MainAreaSolved = ctMainArea.State == MainAreaState.Solved;
 
             // Caption
-            Text = "Expert Sokoban - " +
+            Text = Program.Translation.ProgramName + " – " +
                     (ExpSokSettings.PlayerName == null || ExpSokSettings.PlayerName.Length == 0
-                        ? "(no player name)" : ExpSokSettings.PlayerName) +
-                    " - " +
-                    (ExpSokSettings.LevelFilename == null ? "(untitled)" : Path.GetFileName(ExpSokSettings.LevelFilename)) +
-                    (LevelList.Modified ? " *" : "");
-
-            // Status bar items
-            StatusNull.Visible = MainAreaNull;
-            StatusMoves.Visible = MainAreaPlaying || MainAreaSolved;
-            StatusPushes.Visible = MainAreaPlaying || MainAreaSolved;
-            StatusPieces.Visible = MainAreaPlaying;
-            StatusEdit.Visible = MainAreaEditing;
-            StatusSolved.Visible = MainAreaSolved;
+                        ? Program.Translation.PlayerNameMissing : ExpSokSettings.PlayerName) +
+                    " – " +
+                    (ExpSokSettings.LevelFilename == null ? Program.Translation.FileName_Untitled : Path.GetFileName(ExpSokSettings.LevelFilename)) +
+                    (lstLevels.Modified ? " •" : "");
 
             // Status bar text
             if (MainAreaEditing)
             {
-                string Message = "The level is valid.";
-                SokobanLevelStatus Status = MainArea.Level.Validity;
+                string Message = Program.Translation.Mainform_Validity_Valid;
+                SokobanLevelStatus Status = ctMainArea.Level.Validity;
                 if (Status == SokobanLevelStatus.NotEnclosed)
-                    Message = "The level is invalid because it is not completely enclosed by a wall.";
+                    Message = Program.Translation.Mainform_Validity_NotEnclosed;
                 else if (Status == SokobanLevelStatus.TargetsPiecesMismatch)
-                    Message = "The level is invalid because the number of pieces does not match the number of targets.";
-                StatusEdit.Text = Message;
+                    Message = Program.Translation.Mainform_Validity_WrongNumber;
+                lblStatusEdit.Text = Message;
             }
             else if (!MainAreaNull)
             {
-                StatusMoves.Text = "Moves: " + MainArea.Moves;
-                StatusPushes.Text = "Pushes: " + MainArea.Pushes;
+                lblStatusMoves.Text = Program.Translation.Mainform_Status_Moves.Fmt(ctMainArea.Moves);
+                lblStatusPushes.Text = Program.Translation.Mainform_Status_Pushes.Fmt(ctMainArea.Pushes);
                 if (!MainAreaSolved)
-                    StatusPieces.Text = "Remaining pieces: " + MainArea.Level.RemainingPieces;
+                    lblStatusPieces.Text = Program.Translation.Mainform_Status_PiecesRemaining.Fmt(ctMainArea.Level.RemainingPieces);
             }
 
+            // Status bar items
+            lblStatusNull.Visible = MainAreaNull;
+            lblStatusMoves.Visible = MainAreaPlaying || MainAreaSolved;
+            lblStatusPushes.Visible = MainAreaPlaying || MainAreaSolved;
+            lblStatusPieces.Visible = MainAreaPlaying;
+            lblStatusEdit.Visible = MainAreaEditing;
+            lblStatusSolved.Visible = MainAreaSolved;
+
             // "Level" menu
-            LevelNew.Enabled = true;
-            LevelOpen.Enabled = true;
-            LevelSave.Enabled = true;
-            LevelSaveAs.Enabled = true;
+            mnuLevelNew.Enabled = true;
+            mnuLevelOpen.Enabled = true;
+            mnuLevelSave.Enabled = true;
+            mnuLevelSaveAs.Enabled = true;
 
-            LevelUndo.Enabled = !MainAreaEditing && !MainAreaNull;
-            LevelRedo.Enabled = !MainAreaEditing && !MainAreaNull;
-            LevelRetry.Enabled = !MainAreaEditing && !MainAreaNull;
-            LevelHighscores.Enabled = LevelList.ActiveLevel != null;
+            mnuLevelUndo.Enabled = !MainAreaEditing && !MainAreaNull;
+            mnuLevelRedo.Enabled = !MainAreaEditing && !MainAreaNull;
+            mnuLevelRetry.Enabled = !MainAreaEditing && !MainAreaNull;
+            mnuLevelHighscores.Enabled = lstLevels.ActiveLevel != null;
 
-            LevelPrevious.Enabled = !MainAreaEditing && LevelList.Items.Count > 0;
-            LevelNext.Enabled = !MainAreaEditing && LevelList.Items.Count > 0;
-            LevelPreviousUnsolved.Enabled = !MainAreaEditing && LevelList.Items.Count > 0;
-            LevelNextUnsolved.Enabled = !MainAreaEditing && LevelList.Items.Count > 0;
+            mnuLevelPrevious.Enabled = !MainAreaEditing && lstLevels.Items.Count > 0;
+            mnuLevelNext.Enabled = !MainAreaEditing && lstLevels.Items.Count > 0;
+            mnuLevelPreviousUnsolved.Enabled = !MainAreaEditing && lstLevels.Items.Count > 0;
+            mnuLevelNextUnsolved.Enabled = !MainAreaEditing && lstLevels.Items.Count > 0;
 
-            LevelChangePlayer.Enabled = true;
+            mnuLevelChangePlayer.Enabled = true;
 
             // "Edit" menu
-            EditCreateLevel.Enabled = !MainAreaEditing;
-            EditEdit.Enabled = !MainAreaEditing;
-            EditAddComment.Enabled = !MainAreaEditing;
+            mnuEditCreateLevel.Enabled = !MainAreaEditing;
+            mnuEditEditLevel.Enabled = !MainAreaEditing;
+            mnuEditAddComment.Enabled = !MainAreaEditing;
 
-            EditCut.Enabled = LevelList.Visible;
-            EditCopy.Enabled = LevelList.Visible;
-            EditPaste.Enabled = LevelList.Visible;
-            EditDelete.Enabled = LevelList.Visible;
+            mnuEditCut.Enabled = lstLevels.Visible;
+            mnuEditCopy.Enabled = lstLevels.Visible;
+            mnuEditPaste.Enabled = lstLevels.Visible;
+            mnuEditDelete.Enabled = lstLevels.Visible;
 
-            EditFinish.Enabled = MainAreaEditing;
-            EditCancel.Enabled = MainAreaEditing;
+            mnuEditFinish.Enabled = MainAreaEditing;
+            mnuEditCancel.Enabled = MainAreaEditing;
 
-            EditWall.Enabled = MainAreaEditing;
-            EditPiece.Enabled = MainAreaEditing;
-            EditTarget.Enabled = MainAreaEditing;
-            EditSokoban.Enabled = MainAreaEditing;
+            mnuEditWall.Enabled = MainAreaEditing;
+            mnuEditPiece.Enabled = MainAreaEditing;
+            mnuEditTarget.Enabled = MainAreaEditing;
+            mnuEditSokoban.Enabled = MainAreaEditing;
 
             // "Options" menu
-            OptionsLevelList.Enabled = true;
-            OptionsPlayToolStrip.Enabled = LevelList.Visible;
-            OptionsEditToolStrip.Enabled = LevelList.Visible;
-            OptionsEditLevelToolStrip.Enabled = LevelList.Visible && MainAreaEditing;
-            OptionsStatusBar.Enabled = true;
+            mnuOptionsLevelList.Enabled = true;
+            mnuOptionsPlayingToolbar.Enabled = lstLevels.Visible;
+            mnuOptionsFileToolbars.Enabled = lstLevels.Visible;
+            mnuOptionsEditLevelToolbar.Enabled = lstLevels.Visible && MainAreaEditing;
+            mnuOptionsStatusBar.Enabled = true;
 
-            OptionsMoveNo.Enabled = !MainAreaEditing && !MainAreaNull;
-            OptionsMoveLine.Enabled = !MainAreaEditing && !MainAreaNull;
-            OptionsMoveDots.Enabled = !MainAreaEditing && !MainAreaNull;
-            OptionsMoveArrows.Enabled = !MainAreaEditing && !MainAreaNull;
-            OptionsPushNo.Enabled = !MainAreaEditing && !MainAreaNull;
-            OptionsPushLine.Enabled = !MainAreaEditing && !MainAreaNull;
-            OptionsPushDots.Enabled = !MainAreaEditing && !MainAreaNull;
-            OptionsPushArrows.Enabled = !MainAreaEditing && !MainAreaNull;
+            mnuOptionsMoveNo.Enabled = !MainAreaEditing && !MainAreaNull;
+            mnuOptionsMoveLine.Enabled = !MainAreaEditing && !MainAreaNull;
+            mnuOptionsMoveDots.Enabled = !MainAreaEditing && !MainAreaNull;
+            mnuOptionsMoveArrows.Enabled = !MainAreaEditing && !MainAreaNull;
+            mnuOptionsPushNo.Enabled = !MainAreaEditing && !MainAreaNull;
+            mnuOptionsPushLine.Enabled = !MainAreaEditing && !MainAreaNull;
+            mnuOptionsPushDots.Enabled = !MainAreaEditing && !MainAreaNull;
+            mnuOptionsPushArrows.Enabled = !MainAreaEditing && !MainAreaNull;
 
-            OptionsEndPos.Enabled = !MainAreaEditing && !MainAreaNull;
+            mnuOptionsEndPos.Enabled = !MainAreaEditing && !MainAreaNull;
 
             // Level list context menu
-            ContextPlay.Enabled = LevelList.SelectedLevel != null;
-            ContextEdit.Enabled = LevelList.SelectedLevel != null;
-            ContextHighscores.Enabled = LevelList.SelectedLevel != null;
-            ContextNewLevel.Enabled = LevelList.Visible;
-            ContextNewComment.Enabled = LevelList.Visible;
-            ContextCut.Enabled = LevelList.SelectedLevel != null;
-            ContextCopyItem.Enabled = LevelList.SelectedLevel != null;
-            ContextPaste.Enabled = LevelList.Visible;
-            ContextDelete.Enabled = LevelList.SelectedIndex >= 0;
-            ContextHide.Enabled = LevelList.Visible;
+            mnuContextPlay.Enabled = lstLevels.SelectedLevel != null;
+            mnuContextEdit.Enabled = lstLevels.SelectedLevel != null;
+            mnuContextHighscores.Enabled = lstLevels.SelectedLevel != null;
+            mnuContextNewLevel.Enabled = lstLevels.Visible;
+            mnuContextNewComment.Enabled = lstLevels.Visible;
+            mnuContextCut.Enabled = lstLevels.SelectedLevel != null;
+            mnuContextCopy.Enabled = lstLevels.SelectedLevel != null;
+            mnuContextPaste.Enabled = lstLevels.Visible;
+            mnuContextDelete.Enabled = lstLevels.SelectedIndex >= 0;
+            mnuContextHide.Enabled = lstLevels.Visible;
 
             // Toolbar visibility
-            PlayToolStrip.Visible = OptionsPlayToolStrip.Checked;
-            Edit2ToolStrip.Visible = OptionsEditToolStrip.Checked;
-            Edit1ToolStrip.Visible = OptionsEditToolStrip.Checked;
-            EditLevelToolStrip.Visible = MainAreaEditing && OptionsEditLevelToolStrip.Checked;
+            toolPlay.Visible = mnuOptionsPlayingToolbar.Checked;
+            toolFileEdit.Visible = mnuOptionsFileToolbars.Checked;
+            toolFile.Visible = mnuOptionsFileToolbars.Checked;
+            toolEditLevel.Visible = MainAreaEditing && mnuOptionsEditLevelToolbar.Checked;
 
             // Toolbar buttons
-            LevelToolNext.Enabled = LevelNext.Enabled;
-            LevelToolNextUnsolved.Enabled = LevelNextUnsolved.Enabled;
-            LevelToolPrev.Enabled = LevelPrevious.Enabled;
-            LevelToolPrevUnsolved.Enabled = LevelPreviousUnsolved.Enabled;
-            LevelToolNew.Enabled = LevelNew.Enabled;
-            LevelToolOpen.Enabled = LevelOpen.Enabled;
-            LevelToolOpen2.Enabled = LevelOpen.Enabled;
-            LevelToolSave.Enabled = LevelSave.Enabled;
-            LevelToolNewLevel.Enabled = EditCreateLevel.Enabled;
-            LevelToolEdit.Enabled = EditEdit.Enabled;
-            LevelToolComment.Enabled = EditAddComment.Enabled;
-            LevelToolCut.Enabled = EditCut.Enabled;
-            LevelToolCopy.Enabled = EditCopy.Enabled;
-            LevelToolPaste.Enabled = EditPaste.Enabled;
-            LevelToolDelete.Enabled = EditDelete.Enabled;
+            btnPlayNextLevel.Enabled = mnuLevelNext.Enabled;
+            btnPlayNextUnsolvedLevel.Enabled = mnuLevelNextUnsolved.Enabled;
+            btnPlayPrevLevel.Enabled = mnuLevelPrevious.Enabled;
+            btnPlayPrevUnsolvedLevel.Enabled = mnuLevelPreviousUnsolved.Enabled;
+            btnFileNew.Enabled = mnuLevelNew.Enabled;
+            btnFileOpen.Enabled = mnuLevelOpen.Enabled;
+            btnPlayOpenLevel.Enabled = mnuLevelOpen.Enabled;
+            btnFileSave.Enabled = mnuLevelSave.Enabled;
+            btnFileEditNewLevel.Enabled = mnuEditCreateLevel.Enabled;
+            btnFileEditEditLevel.Enabled = mnuEditEditLevel.Enabled;
+            btnFileEditAddComment.Enabled = mnuEditAddComment.Enabled;
+            btnFileCut.Enabled = mnuEditCut.Enabled;
+            btnFileCopy.Enabled = mnuEditCopy.Enabled;
+            btnFilePaste.Enabled = mnuEditPaste.Enabled;
+            btnFileEditDeleteLevel.Enabled = mnuEditDelete.Enabled;
         }
 
         /// <summary>
@@ -213,18 +220,18 @@ namespace ExpertSokoban
         /// </summary>
         /// <param name="Caption">Title bar caption to use in case any confirmation
         /// dialogs need to pop up.</param>
-        private bool MayDestroyEverything(string Caption)
+        private bool mayDestroyEverything(string Caption)
         {
-            return MainArea.MayDestroy(Caption) && LevelList.MayDestroy(Caption);
+            return ctMainArea.MayDestroy(Caption) && lstLevels.MayDestroy(Caption);
         }
 
         /// <summary>
         /// Opens the currently-selected level from the level list and switches into
         /// editing mode.
         /// </summary>
-        private void EnterEditingMode()
+        private void enterEditingMode()
         {
-            LevelList.EditSelectedLevel();
+            lstLevels.EditSelectedLevel();
         }
 
         #region MainArea events
@@ -234,50 +241,46 @@ namespace ExpertSokoban
         /// mouse clicks itself, but if it is in Solved state and the user clicks it,
         /// we want to move to the next unsolved level.
         /// </summary>
-        private void MainArea_Click(object sender, EventArgs e)
+        private void mainAreaClick(object sender, EventArgs e)
         {
-            if (MainArea.State == MainAreaState.Solved)
-                LevelList.PlayNext(true, true);
+            if (ctMainArea.State == MainAreaState.Solved)
+                lstLevels.PlayNext(true, true);
         }
 
         /// <summary>
         /// Invoked by the user pressing Space while the MainArea is in Solved state.
         /// This will open the next unsolved level.
         /// </summary>
-        private void MainArea_KeyDown(object sender, KeyEventArgs e)
+        private void mainAreaKeyDown(object sender, KeyEventArgs e)
         {
             // IMPORTANT: We can't use Enter here unfortunately.
             // If the user uses the keyboard to play the level, Enter will be
             // the last key they press to place the last piece in the last target.
             // That would already trigger this for the same keypress.
-            if (MainArea.State == MainAreaState.Solved && e.KeyCode == Keys.Space)
-                LevelList.PlayNext(true, true);
+            if (ctMainArea.State == MainAreaState.Solved && e.KeyCode == Keys.Space)
+                lstLevels.PlayNext(true, true);
         }
 
         /// <summary>
         /// Invoked whenever the user solves the level. Remembers the solved level and
         /// tells the level list to update itself.
         /// </summary>
-        private void MainArea_LevelSolved(object sender, EventArgs e)
+        private void levelSolved(object sender, EventArgs e)
         {
             // Set the LevelListBox to JustSolved state
-            LevelList.JustSolved();
-            
+            lstLevels.JustSolved();
+
             // If the user hasn't chosen a name for themselves yet, ask them
             if (ExpSokSettings.PlayerName == null || ExpSokSettings.PlayerName.Length == 0)
-                ExpSokSettings.PlayerName = InputBox.GetLine("Congratulations! You've solved the current level.\n" +
-                    "Please choose a name which will be used to identify you in highscore tables.\n" +
-                    "If you do not choose a name now, your score for this level will not be recorded.\n" +
-                    "You can change this name again later by selecting \"Change player name\" " +
-                    "from the \"Level\" menu.", "", "Expert Sokoban");
+                ExpSokSettings.PlayerName = InputBox.GetLine(Program.Translation.Mainform_ChooseName_SolvedLevel, "", Program.Translation.ProgramName);
 
             // If they still haven't chosen a name, discard the high score
             if (ExpSokSettings.PlayerName == null || ExpSokSettings.PlayerName.Length == 0)
                 return;
 
-            ExpSokSettings.UpdateHighscore(LevelList.ActiveLevel.ToString(), MainArea.Moves, MainArea.Pushes);
+            ExpSokSettings.UpdateHighscore(lstLevels.ActiveLevel.ToString(), ctMainArea.Moves, ctMainArea.Pushes);
 
-            LevelList.RefreshItems();
+            lstLevels.RefreshItems();
         }
 
         #endregion
@@ -289,64 +292,62 @@ namespace ExpertSokoban
         /// or the main area as appropriate.
         /// </summary>
         /// <param name="Show">True: shows the level list. False: hides it.</param>
-        private void ShowLevelList(bool Show)
+        private void showLevelList(bool Show)
         {
             ExpSokSettings.DisplayLevelList = Show;
 
-            LevelListPanel.Visible = Show;
-            LevelListSplitter.Visible = Show;
-            OptionsLevelList.Checked = Show;
+            pnlLevelList.Visible = Show;
+            ctLevelListSplitter.Visible = Show;
+            mnuOptionsLevelList.Checked = Show;
 
             if (Show)
             {
-                LevelList.RefreshItems();
-                LevelList.Focus();
-                LevelList.SelectActiveLevel();
+                lstLevels.RefreshItems();
+                lstLevels.Focus();
+                lstLevels.SelectActiveLevel();
             }
             else
-                MainArea.Focus();
+                ctMainArea.Focus();
         }
 
         /// <summary>
         /// Called by the level list to verify that it is OK to switch levels.
         /// </summary>
-        private void LevelList_LevelActivating(object sender, ConfirmEventArgs e)
+        private void levelActivating(object sender, ConfirmEventArgs e)
         {
-            e.ConfirmOK = MainArea.MayDestroy("Open level");
+            e.ConfirmOK = ctMainArea.MayDestroy(Program.Translation.Mainform_MessageTitle_OpenLevel);
         }
 
         /// <summary>
         /// Current level changed in the LevelList - so we need to update a few things.
         /// </summary>
-        private void LevelList_LevelActivated(object sender, EventArgs e)
+        private void levelActivated(object sender, EventArgs e)
         {
-            if (LevelList.ActiveLevel == null)
+            if (lstLevels.ActiveLevel == null)
             {
-                MainArea.Clear();
+                ctMainArea.Clear();
                 return;
             }
 
-            SokobanLevelStatus Status = LevelList.ActiveLevel.Validity;
+            SokobanLevelStatus Status = lstLevels.ActiveLevel.Validity;
 
-            if (Status == SokobanLevelStatus.Valid || LevelList.State == LevelListBox.LevelListBoxState.Editing)
+            if (Status == SokobanLevelStatus.Valid || lstLevels.State == LevelListBox.LevelListBoxState.Editing)
             {
-                if (LevelList.State == LevelListBox.LevelListBoxState.Editing)
-                    MainArea.SetLevelEdit(LevelList.ActiveLevel);
+                if (lstLevels.State == LevelListBox.LevelListBoxState.Editing)
+                    ctMainArea.SetLevelEdit(lstLevels.ActiveLevel);
                 else
-                    MainArea.SetLevel(LevelList.ActiveLevel);
+                    ctMainArea.SetLevel(lstLevels.ActiveLevel);
             }
             else
             {
                 string Problem = Status == SokobanLevelStatus.NotEnclosed
-                    ? "The level is not completely enclosed by a wall."
-                    : "The number of pieces does not match the number of targets.";
-                if (DlgMessage.Show("The level could not be opened because it is invalid.\n\n" + Problem +
-                    "\n\nYou must edit the level in order to address this issue. " +
-                    "Would you like to edit the level now?", "Open level",
-                    DlgType.Error, "Edit level", "Cancel") == 0)
+                    ? Program.Translation.Mainform_Validity_NotEnclosed
+                    : Program.Translation.Mainform_Validity_WrongNumber;
+                if (DlgMessage.Show(Program.Translation.Mainform_Validity_CannotOpen + "\n\n" + Problem + "\n\n" + Program.Translation.Mainform_Validity_CannotOpen_Fix,
+                    Program.Translation.Mainform_MessageTitle_OpenLevel, DlgType.Error, Program.Translation.Mainform_Validity_CannotOpen_btnEdit, Program.Translation.Dialogs_btnCancel) == 0)
                 {
-                    MainArea.Modified = false;
-                    EnterEditingMode();
+                    ctMainArea.Modified = false;
+                    enterEditingMode();
                 }
             }
         }
@@ -355,9 +356,9 @@ namespace ExpertSokoban
         /// Invoked whenever the user resizes the level list by dragging the splitter.
         /// Saves the level list width as a setting.
         /// </summary>
-        private void LevelListPanel_Resize(object sender, EventArgs e)
+        private void levelListPanelResize(object sender, EventArgs e)
         {
-            ExpSokSettings.LevelListWidth = LevelListPanel.Width;
+            ExpSokSettings.LevelListWidth = pnlLevelList.Width;
         }
 
         /// <summary>
@@ -368,10 +369,10 @@ namespace ExpertSokoban
         /// doesn't help. Fortunately, calling RefreshItems() on the ListBox
         /// retrofixes the bug's effects, so we set a timer to do that.
         /// </summary>
-        private void BugWorkaroundTimer_Tick(object sender, EventArgs e)
+        private void bugWorkaround(object sender, EventArgs e)
         {
-            BugWorkaroundTimer.Enabled = false;
-            LevelList.RefreshItems();
+            tmrBugWorkaround.Enabled = false;
+            lstLevels.RefreshItems();
         }
 
         /// <summary>
@@ -379,18 +380,18 @@ namespace ExpertSokoban
         /// Currently handles the following keys:
         /// - Escape: hides the level list.
         /// </summary>
-        private void LevelList_KeyDown(object sender, KeyEventArgs e)
+        private void levelListKeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Escape && e.Modifiers == 0)
-                ShowLevelList(false);
+                showLevelList(false);
         }
 
         /// <summary>
         /// Handle the Play menu item in the context menu
         /// </summary>
-        private void ContextPlay_Click(object sender, EventArgs e)
+        private void playLevel(object sender, EventArgs e)
         {
-            LevelList.PlaySelected();
+            lstLevels.PlaySelected();
         }
 
         #endregion
@@ -401,49 +402,48 @@ namespace ExpertSokoban
         /// Invoked by "Level => New level file" or the relevant toolbar button.
         /// Clears the level list (after asking for confirmation if it has changed).
         /// </summary>
-        private void LevelNew_Click(object sender, EventArgs e)
+        private void newLevel(object sender, EventArgs e)
         {
-            if (!MayDestroyEverything("New level file"))
+            if (!mayDestroyEverything(Program.Translation.Mainform_MessageTitle_NewLevelFile))
                 return;
 
             // Show the level list if it isn't already visible
-            if (!LevelListPanel.Visible)
-                ShowLevelList(true);
+            if (!pnlLevelList.Visible)
+                showLevelList(true);
 
-            LevelList.NewList();
+            lstLevels.NewList();
         }
 
         /// <summary>
         /// Invoked by "Level => Open level file" or the relevant toolbar button.
         /// Allows the user to load a text file containing Sokoban levels.
         /// </summary>
-        private void LevelOpen_Click(object sender, EventArgs e)
+        private void openLevel(object sender, EventArgs e)
         {
-            if (!MayDestroyEverything("Open level file"))
+            if (!mayDestroyEverything(Program.Translation.Mainform_MessageTitle_OpenLevelFile))
                 return;
 
             OpenFileDialog OpenDialog = new OpenFileDialog();
             OpenDialog.DefaultExt = "txt";
-            OpenDialog.Filter = "Text files|*.txt|All files|*.*";
+            OpenDialog.Filter = Program.Translation.Save_FileType_TextFiles + "|*.txt|" + Program.Translation.Save_FileType_AllFiles + "|*.*";
             OpenDialog.InitialDirectory = ExpSokSettings.LastOpenSaveDirectory;
             if (OpenDialog.ShowDialog() != DialogResult.OK)
                 return;
 
             try
             {
-                LevelList.LoadLevelPack(OpenDialog.FileName);
+                lstLevels.LoadLevelPack(OpenDialog.FileName);
             }
             catch (LevelListBox.InvalidLevelException)
             {
-                DlgMessage.ShowError("The selected file is not a valid Sokoban level file.",
-                    "Error opening level file");
+                DlgMessage.ShowError(Program.Translation.Mainform_InvalidFile, Program.Translation.Mainform_InvalidFile_Title);
                 return;
             }
 
             ExpSokSettings.LastOpenSaveDirectory = Path.GetDirectoryName(OpenDialog.FileName);
-            MainArea.Modified = false;
-            ShowLevelList(true);
-            LevelList.PlayFirstUnsolved();
+            ctMainArea.Modified = false;
+            showLevelList(true);
+            lstLevels.PlayFirstUnsolved();
         }
 
         /// <summary>
@@ -451,112 +451,110 @@ namespace ExpertSokoban
         /// Saves the level pack to a file, using the existing filename if it exists,
         /// or popping up a Save As dialog if it doesn't.
         /// </summary>
-        private void LevelSave_Click(object sender, EventArgs e)
+        private void saveLevel(object sender, EventArgs e)
         {
-            LevelList.SaveWithDialog(false);
+            lstLevels.SaveWithDialog(false);
         }
 
         /// <summary>
         /// Invoked by "Level => Save level file as" or the relevant toolbar button.
         /// Asks the user where to save the level pack, then saves it there.
         /// </summary>
-        private void LevelSaveAs_Click(object sender, EventArgs e)
+        private void saveLevelAs(object sender, EventArgs e)
         {
-            LevelList.SaveWithDialog(true);
+            lstLevels.SaveWithDialog(true);
         }
 
         /// <summary>
         /// Invoked by "Level => Undo move". Undoes the last move.
         /// </summary>
-        private void LevelUndo_Click(object sender, EventArgs e)
+        private void undo(object sender, EventArgs e)
         {
-            MainArea.Undo();
+            ctMainArea.Undo();
         }
 
         /// <summary>
         /// Invoked by "Level => Redo move". Redoes the last undone move.
         /// </summary>
-        private void LevelRedo_Click(object sender, EventArgs e)
+        private void redo(object sender, EventArgs e)
         {
-            MainArea.Redo();
+            ctMainArea.Redo();
         }
 
         /// <summary>
         /// Invoked by "Level => Retry level". Resets the level to its original state.
         /// Asks for confirmation first if the current level has been played or edited.
         /// </summary>
-        private void LevelRetry_Click(object sender, EventArgs e)
+        private void retryLevel(object sender, EventArgs e)
         {
-            if (!MainArea.MayDestroy("Retry level"))
+            if (!ctMainArea.MayDestroy(Program.Translation.Mainform_MessageTitle_RetryLevel))
                 return;
 
-            if (LevelList.ActiveLevel != null && MainArea.State != MainAreaState.Null)
-                MainArea.SetLevel(LevelList.ActiveLevel);
+            if (lstLevels.ActiveLevel != null && ctMainArea.State != MainAreaState.Null)
+                ctMainArea.SetLevel(lstLevels.ActiveLevel);
         }
 
         /// <summary>
         /// Finds the previous level in the level list and opens it for playing.
         /// </summary>
-        private void LevelPrevious_Click(object sender, EventArgs e)
+        private void prevLevel(object sender, EventArgs e)
         {
-            LevelList.PlayPrev(false);
+            lstLevels.PlayPrev(false);
         }
 
         /// <summary>
         /// Finds the next level in the level list and opens it for playing.
         /// </summary>
-        private void LevelNext_Click(object sender, EventArgs e)
+        private void nextLevel(object sender, EventArgs e)
         {
-            LevelList.PlayNext(false, false);
+            lstLevels.PlayNext(false, false);
         }
 
         /// <summary>
         /// Finds the previous unsolved level in the level list and opens it for playing.
         /// </summary>
-        private void LevelPreviousUnsolved_Click(object sender, EventArgs e)
+        private void prevUnsolvedLevel(object sender, EventArgs e)
         {
-            LevelList.PlayPrev(true);
+            lstLevels.PlayPrev(true);
         }
 
         /// <summary>
         /// Finds the next unsolved level in the level list and opens it for playing.
         /// </summary>
-        private void LevelNextUnsolved_Click(object sender, EventArgs e)
+        private void nextUnsolvedLevel(object sender, EventArgs e)
         {
-            LevelList.PlayNext(true, false);
+            lstLevels.PlayNext(true, false);
         }
 
         /// <summary>
         /// Invoked by "Level => Change player name". Allows the user to change the
         /// name used to identify them in highscore lists.
         /// </summary>
-        private void LevelChangePlayer_Click(object sender, EventArgs e)
+        private void changePlayer(object sender, EventArgs e)
         {
-            string Result = InputBox.GetLine("Please choose a name which will be used to identify " +
-                "you in highscore tables.", ExpSokSettings.PlayerName, "Expert Sokoban");
+            string Result = InputBox.GetLine(Program.Translation.Mainform_ChooseName, ExpSokSettings.PlayerName, Program.Translation.ProgramName);
             if (Result == null)
                 return;
 
             ExpSokSettings.PlayerName = Result;
-            LevelList.RefreshItems();
+            lstLevels.RefreshItems();
         }
 
         /// <summary>
         /// Invoked by "Level => Show highscores". Displays the highscores for the
         /// currently selected level.
         /// </summary>
-        private void LevelHighscores_Click(object sender, EventArgs e)
+        private void showHighscores(object sender, EventArgs e)
         {
-            if (LevelList.SelectedLevel != null)
+            if (lstLevels.SelectedLevel != null)
             {
-                string l = LevelList.SelectedLevel.ToString();
+                string l = lstLevels.SelectedLevel.ToString();
                 if (!ExpSokSettings.Highscores.ContainsKey(l))
-                    DlgMessage.ShowInfo("The selected level does not have any highscores associated with it yet.",
-                        "No highscores for this level");
+                    DlgMessage.ShowInfo(Program.Translation.Mainform_NoHighscores, Program.Translation.Mainform_NoHighscores_Title);
                 else
                 {
                     HighscoresForm hsf = new HighscoresForm();
-                    hsf.SetContents(ExpSokSettings.Highscores[l], LevelList.SelectedLevel);
+                    hsf.SetContents(ExpSokSettings.Highscores[l], lstLevels.SelectedLevel);
                     hsf.ShowDialog();
                 }
             }
@@ -565,7 +563,7 @@ namespace ExpertSokoban
         /// <summary>
         /// Invoked by "Level => Exit". Shuts down Expert Sokoban.
         /// </summary>
-        private void LevelExit_Click(object sender, EventArgs e)
+        private void exit(object sender, EventArgs e)
         {
             // Can't use Application.Exit() because of a bug in .NET 3.0.
             Close();
@@ -579,25 +577,25 @@ namespace ExpertSokoban
         /// Invoked by "Edit => Create new level" or the relevant toolbar button.
         /// Adds the trivial level as a new level to the level list.
         /// </summary>
-        private void EditCreateLevel_Click(object sender, EventArgs e)
+        private void createLevel(object sender, EventArgs e)
         {
             // Show the level list if it isn't already visible
-            if (!LevelListPanel.Visible)
-                ShowLevelList(true);
+            if (!pnlLevelList.Visible)
+                showLevelList(true);
 
-            LevelList.AddLevelListItem(SokobanLevel.TrivialLevel());
+            lstLevels.AddLevelListItem(SokobanLevel.TrivialLevel());
         }
 
         /// <summary>
         /// Invoked by "Edit => Edit level". Switches the application into edit mode
         /// and lets the user edit the level currently selected in the level list.
         /// </summary>
-        private void EditEdit_Click(object sender, EventArgs e)
+        private void editLevel(object sender, EventArgs e)
         {
-            if (LevelList.SelectedIndex >= 0 &&
-                LevelList.Items[LevelList.SelectedIndex] is SokobanLevel)
+            if (lstLevels.SelectedIndex >= 0 &&
+                lstLevels.Items[lstLevels.SelectedIndex] is SokobanLevel)
             {
-                EnterEditingMode();
+                enterEditingMode();
             }
         }
 
@@ -605,63 +603,63 @@ namespace ExpertSokoban
         /// Invoked by "Edit => Add a comment" or the relevant toolbar button.
         /// Allows the user to add a comment to the level list.
         /// </summary>
-        private void EditAddComment_Click(object sender, EventArgs e)
+        private void addComment(object sender, EventArgs e)
         {
-            if (!LevelListPanel.Visible)
-                OptionsLevelList_Click(sender, e);
-            string Comment = InputBox.GetLine("Please enter a comment:");
+            if (!pnlLevelList.Visible)
+                toggleLevelList(sender, e);
+            string Comment = InputBox.GetLine(Program.Translation.Mainform_LevelList_NewComment);
             if (Comment != null)
-                LevelList.AddLevelListItem(Comment);
+                lstLevels.AddLevelListItem(Comment);
         }
 
         /// <summary>
         /// Invoked by "Edit => Cut" or the relevant toolbar button.
         /// Cuts the selected level list item into the clipboard.
         /// </summary>
-        private void EditCut_Click(object sender, EventArgs e)
+        private void cut(object sender, EventArgs e)
         {
-            if (!LevelList.MayDeleteSelectedItem(false))
+            if (!lstLevels.MayDeleteSelectedItem(false))
                 return;
-            if (LevelList.SelectedLevelActive())
-                MainArea.Clear();
-            EditCopy_Click(sender, e);
-            LevelList.RemoveLevelListItem();
+            if (lstLevels.SelectedLevelActive())
+                ctMainArea.Clear();
+            copy(sender, e);
+            lstLevels.RemoveLevelListItem();
         }
 
         /// <summary>
         /// Invoked by "Edit => Copy" or the relevant toolbar button.
         /// Copies the selected level list item to the clipboard.
         /// </summary>
-        private void EditCopy_Click(object sender, EventArgs e)
+        private void copy(object sender, EventArgs e)
         {
-            if (!LevelListPanel.Visible || LevelList.SelectedIndex < 0)
+            if (!pnlLevelList.Visible || lstLevels.SelectedIndex < 0)
                 return;
-            Clipboard.SetData("SokobanData", LevelList.Items[LevelList.SelectedIndex]);
+            Clipboard.SetData("SokobanData", lstLevels.Items[lstLevels.SelectedIndex]);
         }
 
         /// <summary>
         /// Invoked by "Edit => Paste" or the relevant toolbar button.
         /// Pastes any items from the clipboard into the level list.
         /// </summary>
-        private void EditPaste_Click(object sender, EventArgs e)
+        private void paste(object sender, EventArgs e)
         {
-            if (!LevelListPanel.Visible || !Clipboard.ContainsData("SokobanData"))
+            if (!pnlLevelList.Visible || !Clipboard.ContainsData("SokobanData"))
                 return;
 
-            LevelList.AddLevelListItem(Clipboard.GetData("SokobanData"));
+            lstLevels.AddLevelListItem(Clipboard.GetData("SokobanData"));
         }
 
         /// <summary>
         /// Invoked by "Edit => Delete". Deletes the selected level or comment from the
         /// level list.
         /// </summary>
-        private void EditDelete_Click(object sender, EventArgs e)
+        private void deleteLevelOrComment(object sender, EventArgs e)
         {
-            if (!LevelList.MayDeleteSelectedItem(true))
+            if (!lstLevels.MayDeleteSelectedItem(true))
                 return;
-            if (LevelList.SelectedLevelActive())
-                MainArea.Clear();
-            LevelList.RemoveLevelListItem();
+            if (lstLevels.SelectedLevelActive())
+                ctMainArea.Clear();
+            lstLevels.RemoveLevelListItem();
         }
 
         /// <summary>
@@ -669,60 +667,60 @@ namespace ExpertSokoban
         /// Leaves editing mode and saves the modified level in the level list,
         /// then returns to playing mode.
         /// </summary>
-        private void EditFinish_Click(object sender, EventArgs e)
+        private void finishEditingLevel(object sender, EventArgs e)
         {
-            if (LevelList.ActiveLevel == null || LevelList.State != LevelListBox.LevelListBoxState.Editing) // this should never happen
+            if (lstLevels.ActiveLevel == null || lstLevels.State != LevelListBox.LevelListBoxState.Editing) // this should never happen
                 Ut.InternalError();
 
-            SokobanLevelStatus Status = MainArea.Level.Validity;
+            SokobanLevelStatus Status = ctMainArea.Level.Validity;
             if (Status != SokobanLevelStatus.Valid)
             {
                 String Problem = Status == SokobanLevelStatus.NotEnclosed
-                    ? "The level is not completely enclosed by a wall."
-                    : "The number of pieces does not match the number of targets.";
-                if (DlgMessage.Show("The following problem has been detected with this level:\n\n" +
-                    Problem + "\n\nYou cannot play this level until you address this issue.\n\n" +
-                    "Are you sure you wish to leave the level in this invalid state?",
-                    "Finish editing", DlgType.Error, "Save level anyway",
-                    "Resume editing") == 1)
+                    ? Program.Translation.Mainform_Validity_NotEnclosed
+                    : Program.Translation.Mainform_Validity_WrongNumber;
+                if (DlgMessage.Show(Program.Translation.Mainform_Validity_CannotSave + "\n\n" +
+                    Problem + "\n\n" + Program.Translation.Mainform_Validity_CannotSave_Warning,
+                    Program.Translation.Mainform_MessageTitle_FinishEditing, DlgType.Error,
+                    Program.Translation.Mainform_Validity_CannotSave_btnSave,
+                    Program.Translation.Mainform_Validity_CannotSave_btnResume) == 1)
                     return;
             }
 
-            SokobanLevel Level = MainArea.Level.Clone();
+            SokobanLevel Level = ctMainArea.Level.Clone();
             Level.EnsureSpace(0);
-            
+
             // LevelList.EditAccept() will trigger LevelList_LevelActivating(), which in
             // turn will ask the user if they want to discard their changes to the level.
             // Since we don't want this, we have to set the Modified flag for the MainArea
             // to false before calling LevelList.EditAccept().
-            MainArea.Modified = false;
-            
-            LevelList.EditAccept(Level);
+            ctMainArea.Modified = false;
+
+            lstLevels.EditAccept(Level);
         }
 
         /// <summary>
         /// Invoked by "Edit => Cancel editing" or the relevant toolbar button.
         /// Cancels editing and returns to playing mode.
         /// </summary>
-        private void EditCancel_Click(object sender, EventArgs e)
+        private void cancelEditingLevel(object sender, EventArgs e)
         {
-            if (LevelList.ActiveLevel == null || LevelList.State != LevelListBox.LevelListBoxState.Editing) // this should never happen
+            if (lstLevels.ActiveLevel == null || lstLevels.State != LevelListBox.LevelListBoxState.Editing) // this should never happen
                 Ut.InternalError();
 
-            LevelList.EditCancel();
+            lstLevels.EditCancel();
         }
 
         /// <summary>
         /// Invoked by any of the "Edit => Wall/Piece/Target/Sokoban tool" menu items.
         /// Switches to the selected tool.
         /// </summary>
-        private void EditToolOptions_ValueChanged(object sender, EventArgs e)
+        private void changeEditTool(object sender, EventArgs e)
         {
-            MainArea.Tool = ExpSokSettings.LastUsedTool = EditToolOptions.Value;
-            EditToolWall.Checked = EditToolOptions.Value == MainAreaTool.Wall;
-            EditToolPiece.Checked = EditToolOptions.Value == MainAreaTool.Piece;
-            EditToolTarget.Checked = EditToolOptions.Value == MainAreaTool.Target;
-            EditToolSokoban.Checked = EditToolOptions.Value == MainAreaTool.Sokoban;
+            ctMainArea.Tool = ExpSokSettings.LastUsedTool = grpEditTool.Value;
+            btnEditLevelWall.Checked = grpEditTool.Value == MainAreaTool.Wall;
+            btnEditLevelPiece.Checked = grpEditTool.Value == MainAreaTool.Piece;
+            btnEditLevelTarget.Checked = grpEditTool.Value == MainAreaTool.Target;
+            btnEditLevelSokoban.Checked = grpEditTool.Value == MainAreaTool.Sokoban;
         }
 
         #endregion
@@ -733,125 +731,127 @@ namespace ExpertSokoban
         /// Invoked by "Options => Display level list" or the LevelListClosePanel.
         /// Shows or hides the level list.
         /// </summary>
-        private void OptionsLevelList_Click(object sender, EventArgs e)
+        private void toggleLevelList(object sender, EventArgs e)
         {
-            ShowLevelList(!LevelListPanel.Visible);
+            showLevelList(!pnlLevelList.Visible);
         }
 
         /// <summary>
         /// Invoked by "Options => Display playing toolbar". Shows/hides the playing toolbar.
         /// </summary>
-        private void OptionsPlayToolStrip_Click(object sender, EventArgs e)
+        private void togglePlayingToolbar(object sender, EventArgs e)
         {
-            OptionsPlayToolStrip.Checked = !OptionsPlayToolStrip.Checked;
-            Edit1ToolStrip.Visible = ExpSokSettings.DisplayPlayToolStrip = OptionsPlayToolStrip.Checked;
+            mnuOptionsPlayingToolbar.Checked = !mnuOptionsPlayingToolbar.Checked;
+            toolPlay.Visible = ExpSokSettings.DisplayPlayingToolbar = mnuOptionsPlayingToolbar.Checked;
         }
 
         /// <summary>
-        /// Invoked by "Options => Display editing toolbars (level pack)". Shows/hides the edit toolbar.
+        /// Invoked by "Options => Display editing toolbars (level pack)". Shows/hides the two toolbars for editing level pack files.
         /// </summary>
-        private void OptionsEditToolStrip_Click(object sender, EventArgs e)
+        private void toggleFileEditToolbar(object sender, EventArgs e)
         {
-            OptionsEditToolStrip.Checked = !OptionsEditToolStrip.Checked;
-            EditLevelToolStrip.Visible = ExpSokSettings.DisplayEditToolStrip = OptionsEditToolStrip.Checked;
+            mnuOptionsFileToolbars.Checked = !mnuOptionsFileToolbars.Checked;
+            toolFile.Visible = toolFileEdit.Visible = ExpSokSettings.DisplayFileToolbars = mnuOptionsFileToolbars.Checked;
         }
 
         /// <summary>
-        /// Invoked by "Options => Display editing toolbar (level)". Shows/hides the operations
-        /// toolbar.
+        /// Invoked by "Options => Display editing toolbar (level)". Shows/hides the toolbar for editing levels.
         /// </summary>
-        private void OptionsEditLevelToolStrip_Click(object sender, EventArgs e)
+        private void toggleEditLevelToolbar(object sender, EventArgs e)
         {
-            OptionsEditLevelToolStrip.Checked = !OptionsEditLevelToolStrip.Checked;
-            Edit2ToolStrip.Visible = ExpSokSettings.DisplayEditLevelToolStrip = OptionsEditLevelToolStrip.Checked;
+            mnuOptionsEditLevelToolbar.Checked = !mnuOptionsEditLevelToolbar.Checked;
+            toolEditLevel.Visible = ExpSokSettings.DisplayEditLevelToolbar = mnuOptionsEditLevelToolbar.Checked;
         }
 
         /// <summary>
         /// Invoked by "Options => Display status bar". Toggles the visibility of the
         /// status bar at the bottom of the window.
         /// </summary>
-        private void OptionsStatusBar_Click(object sender, EventArgs e)
+        private void toggleStatusBar(object sender, EventArgs e)
         {
-            OptionsStatusBar.Checked = !OptionsStatusBar.Checked;
-            StatusBar.Visible = ExpSokSettings.DisplayStatusBar = OptionsStatusBar.Checked;
+            mnuOptionsStatusBar.Checked = !mnuOptionsStatusBar.Checked;
+            ctStatusBar.Visible = ExpSokSettings.DisplayStatusBar = mnuOptionsStatusBar.Checked;
         }
 
         /// <summary>
         /// Invoked (indirectly, via MovePathOptions) by any of the "Display move path
         /// as..." menu items under "Options". Sets the move path settings.
         /// </summary>
-        private void MovePathOptions_ValueChanged(object sender, EventArgs e)
+        private void changeMovePathOption(object sender, EventArgs e)
         {
-            MainArea.MoveDrawMode = ExpSokSettings.MoveDrawMode = MovePathOptions.Value;
+            ctMainArea.MoveDrawMode = ExpSokSettings.MoveDrawMode = grpMovePathOptions.Value;
         }
 
         /// <summary>
         /// Invoked (indirectly, via PushPathOptions) by any of the "Display push path
         /// as..." menu items under "Options". Sets the push path settings.
         /// </summary>
-        private void PushPathOptions_ValueChanged(object sender, EventArgs e)
+        private void changePushPathOption(object sender, EventArgs e)
         {
-            MainArea.PushDrawMode = ExpSokSettings.PushDrawMode = PushPathOptions.Value;
+            ctMainArea.PushDrawMode = ExpSokSettings.PushDrawMode = grpPushPathOptions.Value;
         }
 
         /// <summary>
         /// Invoked by "Options => Display end position of Sokoban and piece".
         /// Sets the option.
         /// </summary>
-        private void OptionsEndPos_Click(object sender, EventArgs e)
+        private void changeEndPosOption(object sender, EventArgs e)
         {
-            OptionsEndPos.Checked = !OptionsEndPos.Checked;
-            MainArea.ShowEndPos = ExpSokSettings.ShowEndPos = OptionsEndPos.Checked;
+            mnuOptionsEndPos.Checked = !mnuOptionsEndPos.Checked;
+            ctMainArea.ShowEndPos = ExpSokSettings.ShowEndPos = mnuOptionsEndPos.Checked;
         }
 
         /// <summary>
         /// Invoked by "Options => Display reachable area for Sokoban".
         /// Sets the option.
         /// </summary>
-        private void OptionsAreaSokoban_Click(object sender, EventArgs e)
+        private void toggleReachableAreaSokoban(object sender, EventArgs e)
         {
-            OptionsAreaSokoban.Checked = !OptionsAreaSokoban.Checked;
-            MainArea.ShowAreaSokoban = ExpSokSettings.ShowAreaSokoban = OptionsAreaSokoban.Checked;
+            mnuOptionsAreaSokoban.Checked = !mnuOptionsAreaSokoban.Checked;
+            ctMainArea.ShowAreaSokoban = ExpSokSettings.ShowAreaSokoban = mnuOptionsAreaSokoban.Checked;
         }
 
         /// <summary>
         /// Invoked by "Options => Display reachable area for piece".
         /// Sets the option.
         /// </summary>
-        private void OptionsAreaPiece_Click(object sender, EventArgs e)
+        private void toggleReachableAreaPiece(object sender, EventArgs e)
         {
-            OptionsAreaPiece.Checked = !OptionsAreaPiece.Checked;
-            MainArea.ShowAreaPiece = ExpSokSettings.ShowAreaPiece = OptionsAreaPiece.Checked;
+            mnuOptionsAreaPiece.Checked = !mnuOptionsAreaPiece.Checked;
+            ctMainArea.ShowAreaPiece = ExpSokSettings.ShowAreaPiece = mnuOptionsAreaPiece.Checked;
         }
 
         /// <summary>
         /// Invoked by "Options => Enable sound". Sets the option.
         /// </summary>
-        private void OptionsSound_Click(object sender, EventArgs e)
+        private void toggleSound(object sender, EventArgs e)
         {
-            OptionsSound.Checked = !OptionsSound.Checked;
-            MainArea.SoundEnabled = ExpSokSettings.SoundEnabled = OptionsSound.Checked;
+            mnuOptionsSound.Checked = !mnuOptionsSound.Checked;
+            ctMainArea.SoundEnabled = ExpSokSettings.SoundEnabled = mnuOptionsSound.Checked;
         }
 
         /// <summary>
         /// Invoked by "Help => Keyboard shortcuts". Displays a message box outlining
         /// the keyboard shortcuts that are not directly documented in the menus.
         /// </summary>
-        private void HelpKeyboard_Click(object sender, EventArgs e)
+        private void helpKeyboardShortcuts(object sender, EventArgs e)
         {
             string helpfile = PathUtil.AppPath + "ExpSok.chm";
             if (File.Exists(helpfile))
                 Help.ShowHelp(this, helpfile, HelpNavigator.TopicId, "30");
             else
-                DlgMessage.ShowWarning("Help file not found. Attempted to open from:\n" + helpfile, null);
+                DlgMessage.ShowWarning(Program.Translation.Mainform_Error_HelpFileNotFound.Fmt(helpfile), null);
         }
 
         /// <summary>
         /// Invoked by "Help => About". Pops up the About box.
         /// </summary>
-        private void HelpAbout_Click(object sender, EventArgs e)
+        private void helpAbout(object sender, EventArgs e)
         {
-            new AboutBox().ShowDialog();
+            using (var a = new AboutBox())
+            {
+                a.ShowDialog();
+            }
         }
 
         #endregion
@@ -862,20 +862,20 @@ namespace ExpertSokoban
         /// Invoked by the toolbar buttons for the Wall/Piece/Target/Sokoban edit tool.
         /// Switches the tool and sets the relevant menu item.
         /// </summary>
-        private void EditTool_Click(object sender, EventArgs e)
+        private void changeEditingTool(object sender, EventArgs e)
         {
-            EditToolOptions.SetValue(
-                sender == EditToolWall ? MainAreaTool.Wall :
-                sender == EditToolPiece ? MainAreaTool.Piece :
-                sender == EditToolTarget ? MainAreaTool.Target : MainAreaTool.Sokoban);
+            grpEditTool.SetValue(
+                sender == btnEditLevelWall ? MainAreaTool.Wall :
+                sender == btnEditLevelPiece ? MainAreaTool.Piece :
+                sender == btnEditLevelTarget ? MainAreaTool.Target : MainAreaTool.Sokoban);
         }
 
         /// <summary>
         /// Ensures all UI controls are up-to-date all the time.
         /// </summary>
-        private void UpdateControlsTimer_Tick(object sender, EventArgs e)
+        private void updateControls(object sender, EventArgs e)
         {
-            UpdateControls();
+            updateControls();
         }
 
         #endregion

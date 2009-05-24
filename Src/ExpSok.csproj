@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{38275335-5BC2-4327-A70F-CFB48CECEBB1}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -11,8 +11,10 @@
     <RootNamespace>ExpertSokoban</RootNamespace>
     <AssemblyName>ExpSok</AssemblyName>
     <ApplicationIcon>Resources\ExpertSokoban.ico</ApplicationIcon>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkSubset>
+    </TargetFrameworkSubset>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -37,6 +39,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
@@ -101,6 +106,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Translation.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\leveldone.wav" />
@@ -177,5 +183,6 @@
   -->
   <PropertyGroup>
     <PreBuildEvent>copy $(ProjectDir)Help\expsok.chm $(TargetDir)ExpSok.chm</PreBuildEvent>
+    <PostBuildEvent>xcopy /y $(ProjectDir)Translations\*.xml $(TargetDir)</PostBuildEvent>
   </PropertyGroup>
 </Project>
