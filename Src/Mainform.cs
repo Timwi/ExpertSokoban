@@ -30,6 +30,7 @@ namespace ExpertSokoban
                 ExpSokSettings.Language = m == null ? null : m.Groups[1].Value;
                 Program.Translation = t;
                 Lingo.TranslateControl(this, Program.Translation);
+                lstLevels.RefreshItems();
             }).ToArray());
 
             // Restore saved settings
@@ -329,27 +330,10 @@ namespace ExpertSokoban
                 return;
             }
 
-            SokobanLevelStatus Status = lstLevels.ActiveLevel.Validity;
-
-            if (Status == SokobanLevelStatus.Valid || lstLevels.State == LevelListBox.LevelListBoxState.Editing)
-            {
-                if (lstLevels.State == LevelListBox.LevelListBoxState.Editing)
-                    ctMainArea.SetLevelEdit(lstLevels.ActiveLevel);
-                else
-                    ctMainArea.SetLevel(lstLevels.ActiveLevel);
-            }
+            if (lstLevels.State == LevelListBox.LevelListBoxState.Editing)
+                ctMainArea.SetLevelEdit(lstLevels.ActiveLevel);
             else
-            {
-                string Problem = Status == SokobanLevelStatus.NotEnclosed
-                    ? Program.Translation.Mainform_Validity_NotEnclosed
-                    : Program.Translation.Mainform_Validity_WrongNumber;
-                if (DlgMessage.Show(Program.Translation.Mainform_Validity_CannotOpen + "\n\n" + Problem + "\n\n" + Program.Translation.Mainform_Validity_CannotOpen_Fix,
-                    Program.Translation.Mainform_MessageTitle_OpenLevel, DlgType.Error, Program.Translation.Mainform_Validity_CannotOpen_btnEdit, Program.Translation.Dialogs_btnCancel) == 0)
-                {
-                    ctMainArea.Modified = false;
-                    enterEditingMode();
-                }
-            }
+                ctMainArea.SetLevel(lstLevels.ActiveLevel);
         }
 
         /// <summary>

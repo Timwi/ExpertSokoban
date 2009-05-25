@@ -19,8 +19,6 @@ namespace ExpertSokoban
         {
 #if DEBUG
             XmlClassify.SaveObjectToXmlFile(Translation, Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), @"ExpSok-translation.template.xml"));
-            var tr_de = XmlClassify.LoadObjectFromXmlFile<Translation>(@"C:\c\main\ExpSok\Translations\ExpSok.de.xml");
-            XmlClassify.SaveObjectToXmlFile(tr_de, @"C:\c\main\ExpSok\Translations\ExpSok.de.xml");
 #endif
 
             Application.EnableVisualStyles();

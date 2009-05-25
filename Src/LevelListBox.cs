@@ -28,14 +28,14 @@ namespace ExpertSokoban
         /// <summary>
         /// Determines whether the user is playing or editing levels.
         /// </summary>
-        private LevelListBoxState FState = LevelListBoxState.Playing;
+        private LevelListBoxState _state = LevelListBoxState.Playing;
 
         /// <summary>
         /// Gets the current state of the list box. To set the state, use one of
         /// the methods such as EditSelectedLevel. The state determines whether
         /// the user is playing or editing levels.
         /// </summary>
-        public LevelListBoxState State { get { return FState; } }
+        public LevelListBoxState State { get { return _state; } }
 
         /// <summary>
         /// The index of the currently active level. Depending on State, this
@@ -43,43 +43,60 @@ namespace ExpertSokoban
         /// To ensure that the level is activated properly, set the ActiveLevelIndex
         /// instead of setting this value.
         /// </summary>
-        private int? FActiveLevelIndex = null;
+        private int? _activeLevelIndex = null;
 
         /// <summary>
-        /// The index of the currently active level. Depending on State, this
-        /// could mean either the level being edited or the level being played.
-        /// Setting this property activates the level correctly.
+        /// Attempts to open the level at the specified index either for playing or editing.
         /// </summary>
-        private int? ActiveLevelIndex
+        /// <param name="index">The index of the level to be opened, or null to deselect the current level.</param>
+        /// <param name="state">Must be <see cref="LevelListBoxState.Playing"/> or <see cref="LevelListBoxState.Editing"/>. Ignored if index is null.</param>
+        private void setActiveLevel(int? index, LevelListBoxState state)
         {
-            get { return FActiveLevelIndex; }
-            set
+            if (LevelActivating != null)
             {
-                if (LevelActivating != null)
+                // Confirm with the owner that the level can be changed
+                ConfirmEventArgs args = new ConfirmEventArgs();
+                args.ConfirmOK = true;
+                LevelActivating(this, args);
+                if (!args.ConfirmOK)
+                    return;
+            }
+
+            if (index == null)
+                _activeLevelIndex = null;
+            else if (index.Value < 0 || index.Value >= Items.Count || !(Items[index.Value] is SokobanLevel))
+                Ut.InternalError();
+            else
+            {
+                SokobanLevelStatus status;
+                if (state == LevelListBoxState.Playing && (status = ((SokobanLevel) Items[index.Value]).Validity) != SokobanLevelStatus.Valid)
                 {
-                    // Confirm with the owner that the level can be changed
-                    ConfirmEventArgs args = new ConfirmEventArgs();
-                    args.ConfirmOK = true;
-                    LevelActivating(this, args);
-                    if (!args.ConfirmOK)
+                    string Problem = status == SokobanLevelStatus.NotEnclosed
+                        ? Program.Translation.Mainform_Validity_NotEnclosed
+                        : Program.Translation.Mainform_Validity_WrongNumber;
+                    if (DlgMessage.Show(Program.Translation.Mainform_Validity_CannotOpen + "\n\n" + Problem + "\n\n" + Program.Translation.Mainform_Validity_CannotOpen_Fix,
+                        Program.Translation.Mainform_MessageTitle_OpenLevel, DlgType.Error, Program.Translation.Mainform_Validity_CannotOpen_btnEdit, Program.Translation.Dialogs_btnCancel) == 0)
+                    {
+                        _state = LevelListBoxState.Editing;
+                        _activeLevelIndex = index.Value;
+                    }
+                    else
                         return;
                 }
-
-                if (value == null)
-                    FActiveLevelIndex = null;
-                else if (value.Value < 0 || value.Value >= Items.Count || !(Items[value.Value] is SokobanLevel))
-                    Ut.InternalError();
                 else
-                    FActiveLevelIndex = value.Value;
-
-                RefreshItems();
-
-                // Inform the owner that the level has changed
-                LevelActivated(this, new EventArgs());
-
-                // Make the active level selected
-                SelectActiveLevel();
+                {
+                    _state = state;
+                    _activeLevelIndex = index.Value;
+                }
             }
+
+            RefreshItems();
+
+            // Inform the owner that the level has changed
+            LevelActivated(this, new EventArgs());
+
+            // Make the active level selected
+            SelectActiveLevel();
         }
 
         /// <summary>
@@ -90,11 +107,11 @@ namespace ExpertSokoban
         {
             get
             {
-                if (FActiveLevelIndex == null)
+                if (_activeLevelIndex == null)
                     return null;
                 // The following throws an exception if the index is out of bounds or
                 // not a Sokoban level. Will tell us if FActiveLevelIndex got out of sync.
-                return (SokobanLevel) Items[FActiveLevelIndex.Value];
+                return (SokobanLevel) Items[_activeLevelIndex.Value];
             }
         }
 
@@ -117,27 +134,27 @@ namespace ExpertSokoban
         /// <summary>
         /// Gets or sets the index of the item that is currently being edited.
         /// Comparing this to an integer index is equivalent to also verifying that state is Editing.
-        /// Setting this is equivalent to setting both State and FActiveLevelIndex.
+        /// Setting this is equivalent to calling setActiveLevel().
         /// </summary>
-        private int? EditingIndex
+        private int? editingIndex
         {
-            get { return FState == LevelListBoxState.Editing ? (int?) FActiveLevelIndex : null; }
-            set { FState = LevelListBoxState.Editing; ActiveLevelIndex = value; }
+            get { return _state == LevelListBoxState.Editing ? (int?) _activeLevelIndex : null; }
+            set { setActiveLevel(value, LevelListBoxState.Editing); }
         }
 
         /// <summary>
         /// Gets or sets the index of the item that is currently being played.
         /// Comparing this to an integer index is equivalent to also verifying that state is Playing.
-        /// Setting this is equivalent to setting both State and FActiveLevelIndex.
+        /// Setting this is equivalent to calling setActiveLevel().
         /// </summary>
-        private int? PlayingIndex
+        private int? playingIndex
         {
             get
             {
-                return FState == LevelListBoxState.Playing ? (int?) FActiveLevelIndex :
-                       FState == LevelListBoxState.JustSolved ? (int?) FActiveLevelIndex : null;
+                return _state == LevelListBoxState.Playing ? (int?) _activeLevelIndex :
+                       _state == LevelListBoxState.JustSolved ? (int?) _activeLevelIndex : null;
             }
-            set { FState = LevelListBoxState.Playing; ActiveLevelIndex = value; }
+            set { setActiveLevel(value, LevelListBoxState.Playing); }
         }
 
         /// <summary>
@@ -157,7 +174,7 @@ namespace ExpertSokoban
         /// Determines whether any changes have been made to the level file (i.e. the
         /// contents of the level list).
         /// </summary>
-        private bool FModified = false;
+        private bool _modified = false;
 
         /// <summary>
         /// Determines whether any changes have been made to the level file (i.e. the
@@ -165,13 +182,13 @@ namespace ExpertSokoban
         /// </summary>
         public bool Modified
         {
-            get { return FModified; }
+            get { return _modified; }
             set
             {
                 if (value)
                     Ut.InternalError("Not allowed to set Modified to true");
                 else
-                    FModified = false;
+                    _modified = false;
             }
         }
 
@@ -181,15 +198,15 @@ namespace ExpertSokoban
         public LevelListBox()
         {
             // Listen for some events
-            MeasureItem += new MeasureItemEventHandler(LevelListBox_MeasureItem);
-            DrawItem += new DrawItemEventHandler(LevelListBox_DrawItem);
-            Resize += new EventHandler(LevelListBox_Resize);
-            KeyDown += new KeyEventHandler(LevelListBox_KeyDown);
-            DoubleClick += new EventHandler(LevelListBox_DoubleClick);
-            MouseDown += new MouseEventHandler(LevelListBox_MouseDown);
+            MeasureItem += new MeasureItemEventHandler(measureItem);
+            DrawItem += new DrawItemEventHandler(drawItem);
+            Resize += new EventHandler(resize);
+            KeyDown += new KeyEventHandler(keyDown);
+            DoubleClick += new EventHandler(doubleClick);
+            MouseDown += new MouseEventHandler(mouseDown);
 
             DrawMode = DrawMode.OwnerDrawVariable;
-            FCachedWidth = ClientSize.Width;
+            _cachedWidth = ClientSize.Width;
         }
 
         /// <summary>
@@ -206,24 +223,21 @@ namespace ExpertSokoban
         /// Invoked if the user double-clicks in the level list. If the selected item
         /// is a comment, edits the comment. Otherwise opens the level for playing.
         /// </summary>
-        void LevelListBox_DoubleClick(object sender, EventArgs e)
+        private void doubleClick(object sender, EventArgs e)
         {
             // This does indeed happen - if you double-click an empty list for instance.
             if (SelectedIndex < 0)
                 return;
 
             if (SelectedItem is SokobanLevel)
-            {
-                FState = LevelListBoxState.Playing;
-                ActiveLevelIndex = SelectedIndex;
-            }
+                setActiveLevel(SelectedIndex, LevelListBoxState.Playing);
             else
             {
-                string NewComment = InputBox.GetLine(Program.Translation.LevelList_NewComment_Prompt, (string) SelectedItem);
-                if (NewComment != null)
+                string newComment = InputBox.GetLine(Program.Translation.LevelList_NewComment_Prompt, (string) SelectedItem);
+                if (newComment != null)
                 {
-                    Items[SelectedIndex] = NewComment;
-                    FModified = true;
+                    Items[SelectedIndex] = newComment;
+                    _modified = true;
                 }
             }
         }
@@ -234,10 +248,10 @@ namespace ExpertSokoban
         /// - Enter: opens the currently-selected level or edits the
         ///   currently-selected comment (equivalent to mouse double-click).
         /// </summary>
-        void LevelListBox_KeyDown(object sender, KeyEventArgs e)
+        private void keyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter && e.Modifiers == 0)
-                LevelListBox_DoubleClick(sender, new EventArgs());
+                doubleClick(sender, new EventArgs());
         }
 
         /// <summary>
@@ -245,7 +259,7 @@ namespace ExpertSokoban
         /// presses the right mouse button; we want to select the clicked-on item before
         /// showing the context menu.
         /// </summary>
-        private void LevelListBox_MouseDown(object sender, MouseEventArgs e)
+        private void mouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
             {
@@ -263,41 +277,41 @@ namespace ExpertSokoban
         /// <summary>
         /// Caches complete renderings for levels to ensure smooth scrolling.
         /// </summary>
-        private Dictionary<SokobanLevel, Image> FCachedRenderings = new Dictionary<SokobanLevel, Image>();
+        private Dictionary<SokobanLevel, Image> _cachedRenderings = new Dictionary<SokobanLevel, Image>();
 
         /// <summary>
         /// Remembers the width of the level list for which the renderings were
         /// cached. The renderings only need to be updated when the width changes,
         /// not when the height changes.
         /// </summary>
-        private int FCachedWidth = 0;
+        private int _cachedWidth = 0;
 
         /// <summary>
         /// The colour used to represent an item if it is currently being edited.
         /// </summary>
-        private Color EditingColor = Color.FromArgb(255, 192, 128);
+        private Color _editingColor = Color.FromArgb(255, 192, 128);
 
         /// <summary>
         /// The colour used to represent an item if it is currently being played.
         /// </summary>
-        private Color PlayingColor = Color.FromArgb(64, 224, 128);
+        private Color _playingColor = Color.FromArgb(64, 224, 128);
 
         /// <summary>
         /// The colour used to represent an item if it has been solved before by the
         /// current player.
         /// </summary>
-        private Color SolvedColor = Color.FromArgb(64, 128, 255);
+        private Color _solvedColor = Color.FromArgb(64, 128, 255);
 
         /// <summary>
         /// The colour used to represent an item that has never been solved and is not
         /// currently being played or edited.
         /// </summary>
-        private Color NeutralColor = Color.Silver;
+        private Color _neutralColor = Color.Silver;
 
         /// <summary>
         /// Occurs when an item in the level list requires drawing.
         /// </summary>
-        private void LevelListBox_DrawItem(object sender, DrawItemEventArgs e)
+        private void drawItem(object sender, DrawItemEventArgs e)
         {
             if (e.Index < 0 || e.Index >= Items.Count || DesignMode)
                 return;
@@ -305,35 +319,35 @@ namespace ExpertSokoban
             // The item we are trying to draw is a SokobanLevel
             if (Items[e.Index] is SokobanLevel)
             {
-                string Key = Items[e.Index].ToString();
-                bool IsSolved = ExpSokSettings.IsSolved(Key);
-                string SolvedMessage = IsSolved
+                string key = Items[e.Index].ToString();
+                bool isSolved = ExpSokSettings.IsSolved(key);
+                string solvedMsg = isSolved
                         ? Program.Translation.LevelList_LevelSolved + " (" +
-                            ExpSokSettings.Highscores[Key][ExpSokSettings.PlayerName].BestPushScore.E1 + "/" +
-                            ExpSokSettings.Highscores[Key][ExpSokSettings.PlayerName].BestPushScore.E2 + ")"
+                            ExpSokSettings.Highscores[key][ExpSokSettings.PlayerName].BestPushScore.E1 + "/" +
+                            ExpSokSettings.Highscores[key][ExpSokSettings.PlayerName].BestPushScore.E2 + ")"
                         : "";
-                bool IsPlaying = (e.Index == PlayingIndex) && State == LevelListBoxState.Playing;
-                bool IsJustSolved = (e.Index == PlayingIndex) && State == LevelListBoxState.JustSolved;
-                bool IsEditing = (e.Index == EditingIndex);
+                bool isPlaying = (e.Index == playingIndex) && State == LevelListBoxState.Playing;
+                bool isJustSolved = (e.Index == playingIndex) && State == LevelListBoxState.JustSolved;
+                bool isEditing = (e.Index == editingIndex);
 
-                int UseHeight = e.Bounds.Height - 10;
-                SizeF MessageSize1 = new SizeF(0, 0);
-                SizeF MessageSize2 = new SizeF(0, 0);
-                if (IsPlaying || IsEditing || IsJustSolved)
+                int useHeight = e.Bounds.Height - 10;
+                SizeF msgSize1 = new SizeF(0, 0);
+                SizeF msgSize2 = new SizeF(0, 0);
+                if (isPlaying || isEditing || isJustSolved)
                 {
-                    MessageSize1 = e.Graphics.MeasureString(
-                        IsEditing ? Program.Translation.LevelList_CurrentlyEditing :
-                        IsJustSolved ? Program.Translation.LevelList_JustSolved : Program.Translation.LevelList_CurrentlyPlaying, Font);
-                    MessageSize1.Height += 5;
+                    msgSize1 = e.Graphics.MeasureString(
+                        isEditing ? Program.Translation.LevelList_CurrentlyEditing :
+                        isJustSolved ? Program.Translation.LevelList_JustSolved : Program.Translation.LevelList_CurrentlyPlaying, Font);
+                    msgSize1.Height += 5;
                 }
-                if (IsSolved)
+                if (isSolved)
                 {
-                    MessageSize2 = e.Graphics.MeasureString(SolvedMessage, Font);
-                    MessageSize2.Height += 5;
+                    msgSize2 = e.Graphics.MeasureString(solvedMsg, Font);
+                    msgSize2.Height += 5;
                 }
 
-                Image Rendering = GetRendering((SokobanLevel) Items[e.Index], e.Bounds.Width - 10,
-                    e.Bounds.Height - 10 - (int) MessageSize1.Height - (int) MessageSize2.Height);
+                Image rendering = getRendering((SokobanLevel) Items[e.Index], e.Bounds.Width - 10,
+                    e.Bounds.Height - 10 - (int) msgSize1.Height - (int) msgSize2.Height);
                 e.DrawBackground();
                 e.DrawFocusRectangle();
                 if ((e.State & DrawItemState.Selected) != DrawItemState.Selected)
@@ -341,59 +355,59 @@ namespace ExpertSokoban
                         new LinearGradientBrush(
                             e.Bounds,
                             Color.White,
-                            IsEditing ? EditingColor : IsPlaying ? PlayingColor : IsSolved ? SolvedColor : NeutralColor,
+                            isEditing ? _editingColor : isPlaying ? _playingColor : isSolved ? _solvedColor : _neutralColor,
                             90,
                             false
                         ),
                         e.Bounds
                     );
-                if (IsPlaying || IsEditing || IsJustSolved)
+                if (isPlaying || isEditing || isJustSolved)
                 {
                     e.Graphics.FillRectangle(
                         new LinearGradientBrush(
-                            new RectangleF(e.Bounds.Left + 5, e.Bounds.Top + 4, e.Bounds.Width - 10, MessageSize1.Height - 3),
-                            IsEditing ? EditingColor : PlayingColor,
+                            new RectangleF(e.Bounds.Left + 5, e.Bounds.Top + 4, e.Bounds.Width - 10, msgSize1.Height - 3),
+                            isEditing ? _editingColor : _playingColor,
                             Color.White,
                             90,
                             false
                         ),
-                        new RectangleF(e.Bounds.Left + 5, e.Bounds.Top + 5, e.Bounds.Width - 10, MessageSize1.Height - 5)
+                        new RectangleF(e.Bounds.Left + 5, e.Bounds.Top + 5, e.Bounds.Width - 10, msgSize1.Height - 5)
                     );
                     e.Graphics.DrawString(
-                        IsEditing ? Program.Translation.LevelList_CurrentlyEditing : IsJustSolved ? Program.Translation.LevelList_JustSolved : Program.Translation.LevelList_CurrentlyPlaying,
+                        isEditing ? Program.Translation.LevelList_CurrentlyEditing : isJustSolved ? Program.Translation.LevelList_JustSolved : Program.Translation.LevelList_CurrentlyPlaying,
                         Font,
                         new SolidBrush(Color.Black),
-                        e.Bounds.Left + e.Bounds.Width / 2 - MessageSize1.Width / 2,
+                        e.Bounds.Left + e.Bounds.Width / 2 - msgSize1.Width / 2,
                         e.Bounds.Top + 5
                     );
                 }
-                if (IsSolved)
+                if (isSolved)
                 {
                     e.Graphics.FillRectangle(
                         new LinearGradientBrush(
-                            new RectangleF(e.Bounds.Left + 5, e.Bounds.Top + 4 + MessageSize1.Height,
-                                e.Bounds.Width - 10, MessageSize2.Height - 3),
-                            SolvedColor, Color.White, 90, false),
-                        new RectangleF(e.Bounds.Left + 5, e.Bounds.Top + 5 + MessageSize1.Height,
-                            e.Bounds.Width - 10, MessageSize2.Height - 5)
+                            new RectangleF(e.Bounds.Left + 5, e.Bounds.Top + 4 + msgSize1.Height,
+                                e.Bounds.Width - 10, msgSize2.Height - 3),
+                            _solvedColor, Color.White, 90, false),
+                        new RectangleF(e.Bounds.Left + 5, e.Bounds.Top + 5 + msgSize1.Height,
+                            e.Bounds.Width - 10, msgSize2.Height - 5)
                     );
-                    e.Graphics.DrawString(SolvedMessage, Font, new SolidBrush(Color.Black),
-                        e.Bounds.Left + e.Bounds.Width / 2 - MessageSize2.Width / 2,
-                        e.Bounds.Top + 5 + MessageSize1.Height
+                    e.Graphics.DrawString(solvedMsg, Font, new SolidBrush(Color.Black),
+                        e.Bounds.Left + e.Bounds.Width / 2 - msgSize2.Width / 2,
+                        e.Bounds.Top + 5 + msgSize1.Height
                     );
                 }
-                e.Graphics.DrawImage(Rendering, e.Bounds.Left + 5,
-                    e.Bounds.Top + 5 + MessageSize1.Height + MessageSize2.Height);
+                e.Graphics.DrawImage(rendering, e.Bounds.Left + 5,
+                    e.Bounds.Top + 5 + msgSize1.Height + msgSize2.Height);
             }
             // The item we are trying to draw is a comment
             else
             {
                 e.DrawBackground();
                 e.DrawFocusRectangle();
-                string Str = Items[e.Index] is string ? (string) Items[e.Index] : Items[e.Index].ToString();
+                string str = Items[e.Index] is string ? (string) Items[e.Index] : Items[e.Index].ToString();
                 if ((e.State & DrawItemState.Selected) != DrawItemState.Selected)
                     e.Graphics.FillRectangle(new LinearGradientBrush(e.Bounds, Color.White, Color.Silver, 90, false), e.Bounds);
-                e.Graphics.DrawString(Str, Font, new SolidBrush(e.ForeColor), e.Bounds.Left + 5, e.Bounds.Top + 5);
+                e.Graphics.DrawString(str, Font, new SolidBrush(e.ForeColor), e.Bounds.Left + 5, e.Bounds.Top + 5);
             }
         }
 
@@ -404,27 +418,27 @@ namespace ExpertSokoban
         /// <param name="Level">The SokobanLevel to be rendered.</param>
         /// <param name="Width">Width of the area to render into.</param>
         /// <param name="Height">Height of the area to render into.</param>
-        private Image GetRendering(SokobanLevel Level, int Width, int Height)
+        private Image getRendering(SokobanLevel level, int width, int height)
         {
-            if (FCachedRenderings.ContainsKey(Level))
-                return (Image) FCachedRenderings[Level];
+            if (_cachedRenderings.ContainsKey(level))
+                return (Image) _cachedRenderings[level];
 
-            Image Rendering = new Bitmap(Width, Height);
-            new Renderer(Level, Width, Height, new SolidBrush(Color.Transparent)).Render(Graphics.FromImage(Rendering));
-            FCachedRenderings[Level] = Rendering;
-            return Rendering;
+            Image rendering = new Bitmap(width, height);
+            new Renderer(level, width, height, new SolidBrush(Color.Transparent)).Render(Graphics.FromImage(rendering));
+            _cachedRenderings[level] = rendering;
+            return rendering;
         }
 
         /// <summary>
         /// Occurs when the LevelListBox is resized. If the width has changed, the
         /// cached renderings are discarded and the levels re-rendered.
         /// </summary>
-        private void LevelListBox_Resize(object sender, EventArgs e)
+        private void resize(object sender, EventArgs e)
         {
-            if (ClientSize.Width != FCachedWidth)
+            if (ClientSize.Width != _cachedWidth)
             {
-                FCachedWidth = ClientSize.Width;
-                FCachedRenderings = new Dictionary<SokobanLevel, Image>();
+                _cachedWidth = ClientSize.Width;
+                _cachedRenderings = new Dictionary<SokobanLevel, Image>();
                 RefreshItems();
             }
         }
@@ -435,19 +449,19 @@ namespace ExpertSokoban
         /// width as the height of the level is to its width. The "currently playing"
         /// or "currently editing" and the "solved" messages are taken into account.
         /// </summary>
-        private void LevelListBox_MeasureItem(object sender, MeasureItemEventArgs e)
+        private void measureItem(object sender, MeasureItemEventArgs e)
         {
             if (e.Index < 0 || e.Index >= Items.Count || DesignMode)
                 return;
 
             if (Items[e.Index] is SokobanLevel)
             {
-                SokobanLevel Level = (SokobanLevel) Items[e.Index];
-                e.ItemHeight = (ClientSize.Width - 10) * Level.Height / Level.Width + 10;
+                SokobanLevel level = (SokobanLevel) Items[e.Index];
+                e.ItemHeight = (ClientSize.Width - 10) * level.Height / level.Width + 10;
 
-                if (e.Index == PlayingIndex)    // also covers "Just Solved"
+                if (e.Index == playingIndex)    // also covers "Just Solved"
                     e.ItemHeight += (int) e.Graphics.MeasureString(Program.Translation.LevelList_CurrentlyPlaying, Font).Height + 5;
-                else if (e.Index == EditingIndex)
+                else if (e.Index == editingIndex)
                     e.ItemHeight += (int) e.Graphics.MeasureString(Program.Translation.LevelList_CurrentlyEditing, Font).Height + 5;
 
                 if (ExpSokSettings.IsSolved(Items[e.Index].ToString()))
@@ -472,7 +486,7 @@ namespace ExpertSokoban
         /// Used only by LoadLevelPack(). Encapsulates the states that occur while
         /// reading a text file containing levels.
         /// </summary>
-        private enum LevelReaderState { Empty, Comment, Level }
+        private enum levelReaderState { Empty, Comment, Level }
 
         /// <summary>
         /// The exception thrown by LoadLevelPack() if the level file is invalid.
@@ -485,132 +499,132 @@ namespace ExpertSokoban
         /// <summary>
         /// Loads a level pack from the level list.
         /// </summary>
-        public void LoadLevelPack(string FileName)
+        public void LoadLevelPack(string path)
         {
             // Will contain the list of levels and comments that we have loaded.
             // (We only want to add them to the listbox at the end in case we
             // throw an exception, because then we want to keep the old file.)
-            List<object> LoadedItems = new List<object>();
+            List<object> loadedItems = new List<object>();
 
             // Class to read from the text file
-            StreamReader StreamReader = new StreamReader(FileName, Encoding.UTF8);
+            StreamReader sr = new StreamReader(path, Encoding.UTF8);
             // State we're in (Empty, Comment or Level)
-            LevelReaderState State = LevelReaderState.Empty;
+            levelReaderState state = levelReaderState.Empty;
             // Line last read
-            String Line;
+            String line;
             // Current comment (gets appended to until we reach the end of the comment)
-            String Comment = "";
+            String comment = "";
             // Current level (gets appended to until we reach the end of the level)
-            String LevelEncoded = "";
+            String levelEncoded = "";
 
             do
             {
-                Line = StreamReader.ReadLine();
+                line = sr.ReadLine();
 
                 // If this line begins with a semicolon (';'), it's a comment.
                 // Otherwise, it is considered part of the level and must
                 // contain only the characters #@$.*+ or space.
-                if (Line != null && Line.Length > 0 && Line[0] != ';')
+                if (line != null && line.Length > 0 && line[0] != ';')
                 {
                     // check for invalid characters
-                    for (int i = 0; i < Line.Length; i++)
-                        if (Line[i] != ' ' && Line[i] != '#' && Line[i] != '@' &&
-                            Line[i] != '$' && Line[i] != '.' && Line[i] != '*' &&
-                            Line[i] != '+')
+                    for (int i = 0; i < line.Length; i++)
+                        if (line[i] != ' ' && line[i] != '#' && line[i] != '@' &&
+                            line[i] != '$' && line[i] != '.' && line[i] != '*' &&
+                            line[i] != '+')
                             throw new InvalidLevelException();
                 }
 
                 // Decide whether this line belongs to a level or comment
-                LevelReaderState NewState =
-                            (Line == null || Line.Length == 0) ? LevelReaderState.Empty :
-                            Line[0] == ';' ? LevelReaderState.Comment :
-                            LevelReaderState.Level;
+                levelReaderState newState =
+                            (line == null || line.Length == 0) ? levelReaderState.Empty :
+                            line[0] == ';' ? levelReaderState.Comment :
+                            levelReaderState.Level;
 
                 // If we are switching from level to comment or vice versa,
                 // or reaching the end of the file, add the level or comment
                 // to the level list and empty the relevant variable
 
-                if (NewState != State && State == LevelReaderState.Comment)
+                if (newState != state && state == levelReaderState.Comment)
                 {
-                    LoadedItems.Add(Comment);
-                    Comment = "";
+                    loadedItems.Add(comment);
+                    comment = "";
                 }
-                else if (NewState != State && State == LevelReaderState.Level)
+                else if (newState != state && state == levelReaderState.Level)
                 {
-                    SokobanLevel NewLevel = new SokobanLevel(LevelEncoded);
-                    NewLevel.EnsureSpace(0);
-                    LoadedItems.Add(NewLevel);
-                    LevelEncoded = "";
+                    SokobanLevel newLevel = new SokobanLevel(levelEncoded);
+                    newLevel.EnsureSpace(0);
+                    loadedItems.Add(newLevel);
+                    levelEncoded = "";
                 }
 
                 // Append the line we just read to the relevant variable
-                if (NewState == LevelReaderState.Comment)
-                    Comment += Line.Substring(1) + "\n";
-                else if (NewState == LevelReaderState.Level)
-                    LevelEncoded += Line + "\n";
+                if (newState == levelReaderState.Comment)
+                    comment += line.Substring(1) + "\n";
+                else if (newState == levelReaderState.Level)
+                    levelEncoded += line + "\n";
 
                 // Update the state
-                State = NewState;
-            } while (Line != null);
+                state = newState;
+            } while (line != null);
 
-            FActiveLevelIndex = null;
+            _activeLevelIndex = null;
             BeginUpdate();
             Items.Clear();
-            foreach (object Item in LoadedItems)
+            foreach (object Item in loadedItems)
                 Items.Add(Item);
             EndUpdate();
-            StreamReader.Close();
+            sr.Close();
 
-            FModified = false;
+            _modified = false;
 
-            ExpSokSettings.LevelFilename = FileName;
+            ExpSokSettings.LevelFilename = path;
         }
 
         /// <summary>
         /// Saves the current level list into a file.
         /// </summary>
-        public void SaveLevelPack(string FileName)
+        public void SaveLevelPack(string path)
         {
             // Save the file
-            StreamWriter StreamWriter = new StreamWriter(FileName, false, Encoding.UTF8);
-            foreach (object Item in Items)
+            StreamWriter sw = new StreamWriter(path, false, Encoding.UTF8);
+            foreach (object item in Items)
             {
-                if (Item is SokobanLevel)
-                    StreamWriter.WriteLine((Item as SokobanLevel).ToString());
-                else if (Item is string)
-                    StreamWriter.WriteLine(";" + (Item as string) + "\n");
+                if (item is SokobanLevel)
+                    sw.WriteLine((item as SokobanLevel).ToString());
+                else if (item is string)
+                    sw.WriteLine(";" + (string) item + "\n");
                 else
-                    StreamWriter.WriteLine(";" + Item.ToString() + "\n");
+                    sw.WriteLine(";" + item.ToString() + "\n");
             }
-            StreamWriter.Close();
+            sw.Close();
 
             // File is now saved, so mark it as unchanged
-            FModified = false;
+            _modified = false;
         }
 
         /// <summary>
         /// Saves the level pack to the currently selected file name. If none, or
-        /// if ForceDialog is true, a Save dialog is shown first. Returns true if
+        /// if forceDialog is true, a Save dialog is shown first. Returns true if
         /// saved successfully.
         /// </summary>
-        public bool SaveWithDialog(bool ForceDialog)
+        public bool SaveWithDialog(bool forceDialog)
         {
             // Check if have a file name
-            if (ForceDialog || ExpSokSettings.LevelFilename == null)
+            if (forceDialog || ExpSokSettings.LevelFilename == null)
             {
-                SaveFileDialog SaveDialog = new SaveFileDialog();
-                SaveDialog.DefaultExt = "txt";
-                SaveDialog.Filter = Program.Translation.Save_FileType_TextFiles + "|*.txt|" + Program.Translation.Save_FileType_AllFiles + "|*.*";
-                SaveDialog.InitialDirectory = ExpSokSettings.LastOpenSaveDirectory;
-                DialogResult Result = SaveDialog.ShowDialog();
+                SaveFileDialog dlg = new SaveFileDialog();
+                dlg.DefaultExt = "txt";
+                dlg.Filter = Program.Translation.Save_FileType_TextFiles + "|*.txt|" + Program.Translation.Save_FileType_AllFiles + "|*.*";
+                dlg.InitialDirectory = ExpSokSettings.LastOpenSaveDirectory;
+                DialogResult result = dlg.ShowDialog();
 
                 // If the user cancelled the dialog, bail out
-                if (Result != DialogResult.OK)
+                if (result != DialogResult.OK)
                     return false;
 
                 // Update the current filename
-                ExpSokSettings.LastOpenSaveDirectory = Path.GetDirectoryName(SaveDialog.FileName);
-                ExpSokSettings.LevelFilename = SaveDialog.FileName;
+                ExpSokSettings.LastOpenSaveDirectory = Path.GetDirectoryName(dlg.FileName);
+                ExpSokSettings.LevelFilename = dlg.FileName;
             }
 
             // Just save.
@@ -639,21 +653,26 @@ namespace ExpertSokoban
         /// </summary>
         public void EditSelectedLevel()
         {
-            EditingIndex = SelectedIndex;
+            editingIndex = SelectedIndex;
         }
 
         /// <summary>
         /// Accept the specified level as the new version of the level being edited.
-        /// Turns off the Edit mode and starts playing the new level.
+        /// Turns off the Edit mode and starts playing the new level (if it is valid).
         /// </summary>
-        public void EditAccept(SokobanLevel Level)
+        public void EditAccept(SokobanLevel level)
         {
             // Update the level
-            Items[FActiveLevelIndex.Value] = Level;
-            FModified = true;
+            Items[_activeLevelIndex.Value] = level;
+            _modified = true;
             // Play this level
-            PlayingIndex = FActiveLevelIndex;
-            SelectedIndex = FActiveLevelIndex.Value; // select this level in the box - probably desirable?
+            if (level.Validity == SokobanLevelStatus.Valid)
+            {
+                playingIndex = _activeLevelIndex;
+                SelectedIndex = _activeLevelIndex.Value; // select this level in the box - probably desirable?
+            }
+            else
+                playingIndex = null;
         }
 
         /// <summary>
@@ -662,8 +681,12 @@ namespace ExpertSokoban
         /// </summary>
         public void EditCancel()
         {
-            // Play this level
-            PlayingIndex = FActiveLevelIndex;
+            if (ActiveLevel == null)
+                return;
+            if (ActiveLevel.Validity == SokobanLevelStatus.Valid)
+                playingIndex = _activeLevelIndex;
+            else
+                playingIndex = null;
             SelectActiveLevel(); // select this level in the box - probably desirable?
         }
 
@@ -674,7 +697,7 @@ namespace ExpertSokoban
         {
             ExpSokSettings.LevelFilename = null;
             Items.Clear();
-            ActiveLevelIndex = null;
+            setActiveLevel(null, LevelListBoxState.Playing);
             Modified = false;
         }
 
@@ -684,28 +707,28 @@ namespace ExpertSokoban
         /// </summary>
         /// <param name="NewItem">The item to insert. May be a SokobanLevel object
         /// or a string (representing a comment).</param>
-        public void AddLevelListItem(object NewItem)
+        public void AddLevelListItem(object item)
         {
             if (SelectedIndex < 0)
             {
                 // If nothing is currently selected, add the item at the bottom
                 // and then select it
-                Items.Add(NewItem);
+                Items.Add(item);
                 SelectedIndex = Items.Count - 1;
             }
             else
             {
                 // Otherwise, insert the item before the current item and select it
-                Items.Insert(SelectedIndex, NewItem);
+                Items.Insert(SelectedIndex, item);
                 SelectedIndex -= 1;
 
                 // Fix the values of EditingIndex and PlayingIndex
-                if (FActiveLevelIndex != null && FActiveLevelIndex >= SelectedIndex)
-                    FActiveLevelIndex = FActiveLevelIndex.Value + 1;
+                if (_activeLevelIndex != null && _activeLevelIndex >= SelectedIndex)
+                    _activeLevelIndex = _activeLevelIndex.Value + 1;
             }
 
             // The level file has changed
-            FModified = true;
+            _modified = true;
         }
 
         /// <summary>
@@ -716,25 +739,25 @@ namespace ExpertSokoban
         /// </summary>
         public void RemoveLevelListItem()
         {
-            int Index = SelectedIndex;
+            int index = SelectedIndex;
 
             // Remove the item
             Items.RemoveAt(SelectedIndex);
 
             // Restore the value of SelectedIndex (why does RemoveAt have to destroy this?)
-            if (Items.Count > 0 && Index < Items.Count)
-                SelectedIndex = Index;
+            if (Items.Count > 0 && index < Items.Count)
+                SelectedIndex = index;
             else if (Items.Count > 0)
                 SelectedIndex = Items.Count - 1;
 
             // Fix the values of EditingIndex and PlayingIndex
-            if (FActiveLevelIndex != null && FActiveLevelIndex.Value > Index)
-                FActiveLevelIndex = FActiveLevelIndex.Value - 1;
-            else if (FActiveLevelIndex != null && FActiveLevelIndex.Value == Index)
-                FActiveLevelIndex = null;
+            if (_activeLevelIndex != null && _activeLevelIndex.Value > index)
+                _activeLevelIndex = _activeLevelIndex.Value - 1;
+            else if (_activeLevelIndex != null && _activeLevelIndex.Value == index)
+                _activeLevelIndex = null;
 
             // The level file has changed
-            FModified = true;
+            _modified = true;
         }
 
         #endregion
@@ -751,7 +774,7 @@ namespace ExpertSokoban
             if (!(SelectedItem is SokobanLevel))
                 Ut.InternalError();
 
-            PlayingIndex = SelectedIndex;
+            playingIndex = SelectedIndex;
         }
 
         /// <summary>
@@ -761,20 +784,20 @@ namespace ExpertSokoban
         public void PlayFirstUnsolved()
         {
             SelectedIndex = -1;
-            int? i = FindPrevNext(true, true);
+            int? i = findPrevNext(true, true);
 
             if (i != null)
             {
-                PlayingIndex = i.Value;
+                playingIndex = i.Value;
                 return;
             }
 
-            i = FindPrevNext(false, true);
+            i = findPrevNext(false, true);
 
             if (i == null)
-                PlayingIndex = null; // empty level pack
+                playingIndex = null; // empty level pack
             else
-                PlayingIndex = i.Value;
+                playingIndex = i.Value;
         }
 
         /// <summary>
@@ -782,10 +805,10 @@ namespace ExpertSokoban
         /// </summary>
         public void JustSolved()
         {
-            if (State != LevelListBoxState.Playing)
+            if (_state != LevelListBoxState.Playing)
                 return;
 
-            FState = LevelListBoxState.JustSolved;
+            _state = LevelListBoxState.JustSolved;
             RefreshItems();
         }
 
@@ -799,21 +822,21 @@ namespace ExpertSokoban
         /// next level (false) or the next unsolved level (true).</param>
         /// <param name="CongratulateIfAll">If true, congratulates the user about having
         /// solved all levels if no more can be found.</param>
-        public void PlayNext(bool MustBeUnsolved, bool CongratulateIfAll)
+        public void PlayNext(bool mustBeUnsolved, bool congratulateIfAll)
         {
-            int? i = FindPrevNext(MustBeUnsolved, true);
+            int? i = findPrevNext(mustBeUnsolved, true);
 
             if (i == null)
             {
-                if (CongratulateIfAll)
+                if (congratulateIfAll)
                     DlgMessage.ShowInfo(Program.Translation.LevelList_Message_AllSolved, Program.Translation.LevelList_Message_AllSolved_Title);
-                else if (MustBeUnsolved)
+                else if (mustBeUnsolved)
                     DlgMessage.ShowInfo(Program.Translation.LevelList_Message_NoMoreUnsolved, Program.Translation.LevelList_Message_NextUnsolved_Title);
                 else
                     DlgMessage.ShowInfo(Program.Translation.LevelList_Message_NoOtherLevel, Program.Translation.LevelList_Message_Next_Title);
             }
             else
-                PlayingIndex = i.Value;
+                playingIndex = i.Value;
         }
 
         /// <summary>
@@ -824,16 +847,16 @@ namespace ExpertSokoban
         /// </summary>
         /// <param name="MustBeUnsolved">Specifies whether to activate the immediately
         /// previous level (false) or the previous unsolved level (true).</param>
-        public void PlayPrev(bool MustBeUnsolved)
+        public void PlayPrev(bool mustBeUnsolved)
         {
-            int? i = FindPrevNext(MustBeUnsolved, false);
+            int? i = findPrevNext(mustBeUnsolved, false);
 
             if (i == null)
                 DlgMessage.ShowInfo(
-                    MustBeUnsolved ? Program.Translation.LevelList_Message_NoMoreUnsolved : Program.Translation.LevelList_Message_NoOtherLevel,
-                    MustBeUnsolved ? Program.Translation.LevelList_Message_PrevUnsolved_Title : Program.Translation.LevelList_Message_Prev_Title);
+                    mustBeUnsolved ? Program.Translation.LevelList_Message_NoMoreUnsolved : Program.Translation.LevelList_Message_NoOtherLevel,
+                    mustBeUnsolved ? Program.Translation.LevelList_Message_PrevUnsolved_Title : Program.Translation.LevelList_Message_Prev_Title);
             else
-                PlayingIndex = i.Value;
+                playingIndex = i.Value;
         }
 
         /// <summary>
@@ -845,26 +868,26 @@ namespace ExpertSokoban
         /// solved. If false, returns the immediately next or previous level.</param>
         /// <param name="Forward">If true, searches for the next level, otherwise the
         /// previous.</param>
-        private int? FindPrevNext(bool MustBeUnsolved, bool Forward)
+        private int? findPrevNext(bool mustBeUnsolved, bool forward)
         {
             if (Items.Count < 1)
                 return null;
 
-            int StartIndex = FActiveLevelIndex == null ? (Forward ? Items.Count - 1 : 0) : FActiveLevelIndex.Value;
-            int i = StartIndex;
+            int startIndex = _activeLevelIndex == null ? (forward ? Items.Count - 1 : 0) : _activeLevelIndex.Value;
+            int i = startIndex;
             for (; ; )
             {
                 // Next item
-                i = (i + (Forward ? 1 : (Items.Count - 1))) % Items.Count;
+                i = (i + (forward ? 1 : (Items.Count - 1))) % Items.Count;
 
                 if (Items[i] is SokobanLevel &&
-                    (!MustBeUnsolved || !ExpSokSettings.IsSolved(Items[i].ToString())))
+                    (!mustBeUnsolved || !ExpSokSettings.IsSolved(Items[i].ToString())))
                 {
                     // We've found a matching level
                     return i;
                 }
 
-                if (i == StartIndex)
+                if (i == startIndex)
                     return null;
             }
         }
@@ -878,8 +901,8 @@ namespace ExpertSokoban
             if (Items.Count == 0)
                 return;
 
-            if (FActiveLevelIndex != null)
-                SelectedIndex = FActiveLevelIndex.Value;
+            if (_activeLevelIndex != null)
+                SelectedIndex = _activeLevelIndex.Value;
         }
 
         /// <summary>
@@ -887,7 +910,7 @@ namespace ExpertSokoban
         /// </summary>
         public bool SelectedLevelActive()
         {
-            return SelectedIndex == FActiveLevelIndex;
+            return SelectedIndex == _activeLevelIndex;
         }
 
         #endregion
@@ -896,29 +919,29 @@ namespace ExpertSokoban
         /// Determines (by asking the user if necessary) whether we are allowed to
         /// destroy the contents of the level list.
         /// </summary>
-        /// <param name="Caption">Title bar caption to use in case any confirmation
+        /// <param name="caption">Title bar caption to use in case any confirmation
         /// dialogs need to pop up.</param>
-        public bool MayDestroy(string Caption)
+        public bool MayDestroy(string caption)
         {
             // If no changes have been made, we're definitely allowed.
-            if (!Modified)
+            if (!_modified)
                 return true;
 
             // Ask the user if they want to save their changes to the level file.
-            int Result = DlgMessage.Show(Program.Translation.LevelList_Message_SaveChanges.Fmt(
+            int result = DlgMessage.Show(Program.Translation.LevelList_Message_SaveChanges.Fmt(
                     (ExpSokSettings.LevelFilename == null ? Program.Translation.FileName_Untitled : Path.GetFileName(ExpSokSettings.LevelFilename))
-                ), Caption, DlgType.Question,
+                ), caption, DlgType.Question,
                 Program.Translation.LevelList_Message_SaveChanges_btnSave,
                 Program.Translation.LevelList_Message_SaveChanges_btnDiscard,
                 Program.Translation.Dialogs_btnCancel);
 
             // If they said "Cancel", bail out immediately.
-            if (Result == 2)
+            if (result == 2)
                 return false;
 
             // If they said "Save changes", call SaveWithDialog(). If they cancel that
             // dialog, bail out.
-            if (Result == 0)
+            if (result == 0)
             {
                 if (!SaveWithDialog(false))
                     return false;
@@ -935,35 +958,35 @@ namespace ExpertSokoban
         /// message asks whether they want to give up. If they are currently editing it,
         /// a message asks whether they want to discard it.
         /// </summary>
-        /// <param name="NormalConfirmation">If true, a confirmation message will also
+        /// <param name="normalConfirmation">If true, a confirmation message will also
         /// appear if the user is not currently playing or editing the selected level.
         /// </param>
         /// <returns>True if allowed.</returns>
-        public bool MayDeleteSelectedItem(bool NormalConfirmation)
+        public bool MayDeleteSelectedItem(bool normalConfirmation)
         {
             if (!Visible || SelectedIndex < 0)
                 return false;
 
-            object Item = Items[SelectedIndex];
+            object item = Items[SelectedIndex];
 
             // Confirmation message if user is currently editing the selected level
-            if (Item is SokobanLevel && SelectedIndex == EditingIndex)
+            if (item is SokobanLevel && SelectedIndex == editingIndex)
             {
                 if (DlgMessage.Show(Program.Translation.LevelList_Message_DeleteLevel_CurrentlyEditing, Program.Translation.LevelList_Message_DeleteLevel_Title,
                     DlgType.Warning, Program.Translation.Dialogs_btnDiscard, Program.Translation.Dialogs_btnCancel) == 1)
                     return false;
             }
             // Confirmation message if user is currently playing the selected level
-            else if (Item is SokobanLevel && SelectedIndex == PlayingIndex)
+            else if (item is SokobanLevel && SelectedIndex == playingIndex)
             {
                 if (DlgMessage.Show(Program.Translation.LevelList_Message_DeleteLevel_CurrentlyPlaying, Program.Translation.LevelList_Message_DeleteLevel_Title,
                     DlgType.Warning, Program.Translation.Dialogs_btnGiveUp, Program.Translation.Dialogs_btnCancel) == 1)
                     return false;
             }
             // Confirmation message if neither of the two cases apply
-            else if (Item is SokobanLevel)
+            else if (item is SokobanLevel)
             {
-                if (NormalConfirmation && DlgMessage.Show(
+                if (normalConfirmation && DlgMessage.Show(
                     Program.Translation.LevelList_Message_DeleteLevel_Sure,
                     Program.Translation.LevelList_Message_DeleteLevel_Title, DlgType.Question, Program.Translation.LevelList_Message_DeleteLevel_btnDelete, Program.Translation.Dialogs_btnCancel) == 1)
                     return false;
