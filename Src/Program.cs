@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using RT.Util.Settings;
 using RT.Util.Xml;
 using System.IO;
+using RT.Util;
 
 namespace ExpertSokoban
 {
@@ -31,6 +32,8 @@ namespace ExpertSokoban
             //    if (ExpSokSettingsOldV1.SettingsExist)
             //        ExpSokSettings.FromOld(ExpSokSettingsOldV1);
             //}
+
+            Lingo.TryLoadTranslation("ExpSok", ExpSokSettings.Language, ref Translation);
 
             Application.Run(new Mainform());
 
