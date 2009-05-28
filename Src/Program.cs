@@ -1,10 +1,9 @@
 using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Windows.Forms;
+using RT.Util;
 using RT.Util.Settings;
 using RT.Util.Xml;
-using System.IO;
-using RT.Util;
 
 namespace ExpertSokoban
 {
