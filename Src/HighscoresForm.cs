@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using RT.Util;
+using RT.Util.ExtensionMethods;
 using RT.Util.Forms;
 
 namespace ExpertSokoban
@@ -14,7 +15,7 @@ namespace ExpertSokoban
         public HighscoresForm()
         {
             InitializeComponent();
-            Lingo.TranslateControl(this, Program.Translation);
+            Lingo.TranslateControl(this, Program.Translation.Dialogs);
         }
 
         private void OKButton_Click(object sender, EventArgs e)
@@ -56,7 +57,7 @@ namespace ExpertSokoban
 
                 Highscore h = Highscores[PlayerNames[i]];
                 Label ScoreLabel = new Label();
-                ScoreLabel.Text = h.BestPushScore.E1 + " pushes, " + h.BestPushScore.E2 + " moves";
+                ScoreLabel.Text = Program.Translation.Dialogs.Highscores.Fmt(h.BestPushScore.E1, h.BestPushScore.E2);
                 ScoreLabel.AutoSize = true;
                 ScoreLabel.Margin = new Padding(5);
                 pnlHighscores.Controls.Add(ScoreLabel, 2, i);

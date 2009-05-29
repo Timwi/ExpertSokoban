@@ -31,6 +31,8 @@ namespace ExpertSokoban
                 Program.Translation = t;
                 Lingo.TranslateControl(this, Program.Translation);
                 lstLevels.RefreshItems();
+                if (ctMainArea.State == MainAreaState.Solved)
+                    ctMainArea.Refresh();
             }).ToArray());
 
             // Restore saved settings

@@ -2,10 +2,14 @@ using RT.Util;
 
 namespace ExpertSokoban
 {
+#if DEBUG
     [LingoDebug(RelativePath = @"..\..\main\ExpSok\Translation.cs")]
-    public class TranslationAboutBox
+#endif
+    public class DialogTranslation
     {
-        #region TranslationAboutBox
+        #region DialogTranslation
+        public string HighscoresForm = "Highscores";
+        public string Highscores = "{0} pushes, {1} moves";
         public string AboutBox = "About Expert Sokoban";
         public string lblCredits = @"Credits:
     Programming: Timwi, Roman
@@ -15,12 +19,17 @@ namespace ExpertSokoban
         #endregion
     }
 
+#if DEBUG
     [LingoDebug(RelativePath = @"..\..\main\ExpSok\Translation.cs")]
+#endif
     public class Translation
     {
         public string ThisLanguage = "English (GB)";
         public string ProgramName = "Expert Sokoban";
-        public TranslationAboutBox AboutBox = new TranslationAboutBox();
+        public DialogTranslation Dialogs = new DialogTranslation();
+
+        [LingoNotes(@"Specifies the resource name of the large image that appears on the screen when the user solves a level.")]
+        public string LevelSolvedResourceName = "Skin_LevelSolved";
 
         #region Translation
         public string Mainform { get { return ProgramName; } }

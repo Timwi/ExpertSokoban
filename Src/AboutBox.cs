@@ -13,7 +13,7 @@ namespace ExpertSokoban
         public AboutBox()
         {
             InitializeComponent();
-            Lingo.TranslateControl(this, Program.Translation.AboutBox);
+            Lingo.TranslateControl(this, Program.Translation.Dialogs);
 
             //  Initialize the AboutBox to display the product information from the assembly information.
             //  Change assembly information settings for your application through either:

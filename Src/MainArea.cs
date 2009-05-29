@@ -567,15 +567,15 @@ namespace ExpertSokoban
 
             if (_state == MainAreaState.Solved)
             {
-                Image ImgLevelSolved = Properties.Resources.Skin_LevelSolved;
+                Image ImgLevelSolved = (Image) Properties.Resources.ResourceManager.GetObject(Program.Translation.LevelSolvedResourceName);
                 if (ClientSize.Width < ImgLevelSolved.Width)
                     e.Graphics.DrawImage(ImgLevelSolved,
-                        0, (ClientSize.Height - ClientSize.Width * ImgLevelSolved.Height / ImgLevelSolved.Width)/2,
+                        0, (ClientSize.Height - ClientSize.Width * ImgLevelSolved.Height / ImgLevelSolved.Width) / 2,
                         ClientSize.Width, ClientSize.Width * ImgLevelSolved.Height / ImgLevelSolved.Width);
                 else
                     e.Graphics.DrawImage(ImgLevelSolved,
-                        ClientSize.Width/2 - ImgLevelSolved.Width/2,
-                        ClientSize.Height/2 - ImgLevelSolved.Height/2);
+                        ClientSize.Width / 2 - ImgLevelSolved.Width / 2,
+                        ClientSize.Height / 2 - ImgLevelSolved.Height / 2);
             }
         }
 
@@ -658,15 +658,15 @@ namespace ExpertSokoban
                 // Draw piece end position
                 if (_pushSequence.Length > 0)
                     GraphicsUtil.DrawImageAlpha(e.Graphics,
-                        _level.Cell(_pushSequence[_pushSequence.Length-1]) == SokobanCell.Target
+                        _level.Cell(_pushSequence[_pushSequence.Length - 1]) == SokobanCell.Target
                         ? Properties.Resources.Skin_PieceTarget : Properties.Resources.Skin_Piece,
-                        roundedRectangle(_renderer.CellRectForImage(_pushSequence[_pushSequence.Length-1])), 0.5f);
+                        roundedRectangle(_renderer.CellRectForImage(_pushSequence[_pushSequence.Length - 1])), 0.5f);
             }
 
             // Move path
             if (_moveDrawMode == PathDrawMode.Arrows)
                 drawArrowSequence(e.Graphics, _level.SokobanPos, _moveSequence,
-                    -_renderer.CellWidth/4, -_renderer.CellHeight/4);
+                    -_renderer.CellWidth / 4, -_renderer.CellHeight / 4);
             else if (_moveDrawMode == PathDrawMode.Line && _moveSequence.Length > 0)
                 e.Graphics.DrawPath(_movePathPen, _renderer.LinePath(_level.SokobanPos, _moveSequence, 0.7f, 0.7f));
             else if (_moveDrawMode == PathDrawMode.Dots)
@@ -674,9 +674,9 @@ namespace ExpertSokoban
                 {
                     RectangleF CellRect = _renderer.CellRect(_moveSequence[i]);
                     e.Graphics.FillEllipse(_movePathBrush,
-                        CellRect.Left + _renderer.CellWidth*2/5,
-                        CellRect.Top + _renderer.CellHeight*2/5,
-                        _renderer.CellWidth/5, _renderer.CellHeight/5);
+                        CellRect.Left + _renderer.CellWidth * 2 / 5,
+                        CellRect.Top + _renderer.CellHeight * 2 / 5,
+                        _renderer.CellWidth / 5, _renderer.CellHeight / 5);
                 }
 
             // Push path
@@ -689,9 +689,9 @@ namespace ExpertSokoban
                 {
                     RectangleF CellRect = _renderer.CellRect(_pushSequence[i]);
                     e.Graphics.FillEllipse(_pushPathBrush,
-                        CellRect.Left + _renderer.CellWidth/3,
-                        CellRect.Top + _renderer.CellHeight/3,
-                        _renderer.CellWidth/3, _renderer.CellHeight/3);
+                        CellRect.Left + _renderer.CellWidth / 3,
+                        CellRect.Top + _renderer.CellHeight / 3,
+                        _renderer.CellWidth / 3, _renderer.CellHeight / 3);
                 }
         }
 
@@ -716,27 +716,27 @@ namespace ExpertSokoban
                 Image Image;
 
                 // Moving down
-                if (PrevCell.X == sequence[i].X && PrevCell.Y == sequence[i].Y-1)
+                if (PrevCell.X == sequence[i].X && PrevCell.Y == sequence[i].Y - 1)
                 {
-                    CellRect.Offset(0, -_renderer.CellHeight/2);
+                    CellRect.Offset(0, -_renderer.CellHeight / 2);
                     Image = Properties.Resources.Skin_ArrowDown;
                 }
                 // Moving right
-                else if (PrevCell.X == sequence[i].X-1 && PrevCell.Y == sequence[i].Y)
+                else if (PrevCell.X == sequence[i].X - 1 && PrevCell.Y == sequence[i].Y)
                 {
-                    CellRect.Offset(-_renderer.CellWidth/2, 0);
+                    CellRect.Offset(-_renderer.CellWidth / 2, 0);
                     Image = Properties.Resources.Skin_ArrowRight;
                 }
                 // Moving left
-                else if (PrevCell.X == sequence[i].X+1 && PrevCell.Y == sequence[i].Y)
+                else if (PrevCell.X == sequence[i].X + 1 && PrevCell.Y == sequence[i].Y)
                 {
-                    CellRect.Offset(_renderer.CellWidth/2, 0);
+                    CellRect.Offset(_renderer.CellWidth / 2, 0);
                     Image = Properties.Resources.Skin_ArrowLeft;
                 }
                 // Moving up
                 else
                 {
-                    CellRect.Offset(0, _renderer.CellHeight/2);
+                    CellRect.Offset(0, _renderer.CellHeight / 2);
                     Image = Properties.Resources.Skin_ArrowUp;
                 }
 
@@ -771,7 +771,7 @@ namespace ExpertSokoban
             {
                 if (Elem.Equals(PiecePos))
                 {
-                    PiecePos.Offset(PiecePos.X-SokPos.X, PiecePos.Y-SokPos.Y);
+                    PiecePos.Offset(PiecePos.X - SokPos.X, PiecePos.Y - SokPos.Y);
                     NewPushCellSequence.Add(PiecePos);
                 }
                 SokPos = Elem;
@@ -804,7 +804,7 @@ namespace ExpertSokoban
         /// <returns>Rectangle with rounded values.</returns>
         private Rectangle roundedRectangle(RectangleF src)
         {
-            return new Rectangle((int)src.X-2, (int)src.Y-2, (int)src.Width+4, (int)src.Height+4);
+            return new Rectangle((int) src.X - 2, (int) src.Y - 2, (int) src.Width + 4, (int) src.Height + 4);
         }
 
         /// <summary>
@@ -830,10 +830,10 @@ namespace ExpertSokoban
         {
             if (origDown == null)
                 return 0;
-            return (origDown.Value.X == cell.X && origDown.Value.Y == cell.Y-1) ? 1 :
-                   (origDown.Value.X == cell.X-1 && origDown.Value.Y == cell.Y) ? 2 :
-                   (origDown.Value.X == cell.X+1 && origDown.Value.Y == cell.Y) ? 3 :
-                   (origDown.Value.X == cell.X && origDown.Value.Y == cell.Y+1) ? 4 : 0;
+            return (origDown.Value.X == cell.X && origDown.Value.Y == cell.Y - 1) ? 1 :
+                   (origDown.Value.X == cell.X - 1 && origDown.Value.Y == cell.Y) ? 2 :
+                   (origDown.Value.X == cell.X + 1 && origDown.Value.Y == cell.Y) ? 3 :
+                   (origDown.Value.X == cell.X && origDown.Value.Y == cell.Y + 1) ? 4 : 0;
         }
 
         /// <summary>
@@ -943,8 +943,8 @@ namespace ExpertSokoban
                 {
                     _level.SetCell(cell,
                         CellType == SokobanCell.PieceOnTarget ? SokobanCell.Target :
-                        CellType == SokobanCell.Blank         ? SokobanCell.Piece :
-                        CellType == SokobanCell.Target        ? SokobanCell.PieceOnTarget :
+                        CellType == SokobanCell.Blank ? SokobanCell.Piece :
+                        CellType == SokobanCell.Target ? SokobanCell.PieceOnTarget :
                                                                 SokobanCell.Blank);
                     if (_soundEnabled)
                         _sndPiecePlaced.Play();
@@ -960,8 +960,8 @@ namespace ExpertSokoban
                 {
                     _level.SetCell(cell,
                         CellType == SokobanCell.PieceOnTarget ? SokobanCell.Piece :
-                        CellType == SokobanCell.Blank         ? SokobanCell.Target :
-                        CellType == SokobanCell.Target        ? SokobanCell.Blank :
+                        CellType == SokobanCell.Blank ? SokobanCell.Target :
+                        CellType == SokobanCell.Target ? SokobanCell.Blank :
                                                                 SokobanCell.PieceOnTarget);
                     if (_soundEnabled)
                         _sndPiecePlaced.Play();
@@ -1038,7 +1038,7 @@ namespace ExpertSokoban
                 if (_level.IsPiece(Move))
                 {
                     // need to push a piece
-                    Point PushTo = new Point(2*Move.X-PrevSokPos.X, 2*Move.Y-PrevSokPos.Y);
+                    Point PushTo = new Point(2 * Move.X - PrevSokPos.X, 2 * Move.Y - PrevSokPos.Y);
                     _level.MovePiece(Move, PushTo);
                     _level.SetSokobanPos(Move);
                     _renderer.RenderCell(g, PushTo);
@@ -1153,7 +1153,7 @@ namespace ExpertSokoban
         /// </summary>
         public void Undo()
         {
-            if (_state == MainAreaState.Editing || _state == MainAreaState.Solved || 
+            if (_state == MainAreaState.Editing || _state == MainAreaState.Solved ||
                 _state == MainAreaState.Null || _undo.Count == 0 || _level == null)
                 return;
 
@@ -1260,15 +1260,15 @@ namespace ExpertSokoban
             {
                 for (int i = 1; i < Math.Max(_level.Width, _level.Height); i++)
                 {
-                    for (int j = i/2; j >= 0; j--)
+                    for (int j = i / 2; j >= 0; j--)
                     {
                         for (int k = -1; k <= 1; k += 2)
                         {
                             Point Examine =
-                                direction == 1 ? new Point(_cursorPos.Value.X-k*j, _cursorPos.Value.Y-i+j) :
-                                direction == 2 ? new Point(_cursorPos.Value.X-i+j, _cursorPos.Value.Y+k*j) :
-                                direction == 3 ? new Point(_cursorPos.Value.X+i-j, _cursorPos.Value.Y-k*j) :
-                                                 new Point(_cursorPos.Value.X+k*j, _cursorPos.Value.Y+i-j);
+                                direction == 1 ? new Point(_cursorPos.Value.X - k * j, _cursorPos.Value.Y - i + j) :
+                                direction == 2 ? new Point(_cursorPos.Value.X - i + j, _cursorPos.Value.Y + k * j) :
+                                direction == 3 ? new Point(_cursorPos.Value.X + i - j, _cursorPos.Value.Y - k * j) :
+                                                 new Point(_cursorPos.Value.X + k * j, _cursorPos.Value.Y + i - j);
                             if ((_level.IsPiece(Examine) && (_state == MainAreaState.Move || _state == MainAreaState.Editing)) ||
                                 (_level.Cell(Examine) == SokobanCell.Target && _state == MainAreaState.Push))
                             {
@@ -1364,10 +1364,10 @@ namespace ExpertSokoban
             // Otherwise, if the Sokoban can move anywhere adjacent to this piece,
             // then it is possible to select it and switch to Push mode
             else if (_level.IsPiece(cell) &&
-                     (_moveFinder.Get(cell.X, cell.Y+1) ||
-                      _moveFinder.Get(cell.X, cell.Y-1) ||
-                      _moveFinder.Get(cell.X+1, cell.Y) ||
-                      _moveFinder.Get(cell.X-1, cell.Y)))
+                     (_moveFinder.Get(cell.X, cell.Y + 1) ||
+                      _moveFinder.Get(cell.X, cell.Y - 1) ||
+                      _moveFinder.Get(cell.X + 1, cell.Y) ||
+                      _moveFinder.Get(cell.X - 1, cell.Y)))
             {
                 _selectedPiece = cell;
                 _mouseOverCell = null;
