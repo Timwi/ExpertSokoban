@@ -321,8 +321,8 @@ namespace ExpertSokoban
                 bool isSolved = ExpSokSettings.IsSolved(key);
                 string solvedMsg = isSolved
                         ? Program.Translation.LevelList_LevelSolved + " (" +
-                            ExpSokSettings.Highscores[key][ExpSokSettings.PlayerName].BestPushScore.E1 + "/" +
-                            ExpSokSettings.Highscores[key][ExpSokSettings.PlayerName].BestPushScore.E2 + ")"
+                            ExpSokSettings.Highscores[key][ExpSokSettings.PlayerName].BestPushScore.Pushes + "/" +
+                            ExpSokSettings.Highscores[key][ExpSokSettings.PlayerName].BestPushScore.Moves + ")"
                         : "";
                 bool isPlaying = (e.Index == playingIndex) && State == LevelListBoxState.Playing;
                 bool isJustSolved = (e.Index == playingIndex) && State == LevelListBoxState.JustSolved;

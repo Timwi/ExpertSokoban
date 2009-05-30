@@ -3,15 +3,21 @@ using System.Collections.Generic;
 using System.Text;
 using RT.Util;
 
-using Score=RT.Util.Collections.Tuple<int /* pushes */, int /* moves */>;
-
 namespace ExpertSokoban
 {
+    [Serializable]
+    public struct Score
+    {
+        public int Pushes;
+        public int Moves;
+        public Score(int pushes, int moves) { Pushes = pushes; Moves = moves; }
+    }
+
     /// <summary>
     /// Encapsulates a player's highscore in a level.
     /// </summary>
     [Serializable]
-    public class Highscore
+    public class Highscore : IComparable<Highscore>
     {
         /// <summary>
         /// The player's best result, where "best" means "fewest pushes".
@@ -29,20 +35,20 @@ namespace ExpertSokoban
         public Score BestSumScore = new Score(int.MaxValue, int.MaxValue);
 
         /// <summary>
-        /// If Score is a better score in any of the three respects, updates
+        /// If <paramref name="score"/> is a better score in any of the three respects, updates
         /// the relevant value with Score.
         /// </summary>
         /// <param name="Score">The Score to update the Highscore with.</param>
-        public void UpdateWith(Score Score)
+        public void UpdateWith(Score score)
         {
-            if (Score.E1 < BestPushScore.E1 ||
-                (Score.E1 == BestPushScore.E1 && Score.E2 < BestPushScore.E2))
-                BestPushScore = Score;
-            if (Score.E2 < BestMoveScore.E2 ||
-                (Score.E2 == BestMoveScore.E2 && Score.E1 < BestMoveScore.E1))
-                BestMoveScore = Score;
-            if (Score.E1 + Score.E2 < BestSumScore.E1 + BestSumScore.E2)
-                BestSumScore = Score;
+            if (score.Pushes < BestPushScore.Pushes ||
+                (score.Pushes == BestPushScore.Pushes && score.Moves < BestPushScore.Moves))
+                BestPushScore = score;
+            if (score.Moves < BestMoveScore.Moves ||
+                (score.Moves == BestMoveScore.Moves && score.Pushes < BestMoveScore.Pushes))
+                BestMoveScore = score;
+            if (score.Pushes + score.Moves < BestSumScore.Pushes + BestSumScore.Moves)
+                BestSumScore = score;
         }
 
         /// <summary>
@@ -51,23 +57,23 @@ namespace ExpertSokoban
         public override string ToString()
         {
             return "(" +
-                BestPushScore.E1 + "/" +
-                BestPushScore.E2 + ") (" +
-                BestMoveScore.E1 + "/" +
-                BestMoveScore.E2 + ") (" +
-                BestSumScore.E1 + "/" +
-                BestSumScore.E2 + ")";
+                BestPushScore.Pushes + "/" +
+                BestPushScore.Moves + ") (" +
+                BestMoveScore.Pushes + "/" +
+                BestMoveScore.Moves + ") (" +
+                BestSumScore.Pushes + "/" +
+                BestSumScore.Moves + ")";
         }
 
-        public int CompareTo(Highscore Other)
+        public int CompareTo(Highscore other)
         {
-            if (BestPushScore.E1 < Other.BestPushScore.E1)
+            if (BestPushScore.Pushes < other.BestPushScore.Pushes)
                 return -1;
-            if (BestPushScore.E1 > Other.BestPushScore.E1)
+            if (BestPushScore.Pushes > other.BestPushScore.Pushes)
                 return 1;
-            if (BestPushScore.E2 < Other.BestPushScore.E2)
+            if (BestPushScore.Moves < other.BestPushScore.Moves)
                 return -1;
-            if (BestPushScore.E2 > Other.BestPushScore.E2)
+            if (BestPushScore.Moves > other.BestPushScore.Moves)
                 return 1;
             return 0;
         }
