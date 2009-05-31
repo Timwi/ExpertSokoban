@@ -63,7 +63,7 @@ namespace ExpertSokoban
             this.btnOK.TabIndex = 0;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
-            this.btnOK.Click += new System.EventHandler(this.OKButton_Click);
+            this.btnOK.Click += new System.EventHandler(this.okClick);
             // 
             // ctLevelPicture
             // 
@@ -74,7 +74,7 @@ namespace ExpertSokoban
             this.ctLevelPicture.Size = new System.Drawing.Size(233, 61);
             this.ctLevelPicture.TabIndex = 1;
             this.ctLevelPicture.TabStop = false;
-            this.ctLevelPicture.Paint += new System.Windows.Forms.PaintEventHandler(this.LevelPicture_Paint);
+            this.ctLevelPicture.Paint += new System.Windows.Forms.PaintEventHandler(this.paintLevel);
             // 
             // HighscoresForm
             // 

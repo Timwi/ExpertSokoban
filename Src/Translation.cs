@@ -5,16 +5,11 @@ namespace ExpertSokoban
 #if DEBUG
     [LingoDebug(RelativePath = @"..\..\main\ExpSok\Translation.cs")]
 #endif
-    public class DialogTranslation
+    public class HighscoresFormTranslation
     {
-        #region DialogTranslation
+        #region HighscoresFormTranslation
         public string HighscoresForm = "Highscores";
         public string Highscores = "{0} pushes, {1} moves";
-        public string AboutBox = "About Expert Sokoban";
-        public string lblCredits = @"Credits:
-    Programming: Timwi, Roman
-    Graphics: Roman, Timwi
-    Testing: Hawthorn";
         public string btnOK = "OK";
         #endregion
     }
@@ -22,17 +17,22 @@ namespace ExpertSokoban
 #if DEBUG
     [LingoDebug(RelativePath = @"..\..\main\ExpSok\Translation.cs")]
 #endif
-    public class Translation
+    public class AboutBoxTranslation
     {
-        public string ThisLanguage = "English (GB)";
-        public string ProgramName = "Expert Sokoban";
-        public DialogTranslation Dialogs = new DialogTranslation();
+        #region AboutBoxTranslation
+        public string AboutBox = "About Expert Sokoban";
+        public string lblCredits = "Credits:\n    Programming: Timwi, Roman\n    Graphics: Roman, Timwi\n    Testing: Hawthorn";
+        public string btnOK = "OK";
+        #endregion
+    }
 
-        [LingoNotes(@"Specifies the resource name of the large image that appears on the screen when the user solves a level.")]
-        public string LevelSolvedResourceName = "Skin_LevelSolved";
-
-        #region Translation
-        public string Mainform { get { return ProgramName; } }
+#if DEBUG
+    [LingoDebug(RelativePath = @"..\..\main\ExpSok\Translation.cs")]
+#endif
+    public class MainformTranslation
+    {
+        #region MainformTranslation
+        public string Mainform = "Expert Sokoban";
         public string mnuMain = "Main menu";
         public string mnuLevel = "&Level";
         public string mnuLevelNew = "&New level file";
@@ -113,6 +113,21 @@ namespace ExpertSokoban
         public string btnPlayPrevUnsolvedLevel = "Previous unsolved level";
         public string btnPlayNextUnsolvedLevel = "Next unsolved level";
         #endregion
+    }
+
+#if DEBUG
+    [LingoDebug(RelativePath = @"..\..\main\ExpSok\Translation.cs")]
+#endif
+    public class Translation
+    {
+        public string ThisLanguage = "English (GB)";
+        public string ProgramName = "Expert Sokoban";
+        public HighscoresFormTranslation Highscores = new HighscoresFormTranslation();
+        public AboutBoxTranslation AboutBox = new AboutBoxTranslation();
+        public MainformTranslation Mainform = new MainformTranslation();
+
+        [LingoNotes(@"Specifies the resource name of the large image that appears on the screen when the user solves a level.")]
+        public string LevelSolvedResourceName = "Skin_LevelSolved";
 
         public string LevelList_NewComment_Prompt = "Please enter the revised comment:";
         public string LevelList_LevelSolved = "Solved";

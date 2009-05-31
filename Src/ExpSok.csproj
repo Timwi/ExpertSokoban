@@ -106,7 +106,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Translation.cs" />
+    <Compile Include="Translation.cs">
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\leveldone.wav" />

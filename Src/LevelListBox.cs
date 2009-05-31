@@ -318,11 +318,11 @@ namespace ExpertSokoban
             if (Items[e.Index] is SokobanLevel)
             {
                 string key = Items[e.Index].ToString();
-                bool isSolved = ExpSokSettings.IsSolved(key);
+                bool isSolved = Program.Settings.IsSolved(key);
                 string solvedMsg = isSolved
                         ? Program.Translation.LevelList_LevelSolved + " (" +
-                            ExpSokSettings.Highscores[key][ExpSokSettings.PlayerName].BestPushScore.Pushes + "/" +
-                            ExpSokSettings.Highscores[key][ExpSokSettings.PlayerName].BestPushScore.Moves + ")"
+                            Program.Settings.Highscores[key][Program.Settings.PlayerName].BestPushScore.Pushes + "/" +
+                            Program.Settings.Highscores[key][Program.Settings.PlayerName].BestPushScore.Moves + ")"
                         : "";
                 bool isPlaying = (e.Index == playingIndex) && State == LevelListBoxState.Playing;
                 bool isJustSolved = (e.Index == playingIndex) && State == LevelListBoxState.JustSolved;
@@ -462,7 +462,7 @@ namespace ExpertSokoban
                 else if (e.Index == editingIndex)
                     e.ItemHeight += (int) e.Graphics.MeasureString(Program.Translation.LevelList_CurrentlyEditing, Font).Height + 5;
 
-                if (ExpSokSettings.IsSolved(Items[e.Index].ToString()))
+                if (Program.Settings.IsSolved(Items[e.Index].ToString()))
                     e.ItemHeight += (int) e.Graphics.MeasureString(Program.Translation.LevelList_LevelSolved, Font).Height + 5;
             }
             else if (Items[e.Index] is string && (Items[e.Index] as string).Length == 0)
@@ -575,7 +575,7 @@ namespace ExpertSokoban
 
             _modified = false;
 
-            ExpSokSettings.LevelFilename = path;
+            Program.Settings.LevelFilename = path;
         }
 
         /// <summary>
@@ -608,12 +608,12 @@ namespace ExpertSokoban
         public bool SaveWithDialog(bool forceDialog)
         {
             // Check if have a file name
-            if (forceDialog || ExpSokSettings.LevelFilename == null)
+            if (forceDialog || Program.Settings.LevelFilename == null)
             {
                 SaveFileDialog dlg = new SaveFileDialog();
                 dlg.DefaultExt = "txt";
                 dlg.Filter = Program.Translation.Save_FileType_TextFiles + "|*.txt|" + Program.Translation.Save_FileType_AllFiles + "|*.*";
-                dlg.InitialDirectory = ExpSokSettings.LastOpenSaveDirectory;
+                dlg.InitialDirectory = Program.Settings.LastOpenSaveDirectory;
                 DialogResult result = dlg.ShowDialog();
 
                 // If the user cancelled the dialog, bail out
@@ -621,14 +621,14 @@ namespace ExpertSokoban
                     return false;
 
                 // Update the current filename
-                ExpSokSettings.LastOpenSaveDirectory = Path.GetDirectoryName(dlg.FileName);
-                ExpSokSettings.LevelFilename = dlg.FileName;
+                Program.Settings.LastOpenSaveDirectory = Path.GetDirectoryName(dlg.FileName);
+                Program.Settings.LevelFilename = dlg.FileName;
             }
 
             // Just save.
             try
             {
-                SaveLevelPack(ExpSokSettings.LevelFilename);
+                SaveLevelPack(Program.Settings.LevelFilename);
                 return true;
             }
             catch (Exception e)
@@ -693,7 +693,7 @@ namespace ExpertSokoban
         /// </summary>
         public void NewList()
         {
-            ExpSokSettings.LevelFilename = null;
+            Program.Settings.LevelFilename = null;
             Items.Clear();
             setActiveLevel(null, LevelListBoxState.Playing);
             Modified = false;
@@ -879,7 +879,7 @@ namespace ExpertSokoban
                 i = (i + (forward ? 1 : (Items.Count - 1))) % Items.Count;
 
                 if (Items[i] is SokobanLevel &&
-                    (!mustBeUnsolved || !ExpSokSettings.IsSolved(Items[i].ToString())))
+                    (!mustBeUnsolved || !Program.Settings.IsSolved(Items[i].ToString())))
                 {
                     // We've found a matching level
                     return i;
@@ -927,7 +927,7 @@ namespace ExpertSokoban
 
             // Ask the user if they want to save their changes to the level file.
             int result = DlgMessage.Show(Program.Translation.LevelList_Message_SaveChanges.Fmt(
-                    (ExpSokSettings.LevelFilename == null ? Program.Translation.FileName_Untitled : Path.GetFileName(ExpSokSettings.LevelFilename))
+                    (Program.Settings.LevelFilename == null ? Program.Translation.FileName_Untitled : Path.GetFileName(Program.Settings.LevelFilename))
                 ), caption, DlgType.Question,
                 Program.Translation.LevelList_Message_SaveChanges_btnSave,
                 Program.Translation.LevelList_Message_SaveChanges_btnDiscard,

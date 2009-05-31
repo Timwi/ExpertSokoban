@@ -1,224 +1,95 @@
 using System;
 using System.Collections.Generic;
-using RT.Util;
-using RT.Util.Settings;
-
-using Score = RT.Util.Collections.Tuple<int /* pushes */, int /* moves */>;
+using System.IO;
+using System.Windows.Forms;
+using RT.Util.Forms;
 
 namespace ExpertSokoban
 {
-    public static class ExpSokSettings
+    public class ExpSokSettings
     {
-        /// <summary>
-        /// Move path draw move
-        /// </summary>
-        public static PathDrawMode MoveDrawMode
-        {
-            get { return PrgSettings.Store.Get<PathDrawMode>("ExpSok.MoveDrawMode", PathDrawMode.Line); }
-            set { PrgSettings.Store.Set("ExpSok.MoveDrawMode", value); }
-        }
+        /// <summary>The settings for the main form (size, position, etc.).</summary>
+        public ManagedForm.Settings MainFormSettings = new ManagedForm.Settings();
+        /// <summary>The settings for the highscores form (size, position, etc.).</summary>
+        public ManagedForm.Settings HighscoresFormSettings = new ManagedForm.Settings();
 
-        /// <summary>
-        /// Push path draw move
-        /// </summary>
-        public static PathDrawMode PushDrawMode
-        {
-            get { return PrgSettings.Store.Get<PathDrawMode>("ExpSok.PushDrawMode", PathDrawMode.Line); }
-            set { PrgSettings.Store.Set("ExpSok.PushDrawMode", value); }
-        }
+        /// <summary>Move path draw move</summary>
+        public PathDrawMode MoveDrawMode = PathDrawMode.None;
 
-        /// <summary>
-        /// Whether the Sokoban and piece end-position should be displayed
-        /// </summary>
-        public static bool ShowEndPos
-        {
-            get { return PrgSettings.Store.Get("ExpSok.ShowEndPos", true); }
-            set { PrgSettings.Store.Set("ExpSok.ShowEndPos", value); }
-        }
+        /// <summary>Push path draw move</summary>
+        public PathDrawMode PushDrawMode = PathDrawMode.Line;
 
-        /// <summary>
-        /// Whether the area the Sokoban can move to (the "move area")
-        /// should be displayed or not.
-        /// </summary>
-        public static bool ShowAreaSokoban
-        {
-            get { return PrgSettings.Store.Get("ExpSok.ShowAreaSokoban", true); }
-            set { PrgSettings.Store.Set("ExpSok.ShowAreaSokoban", value); }
-        }
+        /// <summary>Whether the Sokoban and piece end-position should be displayed</summary>
+        public bool ShowEndPos = true;
 
-        /// <summary>
-        /// Whether the area the selected piece can be pushed to
-        /// (the "push area") should be displayed or not.
-        /// </summary>
-        public static bool ShowAreaPiece
-        {
-            get { return PrgSettings.Store.Get("ExpSok.ShowAreaPiece", true); }
-            set { PrgSettings.Store.Set("ExpSok.ShowAreaPiece", value); }
-        }
+        /// <summary>Whether the area the Sokoban can move to (the "move area") should be displayed or not.</summary>
+        public bool ShowAreaSokoban = true;
 
-        /// <summary>
-        /// Whether sound is enabled.
-        /// </summary>
-        public static bool SoundEnabled
-        {
-            get { return PrgSettings.Store.Get("ExpSok.SoundEnabled", true); }
-            set { PrgSettings.Store.Set("ExpSok.SoundEnabled", value); }
-        }
+        /// <summary>Whether the area the selected piece can be pushed to (the "push area") should be displayed or not.</summary>
+        public bool ShowAreaPiece = true;
 
-        /// <summary>
-        /// Whether the level list should be displayed
-        /// </summary>
-        public static bool DisplayLevelList
-        {
-            get { return PrgSettings.Store.Get("ExpSok.DisplayLevelList", true); }
-            set { PrgSettings.Store.Set("ExpSok.DisplayLevelList", value); }
-        }
+        /// <summary>Whether sound is enabled.</summary>
+        public bool SoundEnabled = true;
 
-        /// <summary>
-        /// Whether the playing toolbar should be displayed
-        /// </summary>
-        public static bool DisplayPlayingToolbar
-        {
-            // The name of the setting differs for historical reasons
-            get { return PrgSettings.Store.Get("ExpSok.DisplayPlayToolStrip", true); }
-            set { PrgSettings.Store.Set("ExpSok.DisplayPlayToolStrip", value); }
-        }
+        /// <summary>Whether the level list should be displayed</summary>
+        public bool DisplayLevelList = true;
 
-        /// <summary>
-        /// Whether the level pack toolbars should be displayed
-        /// </summary>
-        public static bool DisplayFileToolbars
-        {
-            // The name of the setting differs for historical reasons
-            get { return PrgSettings.Store.Get("ExpSok.DisplayEditToolStrip", false); }
-            set { PrgSettings.Store.Set("ExpSok.DisplayEditToolStrip", value); }
-        }
+        /// <summary>Whether the playing toolbar should be displayed</summary>
+        public bool DisplayPlayingToolbar = true;
 
-        /// <summary>
-        /// Whether the edit toolbar (level) should be displayed
-        /// </summary>
-        public static bool DisplayEditLevelToolbar
-        {
-            // The name of the setting differs for historical reasons
-            get { return PrgSettings.Store.Get("ExpSok.DisplayEditLevelToolStrip", true); }
-            set { PrgSettings.Store.Set("ExpSok.DisplayEditLevelToolStrip", value); }
-        }
+        /// <summary>Whether the level pack toolbars should be displayed</summary>
+        public bool DisplayFileToolbars = true;
 
-        /// <summary>
-        /// Whether the status bar should be displayed
-        /// </summary>
-        public static bool DisplayStatusBar
-        {
-            get { return PrgSettings.Store.Get("ExpSok.DisplayStatusBar", true); }
-            set { PrgSettings.Store.Set("ExpSok.DisplayStatusBar", value); }
-        }
+        /// <summary>Whether the edit toolbar (level) should be displayed</summary>
+        public bool DisplayEditLevelToolbar = true;
 
-        /// <summary>
-        /// Last used editing tool
-        /// </summary>
-        public static MainAreaTool LastUsedTool
-        {
-            get { return PrgSettings.Store.Get<MainAreaTool>("ExpSok.LastUsedTool", MainAreaTool.Wall); }
-            set { PrgSettings.Store.Set("ExpSok.LastUsedTool", value); }
-        }
+        /// <summary>Whether the status bar should be displayed</summary>
+        public bool DisplayStatusBar = true;
 
-        /// <summary>
-        /// Width of the panel containing the level list. The default value is chosen
-        /// minimally such that the toolbar buttons still fit.
-        /// </summary>
-        public static int LevelListWidth
-        {
-            get { return PrgSettings.Store.Get("ExpSok.LevelListWidth", 152); }
-            set { PrgSettings.Store.Set("ExpSok.LevelListWidth", value); }
-        }
+        /// <summary>Last used editing tool</summary>
+        public MainAreaTool LastUsedTool = MainAreaTool.Wall;
 
-        /// <summary>
-        /// The filename of the current/last played level file. Null if none.
-        /// </summary>
-        public static string LevelFilename
-        {
-            get { return PrgSettings.Store.Get("ExpSok.LevelFilename", "OriginalLevels.txt"); }
-            set { PrgSettings.Store.Set("ExpSok.LevelFilename", value); }
-        }
+        /// <summary>Width of the panel containing the level list. The default value is chosen minimally such that the toolbar buttons still fit.</summary>
+        public int LevelListWidth = 152;
 
-        /// <summary>
-        /// Currently selected player name
-        /// </summary>
-        public static string PlayerName
-        {
-            get { return PrgSettings.Store.Get("ExpSok.PlayerName", (string) null); }
-            set { PrgSettings.Store.Set("ExpSok.PlayerName", value); }
-        }
+        /// <summary>The filename of the current/last played level file. Null if none.</summary>
+        public string LevelFilename = "OriginalLevels.txt";
 
-        /// <summary>
-        /// Player highscores. First key is the string representation of the level.
-        /// Second key is the player's name.
-        /// </summary>
-        public static Dictionary<string /* String representation of a level */,
-            Dictionary<string /* Player name */, Highscore>> Highscores
-        {
-            get
-            {
-                if (!PrgSettings.Store.Exists("ExpSok.Highscores"))
-                    PrgSettings.Store.Set("ExpSok.Highscores", new Dictionary<string, Dictionary<string, Highscore>>());
-                return PrgSettings.Store.Get<Dictionary<string, Dictionary<string, Highscore>>>("ExpSok.Highscores");
-            }
-            set { PrgSettings.Store.Set("ExpSok.Highscores", value); }
-        }
+        /// <summary>Currently selected player name.</summary>
+        public string PlayerName = null;
 
-        /// <summary>
-        /// Remembers the path where a file was last opened from or saved to.
-        /// </summary>
-        public static string LastOpenSaveDirectory
-        {
-            get { return PrgSettings.Store.GetString("ExpSok.LastOpenSaveDirectory", PathUtil.AppPath); }
-            set { PrgSettings.Store.SetString("ExpSok.LastOpenSaveDirectory", value); }
-        }
+        /// <summary>Player highscores. First key is the string representation of the level. Second key is the player's name.</summary>
+        public Dictionary<string, Dictionary<string, Highscore>> Highscores = new Dictionary<string, Dictionary<string, Highscore>>();
 
-        /// <summary>
-        /// Remembers the path where a file was last opened from or saved to.
-        /// </summary>
-        public static string Language
-        {
-            get { return PrgSettings.Store.GetString("ExpSok.Language", null); }
-            set { PrgSettings.Store.SetString("ExpSok.Language", value); }
-        }
+        /// <summary>Remembers the path where a file was last opened from or saved to.</summary>
+        public string LastOpenSaveDirectory = Path.GetDirectoryName(Application.ExecutablePath);
 
-        /// <summary>
-        /// Helper method to determine whether the current player has solved the given level
-        /// </summary>
-        /// <param name="Level">String representation of the level to check.</param>
+        /// <summary>Remembers the path where a file was last opened from or saved to.</summary>
+        public string Language = null;
+
+        /// <summary>Determines whether the current player has solved the given level.</summary>
+        /// <param name="level">String representation of the level to check.</param>
         /// <returns>True if the level has ever been solved by the current player.</returns>
-        public static bool IsSolved(string Level)
+        public bool IsSolved(string level)
         {
             if (string.IsNullOrEmpty(PlayerName))
                 return false;
-            return Highscores.ContainsKey(Level) && Highscores[Level].ContainsKey(PlayerName);
+            return Highscores.ContainsKey(level) && Highscores[level].ContainsKey(PlayerName);
         }
 
-        /// <summary>
-        /// Helper method to update highscore for the current player.
-        /// </summary>
-        /// <param name="Level">String representation of the level</param>
-        public static void UpdateHighscore(string Level, int Moves, int Pushes)
+        /// <summary>Updates the highscore for the current player.</summary>
+        /// <param name="level">String representation of the level.</param>
+        /// <param name="moves">Number of moves required to solve the level.</param>
+        /// <param name="pushes">Number of pushes required to solve the level.</param>
+        public void UpdateHighscore(string level, int moves, int pushes)
         {
             if (string.IsNullOrEmpty(PlayerName))
                 throw new Exception("Player name is not set.");
-            if (!Highscores.ContainsKey(Level))
-                Highscores[Level] = new Dictionary<string, Highscore>();
-            if (!Highscores[Level].ContainsKey(PlayerName))
-                Highscores[Level][PlayerName] = new Highscore();
-            Highscores[Level][PlayerName].UpdateWith(new Score(Moves, Pushes));
-        }
-
-        /// <summary>
-        /// If true, this means the settings existed. This can be used to determine whether
-        /// this particular version of settings exists.
-        /// </summary>
-        public static bool SettingsExist
-        {
-            get { return PrgSettings.Store.Get("ExpSok.SettingsVersion1", false); }
-            set { PrgSettings.Store.Set("ExpSok.SettingsVersion1", value); }
+            if (!Highscores.ContainsKey(level))
+                Highscores[level] = new Dictionary<string, Highscore>();
+            if (!Highscores[level].ContainsKey(PlayerName))
+                Highscores[level][PlayerName] = new Highscore();
+            Highscores[level][PlayerName].UpdateWith(new Score(moves, pushes));
         }
     }
 }

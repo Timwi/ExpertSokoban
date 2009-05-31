@@ -1,12 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using RT.Util;
 
 namespace ExpertSokoban
 {
     [Serializable]
-    public struct Score
+    public class Score
     {
         public int Pushes;
         public int Moves;
@@ -22,17 +19,17 @@ namespace ExpertSokoban
         /// <summary>
         /// The player's best result, where "best" means "fewest pushes".
         /// </summary>
-        public Score BestPushScore = new Score(int.MaxValue, int.MaxValue);
+        public Score BestPushScore = null;
 
         /// <summary>
         /// The player's best result, where "best" means "fewest pushes".
         /// </summary>
-        public Score BestMoveScore = new Score(int.MaxValue, int.MaxValue);
+        public Score BestMoveScore = null;
 
         /// <summary>
         /// The player's best result, where "best" means "fewest sum of moves + pushes".
         /// </summary>
-        public Score BestSumScore = new Score(int.MaxValue, int.MaxValue);
+        public Score BestSumScore = null;
 
         /// <summary>
         /// If <paramref name="score"/> is a better score in any of the three respects, updates
@@ -41,13 +38,13 @@ namespace ExpertSokoban
         /// <param name="Score">The Score to update the Highscore with.</param>
         public void UpdateWith(Score score)
         {
-            if (score.Pushes < BestPushScore.Pushes ||
+            if (BestPushScore == null || score.Pushes < BestPushScore.Pushes ||
                 (score.Pushes == BestPushScore.Pushes && score.Moves < BestPushScore.Moves))
                 BestPushScore = score;
-            if (score.Moves < BestMoveScore.Moves ||
+            if (BestMoveScore == null || score.Moves < BestMoveScore.Moves ||
                 (score.Moves == BestMoveScore.Moves && score.Pushes < BestMoveScore.Pushes))
                 BestMoveScore = score;
-            if (score.Pushes + score.Moves < BestSumScore.Pushes + BestSumScore.Moves)
+            if (BestSumScore == null || score.Pushes + score.Moves < BestSumScore.Pushes + BestSumScore.Moves)
                 BestSumScore = score;
         }
 

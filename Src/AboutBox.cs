@@ -13,7 +13,7 @@ namespace ExpertSokoban
         public AboutBox()
         {
             InitializeComponent();
-            Lingo.TranslateControl(this, Program.Translation.Dialogs);
+            Lingo.TranslateControl(this, Program.Translation.AboutBox);
 
             //  Initialize the AboutBox to display the product information from the assembly information.
             //  Change assembly information settings for your application through either:
@@ -38,7 +38,7 @@ namespace ExpertSokoban
                 if (attributes.Length > 0)
                 {
                     // Select the first one
-                    AssemblyTitleAttribute titleAttribute = (AssemblyTitleAttribute)attributes[0];
+                    AssemblyTitleAttribute titleAttribute = (AssemblyTitleAttribute) attributes[0];
                     // If it is not an empty string, return it
                     if (titleAttribute.Title != "")
                         return titleAttribute.Title;
@@ -66,7 +66,7 @@ namespace ExpertSokoban
                 if (attributes.Length == 0)
                     return "";
                 // If there is a Description attribute, return its value
-                return ((AssemblyDescriptionAttribute)attributes[0]).Description;
+                return ((AssemblyDescriptionAttribute) attributes[0]).Description;
             }
         }
 
@@ -80,7 +80,7 @@ namespace ExpertSokoban
                 if (attributes.Length == 0)
                     return "";
                 // If there is a Product attribute, return its value
-                return ((AssemblyProductAttribute)attributes[0]).Product;
+                return ((AssemblyProductAttribute) attributes[0]).Product;
             }
         }
 
@@ -94,7 +94,7 @@ namespace ExpertSokoban
                 if (attributes.Length == 0)
                     return "";
                 // If there is a Copyright attribute, return its value
-                return ((AssemblyCopyrightAttribute)attributes[0]).Copyright;
+                return ((AssemblyCopyrightAttribute) attributes[0]).Copyright;
             }
         }
 
@@ -108,12 +108,12 @@ namespace ExpertSokoban
                 if (attributes.Length == 0)
                     return "";
                 // If there is a Company attribute, return its value
-                return ((AssemblyCompanyAttribute)attributes[0]).Company;
+                return ((AssemblyCompanyAttribute) attributes[0]).Company;
             }
         }
         #endregion
 
-        private void URL_Click(object sender, EventArgs e)
+        private void clickUrl(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start(lblURL.Text);
         }

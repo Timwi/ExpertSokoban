@@ -22,41 +22,42 @@ namespace ExpertSokoban
         /// Constructor. Constructs the main form for the application.
         /// </summary>
         public Mainform()
+            : base(Program.Settings.MainFormSettings)
         {
             InitializeComponent();
-            Lingo.TranslateControl(this, Program.Translation);
+            Lingo.TranslateControl(this, Program.Translation.Mainform);
             mnuOptionsChangeLanguage.DropDownItems.AddRange(RT.Util.Lingo.LanguageToolStripMenuItems<Translation>("ExpSok.*.xml", @"^ExpSok\.(.*)\.xml$", t => t.ThisLanguage, (t, m) =>
             {
-                ExpSokSettings.Language = m == null ? null : m.Groups[1].Value;
+                Program.Settings.Language = m == null ? null : m.Groups[1].Value;
                 Program.Translation = t;
-                Lingo.TranslateControl(this, Program.Translation);
+                Lingo.TranslateControl(this, Program.Translation.Mainform);
                 lstLevels.RefreshItems();
                 if (ctMainArea.State == MainAreaState.Solved)
                     ctMainArea.Refresh();
             }).ToArray());
 
             // Restore saved settings
-            mnuOptionsPlayingToolbar.Checked = ExpSokSettings.DisplayPlayingToolbar;
-            mnuOptionsFileToolbars.Checked = ExpSokSettings.DisplayFileToolbars;
-            mnuOptionsEditLevelToolbar.Checked = ExpSokSettings.DisplayEditLevelToolbar;
-            ctStatusBar.Visible = mnuOptionsStatusBar.Checked = ExpSokSettings.DisplayStatusBar;
-            pnlLevelList.Width = ExpSokSettings.LevelListWidth < 50 ? 50 : ExpSokSettings.LevelListWidth;
-            grpMovePathOptions.SetValue(ExpSokSettings.MoveDrawMode);
-            grpPushPathOptions.SetValue(ExpSokSettings.PushDrawMode);
-            grpEditTool.SetValue(ExpSokSettings.LastUsedTool);
-            mnuOptionsEndPos.Checked = ctMainArea.ShowEndPos = ExpSokSettings.ShowEndPos;
-            mnuOptionsAreaSokoban.Checked = ctMainArea.ShowAreaSokoban = ExpSokSettings.ShowAreaSokoban;
-            mnuOptionsAreaPiece.Checked = ctMainArea.ShowAreaPiece = ExpSokSettings.ShowAreaPiece;
-            mnuOptionsSound.Checked = ctMainArea.SoundEnabled = ExpSokSettings.SoundEnabled;
-            showLevelList(ExpSokSettings.DisplayLevelList);
+            mnuOptionsPlayingToolbar.Checked = Program.Settings.DisplayPlayingToolbar;
+            mnuOptionsFileToolbars.Checked = Program.Settings.DisplayFileToolbars;
+            mnuOptionsEditLevelToolbar.Checked = Program.Settings.DisplayEditLevelToolbar;
+            ctStatusBar.Visible = mnuOptionsStatusBar.Checked = Program.Settings.DisplayStatusBar;
+            pnlLevelList.Width = Program.Settings.LevelListWidth < 50 ? 50 : Program.Settings.LevelListWidth;
+            grpMovePathOptions.SetValue(Program.Settings.MoveDrawMode);
+            grpPushPathOptions.SetValue(Program.Settings.PushDrawMode);
+            grpEditTool.SetValue(Program.Settings.LastUsedTool);
+            mnuOptionsEndPos.Checked = ctMainArea.ShowEndPos = Program.Settings.ShowEndPos;
+            mnuOptionsAreaSokoban.Checked = ctMainArea.ShowAreaSokoban = Program.Settings.ShowAreaSokoban;
+            mnuOptionsAreaPiece.Checked = ctMainArea.ShowAreaPiece = Program.Settings.ShowAreaPiece;
+            mnuOptionsSound.Checked = ctMainArea.SoundEnabled = Program.Settings.SoundEnabled;
+            showLevelList(Program.Settings.DisplayLevelList);
 
-            if (ExpSokSettings.PlayerName == null || ExpSokSettings.PlayerName.Length == 0)
-                ExpSokSettings.PlayerName = InputBox.GetLine(Program.Translation.Mainform_ChooseName_FirstRun, "", Program.Translation.ProgramName);
+            if (Program.Settings.PlayerName == null || Program.Settings.PlayerName.Length == 0)
+                Program.Settings.PlayerName = InputBox.GetLine(Program.Translation.Mainform_ChooseName_FirstRun, "", Program.Translation.ProgramName);
 
             // Restore the last used level pack
             try
             {
-                lstLevels.LoadLevelPack(ExpSokSettings.LevelFilename);
+                lstLevels.LoadLevelPack(Program.Settings.LevelFilename);
             }
             catch
             {
@@ -94,10 +95,10 @@ namespace ExpertSokoban
 
             // Caption
             Text = Program.Translation.ProgramName + " – " +
-                    (ExpSokSettings.PlayerName == null || ExpSokSettings.PlayerName.Length == 0
-                        ? Program.Translation.PlayerNameMissing : ExpSokSettings.PlayerName) +
+                    (Program.Settings.PlayerName == null || Program.Settings.PlayerName.Length == 0
+                        ? Program.Translation.PlayerNameMissing : Program.Settings.PlayerName) +
                     " – " +
-                    (ExpSokSettings.LevelFilename == null ? Program.Translation.FileName_Untitled : Path.GetFileName(ExpSokSettings.LevelFilename)) +
+                    (Program.Settings.LevelFilename == null ? Program.Translation.FileName_Untitled : Path.GetFileName(Program.Settings.LevelFilename)) +
                     (lstLevels.Modified ? " •" : "");
 
             // Status bar text
@@ -274,14 +275,14 @@ namespace ExpertSokoban
             lstLevels.JustSolved();
 
             // If the user hasn't chosen a name for themselves yet, ask them
-            if (ExpSokSettings.PlayerName == null || ExpSokSettings.PlayerName.Length == 0)
-                ExpSokSettings.PlayerName = InputBox.GetLine(Program.Translation.Mainform_ChooseName_SolvedLevel, "", Program.Translation.ProgramName);
+            if (Program.Settings.PlayerName == null || Program.Settings.PlayerName.Length == 0)
+                Program.Settings.PlayerName = InputBox.GetLine(Program.Translation.Mainform_ChooseName_SolvedLevel, "", Program.Translation.ProgramName);
 
             // If they still haven't chosen a name, discard the high score
-            if (ExpSokSettings.PlayerName == null || ExpSokSettings.PlayerName.Length == 0)
+            if (Program.Settings.PlayerName == null || Program.Settings.PlayerName.Length == 0)
                 return;
 
-            ExpSokSettings.UpdateHighscore(lstLevels.ActiveLevel.ToString(), ctMainArea.Moves, ctMainArea.Pushes);
+            Program.Settings.UpdateHighscore(lstLevels.ActiveLevel.ToString(), ctMainArea.Moves, ctMainArea.Pushes);
 
             lstLevels.RefreshItems();
         }
@@ -297,7 +298,7 @@ namespace ExpertSokoban
         /// <param name="Show">True: shows the level list. False: hides it.</param>
         private void showLevelList(bool Show)
         {
-            ExpSokSettings.DisplayLevelList = Show;
+            Program.Settings.DisplayLevelList = Show;
 
             pnlLevelList.Visible = Show;
             ctLevelListSplitter.Visible = Show;
@@ -344,7 +345,7 @@ namespace ExpertSokoban
         /// </summary>
         private void levelListPanelResize(object sender, EventArgs e)
         {
-            ExpSokSettings.LevelListWidth = pnlLevelList.Width;
+            Program.Settings.LevelListWidth = pnlLevelList.Width;
         }
 
         /// <summary>
@@ -412,7 +413,7 @@ namespace ExpertSokoban
             OpenFileDialog OpenDialog = new OpenFileDialog();
             OpenDialog.DefaultExt = "txt";
             OpenDialog.Filter = Program.Translation.Save_FileType_TextFiles + "|*.txt|" + Program.Translation.Save_FileType_AllFiles + "|*.*";
-            OpenDialog.InitialDirectory = ExpSokSettings.LastOpenSaveDirectory;
+            OpenDialog.InitialDirectory = Program.Settings.LastOpenSaveDirectory;
             if (OpenDialog.ShowDialog() != DialogResult.OK)
                 return;
 
@@ -426,7 +427,7 @@ namespace ExpertSokoban
                 return;
             }
 
-            ExpSokSettings.LastOpenSaveDirectory = Path.GetDirectoryName(OpenDialog.FileName);
+            Program.Settings.LastOpenSaveDirectory = Path.GetDirectoryName(OpenDialog.FileName);
             ctMainArea.Modified = false;
             showLevelList(true);
             lstLevels.PlayFirstUnsolved();
@@ -518,11 +519,11 @@ namespace ExpertSokoban
         /// </summary>
         private void changePlayer(object sender, EventArgs e)
         {
-            string Result = InputBox.GetLine(Program.Translation.Mainform_ChooseName, ExpSokSettings.PlayerName, Program.Translation.ProgramName);
+            string Result = InputBox.GetLine(Program.Translation.Mainform_ChooseName, Program.Settings.PlayerName, Program.Translation.ProgramName);
             if (Result == null)
                 return;
 
-            ExpSokSettings.PlayerName = Result;
+            Program.Settings.PlayerName = Result;
             lstLevels.RefreshItems();
         }
 
@@ -534,13 +535,13 @@ namespace ExpertSokoban
         {
             if (lstLevels.SelectedLevel != null)
             {
-                string l = lstLevels.SelectedLevel.ToString();
-                if (!ExpSokSettings.Highscores.ContainsKey(l))
+                string level = lstLevels.SelectedLevel.ToString();
+                if (!Program.Settings.Highscores.ContainsKey(level))
                     DlgMessage.ShowInfo(Program.Translation.Mainform_NoHighscores, Program.Translation.Mainform_NoHighscores_Title);
                 else
                 {
                     HighscoresForm hsf = new HighscoresForm();
-                    hsf.SetContents(ExpSokSettings.Highscores[l], lstLevels.SelectedLevel);
+                    hsf.SetContents(Program.Settings.Highscores[level], lstLevels.SelectedLevel);
                     hsf.ShowDialog();
                 }
             }
@@ -702,7 +703,7 @@ namespace ExpertSokoban
         /// </summary>
         private void changeEditTool(object sender, EventArgs e)
         {
-            ctMainArea.Tool = ExpSokSettings.LastUsedTool = grpEditTool.Value;
+            ctMainArea.Tool = Program.Settings.LastUsedTool = grpEditTool.Value;
             btnEditLevelWall.Checked = grpEditTool.Value == MainAreaTool.Wall;
             btnEditLevelPiece.Checked = grpEditTool.Value == MainAreaTool.Piece;
             btnEditLevelTarget.Checked = grpEditTool.Value == MainAreaTool.Target;
@@ -728,7 +729,7 @@ namespace ExpertSokoban
         private void togglePlayingToolbar(object sender, EventArgs e)
         {
             mnuOptionsPlayingToolbar.Checked = !mnuOptionsPlayingToolbar.Checked;
-            toolPlay.Visible = ExpSokSettings.DisplayPlayingToolbar = mnuOptionsPlayingToolbar.Checked;
+            toolPlay.Visible = Program.Settings.DisplayPlayingToolbar = mnuOptionsPlayingToolbar.Checked;
         }
 
         /// <summary>
@@ -737,7 +738,7 @@ namespace ExpertSokoban
         private void toggleFileEditToolbar(object sender, EventArgs e)
         {
             mnuOptionsFileToolbars.Checked = !mnuOptionsFileToolbars.Checked;
-            toolFile.Visible = toolFileEdit.Visible = ExpSokSettings.DisplayFileToolbars = mnuOptionsFileToolbars.Checked;
+            toolFile.Visible = toolFileEdit.Visible = Program.Settings.DisplayFileToolbars = mnuOptionsFileToolbars.Checked;
         }
 
         /// <summary>
@@ -746,7 +747,7 @@ namespace ExpertSokoban
         private void toggleEditLevelToolbar(object sender, EventArgs e)
         {
             mnuOptionsEditLevelToolbar.Checked = !mnuOptionsEditLevelToolbar.Checked;
-            toolEditLevel.Visible = ExpSokSettings.DisplayEditLevelToolbar = mnuOptionsEditLevelToolbar.Checked;
+            toolEditLevel.Visible = Program.Settings.DisplayEditLevelToolbar = mnuOptionsEditLevelToolbar.Checked;
         }
 
         /// <summary>
@@ -756,7 +757,7 @@ namespace ExpertSokoban
         private void toggleStatusBar(object sender, EventArgs e)
         {
             mnuOptionsStatusBar.Checked = !mnuOptionsStatusBar.Checked;
-            ctStatusBar.Visible = ExpSokSettings.DisplayStatusBar = mnuOptionsStatusBar.Checked;
+            ctStatusBar.Visible = Program.Settings.DisplayStatusBar = mnuOptionsStatusBar.Checked;
         }
 
         /// <summary>
@@ -765,7 +766,7 @@ namespace ExpertSokoban
         /// </summary>
         private void changeMovePathOption(object sender, EventArgs e)
         {
-            ctMainArea.MoveDrawMode = ExpSokSettings.MoveDrawMode = grpMovePathOptions.Value;
+            ctMainArea.MoveDrawMode = Program.Settings.MoveDrawMode = grpMovePathOptions.Value;
         }
 
         /// <summary>
@@ -774,7 +775,7 @@ namespace ExpertSokoban
         /// </summary>
         private void changePushPathOption(object sender, EventArgs e)
         {
-            ctMainArea.PushDrawMode = ExpSokSettings.PushDrawMode = grpPushPathOptions.Value;
+            ctMainArea.PushDrawMode = Program.Settings.PushDrawMode = grpPushPathOptions.Value;
         }
 
         /// <summary>
@@ -784,7 +785,7 @@ namespace ExpertSokoban
         private void changeEndPosOption(object sender, EventArgs e)
         {
             mnuOptionsEndPos.Checked = !mnuOptionsEndPos.Checked;
-            ctMainArea.ShowEndPos = ExpSokSettings.ShowEndPos = mnuOptionsEndPos.Checked;
+            ctMainArea.ShowEndPos = Program.Settings.ShowEndPos = mnuOptionsEndPos.Checked;
         }
 
         /// <summary>
@@ -794,7 +795,7 @@ namespace ExpertSokoban
         private void toggleReachableAreaSokoban(object sender, EventArgs e)
         {
             mnuOptionsAreaSokoban.Checked = !mnuOptionsAreaSokoban.Checked;
-            ctMainArea.ShowAreaSokoban = ExpSokSettings.ShowAreaSokoban = mnuOptionsAreaSokoban.Checked;
+            ctMainArea.ShowAreaSokoban = Program.Settings.ShowAreaSokoban = mnuOptionsAreaSokoban.Checked;
         }
 
         /// <summary>
@@ -804,7 +805,7 @@ namespace ExpertSokoban
         private void toggleReachableAreaPiece(object sender, EventArgs e)
         {
             mnuOptionsAreaPiece.Checked = !mnuOptionsAreaPiece.Checked;
-            ctMainArea.ShowAreaPiece = ExpSokSettings.ShowAreaPiece = mnuOptionsAreaPiece.Checked;
+            ctMainArea.ShowAreaPiece = Program.Settings.ShowAreaPiece = mnuOptionsAreaPiece.Checked;
         }
 
         /// <summary>
@@ -813,7 +814,7 @@ namespace ExpertSokoban
         private void toggleSound(object sender, EventArgs e)
         {
             mnuOptionsSound.Checked = !mnuOptionsSound.Checked;
-            ctMainArea.SoundEnabled = ExpSokSettings.SoundEnabled = mnuOptionsSound.Checked;
+            ctMainArea.SoundEnabled = Program.Settings.SoundEnabled = mnuOptionsSound.Checked;
         }
 
         /// <summary>

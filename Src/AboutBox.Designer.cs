@@ -150,7 +150,7 @@ namespace ExpertSokoban
             this.lblURL.Tag = "notranslate";
             this.lblURL.Text = "http://www.cutebits.com/ExpSok";
             this.lblURL.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblURL.Click += new System.EventHandler(this.URL_Click);
+            this.lblURL.Click += new System.EventHandler(this.clickUrl);
             // 
             // pnlMain
             // 
