@@ -62,7 +62,7 @@ namespace ExpertSokoban
             catch
             {
                 lstLevels.NewList();
-                lstLevels.AddLevelListItem(SokobanLevel.TestLevel());
+                lstLevels.AddLevelListItem(SokobanLevel.TestLevel);
                 lstLevels.Modified = false;
             }
 
@@ -570,7 +570,7 @@ namespace ExpertSokoban
             if (!pnlLevelList.Visible)
                 showLevelList(true);
 
-            lstLevels.AddLevelListItem(SokobanLevel.TrivialLevel());
+            lstLevels.AddLevelListItem(SokobanLevel.TrivialLevel);
         }
 
         /// <summary>

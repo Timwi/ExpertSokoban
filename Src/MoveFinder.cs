@@ -29,100 +29,92 @@ namespace ExpertSokoban
     /// </summary>
     public class MoveFinder : Virtual2DArray<bool>
     {
-        /// <summary>
-        /// The SokobanLevel we are examining.
-        /// </summary>
-        protected SokobanLevel FLevel;
+        /// <summary>The <see cref="SokobanLevel"/> we are examining.</summary>
+        protected SokobanLevel _level;
 
         /// <summary>
         /// Stores the move path length for each destination cell. A value of 0 means
         /// that the cell is unreachable. All other values represent a move path length
         /// of one less than the value.
         /// </summary>
-        private int[] FPathLength;
+        private int[] _pathLength;
 
         /// <summary>
         /// For each cell, identifies the precessor cell in the path towards that cell.
         /// </summary>
-        private Point[] FPredecessor;
+        private Point[] _predecessor;
 
         /// <summary>
         /// (read-only) Returns the width of the level under consideration.
         /// </summary>
-        public int Width { get { return FLevel.Width; } }
+        public int Width { get { return _level.Width; } }
 
         /// <summary>
         /// (read-only) Returns the height of the level under consideration.
         /// </summary>
-        public int Height { get { return FLevel.Height; } }
+        public int Height { get { return _level.Height; } }
 
-        /// <summary>
-        /// Runs a normal MoveFinder.
-        /// </summary>
-        /// <param name="Level">The Sokoban level under consideration.</param>
-        public MoveFinder(SokobanLevel Level)
+        /// <summary>Runs a normal MoveFinder.</summary>
+        /// <param name="level">The Sokoban level under consideration.</param>
+        public MoveFinder(SokobanLevel level)
         {
-            Run(Level, null, false);
+            run(level, null, false);
         }
 
         /// <summary>
         /// Runs a MoveFinder only so far as necessary to ascertain that all four cells
         /// adjacent to the specified cell are reachable.
         /// </summary>
-        /// <param name="Level">The Sokoban level under consideration.</param>
-        /// <param name="StopIfFourSides">The cell whose four adjacent cells are under
+        /// <param name="level">The Sokoban level under consideration.</param>
+        /// <param name="stopIfFourSides">The cell whose four adjacent cells are under
         /// consideration.</param>
-        public MoveFinder(SokobanLevel Level, Point StopIfFourSides)
+        public MoveFinder(SokobanLevel level, Point stopIfFourSides)
         {
-            Run(Level, StopIfFourSides, false);
+            run(level, stopIfFourSides, false);
         }
 
-        /// <summary>
-        /// Runs a MoveFinder using the specified mode of operation.
-        /// </summary>
-        /// <param name="Level">The Sokoban level under consideration.</param>
-        /// <param name="SpecialOption">An option specifying the behaviour of the
-        /// MoveFinder. Refer to the documentation of MoveFinderOption.</param>
-        public MoveFinder(SokobanLevel Level, MoveFinderOption SpecialOption)
+        /// <summary>Runs a MoveFinder using the specified mode of operation.</summary>
+        /// <param name="level">The Sokoban level under consideration.</param>
+        /// <param name="specialOption">A set of <see cref="MoveFinderOption"/> flags
+        /// specifying the behaviour of the MoveFinder.</param>
+        public MoveFinder(SokobanLevel level, MoveFinderOption specialOption)
         {
-            Run(Level, null, SpecialOption == MoveFinderOption.IgnorePieces);
+            run(level, null, specialOption == MoveFinderOption.IgnorePieces);
         }
 
-        /// <summary>
-        /// Runs the MoveFinder using the specified options.
-        /// </summary>
-        /// <param name="Level">The Sokoban level under consideration.</param>
-        /// <param name="StopIfFourSides">If not null, runs a MoveFinder only so far as
+        /// <summary>Runs the MoveFinder using the specified options.</summary>
+        /// <param name="level">The Sokoban level under consideration.</param>
+        /// <param name="stopIfFourSides">If not null, runs a MoveFinder only so far as
         /// necessary to ascertain that all four cells adjacent to the specified cell
         /// are reachable.</param>
-        /// <param name="IgnorePieces">If true, only walls are considered obstacles.</param>
-        private void Run(SokobanLevel Level, Point? StopIfFourSides, bool IgnorePieces)
+        /// <param name="ignorePieces">If true, only walls are considered obstacles.</param>
+        private void run(SokobanLevel level, Point? stopIfFourSides, bool ignorePieces)
         {
             // Contains the set of cells yet to be considered
-            Queue<Point> Queue = new Queue<Point>();
+            Queue<Point> queue = new Queue<Point>();
 
-            FLevel = Level;
-            FPathLength = new int[FLevel.Width * FLevel.Height];
-            FPredecessor = new Point[FLevel.Width * FLevel.Height];
-            Queue.Enqueue(FLevel.SokobanPos);
-            FPathLength[FLevel.SokobanPos.Y * FLevel.Width + FLevel.SokobanPos.X] = 1;
+            _level = level;
+            _pathLength = new int[_level.Width * _level.Height];
+            _predecessor = new Point[_level.Width * _level.Height];
+            queue.Enqueue(_level.SokobanPos);
+            _pathLength[_level.SokobanPos.Y * _level.Width + _level.SokobanPos.X] = 1;
 
             // Breadth-first search: extract an item from the queue, process it, and add
             // the newly-discovered items to the queue (Examine() does that).
-            while (Queue.Count > 0)
+            while (queue.Count > 0)
             {
-                Point Pivot = Queue.Dequeue();
-                Examine(new Point(Pivot.X, Pivot.Y-1), Pivot, IgnorePieces, Queue);
-                Examine(new Point(Pivot.X-1, Pivot.Y), Pivot, IgnorePieces, Queue);
-                Examine(new Point(Pivot.X+1, Pivot.Y), Pivot, IgnorePieces, Queue);
-                Examine(new Point(Pivot.X, Pivot.Y+1), Pivot, IgnorePieces, Queue);
+                Point pivot = queue.Dequeue();
+                examine(new Point(pivot.X, pivot.Y - 1), pivot, ignorePieces, queue);
+                examine(new Point(pivot.X - 1, pivot.Y), pivot, ignorePieces, queue);
+                examine(new Point(pivot.X + 1, pivot.Y), pivot, ignorePieces, queue);
+                examine(new Point(pivot.X, pivot.Y + 1), pivot, ignorePieces, queue);
 
-                if (StopIfFourSides != null &&
-                    FPathLength[StopIfFourSides.Value.Y*FLevel.Width + StopIfFourSides.Value.X - FLevel.Width] > 0 &&
-                    FPathLength[StopIfFourSides.Value.Y*FLevel.Width + StopIfFourSides.Value.X + FLevel.Width] > 0 &&
-                    FPathLength[StopIfFourSides.Value.Y*FLevel.Width + StopIfFourSides.Value.X - 1] > 0 &&
-                    FPathLength[StopIfFourSides.Value.Y*FLevel.Width + StopIfFourSides.Value.X + 1] > 0)
-                    Queue.Clear();
+                if (stopIfFourSides != null &&
+                    _pathLength[stopIfFourSides.Value.Y * _level.Width + stopIfFourSides.Value.X - _level.Width] > 0 &&
+                    _pathLength[stopIfFourSides.Value.Y * _level.Width + stopIfFourSides.Value.X + _level.Width] > 0 &&
+                    _pathLength[stopIfFourSides.Value.Y * _level.Width + stopIfFourSides.Value.X - 1] > 0 &&
+                    _pathLength[stopIfFourSides.Value.Y * _level.Width + stopIfFourSides.Value.X + 1] > 0)
+                    queue.Clear();
             }
         }
 
@@ -130,112 +122,102 @@ namespace ExpertSokoban
         /// Examines a cell to see if the length of the path to it can be shortened (or
         /// whether the cell has even been discovered yet).
         /// </summary>
-        /// <param name="Pos">Cell under consideration.</param>
-        /// <param name="Pivot">Becomes the new predecessor if it makes the path length
+        /// <param name="pos">Cell under consideration.</param>
+        /// <param name="pivot">Becomes the new predecessor if it makes the path length
         /// shorter.</param>
-        /// <param name="IgnorePieces">If true, only walls are considered obstacles.</param>
-        /// <param name="Queue">The queue to insert newly discovered cells into.</param>
-        private void Examine(Point Pos, Point Pivot, bool IgnorePieces, Queue<Point> Queue)
+        /// <param name="ignorePieces">If true, only walls are considered obstacles.</param>
+        /// <param name="queue">The queue to insert newly discovered cells into.</param>
+        private void examine(Point pos, Point pivot, bool ignorePieces, Queue<Point> queue)
         {
-            if (Pos.X < 0 || Pos.X >= FLevel.Width || Pos.Y < 0 || Pos.Y >= FLevel.Height)
+            if (pos.X < 0 || pos.X >= _level.Width || pos.Y < 0 || pos.Y >= _level.Height)
                 return;
-            if ((FLevel.IsFree(Pos) || (IgnorePieces && FLevel.Cell(Pos) != SokobanCell.Wall)) &&
-                FPathLength[Pos.Y*FLevel.Width + Pos.X] == 0)
+            if ((_level.IsFree(pos) || (ignorePieces && _level.Cell(pos) != SokobanCell.Wall)) &&
+                _pathLength[pos.Y * _level.Width + pos.X] == 0)
             {
-                if (Pos.X > 0 && Pos.X < FLevel.Width-1 && Pos.Y > 0 && Pos.Y < FLevel.Height-1)
-                    Queue.Enqueue(Pos);
-                FPathLength[Pos.Y*FLevel.Width + Pos.X] = FPathLength[Pivot.Y*FLevel.Width + Pivot.X]+1;
-                FPredecessor[Pos.Y*FLevel.Width + Pos.X] = Pivot;
+                if (pos.X > 0 && pos.X < _level.Width - 1 && pos.Y > 0 && pos.Y < _level.Height - 1)
+                    queue.Enqueue(pos);
+                _pathLength[pos.Y * _level.Width + pos.X] = _pathLength[pivot.Y * _level.Width + pivot.X] + 1;
+                _predecessor[pos.Y * _level.Width + pos.X] = pivot;
             }
         }
 
-        /// <summary>
-        /// Returns true if the specified cell is reachable.
-        /// </summary>
-        public virtual bool Get(Point Pos)
+        /// <summary>Returns true if the specified cell is reachable.</summary>
+        public virtual bool Get(Point pos)
         {
-            if (Pos.X < 0 || Pos.X >= FLevel.Width || Pos.Y < 0 || Pos.Y >= FLevel.Height)
+            if (pos.X < 0 || pos.X >= _level.Width || pos.Y < 0 || pos.Y >= _level.Height)
                 return false;
-            int Index = Pos.Y*FLevel.Width + Pos.X;
-            return Index < 0 || Index >= FPathLength.Length ? false : FPathLength[Index] > 0;
+            int index = pos.Y * _level.Width + pos.X;
+            return index < 0 || index >= _pathLength.Length ? false : _pathLength[index] > 0;
         }
 
-        /// <summary>
-        /// Returns true if the specified cell is reachable.
-        /// </summary>
+        /// <summary>Returns true if the specified cell is reachable.</summary>
         public virtual bool Get(int x, int y)
         {
-            if (x < 0 || x >= FLevel.Width || y < 0 || y >= FLevel.Height)
+            if (x < 0 || x >= _level.Width || y < 0 || y >= _level.Height)
                 return false;
-            int Index = y*FLevel.Width + x;
-            return Index < 0 || Index >= FPathLength.Length ? false : FPathLength[Index] > 0;
+            int index = y * _level.Width + x;
+            return index < 0 || index >= _pathLength.Length ? false : _pathLength[index] > 0;
         }
 
         /// <summary>
         /// Returns the length of the path from the source position to the specified
         /// cell, or -1 if it is not reachable.
         /// </summary>
-        public int PathLength(Point Pos)
+        public int PathLength(Point pos)
         {
-            int Index = Pos.Y*FLevel.Width + Pos.X;
-            return Index < 0 || Index >= FPathLength.Length ? -1 : FPathLength[Index]-1;
+            int index = pos.Y * _level.Width + pos.X;
+            return index < 0 || index >= _pathLength.Length ? -1 : _pathLength[index] - 1;
         }
 
         /// <summary>
         /// Returns the entire path of cells from the source position to the specified
         /// cell, or null if it is not reachable.
         /// </summary>
-        public Point[] Path (Point Pos)
+        public Point[] Path(Point pos)
         {
-            if (FPathLength[Pos.Y*FLevel.Width + Pos.X] == 0)
+            if (_pathLength[pos.Y * _level.Width + pos.X] == 0)
                 return null;
 
-            Point[] Result = new Point[FPathLength[Pos.Y*FLevel.Width + Pos.X]-1];
-            Point At = Pos;
-            for (int i = Result.Length-1; i >= 0; i--)
+            Point[] result = new Point[_pathLength[pos.Y * _level.Width + pos.X] - 1];
+            Point at = pos;
+            for (int i = result.Length - 1; i >= 0; i--)
             {
-                Result[i] = At;
-                At = FPredecessor[At.Y*FLevel.Width + At.X];
+                result[i] = at;
+                at = _predecessor[at.Y * _level.Width + at.X];
             }
-            return Result;
+            return result;
         }
     }
 
     /// <summary>
-    /// Encapsulates a MoveFinder, but overrides the Get() method in such a way that it
-    /// returns true only for the reachable cells at the outline of the level.
+    /// Encapsulates a MoveFinder, but overrides the methods <see cref="Get(Point)"/> and <see cref="Get(int, int)"/>
+    /// in such a way that it returns true only for the reachable cells at the outline of the level.
     /// </summary>
     public class MoveFinderOutline : MoveFinder
     {
         /// <summary>
         /// Main constructor.
         /// </summary>
-        public MoveFinderOutline(SokobanLevel Level)
-            : base(Level, MoveFinderOption.IgnorePieces)
+        public MoveFinderOutline(SokobanLevel level)
+            : base(level, MoveFinderOption.IgnorePieces)
         {
             // This space intentionally left blank
-            // (the base constructor calls Run())
+            // (the base constructor calls run())
         }
 
-        /// <summary>
-        /// Returns true if the specified cell is valid and lies at the outline of the
-        /// level.
-        /// </summary>
-        public override bool Get(Point Pos)
+        /// <summary>Returns true if the specified cell is valid and lies at the outline of the level.</summary>
+        public override bool Get(Point pos)
         {
-            return (Pos.X == 0 || Pos.X == FLevel.Width-1 ||
-                    Pos.Y == 0 || Pos.Y == FLevel.Height-1)
-                    && base.Get(Pos);
+            return (pos.X == 0 || pos.X == _level.Width - 1 ||
+                    pos.Y == 0 || pos.Y == _level.Height - 1)
+                    && base.Get(pos);
         }
 
-        /// <summary>
-        /// Returns true if the specified cell is valid and lies at the outline of the
-        /// level.
-        /// </summary>
+        /// <summary>Returns true if the specified cell is valid and lies at the outline of the level.</summary>
         public override bool Get(int x, int y)
         {
-            return (x == 0 || x == FLevel.Width-1 ||
-                    y == 0 || y == FLevel.Height-1)
+            return (x == 0 || x == _level.Width - 1 ||
+                    y == 0 || y == _level.Height - 1)
                     && base.Get(x, y);
         }
     }
