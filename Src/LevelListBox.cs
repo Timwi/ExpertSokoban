@@ -827,11 +827,11 @@ namespace ExpertSokoban
             if (i == null)
             {
                 if (congratulateIfAll)
-                    DlgMessage.ShowInfo(Program.Translation.LevelList_Message_AllSolved, Program.Translation.LevelList_Message_AllSolved_Title);
+                    DlgMessage.Show(Program.Translation.LevelList_Message_AllSolved, Program.Translation.LevelList_Message_AllSolved_Title, DlgType.Info, Program.Translation.Dialogs_btnOK);
                 else if (mustBeUnsolved)
-                    DlgMessage.ShowInfo(Program.Translation.LevelList_Message_NoMoreUnsolved, Program.Translation.LevelList_Message_NextUnsolved_Title);
+                    DlgMessage.Show(Program.Translation.LevelList_Message_NoMoreUnsolved, Program.Translation.LevelList_Message_NextUnsolved_Title, DlgType.Info, Program.Translation.Dialogs_btnOK);
                 else
-                    DlgMessage.ShowInfo(Program.Translation.LevelList_Message_NoOtherLevel, Program.Translation.LevelList_Message_Next_Title);
+                    DlgMessage.Show(Program.Translation.LevelList_Message_NoOtherLevel, Program.Translation.LevelList_Message_Next_Title, DlgType.Info, Program.Translation.Dialogs_btnOK);
             }
             else
                 playingIndex = i.Value;
@@ -850,9 +850,10 @@ namespace ExpertSokoban
             int? i = findPrevNext(mustBeUnsolved, false);
 
             if (i == null)
-                DlgMessage.ShowInfo(
+                DlgMessage.Show(
                     mustBeUnsolved ? Program.Translation.LevelList_Message_NoMoreUnsolved : Program.Translation.LevelList_Message_NoOtherLevel,
-                    mustBeUnsolved ? Program.Translation.LevelList_Message_PrevUnsolved_Title : Program.Translation.LevelList_Message_Prev_Title);
+                    mustBeUnsolved ? Program.Translation.LevelList_Message_PrevUnsolved_Title : Program.Translation.LevelList_Message_Prev_Title,
+                    DlgType.Info, Program.Translation.Dialogs_btnOK);
             else
                 playingIndex = i.Value;
         }
@@ -873,10 +874,13 @@ namespace ExpertSokoban
 
             int startIndex = _activeLevelIndex == null ? (forward ? Items.Count - 1 : 0) : _activeLevelIndex.Value;
             int i = startIndex;
-            for (; ; )
+            while (true)
             {
                 // Next item
                 i = (i + (forward ? 1 : (Items.Count - 1))) % Items.Count;
+
+                if (_activeLevelIndex != null && i == _activeLevelIndex)
+                    return null;
 
                 if (Items[i] is SokobanLevel &&
                     (!mustBeUnsolved || !Program.Settings.IsSolved(Items[i].ToString())))

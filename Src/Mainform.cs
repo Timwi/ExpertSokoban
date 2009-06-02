@@ -52,7 +52,7 @@ namespace ExpertSokoban
             showLevelList(Program.Settings.DisplayLevelList);
 
             if (Program.Settings.PlayerName == null || Program.Settings.PlayerName.Length == 0)
-                Program.Settings.PlayerName = InputBox.GetLine(Program.Translation.Mainform_ChooseName_FirstRun, "", Program.Translation.ProgramName);
+                Program.Settings.PlayerName = InputBox.GetLine(Program.Translation.Mainform_ChooseName_FirstRun, "", Program.Translation.ProgramName, Program.Translation.Dialogs_btnOK, Program.Translation.Dialogs_btnCancel);
 
             // Restore the last used level pack
             try
@@ -276,7 +276,7 @@ namespace ExpertSokoban
 
             // If the user hasn't chosen a name for themselves yet, ask them
             if (Program.Settings.PlayerName == null || Program.Settings.PlayerName.Length == 0)
-                Program.Settings.PlayerName = InputBox.GetLine(Program.Translation.Mainform_ChooseName_SolvedLevel, "", Program.Translation.ProgramName);
+                Program.Settings.PlayerName = InputBox.GetLine(Program.Translation.Mainform_ChooseName_SolvedLevel, "", Program.Translation.ProgramName, Program.Translation.Dialogs_btnOK, Program.Translation.Dialogs_btnCancel);
 
             // If they still haven't chosen a name, discard the high score
             if (Program.Settings.PlayerName == null || Program.Settings.PlayerName.Length == 0)
@@ -519,7 +519,7 @@ namespace ExpertSokoban
         /// </summary>
         private void changePlayer(object sender, EventArgs e)
         {
-            string Result = InputBox.GetLine(Program.Translation.Mainform_ChooseName, Program.Settings.PlayerName, Program.Translation.ProgramName);
+            string Result = InputBox.GetLine(Program.Translation.Mainform_ChooseName, Program.Settings.PlayerName, Program.Translation.ProgramName, Program.Translation.Dialogs_btnOK, Program.Translation.Dialogs_btnCancel);
             if (Result == null)
                 return;
 
@@ -537,7 +537,7 @@ namespace ExpertSokoban
             {
                 string level = lstLevels.SelectedLevel.ToString();
                 if (!Program.Settings.Highscores.ContainsKey(level))
-                    DlgMessage.ShowInfo(Program.Translation.Mainform_NoHighscores, Program.Translation.Mainform_NoHighscores_Title);
+                    DlgMessage.Show(Program.Translation.Mainform_NoHighscores, Program.Translation.Mainform_NoHighscores_Title, DlgType.Info, Program.Translation.Dialogs_btnOK);
                 else
                 {
                     HighscoresForm hsf = new HighscoresForm();

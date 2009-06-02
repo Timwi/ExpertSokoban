@@ -194,6 +194,7 @@ namespace ExpertSokoban
         public string Dialogs_btnDiscard = "Discard changes";
         public string Dialogs_btnGiveUp = "Give up";
         public string Dialogs_btnCancel = "Cancel";
+        public string Dialogs_btnOK = "OK";
         public string PlayerNameMissing = "(no player name)";
     }
 }
