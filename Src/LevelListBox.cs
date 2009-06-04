@@ -7,7 +7,6 @@ using System.Text;
 using System.Windows.Forms;
 using RT.Util;
 using RT.Util.Dialogs;
-using RT.Util.ExtensionMethods;
 
 namespace ExpertSokoban
 {
@@ -931,7 +930,7 @@ namespace ExpertSokoban
 
             // Ask the user if they want to save their changes to the level file.
             int result = DlgMessage.Show(Program.Translation.LevelList_Message_SaveChanges.Fmt(
-                    (Program.Settings.LevelFilename == null ? Program.Translation.FileName_Untitled : Path.GetFileName(Program.Settings.LevelFilename))
+                    (Program.Settings.LevelFilename == null ? Program.Translation.FileName_Untitled.Translation : Path.GetFileName(Program.Settings.LevelFilename))
                 ), caption, DlgType.Question,
                 Program.Translation.LevelList_Message_SaveChanges_btnSave,
                 Program.Translation.LevelList_Message_SaveChanges_btnDiscard,

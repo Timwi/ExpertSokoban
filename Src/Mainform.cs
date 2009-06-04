@@ -4,8 +4,9 @@ using System.Linq;
 using System.Windows.Forms;
 using RT.Util;
 using RT.Util.Dialogs;
-using RT.Util.ExtensionMethods;
 using RT.Util.Forms;
+using RT.Util.Lingo;
+using RT.Util.Xml;
 
 namespace ExpertSokoban
 {
@@ -16,6 +17,8 @@ namespace ExpertSokoban
     /// </summary>
     public partial class Mainform : ManagedForm
     {
+        private ToolStripMenuItem mnuOptionsLanguageEdit;
+
         #region Startup / shutdown
 
         /// <summary>
@@ -26,15 +29,8 @@ namespace ExpertSokoban
         {
             InitializeComponent();
             Lingo.TranslateControl(this, Program.Translation.Mainform);
-            mnuOptionsChangeLanguage.DropDownItems.AddRange(RT.Util.Lingo.LanguageToolStripMenuItems<Translation>("ExpSok.*.xml", @"^ExpSok\.(.*)\.xml$", t => t.ThisLanguage, (t, m) =>
-            {
-                Program.Settings.Language = m == null ? null : m.Groups[1].Value;
-                Program.Translation = t;
-                Lingo.TranslateControl(this, Program.Translation.Mainform);
-                lstLevels.RefreshItems();
-                if (ctMainArea.State == MainAreaState.Solved)
-                    ctMainArea.Refresh();
-            }).ToArray());
+            mnuOptionsLanguageEdit = new ToolStripMenuItem("&Edit current language", null, new EventHandler(editCurrentLanguage));
+            initLanguageMenu();
 
             // Restore saved settings
             mnuOptionsPlayingToolbar.Checked = Program.Settings.DisplayPlayingToolbar;
@@ -70,6 +66,50 @@ namespace ExpertSokoban
             updateControls();
         }
 
+        private void initLanguageMenu()
+        {
+            mnuOptionsChangeLanguage.DropDownItems.Clear();
+            mnuOptionsChangeLanguage.DropDownItems.AddRange(RT.Util.Lingo.Lingo.LanguageToolStripMenuItems<Translation>(
+                "ExpSok.*.xml",
+                @"^ExpSok\.(.*)\.xml$",
+                t => t.ThisLanguage,
+                (t, m) => setLanguage(m == null ? null : m.Groups[1].Value, t),
+                m => Program.Settings.Language == null ? m == null : m != null && m.Groups[1].Value == Program.Settings.Language
+            ));
+            mnuOptionsChangeLanguage.DropDownItems.Add(mnuOptionsLanguageEdit);
+        }
+
+        private void setLanguage(string languageCode, Translation translation)
+        {
+            Program.Settings.Language = languageCode;
+            Program.Translation = translation;
+            Lingo.TranslateControl(this, Program.Translation.Mainform);
+            lstLevels.RefreshItems();
+            if (ctMainArea.State == MainAreaState.Solved)
+                ctMainArea.Refresh();
+        }
+
+        private TranslationForm<Translation> _translationDialog = null;
+        private void editCurrentLanguage(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(Program.Settings.Language))
+            {
+                MessageBox.Show("The currently selected language is the native language of this application and cannot be edited.", "Edit current language");
+                return;
+            }
+            if (_translationDialog == null)
+            {
+                foreach (ToolStripItem i in mnuOptionsChangeLanguage.DropDownItems)
+                    if (i != mnuOptionsLanguageEdit)
+                        i.Enabled = false;
+                var file = PathUtil.Combine(PathUtil.AppPath, "Translations", "ExpSok." + Program.Settings.Language + ".xml");
+                _translationDialog = new TranslationForm<Translation>(file, Program.Settings.TranslationFormSettings);
+                _translationDialog.AcceptChanges += () => setLanguage(Program.Settings.Language, XmlClassify.LoadObjectFromXmlFile<Translation>(file));
+                _translationDialog.FormClosed += (s, v) => { _translationDialog = null; initLanguageMenu(); };
+            }
+            _translationDialog.Show();
+        }
+
         /// <summary>
         /// Intercepts the user's attempt to close the form and asks for confirmation
         /// if the current level has been played or edited, and if the current level
@@ -96,9 +136,9 @@ namespace ExpertSokoban
             // Caption
             Text = Program.Translation.ProgramName + " – " +
                     (Program.Settings.PlayerName == null || Program.Settings.PlayerName.Length == 0
-                        ? Program.Translation.PlayerNameMissing : Program.Settings.PlayerName) +
+                        ? Program.Translation.PlayerNameMissing.Translation : Program.Settings.PlayerName) +
                     " – " +
-                    (Program.Settings.LevelFilename == null ? Program.Translation.FileName_Untitled : Path.GetFileName(Program.Settings.LevelFilename)) +
+                    (Program.Settings.LevelFilename == null ? Program.Translation.FileName_Untitled.Translation : Path.GetFileName(Program.Settings.LevelFilename)) +
                     (lstLevels.Modified ? " •" : "");
 
             // Status bar text

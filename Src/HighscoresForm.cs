@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using RT.Util;
-using RT.Util.ExtensionMethods;
 using RT.Util.Forms;
+using RT.Util.Lingo;
 
 namespace ExpertSokoban
 {

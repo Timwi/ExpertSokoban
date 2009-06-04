@@ -567,7 +567,7 @@ namespace ExpertSokoban
 
             if (_state == MainAreaState.Solved)
             {
-                Image ImgLevelSolved = (Image) Properties.Resources.ResourceManager.GetObject(Program.Translation.LevelSolvedResourceName);
+                Image ImgLevelSolved = (Image) Properties.Resources.ResourceManager.GetObject(Program.Translation.LevelSolvedResourceName) ?? Properties.Resources.Skin_LevelSolved;
                 if (ClientSize.Width < ImgLevelSolved.Width)
                     e.Graphics.DrawImage(ImgLevelSolved,
                         0, (ClientSize.Height - ClientSize.Width * ImgLevelSolved.Height / ImgLevelSolved.Width) / 2,

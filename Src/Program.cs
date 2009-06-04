@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 using System.Windows.Forms;
-using RT.Util;
+using RT.Util.Lingo;
 using RT.Util.Xml;
 
 namespace ExpertSokoban

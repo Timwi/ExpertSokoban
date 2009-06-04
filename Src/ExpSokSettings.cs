@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 using RT.Util.Forms;
+using RT.Util.Lingo;
 
 namespace ExpertSokoban
 {
@@ -12,6 +13,8 @@ namespace ExpertSokoban
         public ManagedForm.Settings MainFormSettings = new ManagedForm.Settings();
         /// <summary>The settings for the highscores form (size, position, etc.).</summary>
         public ManagedForm.Settings HighscoresFormSettings = new ManagedForm.Settings();
+        /// <summary>The settings for the translation form (size, position, etc.).</summary>
+        public TranslationForm<Translation>.Settings TranslationFormSettings = new TranslationForm<Translation>.Settings();
 
         /// <summary>Move path draw move</summary>
         public PathDrawMode MoveDrawMode = PathDrawMode.None;

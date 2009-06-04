@@ -8,6 +8,8 @@ namespace ExpertSokoban
         public int Pushes;
         public int Moves;
         public Score(int pushes, int moves) { Pushes = pushes; Moves = moves; }
+        // This empty constructor is necessary for XmlClassify to work
+        public Score() { Pushes = 0; Moves = 0; }
     }
 
     /// <summary>

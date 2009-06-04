@@ -1,155 +1,159 @@
-﻿<?xml version="1.0"
-encoding="utf-8"?>
-<item ThisLanguage="Deutsch"
-ProgramName="Expert Sokoban"
-LevelSolvedResourceName="Skin_LevelSolvedDe"
-LevelList_NewComment_Prompt="Geben Sie den neuen Kommentar ein:"
-LevelList_LevelSolved="Gelöst"
-LevelList_CurrentlyEditing="Wird gerade bearbeitet"
-LevelList_JustSolved="Soeben gelöst"
-LevelList_CurrentlyPlaying="Wird gerade gespielt"
-LevelList_Message_CannotSaveSettings="Die Einstellungen konnten nicht gespeichert werden."
-LevelList_Message_CannotSaveSettings_Title="Fehler beim Speichern der Einstellungen"
-LevelList_Message_AllSolved="Sie haben alle Levels in dieser Leveldatei gelöst!"
-LevelList_Message_AllSolved_Title="Herzlichen Glückwunsch!"
-LevelList_Message_NoMoreUnsolved="In dieser Leveldatei gibt es keine weiteren ungelösten Levels."
-LevelList_Message_Next_Title="Nächstes Level"
-LevelList_Message_NextUnsolved_Title="Nächstes ungelöstes Level"
-LevelList_Message_Prev_Title="Vorheriges Level"
-LevelList_Message_PrevUnsolved_Title="Vorheriges ungelöstes Level"
-LevelList_Message_NoOtherLevel="In dieser Leveldatei gibt es keine weiteren Levels."
-LevelList_Message_SaveChanges="Sie haben an {0} Änderungen vorgenommen. Sollen diese Änderungen gespeichert werden?"
-LevelList_Message_SaveChanges_btnSave="Änderungen abspeichern"
-LevelList_Message_SaveChanges_btnDiscard="Änderungen &amp;verwerfen"
-LevelList_Message_DeleteLevel_CurrentlyEditing="Sie bearbeiten dieses Level gerade.&#xD;&#xA;&#xD;&#xA;Wenn Sie das Level jetzt löschen, werden alle Änderungen daran verworfen.&#xD;&#xA;&#xD;&#xA;Sind Sie sicher, dass Sie das tun wollen?"
-LevelList_Message_DeleteLevel_Title="Level löschen"
-LevelList_Message_DeleteLevel_CurrentlyPlaying="Sie spielen dieses Level gerade.&#xD;&#xA;&#xD;&#xA;Sind Sie sicher, dass Sie aufgeben wollen?"
-LevelList_Message_DeleteLevel_Sure="Sind Sie sicher, dass Sie dieses Level löschen möchten?"
-LevelList_Message_DeleteLevel_btnDelete="Level löschen"
-MainArea_Message_DiscardChanges="Sollen die Änderungen an dem Level, das Sie gerade bearbeiten, wirklich verworfen werden?"
-MainArea_Message_GiveUp="Wollen Sie dieses Level wirklich aufgeben?"
-Mainform_ChooseName="Bitte geben Sie einen Namen ein, bei dem Sie in Highscore-Tabellen genannt werden möchten."
-Mainform_ChooseName_FirstRun="Bitte geben Sie einen Namen ein, bei dem Sie in Highscore-Tabellen genannt werden möchten.&#xD;&#xA;Sie können diesen Namen später ändern, indem Sie &quot;Spielernamen ändern&quot; im Menü &quot;Level&quot; wählen."
-Mainform_ChooseName_SolvedLevel="Herzlichen Glückwunsch! Sie haben das aktuelle Level gelöst.&#xD;&#xA;Bitte geben Sie einen Namen ein, bei dem Sie in Highscore-Tabellen genannt werden möchten.&#xD;&#xA;Wenn Sie sich jetzt keinen Namen zulegen, wird Ihre Punktzahl für dieses Level nicht gespeichert.&#xD;&#xA;Sie können diesen Namen später ändern, indem Sie &quot;Spielernamen ändern&quot; im Menü &quot;Level&quot; wählen."
-Mainform_Status_Moves="Züge: {0}"
-Mainform_Status_Pushes="Schübe: {0}"
-Mainform_Status_PiecesRemaining="Steine noch übrig: {0}"
-Mainform_Validity_Valid="Das Level ist gültig."
-Mainform_Validity_NotEnclosed="Das Level ist ungültig, weil es nicht vollständig von einer Wand umgeben ist."
-Mainform_Validity_WrongNumber="Das Level ist ungültig, weil die Anzahl der Steine nicht mit der Anzahl der Ziele übereinstimmt."
-Mainform_Validity_CannotOpen="Das Level konnte nicht geöffnet werden, weil es ungültig ist."
-Mainform_Validity_CannotOpen_Fix="Sie müssen das Level erst bearbeiten und das Problem beheben. Möchten Sie das Level jetzt bearbeiten?"
-Mainform_Validity_CannotOpen_btnEdit="Level bearbeiten"
-Mainform_Validity_CannotSave="Das folgende Problem wurde bei diesem Level festgestellt:"
-Mainform_Validity_CannotSave_Warning="Sie können dieses Level nicht spielen, solange das Problem besteht. Sind Sie sicher, dass das Level in diesem ungültigen Zustand bleiben soll?"
-Mainform_Validity_CannotSave_btnSave="Level trotzdem speichern"
-Mainform_Validity_CannotSave_btnResume="Bearbeitung fortsetzen"
-Mainform_InvalidFile="Die angegebene Datei ist keine gültige Sokoban-Leveldatei."
-Mainform_InvalidFile_Title="Fehler beim Öffnen der Datei"
-Mainform_NoHighscores="Für das ausgewählte Level sind bisher noch keine Highscores gespeichert worden."
-Mainform_NoHighscores_Title="Keine Highscores für dieses Level"
-Mainform_MessageTitle_Exit="Expert Sokoban beenden"
-Mainform_MessageTitle_OpenLevel="Level öffnen"
-Mainform_MessageTitle_RetryLevel="Level neu starten"
-Mainform_MessageTitle_NewLevelFile="Neue Leveldatei"
-Mainform_MessageTitle_OpenLevelFile="Leveldatei öffnen"
-Mainform_MessageTitle_FinishEditing="Bearbeitung abschließen"
-Mainform_LevelList_NewComment="Bitte geben Sie einen Kommentar ein:"
-Mainform_Error_HelpFileNotFound="Die Hilfe-Datei ({0}) konnte nicht gefunden werden."
-Save_FileType_TextFiles="Textdateien"
-Save_FileType_AllFiles="Alle Dateien"
-FileName_Untitled="(unbenannt)"
-Dialogs_btnDiscard="Änderungen verwerfen"
-Dialogs_btnGiveUp="Aufgeben"
-Dialogs_btnCancel="Abbrechen"
-PlayerNameMissing="(kein Spielername)">
-  <Highscores HighscoresForm="Highscores"
-Highscores="{0} Schübe, {1} Züge"
-btnOK="OK"
-/>
-  <AboutBox AboutBox="Über Expert Sokoban"
-lblCredits="Danksagungen:&#xD;&#xA;    Programmierung: Timwi, Roman&#xD;&#xA;    Grafik: Roman, Timwi&#xD;&#xA;    Test: Hawthorn"
-btnOK="OK"
-/>
-  <Mainform Mainform="Expert Sokoban"
-mnuMain="Hauptmenü"
-mnuLevel="&amp;Level"
-mnuLevelNew="N&amp;eue Leveldatei"
-mnuLevelOpen="Leveldatei ö&amp;ffnen..."
-mnuLevelSave="Leveldatei &amp;speichern"
-mnuLevelSaveAs="Leveldatei s&amp;peichern als..."
-mnuLevelUndo="&amp;Zug zurücknehmen"
-mnuLevelRedo="Zug &amp;wiederherstellen"
-mnuLevelRetry="Level neu s&amp;tarten"
-mnuLevelHighscores="&amp;Highscores anzeigen"
-mnuLevelPrevious="&amp;Vorheriges Level"
-mnuLevelNext="&amp;Nächstes Level"
-mnuLevelPreviousUnsolved="V&amp;orheriges ungelöstes Level"
-mnuLevelNextUnsolved="Nächstes &amp;ungelöstes Level"
-mnuLevelChangePlayer="Spielernamen än&amp;dern..."
-mnuLevelExit="&amp;Beenden"
-mnuEdit="&amp;Bearbeiten"
-mnuEditCreateLevel="&amp;Neues Level erstellen"
-mnuEditEditLevel="Level &amp;bearbeiten"
-mnuEditAddComment="K&amp;ommentar hinzufügen..."
-mnuEditDelete="&amp;Level/Kommentar löschen"
-mnuEditCut="&amp;Ausschneiden"
-mnuEditCopy="&amp;Kopieren"
-mnuEditPaste="&amp;Einfügen"
-mnuEditFinish="Bearbeitung ab&amp;schließen"
-mnuEditCancel="Bea&amp;rbeitung abbrechen"
-mnuEditWall="&amp;Wand platzieren"
-mnuEditPiece="S&amp;tein platzieren"
-mnuEditTarget="&amp;Ziel platzieren"
-mnuEditSokoban="Sokoban &amp;platzieren"
-mnuOptions="&amp;Optionen"
-mnuOptionsLevelList="&amp;Levelliste anzeigen"
-mnuOptionsPlayingToolbar="S&amp;ymbolleiste &quot;Spielen&quot; anzeigen"
-mnuOptionsFileToolbars="Symbolleisten &quot;Leveldatei &amp;bearbeiten&quot; anzeigen"
-mnuOptionsEditLevelToolbar="Sy&amp;mbolleiste &quot;Level bearbeiten&quot; anzeigen"
-mnuOptionsStatusBar="Status&amp;zeile anzeigen"
-mnuOptionsMoveNo="Zugweg &amp;nicht anzeigen"
-mnuOptionsMoveLine="Zugweg durch L&amp;inie darstellen"
-mnuOptionsMoveDots="Zugweg durch P&amp;unkte darstellen"
-mnuOptionsMoveArrows="Zugweg durch &amp;Pfeile darstellen"
-mnuOptionsPushNo="Schubweg nicht &amp;anzeigen"
-mnuOptionsPushLine="Schub&amp;weg durch Linie darstellen"
-mnuOptionsPushDots="Schubweg durch Pun&amp;kte darstellen"
-mnuOptionsPushArrows="S&amp;chubweg durch Pfeile darstellen"
-mnuOptionsEndPos="En&amp;dposition von Sokoban und Stein anzeigen"
-mnuOptionsAreaSokoban="Erreichbare &amp;Fläche für Sokoban markieren"
-mnuOptionsAreaPiece="&amp;Erreichbare Fläche für Stein markieren"
-mnuOptionsSound="&amp;Sound aktivieren"
-mnuOptionsChangeLanguage="Sp&amp;rache ändern"
-mnuHelp="&amp;Hilfe"
-mnuHelpKeyboard="&amp;Tastaturkürzel"
-mnuHelpAbout="&amp;Info"
-lblStatusSolved="Sie haben das Level gelöst. Herzlichen Glückwunsch!"
-lblStatusNull="Gegenwärtig ist kein Level ausgewählt. Wählen Sie ein Level aus der Levelliste, um zu spielen."
-toolEditLevel="Symbolleiste &quot;Level bearbeiten&quot;"
-btnEditLevelWall="Wand platzieren"
-btnEditLevelPiece="Stein platzieren"
-btnEditLevelTarget="Ziel platzieren"
-btnEditLevelSokoban="Sokoban platzieren"
-btnEditLevelOK="Bearbeitung abschließen"
-btnEditLevelCancel="Bearbeitung abbrechen"
-toolFileEdit="Symbolleiste &quot;Leveldatei bearbeiten&quot;"
-btnFileEditNewLevel="Neues Level erstellen"
-btnFileEditEditLevel="Level bearbeiten"
-btnFileEditAddComment="Kommentar hinzufügen"
-btnFileEditDeleteLevel="Ausgewählte Levels oder Kommentare löschen"
-toolFile="Symbolleiste &quot;Leveldatei&quot;"
-btnFileNew="Neue Leveldatei"
-btnFileOpen="Leveldatei öffnen"
-btnFileSave="Leveldatei speichern"
-btnFileCut="Ausschneiden"
-btnFileCopy="Kopieren"
-btnFilePaste="Einfügen"
-toolPlay="Symbolleiste &quot;Spielen&quot;"
-btnPlayOpenLevel="Leveldatei öffnen"
-btnPlayPrevLevel="Vorheriges Level"
-btnPlayNextLevel="Nächstes Level"
-btnPlayPrevUnsolvedLevel="Vorheriges ungelöstes Level"
-btnPlayNextUnsolvedLevel="Nächstes ungelöstes Level"
-/>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<item>
+  <ThisLanguage Translation="Deutsch" OldEnglish="English (GB)" />
+  <ProgramName Translation="Expert Sokoban" OldEnglish="Expert Sokoban" />
+  <Highscores>
+    <HighscoresForm Translation="Highscores" OldEnglish="Highscores" />
+    <Highscores Translation="{0} Schübe, {1} Züge" OldEnglish="{0} pushes, {1} moves" />
+    <btnOK Translation="OK" OldEnglish="OK" />
+  </Highscores>
+  <AboutBox>
+    <AboutBox Translation="Über Expert Sokoban" OldEnglish="About Expert Sokoban" />
+    <lblCredits Translation="Danksagungen:&#xD;&#xA;    Programmierung: Timwi, Roman&#xD;&#xA;    Grafik: Roman, Timwi&#xD;&#xA;    Test: Hawthorn&#xD;&#xA;    Deutsche Übersetzung: Timwi" OldEnglish="Credits:&#xA;    Programming: Timwi, Roman&#xA;    Graphics: Roman, Timwi&#xA;    Testing: Hawthorn" />
+    <btnOK Translation="OK" OldEnglish="OK" />
+  </AboutBox>
+  <Mainform>
+    <Mainform Translation="Expert Sokoban" OldEnglish="Expert Sokoban" />
+    <mnuMain Translation="Hauptmenü" OldEnglish="Main menu" />
+    <mnuLevel Translation="&amp;Level" OldEnglish="&amp;Level" />
+    <mnuLevelNew Translation="N&amp;eue Leveldatei" OldEnglish="&amp;New level file" />
+    <mnuLevelOpen Translation="Leveldatei ö&amp;ffnen..." OldEnglish="&amp;Open level file..." />
+    <mnuLevelSave Translation="Leveldatei &amp;speichern" OldEnglish="&amp;Save level file" />
+    <mnuLevelSaveAs Translation="Leveldatei s&amp;peichern als..." OldEnglish="Save level file &amp;as..." />
+    <mnuLevelUndo Translation="&amp;Zug zurücknehmen" OldEnglish="&amp;Undo move" />
+    <mnuLevelRedo Translation="Zug &amp;wiederherstellen" OldEnglish="Redo &amp;move" />
+    <mnuLevelRetry Translation="Level neu s&amp;tarten" OldEnglish="&amp;Retry level" />
+    <mnuLevelHighscores Translation="&amp;Highscores anzeigen" OldEnglish="Show &amp;highscores" />
+    <mnuLevelPrevious Translation="&amp;Vorheriges Level" OldEnglish="&amp;Previous level" />
+    <mnuLevelNext Translation="&amp;Nächstes Level" OldEnglish="N&amp;ext level" />
+    <mnuLevelPreviousUnsolved Translation="V&amp;orheriges ungelöstes Level" OldEnglish="Pre&amp;vious unsolved level" />
+    <mnuLevelNextUnsolved Translation="Nächstes &amp;ungelöstes Level" OldEnglish="Next unsolve&amp;d level" />
+    <mnuLevelChangePlayer Translation="Spielernamen än&amp;dern..." OldEnglish="&amp;Change player name..." />
+    <mnuLevelExit Translation="&amp;Beenden" OldEnglish="E&amp;xit" />
+    <mnuEdit Translation="&amp;Bearbeiten" OldEnglish="&amp;Edit" />
+    <mnuEditCreateLevel Translation="&amp;Neues Level erstellen" OldEnglish="Create &amp;new level" />
+    <mnuEditEditLevel Translation="Level &amp;bearbeiten" OldEnglish="&amp;Edit level" />
+    <mnuEditAddComment Translation="K&amp;ommentar hinzufügen..." OldEnglish="Add a co&amp;mment..." />
+    <mnuEditDelete Translation="&amp;Level/Kommentar löschen" OldEnglish="&amp;Delete level/comment" />
+    <mnuEditCut Translation="&amp;Ausschneiden" OldEnglish="C&amp;ut" />
+    <mnuEditCopy Translation="&amp;Kopieren" OldEnglish="&amp;Copy" />
+    <mnuEditPaste Translation="&amp;Einfügen" OldEnglish="&amp;Paste" />
+    <mnuEditFinish Translation="Bearbeitung ab&amp;schließen" OldEnglish="&amp;Finish editing" />
+    <mnuEditCancel Translation="Bea&amp;rbeitung abbrechen" OldEnglish="C&amp;ancel editing" />
+    <mnuEditWall Translation="&amp;Wand platzieren" OldEnglish="&amp;Wall tool" />
+    <mnuEditPiece Translation="S&amp;tein platzieren" OldEnglish="P&amp;iece tool" />
+    <mnuEditTarget Translation="&amp;Ziel platzieren" OldEnglish="&amp;Target tool" />
+    <mnuEditSokoban Translation="Sokoban &amp;platzieren" OldEnglish="&amp;Sokoban tool" />
+    <mnuOptions Translation="&amp;Optionen" OldEnglish="&amp;Options" />
+    <mnuOptionsLevelList Translation="&amp;Levelliste anzeigen" OldEnglish="Display &amp;level list" />
+    <mnuOptionsPlayingToolbar Translation="S&amp;ymbolleiste &quot;Spielen&quot; anzeigen" OldEnglish="Display pla&amp;ying toolbar" />
+    <mnuOptionsFileToolbars Translation="Symbolleisten &quot;Leveldatei &amp;bearbeiten&quot; anzeigen" OldEnglish="Display &amp;editing toolbars (level pack)" />
+    <mnuOptionsEditLevelToolbar Translation="Sy&amp;mbolleiste &quot;Level bearbeiten&quot; anzeigen" OldEnglish="Display editin&amp;g toolbar (level)" />
+    <mnuOptionsStatusBar Translation="Status&amp;zeile anzeigen" OldEnglish="Display stat&amp;us bar" />
+    <mnuOptionsMoveNo Translation="Zugweg &amp;nicht anzeigen" OldEnglish="Don't display &amp;move path" />
+    <mnuOptionsMoveLine Translation="Zugweg durch L&amp;inie darstellen" OldEnglish="Display move path as li&amp;ne" />
+    <mnuOptionsMoveDots Translation="Zugweg durch P&amp;unkte darstellen" OldEnglish="Display move path as &amp;dots" />
+    <mnuOptionsMoveArrows Translation="Zugweg durch &amp;Pfeile darstellen" OldEnglish="Display move path as &amp;arrows" />
+    <mnuOptionsPushNo Translation="Schubweg nicht &amp;anzeigen" OldEnglish="Don't display &amp;push path" />
+    <mnuOptionsPushLine Translation="Schub&amp;weg durch Linie darstellen" OldEnglish="Display push path as l&amp;ine" />
+    <mnuOptionsPushDots Translation="Schubweg durch Pun&amp;kte darstellen" OldEnglish="Display push path as do&amp;ts" />
+    <mnuOptionsPushArrows Translation="S&amp;chubweg durch Pfeile darstellen" OldEnglish="Display push path as a&amp;rrows" />
+    <mnuOptionsEndPos Translation="En&amp;dposition von Sokoban und Stein anzeigen" OldEnglish="Display end p&amp;osition of Sokoban and piece" />
+    <mnuOptionsAreaSokoban Translation="Erreichbare &amp;Fläche für Sokoban markieren" OldEnglish="Display reac&amp;hable area for Sokoban" />
+    <mnuOptionsAreaPiece Translation="&amp;Erreichbare Fläche für Stein markieren" OldEnglish="Display reacha&amp;ble area for piece" />
+    <mnuOptionsSound Translation="&amp;Sound aktivieren" OldEnglish="Enable &amp;sound" />
+    <mnuOptionsChangeLanguage Translation="Sp&amp;rache ändern" OldEnglish="&amp;Change language" />
+    <mnuHelp Translation="&amp;Hilfe" OldEnglish="&amp;Help" />
+    <mnuHelpKeyboard Translation="&amp;Tastaturkürzel" OldEnglish="&amp;Keyboard shortcuts" />
+    <mnuHelpAbout Translation="&amp;Info" OldEnglish="&amp;About" />
+    <lblStatusSolved Translation="Sie haben das Level gelöst. Herzlichen Glückwunsch!" OldEnglish="You have solved the level. Congratulations!" />
+    <lblStatusNull Translation="Gegenwärtig ist kein Level ausgewählt. Wählen Sie ein Level aus der Levelliste, um zu spielen." OldEnglish="No levels currently selected. Select a level from the level list to play." />
+    <toolEditLevel Translation="Symbolleiste &quot;Level bearbeiten&quot;" OldEnglish="Level edit toolbar" />
+    <btnEditLevelWall Translation="Wand platzieren" OldEnglish="Wall tool" />
+    <btnEditLevelPiece Translation="Stein platzieren" OldEnglish="Piece tool" />
+    <btnEditLevelTarget Translation="Ziel platzieren" OldEnglish="Target tool" />
+    <btnEditLevelSokoban Translation="Sokoban platzieren" OldEnglish="Sokoban tool" />
+    <btnEditLevelOK Translation="Bearbeitung abschließen" OldEnglish="Finish editing" />
+    <btnEditLevelCancel Translation="Bearbeitung abbrechen" OldEnglish="Cancel editing" />
+    <toolFileEdit Translation="Symbolleiste &quot;Leveldatei bearbeiten&quot;" OldEnglish="File edit toolbar" />
+    <btnFileEditNewLevel Translation="Neues Level erstellen" OldEnglish="Create new level" />
+    <btnFileEditEditLevel Translation="Level bearbeiten" OldEnglish="Edit level" />
+    <btnFileEditAddComment Translation="Kommentar hinzufügen" OldEnglish="Add a comment" />
+    <btnFileEditDeleteLevel Translation="Ausgewählte Levels oder Kommentare löschen" OldEnglish="Delete selected level or comment" />
+    <toolFile Translation="Symbolleiste &quot;Leveldatei&quot;" OldEnglish="File toolbar" />
+    <btnFileNew Translation="Neue Leveldatei" OldEnglish="New level file" />
+    <btnFileOpen Translation="Leveldatei öffnen" OldEnglish="Open level file" />
+    <btnFileSave Translation="Leveldatei speichern" OldEnglish="Save level file" />
+    <btnFileCut Translation="Ausschneiden" OldEnglish="Cut" />
+    <btnFileCopy Translation="Kopieren" OldEnglish="Copy" />
+    <btnFilePaste Translation="Einfügen" OldEnglish="Paste" />
+    <toolPlay Translation="Symbolleiste &quot;Spielen&quot;" OldEnglish="Playing toolbar" />
+    <btnPlayOpenLevel Translation="Leveldatei öffnen" OldEnglish="Open level file" />
+    <btnPlayPrevLevel Translation="Vorheriges Level" OldEnglish="Previous level" />
+    <btnPlayNextLevel Translation="Nächstes Level" OldEnglish="Next level" />
+    <btnPlayPrevUnsolvedLevel Translation="Vorheriges ungelöstes Level" OldEnglish="Previous unsolved level" />
+    <btnPlayNextUnsolvedLevel Translation="Nächstes ungelöstes Level" OldEnglish="Next unsolved level" />
+  </Mainform>
+  <LevelSolvedResourceName Translation="Skin_LevelSolvedDeX" OldEnglish="Skin_LevelSolved" />
+  <LevelList_NewComment_Prompt Translation="Geben Sie den neuen Kommentar ein:" OldEnglish="Please enter the revised comment:" />
+  <LevelList_LevelSolved Translation="Gelöst" OldEnglish="Solved" />
+  <LevelList_CurrentlyEditing Translation="Wird gerade bearbeitet" OldEnglish="Currently editing" />
+  <LevelList_JustSolved Translation="Soeben gelöst" OldEnglish="Just solved" />
+  <LevelList_CurrentlyPlaying Translation="Wird gerade gespielt" OldEnglish="Currently playing" />
+  <LevelList_Message_CannotSaveSettings Translation="Die Einstellungen konnten nicht gespeichert werden." OldEnglish="The settings could not be saved." />
+  <LevelList_Message_CannotSaveSettings_Title Translation="Fehler beim Speichern der Einstellungen" OldEnglish="Error saving settings" />
+  <LevelList_Message_AllSolved Translation="Sie haben alle Levels in dieser Leveldatei gelöst!" OldEnglish="You have solved all levels in this level pack!" />
+  <LevelList_Message_AllSolved_Title Translation="Herzlichen Glückwunsch!" OldEnglish="Congratulations!" />
+  <LevelList_Message_NoMoreUnsolved Translation="In dieser Leveldatei gibt es keine weiteren ungelösten Levels." OldEnglish="There are no more unsolved levels in this level file." />
+  <LevelList_Message_Next_Title Translation="Nächstes Level" OldEnglish="Next level" />
+  <LevelList_Message_NextUnsolved_Title Translation="Nächstes ungelöstes Level" OldEnglish="Next unsolved level" />
+  <LevelList_Message_Prev_Title Translation="Vorheriges Level" OldEnglish="Previous level" />
+  <LevelList_Message_PrevUnsolved_Title Translation="Vorheriges ungelöstes Level" OldEnglish="Previous unsolved level" />
+  <LevelList_Message_NoOtherLevel Translation="In dieser Leveldatei gibt es keine weiteren Levels." OldEnglish="There is no other level in the level file." />
+  <LevelList_Message_SaveChanges Translation="Sie haben an {0} Änderungen vorgenommen. Sollen diese Änderungen gespeichert werden?" OldEnglish="You have made changes to {0}. Would you like to save those changes?" />
+  <LevelList_Message_SaveChanges_btnSave Translation="Änderungen abspeichern" OldEnglish="Save changes" />
+  <LevelList_Message_SaveChanges_btnDiscard Translation="Änderungen &amp;verwerfen" OldEnglish="&amp;Discard changes" />
+  <LevelList_Message_DeleteLevel_CurrentlyEditing Translation="Sie bearbeiten dieses Level gerade.&#xD;&#xA;&#xD;&#xA;Wenn Sie das Level jetzt löschen, werden alle Änderungen daran verworfen.&#xD;&#xA;&#xD;&#xA;Sind Sie sicher, dass Sie das tun wollen?" OldEnglish="You are currently editing this level.&#xA;&#xA;If you delete this level now, all your modifications will be discarded.&#xA;&#xA;Are you sure you wish to do this?" />
+  <LevelList_Message_DeleteLevel_Title Translation="Level löschen" OldEnglish="Delete level" />
+  <LevelList_Message_DeleteLevel_CurrentlyPlaying Translation="Sie spielen dieses Level gerade.&#xD;&#xA;&#xD;&#xA;Sind Sie sicher, dass Sie aufgeben wollen?" OldEnglish="You are currently playing this level.&#xA;&#xA;Are you sure you wish to give up?" />
+  <LevelList_Message_DeleteLevel_Sure Translation="Sind Sie sicher, dass Sie dieses Level löschen möchten?" OldEnglish="Are you sure you wish to delete this level?" />
+  <LevelList_Message_DeleteLevel_btnDelete Translation="Level löschen" OldEnglish="Delete level" />
+  <MainArea_Message_DiscardChanges Translation="Sollen die Änderungen an dem Level, das Sie gerade bearbeiten, wirklich verworfen werden?" OldEnglish="Are you sure you wish to discard your changes to the level you're editing?" />
+  <MainArea_Message_GiveUp Translation="Wollen Sie dieses Level wirklich aufgeben?" OldEnglish="Are you sure you wish to give up the current level?" />
+  <Mainform_ChooseName Translation="Bitte geben Sie einen Namen ein, bei dem Sie in Highscore-Tabellen genannt werden möchten." OldEnglish="Please choose a name which will be used to identify you in highscore tables." />
+  <Mainform_ChooseName_FirstRun Translation="Bitte geben Sie einen Namen ein, bei dem Sie in Highscore-Tabellen genannt werden möchten.&#xD;&#xA;Sie können diesen Namen später ändern, indem Sie &quot;Spielernamen ändern&quot; im Menü &quot;Level&quot; wählen." OldEnglish="Please choose a name which will be used to identify you in highscore tables.&#xA;You can change this name later by selecting &quot;Change player name&quot; from the &quot;Level&quot; menu." />
+  <Mainform_ChooseName_SolvedLevel Translation="Herzlichen Glückwunsch! Sie haben das aktuelle Level gelöst.&#xD;&#xA;Bitte geben Sie einen Namen ein, bei dem Sie in Highscore-Tabellen genannt werden möchten.&#xD;&#xA;Wenn Sie sich jetzt keinen Namen zulegen, wird Ihre Punktzahl für dieses Level nicht gespeichert.&#xD;&#xA;Sie können diesen Namen später ändern, indem Sie &quot;Spielernamen ändern&quot; im Menü &quot;Level&quot; wählen." OldEnglish="Congratulations! You've solved the current level.&#xA;Please choose a name which will be used to identify you in highscore tables.&#xA;If you do not choose a name now, your score for this level will not be recorded.&#xA;You can change this name again later by selecting &quot;Change player name&quot; from the &quot;Level&quot; menu." />
+  <Mainform_Status_Moves Translation="Züge: {0}" OldEnglish="Moves: {0}" />
+  <Mainform_Status_Pushes Translation="Schübe: {0}" OldEnglish="Pushes: {0}" />
+  <Mainform_Status_PiecesRemaining Translation="Steine noch übrig: {0}" OldEnglish="Remaining pieces: {0}" />
+  <Mainform_Validity_Valid Translation="Das Level ist gültig." OldEnglish="The level is valid." />
+  <Mainform_Validity_NotEnclosed Translation="Das Level ist ungültig, weil es nicht vollständig von einer Wand umgeben ist." OldEnglish="The level is invalid because it is not completely enclosed by a wall." />
+  <Mainform_Validity_WrongNumber Translation="Das Level ist ungültig, weil die Anzahl der Steine nicht mit der Anzahl der Ziele übereinstimmt." OldEnglish="The level is invalid because the number of pieces does not match the number of targets." />
+  <Mainform_Validity_CannotOpen Translation="Das Level konnte nicht geöffnet werden, weil es ungültig ist." OldEnglish="The level could not be opened because it is invalid." />
+  <Mainform_Validity_CannotOpen_Fix Translation="Sie müssen das Level erst bearbeiten und das Problem beheben. Möchten Sie das Level jetzt bearbeiten?" OldEnglish="You must edit the level in order to address this issue. Would you like to edit the level now?" />
+  <Mainform_Validity_CannotOpen_btnEdit Translation="Level bearbeiten" OldEnglish="Edit level" />
+  <Mainform_Validity_CannotSave Translation="Das folgende Problem wurde bei diesem Level festgestellt:" OldEnglish="The following problem has been detected with this level:" />
+  <Mainform_Validity_CannotSave_Warning Translation="Sie können dieses Level nicht spielen, solange das Problem besteht. Sind Sie sicher, dass das Level in diesem ungültigen Zustand bleiben soll?" OldEnglish="You cannot play this level until you address this issue. Are you sure you wish to leave the level in this invalid state?" />
+  <Mainform_Validity_CannotSave_btnSave Translation="Level trotzdem speichern" OldEnglish="Save level anyway" />
+  <Mainform_Validity_CannotSave_btnResume Translation="Bearbeitung fortsetzen" OldEnglish="Resume editing" />
+  <Mainform_InvalidFile Translation="Die angegebene Datei ist keine gültige Sokoban-Leveldatei." OldEnglish="The selected file is not a valid Sokoban level file." />
+  <Mainform_InvalidFile_Title Translation="Fehler beim Öffnen der Datei" OldEnglish="Error opening level file" />
+  <Mainform_NoHighscores Translation="Für das ausgewählte Level sind bisher noch keine Highscores gespeichert worden." OldEnglish="The selected level does not have any highscores associated with it yet." />
+  <Mainform_NoHighscores_Title Translation="Keine Highscores für dieses Level" OldEnglish="No highscores for this level" />
+  <Mainform_MessageTitle_Exit Translation="Expert Sokoban beenden" OldEnglish="Exit Expert Sokoban" />
+  <Mainform_MessageTitle_OpenLevel Translation="Level öffnen" OldEnglish="Open level" />
+  <Mainform_MessageTitle_RetryLevel Translation="Level neu starten" OldEnglish="Retry level" />
+  <Mainform_MessageTitle_NewLevelFile Translation="Neue Leveldatei" OldEnglish="New level file" />
+  <Mainform_MessageTitle_OpenLevelFile Translation="Leveldatei öffnen" OldEnglish="Open level file" />
+  <Mainform_MessageTitle_FinishEditing Translation="Bearbeitung abschließen" OldEnglish="Finish editing" />
+  <Mainform_LevelList_NewComment Translation="Bitte geben Sie einen Kommentar ein:" OldEnglish="Please enter a comment:" />
+  <Mainform_Error_HelpFileNotFound Translation="Die Hilfe-Datei ({0}) konnte nicht gefunden werden." OldEnglish="The help file ({0}) could not be found." />
+  <Save_FileType_TextFiles Translation="Textdateien" OldEnglish="Text files" />
+  <Save_FileType_AllFiles Translation="Alle Dateien" OldEnglish="All files" />
+  <FileName_Untitled Translation="(unbenannt)" OldEnglish="(untitled)" />
+  <Dialogs_btnDiscard Translation="Änderungen verwerfen" OldEnglish="Discard changes" />
+  <Dialogs_btnGiveUp Translation="Aufgeben" OldEnglish="Give up" />
+  <Dialogs_btnCancel Translation="Abbrechen" OldEnglish="Cancel" />
+  <Dialogs_btnOK Translation="OK" OldEnglish="OK" />
+  <PlayerNameMissing Translation="(kein Spielername)" OldEnglish="(no player name)" />
 </item>
