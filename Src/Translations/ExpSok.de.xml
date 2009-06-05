@@ -1,10 +1,77 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<item>
-  <ThisLanguage Translation="Deutsch" OldEnglish="English (GB)" />
+<item Language="German">
   <ProgramName Translation="Expert Sokoban" OldEnglish="Expert Sokoban" />
+  <LevelSolvedResourceName Translation="Skin_LevelSolvedDeX" OldEnglish="Skin_LevelSolved" />
+  <Mainform_Status_Moves Translation="Züge: {0}" OldEnglish="Moves: {0}" />
+  <Mainform_Status_Pushes Translation="Schübe: {0}" OldEnglish="Pushes: {0}" />
+  <Mainform_Status_PiecesRemaining Translation="Steine noch übrig: {0}" OldEnglish="Remaining pieces: {0}" />
+  <Mainform_Validity_Valid Translation="Das Level ist gültig." OldEnglish="The level is valid." />
+  <Mainform_Validity_NotEnclosed Translation="Das Level ist ungültig, weil es nicht vollständig von einer Wand umgeben ist." OldEnglish="The level is invalid because it is not completely enclosed by a wall." />
+  <Mainform_Validity_WrongNumber Translation="Das Level ist ungültig, weil die Anzahl der Steine nicht mit der Anzahl der Ziele übereinstimmt." OldEnglish="The level is invalid because the number of pieces does not match the number of targets." />
+  <LevelList_LevelSolved Translation="Gelöst" OldEnglish="Solved" />
+  <LevelList_CurrentlyEditing Translation="Wird gerade bearbeitet" OldEnglish="Currently editing" />
+  <LevelList_JustSolved Translation="Soeben gelöst" OldEnglish="Just solved" />
+  <LevelList_CurrentlyPlaying Translation="Wird gerade gespielt" OldEnglish="Currently playing" />
+  <Save_FileType_TextFiles Translation="Textdateien" OldEnglish="Text files" />
+  <Save_FileType_AllFiles Translation="Alle Dateien" OldEnglish="All files" />
+  <FileName_Untitled Translation="(unbenannt)" OldEnglish="(untitled)" />
+  <PlayerNameMissing Translation="(kein Spielername)" OldEnglish="(no player name)" />
+  <ConfirmationMessages>
+    <NewComment_Title Translation="New comment" OldEnglish="" />
+    <NewComment_Prompt Translation="Bitte geben Sie einen Kommentar ein:" OldEnglish="Please enter a comment:" />
+    <EditComment_Title Translation="Edit comment" OldEnglish="" />
+    <EditComment_Prompt Translation="Geben Sie den neuen Kommentar ein:" OldEnglish="Please enter the revised comment:" />
+    <LevelList_Message_CannotSaveSettings Translation="Die Einstellungen konnten nicht gespeichert werden." OldEnglish="The settings could not be saved." />
+    <LevelList_Message_CannotSaveSettings_Title Translation="Fehler beim Speichern der Einstellungen" OldEnglish="Error saving settings" />
+    <LevelList_Message_AllSolved Translation="Sie haben alle Levels in dieser Leveldatei gelöst!" OldEnglish="You have solved all levels in this level pack!" />
+    <LevelList_Message_AllSolved_Title Translation="Herzlichen Glückwunsch!" OldEnglish="Congratulations!" />
+    <LevelList_Message_NoMoreUnsolved Translation="In dieser Leveldatei gibt es keine weiteren ungelösten Levels." OldEnglish="There are no more unsolved levels in this level file." />
+    <LevelList_Message_Next_Title Translation="Nächstes Level" OldEnglish="Next level" />
+    <LevelList_Message_NextUnsolved_Title Translation="Nächstes ungelöstes Level" OldEnglish="Next unsolved level" />
+    <LevelList_Message_Prev_Title Translation="Vorheriges Level" OldEnglish="Previous level" />
+    <LevelList_Message_PrevUnsolved_Title Translation="Vorheriges ungelöstes Level" OldEnglish="Previous unsolved level" />
+    <LevelList_Message_NoOtherLevel Translation="In dieser Leveldatei gibt es keine weiteren Levels." OldEnglish="There is no other level in the level file." />
+    <LevelList_Message_SaveChanges Translation="Sie haben an {0} Änderungen vorgenommen. Sollen diese Änderungen gespeichert werden?" OldEnglish="You have made changes to {0}. Would you like to save those changes?" />
+    <LevelList_Message_SaveChanges_btnSave Translation="Änderungen abspeichern" OldEnglish="Save changes" />
+    <LevelList_Message_SaveChanges_btnDiscard Translation="Änderungen &amp;verwerfen" OldEnglish="&amp;Discard changes" />
+    <LevelList_Message_DeleteLevel_CurrentlyEditing Translation="Sie bearbeiten dieses Level gerade.&#xD;&#xA;&#xD;&#xA;Wenn Sie das Level jetzt löschen, werden alle Änderungen daran verworfen.&#xD;&#xA;&#xD;&#xA;Sind Sie sicher, dass Sie das tun wollen?" OldEnglish="You are currently editing this level.&#xA;&#xA;If you delete this level now, all your modifications will be discarded.&#xA;&#xA;Are you sure you wish to do this?" />
+    <LevelList_Message_DeleteLevel_Title Translation="Level löschen" OldEnglish="Delete level" />
+    <LevelList_Message_DeleteLevel_CurrentlyPlaying Translation="Sie spielen dieses Level gerade.&#xD;&#xA;&#xD;&#xA;Sind Sie sicher, dass Sie aufgeben wollen?" OldEnglish="You are currently playing this level.&#xA;&#xA;Are you sure you wish to give up?" />
+    <LevelList_Message_DeleteLevel_Sure Translation="Sind Sie sicher, dass Sie dieses Level löschen möchten?" OldEnglish="Are you sure you wish to delete this level?" />
+    <LevelList_Message_DeleteLevel_btnDelete Translation="Level löschen" OldEnglish="Delete level" />
+    <MainArea_Message_DiscardChanges Translation="Sollen die Änderungen an dem Level, das Sie gerade bearbeiten, wirklich verworfen werden?" OldEnglish="Are you sure you wish to discard your changes to the level you're editing?" />
+    <MainArea_Message_GiveUp Translation="Wollen Sie dieses Level wirklich aufgeben?" OldEnglish="Are you sure you wish to give up the current level?" />
+    <Mainform_ChooseName Translation="Bitte geben Sie einen Namen ein, bei dem Sie in Highscore-Tabellen genannt werden möchten." OldEnglish="Please choose a name which will be used to identify you in highscore tables." />
+    <Mainform_ChooseName_FirstRun Translation="Bitte geben Sie einen Namen ein, bei dem Sie in Highscore-Tabellen genannt werden möchten.&#xD;&#xA;Sie können diesen Namen später ändern, indem Sie &quot;Spielernamen ändern&quot; im Menü &quot;Level&quot; wählen." OldEnglish="Please choose a name which will be used to identify you in highscore tables.&#xA;You can change this name later by selecting &quot;Change player name&quot; from the &quot;Level&quot; menu." />
+    <Mainform_ChooseName_SolvedLevel Translation="Herzlichen Glückwunsch! Sie haben das aktuelle Level gelöst.&#xD;&#xA;Bitte geben Sie einen Namen ein, bei dem Sie in Highscore-Tabellen genannt werden möchten.&#xD;&#xA;Wenn Sie sich jetzt keinen Namen zulegen, wird Ihre Punktzahl für dieses Level nicht gespeichert.&#xD;&#xA;Sie können diesen Namen später ändern, indem Sie &quot;Spielernamen ändern&quot; im Menü &quot;Level&quot; wählen." OldEnglish="Congratulations! You've solved the current level.&#xA;Please choose a name which will be used to identify you in highscore tables.&#xA;If you do not choose a name now, your score for this level will not be recorded.&#xA;You can change this name again later by selecting &quot;Change player name&quot; from the &quot;Level&quot; menu." />
+    <Mainform_Validity_CannotOpen Translation="Das Level konnte nicht geöffnet werden, weil es ungültig ist." OldEnglish="The level could not be opened because it is invalid." />
+    <Mainform_Validity_CannotOpen_Fix Translation="Sie müssen das Level erst bearbeiten und das Problem beheben. Möchten Sie das Level jetzt bearbeiten?" OldEnglish="You must edit the level in order to address this issue. Would you like to edit the level now?" />
+    <Mainform_Validity_CannotOpen_btnEdit Translation="Level bearbeiten" OldEnglish="Edit level" />
+    <Mainform_Validity_CannotSave Translation="Das folgende Problem wurde bei diesem Level festgestellt:" OldEnglish="The following problem has been detected with this level:" />
+    <Mainform_Validity_CannotSave_Warning Translation="Sie können dieses Level nicht spielen, solange das Problem besteht. Sind Sie sicher, dass das Level in diesem ungültigen Zustand bleiben soll?" OldEnglish="You cannot play this level until you address this issue. Are you sure you wish to leave the level in this invalid state?" />
+    <Mainform_Validity_CannotSave_btnSave Translation="Level trotzdem speichern" OldEnglish="Save level anyway" />
+    <Mainform_Validity_CannotSave_btnResume Translation="Bearbeitung fortsetzen" OldEnglish="Resume editing" />
+    <Mainform_InvalidFile Translation="Die angegebene Datei ist keine gültige Sokoban-Leveldatei." OldEnglish="The selected file is not a valid Sokoban level file." />
+    <Mainform_InvalidFile_Title Translation="Fehler beim Öffnen der Datei" OldEnglish="Error opening level file" />
+    <Mainform_NoHighscores Translation="Für das ausgewählte Level sind bisher noch keine Highscores gespeichert worden." OldEnglish="The selected level does not have any highscores associated with it yet." />
+    <Mainform_NoHighscores_Title Translation="Keine Highscores für dieses Level" OldEnglish="No highscores for this level" />
+    <Mainform_MessageTitle_Exit Translation="Expert Sokoban beenden" OldEnglish="Exit Expert Sokoban" />
+    <Mainform_MessageTitle_OpenLevel Translation="Level öffnen" OldEnglish="Open level" />
+    <Mainform_MessageTitle_RetryLevel Translation="Level neu starten" OldEnglish="Retry level" />
+    <Mainform_MessageTitle_NewLevelFile Translation="Neue Leveldatei" OldEnglish="New level file" />
+    <Mainform_MessageTitle_OpenLevelFile Translation="Leveldatei öffnen" OldEnglish="Open level file" />
+    <Mainform_MessageTitle_FinishEditing Translation="Bearbeitung abschließen" OldEnglish="Finish editing" />
+    <Mainform_Error_HelpFileNotFound Translation="Die Hilfe-Datei ({0}) konnte nicht gefunden werden." OldEnglish="The help file ({0}) could not be found." />
+    <Dialogs_btnOK Translation="OK" OldEnglish="OK" />
+    <Dialogs_btnCancel Translation="Abbrechen" OldEnglish="Cancel" />
+    <Dialogs_btnDiscard Translation="Änderungen verwerfen" OldEnglish="Discard changes" />
+    <Dialogs_btnGiveUp Translation="Aufgeben" OldEnglish="Give up" />
+  </ConfirmationMessages>
   <Highscores>
     <HighscoresForm Translation="Highscores" OldEnglish="Highscores" />
-    <Highscores Translation="{0} Schübe, {1} Züge" OldEnglish="{0} pushes, {1} moves" />
+    <Highscores>
+      <OldEnglish />
+    </Highscores>
     <btnOK Translation="OK" OldEnglish="OK" />
   </Highscores>
   <AboutBox>
@@ -94,66 +161,4 @@
     <btnPlayPrevUnsolvedLevel Translation="Vorheriges ungelöstes Level" OldEnglish="Previous unsolved level" />
     <btnPlayNextUnsolvedLevel Translation="Nächstes ungelöstes Level" OldEnglish="Next unsolved level" />
   </Mainform>
-  <LevelSolvedResourceName Translation="Skin_LevelSolvedDeX" OldEnglish="Skin_LevelSolved" />
-  <LevelList_NewComment_Prompt Translation="Geben Sie den neuen Kommentar ein:" OldEnglish="Please enter the revised comment:" />
-  <LevelList_LevelSolved Translation="Gelöst" OldEnglish="Solved" />
-  <LevelList_CurrentlyEditing Translation="Wird gerade bearbeitet" OldEnglish="Currently editing" />
-  <LevelList_JustSolved Translation="Soeben gelöst" OldEnglish="Just solved" />
-  <LevelList_CurrentlyPlaying Translation="Wird gerade gespielt" OldEnglish="Currently playing" />
-  <LevelList_Message_CannotSaveSettings Translation="Die Einstellungen konnten nicht gespeichert werden." OldEnglish="The settings could not be saved." />
-  <LevelList_Message_CannotSaveSettings_Title Translation="Fehler beim Speichern der Einstellungen" OldEnglish="Error saving settings" />
-  <LevelList_Message_AllSolved Translation="Sie haben alle Levels in dieser Leveldatei gelöst!" OldEnglish="You have solved all levels in this level pack!" />
-  <LevelList_Message_AllSolved_Title Translation="Herzlichen Glückwunsch!" OldEnglish="Congratulations!" />
-  <LevelList_Message_NoMoreUnsolved Translation="In dieser Leveldatei gibt es keine weiteren ungelösten Levels." OldEnglish="There are no more unsolved levels in this level file." />
-  <LevelList_Message_Next_Title Translation="Nächstes Level" OldEnglish="Next level" />
-  <LevelList_Message_NextUnsolved_Title Translation="Nächstes ungelöstes Level" OldEnglish="Next unsolved level" />
-  <LevelList_Message_Prev_Title Translation="Vorheriges Level" OldEnglish="Previous level" />
-  <LevelList_Message_PrevUnsolved_Title Translation="Vorheriges ungelöstes Level" OldEnglish="Previous unsolved level" />
-  <LevelList_Message_NoOtherLevel Translation="In dieser Leveldatei gibt es keine weiteren Levels." OldEnglish="There is no other level in the level file." />
-  <LevelList_Message_SaveChanges Translation="Sie haben an {0} Änderungen vorgenommen. Sollen diese Änderungen gespeichert werden?" OldEnglish="You have made changes to {0}. Would you like to save those changes?" />
-  <LevelList_Message_SaveChanges_btnSave Translation="Änderungen abspeichern" OldEnglish="Save changes" />
-  <LevelList_Message_SaveChanges_btnDiscard Translation="Änderungen &amp;verwerfen" OldEnglish="&amp;Discard changes" />
-  <LevelList_Message_DeleteLevel_CurrentlyEditing Translation="Sie bearbeiten dieses Level gerade.&#xD;&#xA;&#xD;&#xA;Wenn Sie das Level jetzt löschen, werden alle Änderungen daran verworfen.&#xD;&#xA;&#xD;&#xA;Sind Sie sicher, dass Sie das tun wollen?" OldEnglish="You are currently editing this level.&#xA;&#xA;If you delete this level now, all your modifications will be discarded.&#xA;&#xA;Are you sure you wish to do this?" />
-  <LevelList_Message_DeleteLevel_Title Translation="Level löschen" OldEnglish="Delete level" />
-  <LevelList_Message_DeleteLevel_CurrentlyPlaying Translation="Sie spielen dieses Level gerade.&#xD;&#xA;&#xD;&#xA;Sind Sie sicher, dass Sie aufgeben wollen?" OldEnglish="You are currently playing this level.&#xA;&#xA;Are you sure you wish to give up?" />
-  <LevelList_Message_DeleteLevel_Sure Translation="Sind Sie sicher, dass Sie dieses Level löschen möchten?" OldEnglish="Are you sure you wish to delete this level?" />
-  <LevelList_Message_DeleteLevel_btnDelete Translation="Level löschen" OldEnglish="Delete level" />
-  <MainArea_Message_DiscardChanges Translation="Sollen die Änderungen an dem Level, das Sie gerade bearbeiten, wirklich verworfen werden?" OldEnglish="Are you sure you wish to discard your changes to the level you're editing?" />
-  <MainArea_Message_GiveUp Translation="Wollen Sie dieses Level wirklich aufgeben?" OldEnglish="Are you sure you wish to give up the current level?" />
-  <Mainform_ChooseName Translation="Bitte geben Sie einen Namen ein, bei dem Sie in Highscore-Tabellen genannt werden möchten." OldEnglish="Please choose a name which will be used to identify you in highscore tables." />
-  <Mainform_ChooseName_FirstRun Translation="Bitte geben Sie einen Namen ein, bei dem Sie in Highscore-Tabellen genannt werden möchten.&#xD;&#xA;Sie können diesen Namen später ändern, indem Sie &quot;Spielernamen ändern&quot; im Menü &quot;Level&quot; wählen." OldEnglish="Please choose a name which will be used to identify you in highscore tables.&#xA;You can change this name later by selecting &quot;Change player name&quot; from the &quot;Level&quot; menu." />
-  <Mainform_ChooseName_SolvedLevel Translation="Herzlichen Glückwunsch! Sie haben das aktuelle Level gelöst.&#xD;&#xA;Bitte geben Sie einen Namen ein, bei dem Sie in Highscore-Tabellen genannt werden möchten.&#xD;&#xA;Wenn Sie sich jetzt keinen Namen zulegen, wird Ihre Punktzahl für dieses Level nicht gespeichert.&#xD;&#xA;Sie können diesen Namen später ändern, indem Sie &quot;Spielernamen ändern&quot; im Menü &quot;Level&quot; wählen." OldEnglish="Congratulations! You've solved the current level.&#xA;Please choose a name which will be used to identify you in highscore tables.&#xA;If you do not choose a name now, your score for this level will not be recorded.&#xA;You can change this name again later by selecting &quot;Change player name&quot; from the &quot;Level&quot; menu." />
-  <Mainform_Status_Moves Translation="Züge: {0}" OldEnglish="Moves: {0}" />
-  <Mainform_Status_Pushes Translation="Schübe: {0}" OldEnglish="Pushes: {0}" />
-  <Mainform_Status_PiecesRemaining Translation="Steine noch übrig: {0}" OldEnglish="Remaining pieces: {0}" />
-  <Mainform_Validity_Valid Translation="Das Level ist gültig." OldEnglish="The level is valid." />
-  <Mainform_Validity_NotEnclosed Translation="Das Level ist ungültig, weil es nicht vollständig von einer Wand umgeben ist." OldEnglish="The level is invalid because it is not completely enclosed by a wall." />
-  <Mainform_Validity_WrongNumber Translation="Das Level ist ungültig, weil die Anzahl der Steine nicht mit der Anzahl der Ziele übereinstimmt." OldEnglish="The level is invalid because the number of pieces does not match the number of targets." />
-  <Mainform_Validity_CannotOpen Translation="Das Level konnte nicht geöffnet werden, weil es ungültig ist." OldEnglish="The level could not be opened because it is invalid." />
-  <Mainform_Validity_CannotOpen_Fix Translation="Sie müssen das Level erst bearbeiten und das Problem beheben. Möchten Sie das Level jetzt bearbeiten?" OldEnglish="You must edit the level in order to address this issue. Would you like to edit the level now?" />
-  <Mainform_Validity_CannotOpen_btnEdit Translation="Level bearbeiten" OldEnglish="Edit level" />
-  <Mainform_Validity_CannotSave Translation="Das folgende Problem wurde bei diesem Level festgestellt:" OldEnglish="The following problem has been detected with this level:" />
-  <Mainform_Validity_CannotSave_Warning Translation="Sie können dieses Level nicht spielen, solange das Problem besteht. Sind Sie sicher, dass das Level in diesem ungültigen Zustand bleiben soll?" OldEnglish="You cannot play this level until you address this issue. Are you sure you wish to leave the level in this invalid state?" />
-  <Mainform_Validity_CannotSave_btnSave Translation="Level trotzdem speichern" OldEnglish="Save level anyway" />
-  <Mainform_Validity_CannotSave_btnResume Translation="Bearbeitung fortsetzen" OldEnglish="Resume editing" />
-  <Mainform_InvalidFile Translation="Die angegebene Datei ist keine gültige Sokoban-Leveldatei." OldEnglish="The selected file is not a valid Sokoban level file." />
-  <Mainform_InvalidFile_Title Translation="Fehler beim Öffnen der Datei" OldEnglish="Error opening level file" />
-  <Mainform_NoHighscores Translation="Für das ausgewählte Level sind bisher noch keine Highscores gespeichert worden." OldEnglish="The selected level does not have any highscores associated with it yet." />
-  <Mainform_NoHighscores_Title Translation="Keine Highscores für dieses Level" OldEnglish="No highscores for this level" />
-  <Mainform_MessageTitle_Exit Translation="Expert Sokoban beenden" OldEnglish="Exit Expert Sokoban" />
-  <Mainform_MessageTitle_OpenLevel Translation="Level öffnen" OldEnglish="Open level" />
-  <Mainform_MessageTitle_RetryLevel Translation="Level neu starten" OldEnglish="Retry level" />
-  <Mainform_MessageTitle_NewLevelFile Translation="Neue Leveldatei" OldEnglish="New level file" />
-  <Mainform_MessageTitle_OpenLevelFile Translation="Leveldatei öffnen" OldEnglish="Open level file" />
-  <Mainform_MessageTitle_FinishEditing Translation="Bearbeitung abschließen" OldEnglish="Finish editing" />
-  <Mainform_LevelList_NewComment Translation="Bitte geben Sie einen Kommentar ein:" OldEnglish="Please enter a comment:" />
-  <Mainform_Error_HelpFileNotFound Translation="Die Hilfe-Datei ({0}) konnte nicht gefunden werden." OldEnglish="The help file ({0}) could not be found." />
-  <Save_FileType_TextFiles Translation="Textdateien" OldEnglish="Text files" />
-  <Save_FileType_AllFiles Translation="Alle Dateien" OldEnglish="All files" />
-  <FileName_Untitled Translation="(unbenannt)" OldEnglish="(untitled)" />
-  <Dialogs_btnDiscard Translation="Änderungen verwerfen" OldEnglish="Discard changes" />
-  <Dialogs_btnGiveUp Translation="Aufgeben" OldEnglish="Give up" />
-  <Dialogs_btnCancel Translation="Abbrechen" OldEnglish="Cancel" />
-  <Dialogs_btnOK Translation="OK" OldEnglish="OK" />
-  <PlayerNameMissing Translation="(kein Spielername)" OldEnglish="(no player name)" />
 </item>

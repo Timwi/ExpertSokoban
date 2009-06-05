@@ -8,7 +8,7 @@ namespace ExpertSokoban
 {
     public static class Program
     {
-        public static Translation Translation = new Translation();
+        public static Translation Tr = new Translation();
         public static ExpSokSettings Settings;
 
         /// <summary>
@@ -21,12 +21,12 @@ namespace ExpertSokoban
             Application.SetCompatibleTextRenderingDefault(false);
 
 #if DEBUG
-            XmlClassify.SaveObjectToXmlFile(Translation, Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), @"ExpSok-translation.template.xml"));
+            XmlClassify.SaveObjectToXmlFile(Tr, Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), @"ExpSok-translation.template.xml"));
 #endif
 
             try { Settings = XmlClassify.LoadObjectFromXmlFile<ExpSokSettings>(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), @"ExpSok.settings.xml")); }
             catch { Settings = new ExpSokSettings(); }
-            Lingo.TryLoadTranslation("ExpSok", Settings.Language, ref Translation);
+            Lingo.TryLoadTranslation("ExpSok", Settings.Language, ref Tr);
 
             Application.Run(new Mainform());
 

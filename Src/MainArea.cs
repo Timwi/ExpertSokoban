@@ -567,7 +567,7 @@ namespace ExpertSokoban
 
             if (_state == MainAreaState.Solved)
             {
-                Image ImgLevelSolved = (Image) Properties.Resources.ResourceManager.GetObject(Program.Translation.LevelSolvedResourceName) ?? Properties.Resources.Skin_LevelSolved;
+                Image ImgLevelSolved = (Properties.Resources.ResourceManager.GetObject(Program.Tr.LevelSolvedResourceName) as Image) ?? Properties.Resources.Skin_LevelSolved;
                 if (ClientSize.Width < ImgLevelSolved.Width)
                     e.Graphics.DrawImage(ImgLevelSolved,
                         0, (ClientSize.Height - ClientSize.Width * ImgLevelSolved.Height / ImgLevelSolved.Width) / 2,
@@ -1470,10 +1470,10 @@ namespace ExpertSokoban
 
             // Ask the user the appropriate question.
             return State == MainAreaState.Editing
-                ? DlgMessage.Show(Program.Translation.MainArea_Message_DiscardChanges,
-                    caption, DlgType.Warning, Program.Translation.Dialogs_btnDiscard, Program.Translation.Dialogs_btnCancel) == 0
-                : DlgMessage.Show(Program.Translation.MainArea_Message_GiveUp,
-                    caption, DlgType.Warning, Program.Translation.Dialogs_btnGiveUp, Program.Translation.Dialogs_btnCancel) == 0;
+                ? DlgMessage.Show(Program.Tr.ConfirmationMessages.MainArea_Message_DiscardChanges,
+                    caption, DlgType.Warning, Program.Tr.ConfirmationMessages.Dialogs_btnDiscard, Program.Tr.ConfirmationMessages.Dialogs_btnCancel) == 0
+                : DlgMessage.Show(Program.Tr.ConfirmationMessages.MainArea_Message_GiveUp,
+                    caption, DlgType.Warning, Program.Tr.ConfirmationMessages.Dialogs_btnGiveUp, Program.Tr.ConfirmationMessages.Dialogs_btnCancel) == 0;
         }
     }
 }

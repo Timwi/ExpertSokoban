@@ -5,11 +5,11 @@ namespace ExpertSokoban
     [Serializable]
     public class Score
     {
-        public int Pushes;
         public int Moves;
-        public Score(int pushes, int moves) { Pushes = pushes; Moves = moves; }
+        public int Pushes;
+        public Score(int moves, int pushes) { Moves = moves; Pushes = pushes; }
         // This empty constructor is necessary for XmlClassify to work
-        public Score() { Pushes = 0; Moves = 0; }
+        public Score() { Moves = 0; Pushes = 0; }
     }
 
     /// <summary>

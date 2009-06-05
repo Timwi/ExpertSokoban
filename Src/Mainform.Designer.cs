@@ -223,7 +223,7 @@ namespace ExpertSokoban
             this.mnuContextSep3,
             this.mnuContextHide});
             this.mnuContext.Name = "LevelContextMenu";
-            this.mnuContext.Size = new System.Drawing.Size(228, 242);
+            this.mnuContext.Size = new System.Drawing.Size(228, 264);
             // 
             // mnuContextPlay
             // 

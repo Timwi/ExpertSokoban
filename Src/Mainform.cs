@@ -28,7 +28,7 @@ namespace ExpertSokoban
             : base(Program.Settings.MainFormSettings)
         {
             InitializeComponent();
-            Lingo.TranslateControl(this, Program.Translation.Mainform);
+            Lingo.TranslateControl(this, Program.Tr.Mainform);
             mnuOptionsLanguageEdit = new ToolStripMenuItem("&Edit current language", null, new EventHandler(editCurrentLanguage));
             initLanguageMenu();
 
@@ -48,7 +48,7 @@ namespace ExpertSokoban
             showLevelList(Program.Settings.DisplayLevelList);
 
             if (Program.Settings.PlayerName == null || Program.Settings.PlayerName.Length == 0)
-                Program.Settings.PlayerName = InputBox.GetLine(Program.Translation.Mainform_ChooseName_FirstRun, "", Program.Translation.ProgramName, Program.Translation.Dialogs_btnOK, Program.Translation.Dialogs_btnCancel);
+                Program.Settings.PlayerName = InputBox.GetLine(Program.Tr.ConfirmationMessages.Mainform_ChooseName_FirstRun, "", Program.Tr.ProgramName, Program.Tr.ConfirmationMessages.Dialogs_btnOK, Program.Tr.ConfirmationMessages.Dialogs_btnCancel);
 
             // Restore the last used level pack
             try
@@ -72,7 +72,6 @@ namespace ExpertSokoban
             mnuOptionsChangeLanguage.DropDownItems.AddRange(RT.Util.Lingo.Lingo.LanguageToolStripMenuItems<Translation>(
                 "ExpSok.*.xml",
                 @"^ExpSok\.(.*)\.xml$",
-                t => t.ThisLanguage,
                 (t, m) => setLanguage(m == null ? null : m.Groups[1].Value, t),
                 m => Program.Settings.Language == null ? m == null : m != null && m.Groups[1].Value == Program.Settings.Language
             ));
@@ -82,8 +81,8 @@ namespace ExpertSokoban
         private void setLanguage(string languageCode, Translation translation)
         {
             Program.Settings.Language = languageCode;
-            Program.Translation = translation;
-            Lingo.TranslateControl(this, Program.Translation.Mainform);
+            Program.Tr = translation;
+            Lingo.TranslateControl(this, Program.Tr.Mainform);
             lstLevels.RefreshItems();
             if (ctMainArea.State == MainAreaState.Solved)
                 ctMainArea.Refresh();
@@ -117,7 +116,7 @@ namespace ExpertSokoban
         /// </summary>
         private void formClosing(object sender, FormClosingEventArgs e)
         {
-            if (!mayDestroyEverything(Program.Translation.Mainform_MessageTitle_Exit))
+            if (!mayDestroyEverything(Program.Tr.ConfirmationMessages.Mainform_MessageTitle_Exit))
                 e.Cancel = true;
         }
 
@@ -134,30 +133,30 @@ namespace ExpertSokoban
             bool MainAreaSolved = ctMainArea.State == MainAreaState.Solved;
 
             // Caption
-            Text = Program.Translation.ProgramName + " – " +
+            Text = Program.Tr.ProgramName + " – " +
                     (Program.Settings.PlayerName == null || Program.Settings.PlayerName.Length == 0
-                        ? Program.Translation.PlayerNameMissing.Translation : Program.Settings.PlayerName) +
+                        ? Program.Tr.PlayerNameMissing.Translation : Program.Settings.PlayerName) +
                     " – " +
-                    (Program.Settings.LevelFilename == null ? Program.Translation.FileName_Untitled.Translation : Path.GetFileName(Program.Settings.LevelFilename)) +
+                    (Program.Settings.LevelFilename == null ? Program.Tr.FileName_Untitled.Translation : Path.GetFileName(Program.Settings.LevelFilename)) +
                     (lstLevels.Modified ? " •" : "");
 
             // Status bar text
             if (MainAreaEditing)
             {
-                string Message = Program.Translation.Mainform_Validity_Valid;
+                string Message = Program.Tr.Mainform_Validity_Valid;
                 SokobanLevelStatus Status = ctMainArea.Level.Validity;
                 if (Status == SokobanLevelStatus.NotEnclosed)
-                    Message = Program.Translation.Mainform_Validity_NotEnclosed;
+                    Message = Program.Tr.Mainform_Validity_NotEnclosed;
                 else if (Status == SokobanLevelStatus.TargetsPiecesMismatch)
-                    Message = Program.Translation.Mainform_Validity_WrongNumber;
+                    Message = Program.Tr.Mainform_Validity_WrongNumber;
                 lblStatusEdit.Text = Message;
             }
             else if (!MainAreaNull)
             {
-                lblStatusMoves.Text = Program.Translation.Mainform_Status_Moves.Fmt(ctMainArea.Moves);
-                lblStatusPushes.Text = Program.Translation.Mainform_Status_Pushes.Fmt(ctMainArea.Pushes);
+                lblStatusMoves.Text = Program.Tr.Mainform_Status_Moves.Fmt(ctMainArea.Moves);
+                lblStatusPushes.Text = Program.Tr.Mainform_Status_Pushes.Fmt(ctMainArea.Pushes);
                 if (!MainAreaSolved)
-                    lblStatusPieces.Text = Program.Translation.Mainform_Status_PiecesRemaining.Fmt(ctMainArea.Level.RemainingPieces);
+                    lblStatusPieces.Text = Program.Tr.Mainform_Status_PiecesRemaining.Fmt(ctMainArea.Level.RemainingPieces);
             }
 
             // Status bar items
@@ -264,9 +263,11 @@ namespace ExpertSokoban
         /// </summary>
         /// <param name="Caption">Title bar caption to use in case any confirmation
         /// dialogs need to pop up.</param>
-        private bool mayDestroyEverything(string Caption)
+        private bool mayDestroyEverything(string caption)
         {
-            return ctMainArea.MayDestroy(Caption) && lstLevels.MayDestroy(Caption);
+            bool OK = _translationDialog == null || (DlgMessage.Show("If you exit now, you will lose all your changes to the translation you are currently editing. Are you sure you wish to do this?\n\nTo save your changes, click \"Cancel\", then switch to the translation editor and click \"Save changes\" there.",
+                    caption, DlgType.Warning, Program.Tr.ConfirmationMessages.Dialogs_btnOK, Program.Tr.ConfirmationMessages.Dialogs_btnCancel) == 0);
+            return OK && ctMainArea.MayDestroy(caption) && lstLevels.MayDestroy(caption);
         }
 
         /// <summary>
@@ -316,7 +317,7 @@ namespace ExpertSokoban
 
             // If the user hasn't chosen a name for themselves yet, ask them
             if (Program.Settings.PlayerName == null || Program.Settings.PlayerName.Length == 0)
-                Program.Settings.PlayerName = InputBox.GetLine(Program.Translation.Mainform_ChooseName_SolvedLevel, "", Program.Translation.ProgramName, Program.Translation.Dialogs_btnOK, Program.Translation.Dialogs_btnCancel);
+                Program.Settings.PlayerName = InputBox.GetLine(Program.Tr.ConfirmationMessages.Mainform_ChooseName_SolvedLevel, "", Program.Tr.ProgramName, Program.Tr.ConfirmationMessages.Dialogs_btnOK, Program.Tr.ConfirmationMessages.Dialogs_btnCancel);
 
             // If they still haven't chosen a name, discard the high score
             if (Program.Settings.PlayerName == null || Program.Settings.PlayerName.Length == 0)
@@ -359,7 +360,7 @@ namespace ExpertSokoban
         /// </summary>
         private void levelActivating(object sender, ConfirmEventArgs e)
         {
-            e.ConfirmOK = ctMainArea.MayDestroy(Program.Translation.Mainform_MessageTitle_OpenLevel);
+            e.ConfirmOK = ctMainArea.MayDestroy(Program.Tr.ConfirmationMessages.Mainform_MessageTitle_OpenLevel);
         }
 
         /// <summary>
@@ -431,7 +432,7 @@ namespace ExpertSokoban
         /// </summary>
         private void newLevel(object sender, EventArgs e)
         {
-            if (!mayDestroyEverything(Program.Translation.Mainform_MessageTitle_NewLevelFile))
+            if (!mayDestroyEverything(Program.Tr.ConfirmationMessages.Mainform_MessageTitle_NewLevelFile))
                 return;
 
             // Show the level list if it isn't already visible
@@ -447,12 +448,12 @@ namespace ExpertSokoban
         /// </summary>
         private void openLevel(object sender, EventArgs e)
         {
-            if (!mayDestroyEverything(Program.Translation.Mainform_MessageTitle_OpenLevelFile))
+            if (!mayDestroyEverything(Program.Tr.ConfirmationMessages.Mainform_MessageTitle_OpenLevelFile))
                 return;
 
             OpenFileDialog OpenDialog = new OpenFileDialog();
             OpenDialog.DefaultExt = "txt";
-            OpenDialog.Filter = Program.Translation.Save_FileType_TextFiles + "|*.txt|" + Program.Translation.Save_FileType_AllFiles + "|*.*";
+            OpenDialog.Filter = Program.Tr.Save_FileType_TextFiles + "|*.txt|" + Program.Tr.Save_FileType_AllFiles + "|*.*";
             OpenDialog.InitialDirectory = Program.Settings.LastOpenSaveDirectory;
             if (OpenDialog.ShowDialog() != DialogResult.OK)
                 return;
@@ -463,7 +464,7 @@ namespace ExpertSokoban
             }
             catch (LevelListBox.InvalidLevelException)
             {
-                DlgMessage.ShowError(Program.Translation.Mainform_InvalidFile, Program.Translation.Mainform_InvalidFile_Title);
+                DlgMessage.ShowError(Program.Tr.ConfirmationMessages.Mainform_InvalidFile, Program.Tr.ConfirmationMessages.Mainform_InvalidFile_Title);
                 return;
             }
 
@@ -514,7 +515,7 @@ namespace ExpertSokoban
         /// </summary>
         private void retryLevel(object sender, EventArgs e)
         {
-            if (!ctMainArea.MayDestroy(Program.Translation.Mainform_MessageTitle_RetryLevel))
+            if (!ctMainArea.MayDestroy(Program.Tr.ConfirmationMessages.Mainform_MessageTitle_RetryLevel))
                 return;
 
             if (lstLevels.ActiveLevel != null && ctMainArea.State != MainAreaState.Null)
@@ -559,7 +560,7 @@ namespace ExpertSokoban
         /// </summary>
         private void changePlayer(object sender, EventArgs e)
         {
-            string Result = InputBox.GetLine(Program.Translation.Mainform_ChooseName, Program.Settings.PlayerName, Program.Translation.ProgramName, Program.Translation.Dialogs_btnOK, Program.Translation.Dialogs_btnCancel);
+            string Result = InputBox.GetLine(Program.Tr.ConfirmationMessages.Mainform_ChooseName, Program.Settings.PlayerName, Program.Tr.ProgramName, Program.Tr.ConfirmationMessages.Dialogs_btnOK, Program.Tr.ConfirmationMessages.Dialogs_btnCancel);
             if (Result == null)
                 return;
 
@@ -577,7 +578,7 @@ namespace ExpertSokoban
             {
                 string level = lstLevels.SelectedLevel.ToString();
                 if (!Program.Settings.Highscores.ContainsKey(level))
-                    DlgMessage.Show(Program.Translation.Mainform_NoHighscores, Program.Translation.Mainform_NoHighscores_Title, DlgType.Info, Program.Translation.Dialogs_btnOK);
+                    DlgMessage.Show(Program.Tr.ConfirmationMessages.Mainform_NoHighscores, Program.Tr.ConfirmationMessages.Mainform_NoHighscores_Title, DlgType.Info, Program.Tr.ConfirmationMessages.Dialogs_btnOK);
                 else
                 {
                     HighscoresForm hsf = new HighscoresForm();
@@ -634,7 +635,7 @@ namespace ExpertSokoban
         {
             if (!pnlLevelList.Visible)
                 toggleLevelList(sender, e);
-            string Comment = InputBox.GetLine(Program.Translation.Mainform_LevelList_NewComment);
+            string Comment = InputBox.GetLine(Program.Tr.ConfirmationMessages.NewComment_Prompt, "", Program.Tr.ConfirmationMessages.NewComment_Title, Program.Tr.ConfirmationMessages.Dialogs_btnOK, Program.Tr.ConfirmationMessages.Dialogs_btnCancel);
             if (Comment != null)
                 lstLevels.AddLevelListItem(Comment);
         }
@@ -703,13 +704,13 @@ namespace ExpertSokoban
             if (Status != SokobanLevelStatus.Valid)
             {
                 String Problem = Status == SokobanLevelStatus.NotEnclosed
-                    ? Program.Translation.Mainform_Validity_NotEnclosed
-                    : Program.Translation.Mainform_Validity_WrongNumber;
-                if (DlgMessage.Show(Program.Translation.Mainform_Validity_CannotSave + "\n\n" +
-                    Problem + "\n\n" + Program.Translation.Mainform_Validity_CannotSave_Warning,
-                    Program.Translation.Mainform_MessageTitle_FinishEditing, DlgType.Error,
-                    Program.Translation.Mainform_Validity_CannotSave_btnSave,
-                    Program.Translation.Mainform_Validity_CannotSave_btnResume) == 1)
+                    ? Program.Tr.Mainform_Validity_NotEnclosed
+                    : Program.Tr.Mainform_Validity_WrongNumber;
+                if (DlgMessage.Show(Program.Tr.ConfirmationMessages.Mainform_Validity_CannotSave + "\n\n" +
+                    Problem + "\n\n" + Program.Tr.ConfirmationMessages.Mainform_Validity_CannotSave_Warning,
+                    Program.Tr.ConfirmationMessages.Mainform_MessageTitle_FinishEditing, DlgType.Error,
+                    Program.Tr.ConfirmationMessages.Mainform_Validity_CannotSave_btnSave,
+                    Program.Tr.ConfirmationMessages.Mainform_Validity_CannotSave_btnResume) == 1)
                     return;
             }
 
@@ -867,7 +868,7 @@ namespace ExpertSokoban
             if (File.Exists(helpfile))
                 Help.ShowHelp(this, helpfile, HelpNavigator.TopicId, "30");
             else
-                DlgMessage.ShowWarning(Program.Translation.Mainform_Error_HelpFileNotFound.Fmt(helpfile), null);
+                DlgMessage.ShowWarning(Program.Tr.ConfirmationMessages.Mainform_Error_HelpFileNotFound.Fmt(helpfile), null);
         }
 
         /// <summary>
