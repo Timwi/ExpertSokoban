@@ -17,9 +17,9 @@
   <FileName_Untitled Translation="(unbenannt)" OldEnglish="(untitled)" />
   <PlayerNameMissing Translation="(kein Spielername)" OldEnglish="(no player name)" />
   <ConfirmationMessages>
-    <NewComment_Title Translation="New comment" OldEnglish="" />
+    <NewComment_Title Translation="Neuer Kommentar" OldEnglish="New comment" />
     <NewComment_Prompt Translation="Bitte geben Sie einen Kommentar ein:" OldEnglish="Please enter a comment:" />
-    <EditComment_Title Translation="Edit comment" OldEnglish="" />
+    <EditComment_Title Translation="Kommentar bearbeiten" OldEnglish="Edit comment" />
     <EditComment_Prompt Translation="Geben Sie den neuen Kommentar ein:" OldEnglish="Please enter the revised comment:" />
     <LevelList_Message_CannotSaveSettings Translation="Die Einstellungen konnten nicht gespeichert werden." OldEnglish="The settings could not be saved." />
     <LevelList_Message_CannotSaveSettings_Title Translation="Fehler beim Speichern der Einstellungen" OldEnglish="Error saving settings" />
@@ -70,7 +70,22 @@
   <Highscores>
     <HighscoresForm Translation="Highscores" OldEnglish="Highscores" />
     <Highscores>
-      <OldEnglish />
+      <IsNumber>
+        <item value="True" />
+        <item value="True" />
+      </IsNumber>
+      <Translations>
+        <item value="{0} Zug, {1} Schub" />
+        <item value="{0} Züge, {1} Schub" />
+        <item value="{0} Zug, {1} Schübe" />
+        <item value="{0} Züge, {1} Schübe" />
+      </Translations>
+      <OldEnglish>
+        <item value="{0} move, {1} push" />
+        <item value="{0} moves, {1} push" />
+        <item value="{0} move, {1} pushes" />
+        <item value="{0} moves, {1} pushes" />
+      </OldEnglish>
     </Highscores>
     <btnOK Translation="OK" OldEnglish="OK" />
   </Highscores>
@@ -78,6 +93,7 @@
     <AboutBox Translation="Über Expert Sokoban" OldEnglish="About Expert Sokoban" />
     <lblCredits Translation="Danksagungen:&#xD;&#xA;    Programmierung: Timwi, Roman&#xD;&#xA;    Grafik: Roman, Timwi&#xD;&#xA;    Test: Hawthorn&#xD;&#xA;    Deutsche Übersetzung: Timwi" OldEnglish="Credits:&#xA;    Programming: Timwi, Roman&#xA;    Graphics: Roman, Timwi&#xA;    Testing: Hawthorn" />
     <btnOK Translation="OK" OldEnglish="OK" />
+    <Version Translation="Version {0}" OldEnglish="Version {0}" />
   </AboutBox>
   <Mainform>
     <Mainform Translation="Expert Sokoban" OldEnglish="Expert Sokoban" />

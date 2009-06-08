@@ -19,9 +19,8 @@ namespace ExpertSokoban
             //  Change assembly information settings for your application through either:
             //  - Project->Properties->Application->Assembly Information
             //  - AssemblyInfo.cs
-            this.Text = string.Format("About {0}", AssemblyTitle);
             this.lblProductName.Text = AssemblyProduct;
-            this.lblVersion.Text = string.Format("Version {0}.{1}.{2}", AssemblyVersion.Major, AssemblyVersion.Minor, AssemblyVersion.Revision);
+            this.lblVersion.Text = string.Format(Program.Tr.AboutBox.Version, string.Format("{0}.{1}.{2}", AssemblyVersion.Major, AssemblyVersion.Minor, AssemblyVersion.Revision));
             this.lblCopyright.Text = AssemblyCopyright;
             this.lblCompanyName.Text = AssemblyCompany;
         }
