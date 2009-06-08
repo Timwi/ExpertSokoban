@@ -124,6 +124,7 @@ namespace ExpertSokoban
             public TrString lblCredits = "Credits:\n    Programming: Timwi, Roman\n    Graphics: Roman, Timwi\n    Testing: Hawthorn";
             public TrString btnOK = "OK";
             #endregion
+            public TrString Version = "Version {0}";
         }
         public AboutBoxTranslation AboutBox = new AboutBoxTranslation();
 
