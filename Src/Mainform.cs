@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
 using RT.Util;
 using RT.Util.Dialogs;
@@ -18,6 +17,7 @@ namespace ExpertSokoban
     public partial class Mainform : ManagedForm
     {
         private ToolStripMenuItem mnuOptionsLanguageEdit;
+        private ToolStripMenuItem mnuOptionsLanguageCreate;
 
         #region Startup / shutdown
 
@@ -30,6 +30,7 @@ namespace ExpertSokoban
             InitializeComponent();
             Lingo.TranslateControl(this, Program.Tr.Mainform);
             mnuOptionsLanguageEdit = new ToolStripMenuItem("&Edit current language", null, new EventHandler(editCurrentLanguage));
+            mnuOptionsLanguageCreate = new ToolStripMenuItem("&Create new language", null, new EventHandler(createNewLanguage));
             initLanguageMenu();
 
             // Restore saved settings
@@ -69,16 +70,17 @@ namespace ExpertSokoban
         private void initLanguageMenu()
         {
             mnuOptionsChangeLanguage.DropDownItems.Clear();
-            mnuOptionsChangeLanguage.DropDownItems.AddRange(RT.Util.Lingo.Lingo.LanguageToolStripMenuItems<Translation>(
-                "ExpSok.*.xml",
-                @"^ExpSok\.(.*)\.xml$",
-                (t, m) => setLanguage(m == null ? null : m.Groups[1].Value, t),
-                m => Program.Settings.Language == null ? m == null : m != null && m.Groups[1].Value == Program.Settings.Language
-            ));
-            mnuOptionsChangeLanguage.DropDownItems.Add(mnuOptionsLanguageEdit);
+            mnuOptionsChangeLanguage.DropDownItems.AddRange(RT.Util.Lingo.Lingo.LanguageToolStripMenuItems<Translation>("ExpSok", setLanguage, Program.Settings.Language));
+            if (Program.TranslationEnabled)
+            {
+                mnuOptionsChangeLanguage.DropDownItems.Add(new ToolStripSeparator());
+                mnuOptionsChangeLanguage.DropDownItems.Add(mnuOptionsLanguageEdit);
+                mnuOptionsChangeLanguage.DropDownItems.Add(mnuOptionsLanguageCreate);
+                mnuOptionsLanguageCreate.Enabled = true;
+            }
         }
 
-        private void setLanguage(string languageCode, Translation translation)
+        private void setLanguage(Translation translation, string languageCode)
         {
             Program.Settings.Language = languageCode;
             Program.Tr = translation;
@@ -103,10 +105,21 @@ namespace ExpertSokoban
                         i.Enabled = false;
                 var file = PathUtil.Combine(PathUtil.AppPath, "Translations", "ExpSok." + Program.Settings.Language + ".xml");
                 _translationDialog = new TranslationForm<Translation>(file, Program.Settings.TranslationFormSettings);
-                _translationDialog.AcceptChanges += () => setLanguage(Program.Settings.Language, XmlClassify.LoadObjectFromXmlFile<Translation>(file));
+                _translationDialog.AcceptChanges += () => setLanguage(XmlClassify.LoadObjectFromXmlFile<Translation>(file), Program.Settings.Language);
                 _translationDialog.FormClosed += (s, v) => { _translationDialog = null; initLanguageMenu(); };
             }
             _translationDialog.Show();
+        }
+
+        private void createNewLanguage(object sender, EventArgs e)
+        {
+            var newLanguage = TranslationCreateForm.CreateTranslation<Translation>("ExpSok");
+            if (newLanguage.E1 != null)
+            {
+                setLanguage(newLanguage.E1, newLanguage.E2);
+                initLanguageMenu();
+                editCurrentLanguage(sender, e);
+            }
         }
 
         /// <summary>

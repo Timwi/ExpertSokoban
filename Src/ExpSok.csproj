@@ -175,6 +175,7 @@
     <None Include="Resources\help.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\Skin_LevelSolvedEo.png" />
     <Content Include="Resources\Skin_LevelSolvedDe.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

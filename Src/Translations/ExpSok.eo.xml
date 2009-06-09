@@ -5,140 +5,140 @@
     <OldEnglish>Expert Sokoban</OldEnglish>
   </ProgramName>
   <LevelSolvedResourceName>
-    <Translation>Skin_LevelSolvedDe</Translation>
+    <Translation>Skin_LevelSolvedEo</Translation>
     <OldEnglish>Skin_LevelSolved</OldEnglish>
   </LevelSolvedResourceName>
   <Mainform_Status_Moves>
-    <Translation>Züge: {0}</Translation>
+    <Translation>Movoj: {0}</Translation>
     <OldEnglish>Moves: {0}</OldEnglish>
   </Mainform_Status_Moves>
   <Mainform_Status_Pushes>
-    <Translation>Schübe: {0}</Translation>
+    <Translation>Puŝoj: {0}</Translation>
     <OldEnglish>Pushes: {0}</OldEnglish>
   </Mainform_Status_Pushes>
   <Mainform_Status_PiecesRemaining>
-    <Translation>Steine noch übrig: {0}</Translation>
+    <Translation>Eroj restantaj: {0}</Translation>
     <OldEnglish>Remaining pieces: {0}</OldEnglish>
   </Mainform_Status_PiecesRemaining>
   <Mainform_Validity_Valid>
-    <Translation>Das Level ist gültig.</Translation>
+    <Translation>La puzlo validas.</Translation>
     <OldEnglish>The level is valid.</OldEnglish>
   </Mainform_Validity_Valid>
   <Mainform_Validity_NotEnclosed>
-    <Translation>Das Level ist ungültig, weil es nicht vollständig von einer Wand umgeben ist.</Translation>
+    <Translation>La puzlo malvalidas ĉar ĝi ne tute estas kadrita de muro.</Translation>
     <OldEnglish>The level is invalid because it is not completely enclosed by a wall.</OldEnglish>
   </Mainform_Validity_NotEnclosed>
   <Mainform_Validity_WrongNumber>
-    <Translation>Das Level ist ungültig, weil die Anzahl der Steine nicht mit der Anzahl der Ziele übereinstimmt.</Translation>
+    <Translation>La puzlo malvalidas ĉar la nombro de eroj ne egalas al la nombro de celoj.</Translation>
     <OldEnglish>The level is invalid because the number of pieces does not match the number of targets.</OldEnglish>
   </Mainform_Validity_WrongNumber>
   <LevelList_LevelSolved>
-    <Translation>Gelöst</Translation>
+    <Translation>Solvita</Translation>
     <OldEnglish>Solved</OldEnglish>
   </LevelList_LevelSolved>
   <LevelList_CurrentlyEditing>
-    <Translation>Wird gerade bearbeitet</Translation>
+    <Translation>Redaktatas</Translation>
     <OldEnglish>Currently editing</OldEnglish>
   </LevelList_CurrentlyEditing>
   <LevelList_JustSolved>
-    <Translation>Soeben gelöst</Translation>
+    <Translation>Ĵus solvita</Translation>
     <OldEnglish>Just solved</OldEnglish>
   </LevelList_JustSolved>
   <LevelList_CurrentlyPlaying>
-    <Translation>Wird gerade gespielt</Translation>
+    <Translation>Ludatas</Translation>
     <OldEnglish>Currently playing</OldEnglish>
   </LevelList_CurrentlyPlaying>
   <Save_FileType_TextFiles>
-    <Translation>Textdateien</Translation>
+    <Translation>Tekstdosieroj</Translation>
     <OldEnglish>Text files</OldEnglish>
   </Save_FileType_TextFiles>
   <Save_FileType_AllFiles>
-    <Translation>Alle Dateien</Translation>
+    <Translation>Ĉiuj dosieroj</Translation>
     <OldEnglish>All files</OldEnglish>
   </Save_FileType_AllFiles>
   <FileName_Untitled>
-    <Translation>(unbenannt)</Translation>
+    <Translation>(netitolita)</Translation>
     <OldEnglish>(untitled)</OldEnglish>
   </FileName_Untitled>
   <PlayerNameMissing>
-    <Translation>(kein Spielername)</Translation>
+    <Translation>(neniu ludanta nomo)</Translation>
     <OldEnglish>(no player name)</OldEnglish>
   </PlayerNameMissing>
   <ConfirmationMessages>
     <NewComment_Title>
-      <Translation>Neuer Kommentar</Translation>
+      <Translation>Nova komento</Translation>
       <OldEnglish>New comment</OldEnglish>
     </NewComment_Title>
     <NewComment_Prompt>
-      <Translation>Bitte geben Sie einen Kommentar ein:</Translation>
+      <Translation>Bonvole entajpu komenton:</Translation>
       <OldEnglish>Please enter a comment:</OldEnglish>
     </NewComment_Prompt>
     <EditComment_Title>
-      <Translation>Kommentar bearbeiten</Translation>
+      <Translation>Redakti komenton</Translation>
       <OldEnglish>Edit comment</OldEnglish>
     </EditComment_Title>
     <EditComment_Prompt>
-      <Translation>Geben Sie den neuen Kommentar ein:</Translation>
+      <Translation>Bonvole entajpu modifatan komenton:</Translation>
       <OldEnglish>Please enter the revised comment:</OldEnglish>
     </EditComment_Prompt>
     <LevelList_Message_CannotSaveSettings>
-      <Translation>Die Einstellungen konnten nicht gespeichert werden.</Translation>
+      <Translation>Ne eblis konservi agordon.</Translation>
       <OldEnglish>The settings could not be saved.</OldEnglish>
     </LevelList_Message_CannotSaveSettings>
     <LevelList_Message_CannotSaveSettings_Title>
-      <Translation>Fehler beim Speichern der Einstellungen</Translation>
+      <Translation>Eraro dum konservado de agordoj</Translation>
       <OldEnglish>Error saving settings</OldEnglish>
     </LevelList_Message_CannotSaveSettings_Title>
     <LevelList_Message_AllSolved>
-      <Translation>Sie haben alle Levels in dieser Leveldatei gelöst!</Translation>
+      <Translation>Vi solvis ĉiujn puzlojn en tiu puzlo-dosiero!</Translation>
       <OldEnglish>You have solved all levels in this level pack!</OldEnglish>
     </LevelList_Message_AllSolved>
     <LevelList_Message_AllSolved_Title>
-      <Translation>Herzlichen Glückwunsch!</Translation>
+      <Translation>Gratulojn!</Translation>
       <OldEnglish>Congratulations!</OldEnglish>
     </LevelList_Message_AllSolved_Title>
     <LevelList_Message_NoMoreUnsolved>
-      <Translation>In dieser Leveldatei gibt es keine weiteren ungelösten Levels.</Translation>
+      <Translation>Pliajn nesolvitajn puzlojn tiu puzlo-dosiero ne enhavas.</Translation>
       <OldEnglish>There are no more unsolved levels in this level file.</OldEnglish>
     </LevelList_Message_NoMoreUnsolved>
     <LevelList_Message_Next_Title>
-      <Translation>Nächstes Level</Translation>
+      <Translation>Malantaŭa puzlo</Translation>
       <OldEnglish>Next level</OldEnglish>
     </LevelList_Message_Next_Title>
     <LevelList_Message_NextUnsolved_Title>
-      <Translation>Nächstes ungelöstes Level</Translation>
+      <Translation>Malantaŭa nesolvita puzlo</Translation>
       <OldEnglish>Next unsolved level</OldEnglish>
     </LevelList_Message_NextUnsolved_Title>
     <LevelList_Message_Prev_Title>
-      <Translation>Vorheriges Level</Translation>
+      <Translation>Antaŭa puzlo</Translation>
       <OldEnglish>Previous level</OldEnglish>
     </LevelList_Message_Prev_Title>
     <LevelList_Message_PrevUnsolved_Title>
-      <Translation>Vorheriges ungelöstes Level</Translation>
+      <Translation>Antaŭa nesolvita puzlo</Translation>
       <OldEnglish>Previous unsolved level</OldEnglish>
     </LevelList_Message_PrevUnsolved_Title>
     <LevelList_Message_NoOtherLevel>
-      <Translation>In dieser Leveldatei gibt es keine weiteren Levels.</Translation>
+      <Translation>Alian puzlon tiu puzlo-dosiero ne enhavas.</Translation>
       <OldEnglish>There is no other level in the level file.</OldEnglish>
     </LevelList_Message_NoOtherLevel>
     <LevelList_Message_SaveChanges>
-      <Translation>Sie haben an {0} Änderungen vorgenommen. Sollen diese Änderungen gespeichert werden?</Translation>
+      <Translation>Vi ŝanĝis la enhavon de {0}. Ĉu vi volas konservi tiujn ŝanĝojn?</Translation>
       <OldEnglish>You have made changes to {0}. Would you like to save those changes?</OldEnglish>
     </LevelList_Message_SaveChanges>
     <LevelList_Message_SaveChanges_btnSave>
-      <Translation>Änderungen abspeichern</Translation>
+      <Translation>Konservi ŝanĝojn</Translation>
       <OldEnglish>Save changes</OldEnglish>
     </LevelList_Message_SaveChanges_btnSave>
     <LevelList_Message_SaveChanges_btnDiscard>
-      <Translation>Änderungen &amp;verwerfen</Translation>
+      <Translation>&amp;Forigi ŝanĝojn</Translation>
       <OldEnglish>&amp;Discard changes</OldEnglish>
     </LevelList_Message_SaveChanges_btnDiscard>
     <LevelList_Message_DeleteLevel_CurrentlyEditing>
-      <Translation>Sie bearbeiten dieses Level gerade.
+      <Translation>Vi nune redaktadas tiun puzlon.
 
-Wenn Sie das Level jetzt löschen, werden alle Änderungen daran verworfen.
+Se vi forigas tiun puzlon nun, ĉiuj el viaj modifoj forigatos.
 
-Sind Sie sicher, dass Sie das tun wollen?</Translation>
+Ĉu vi certas, ke vi volas fari tion?</Translation>
       <OldEnglish>You are currently editing this level.
 
 If you delete this level now, all your modifications will be discarded.
@@ -146,123 +146,123 @@ If you delete this level now, all your modifications will be discarded.
 Are you sure you wish to do this?</OldEnglish>
     </LevelList_Message_DeleteLevel_CurrentlyEditing>
     <LevelList_Message_DeleteLevel_Title>
-      <Translation>Level löschen</Translation>
+      <Translation>Forigi puzlon</Translation>
       <OldEnglish>Delete level</OldEnglish>
     </LevelList_Message_DeleteLevel_Title>
     <LevelList_Message_DeleteLevel_CurrentlyPlaying>
-      <Translation>Sie spielen dieses Level gerade.
+      <Translation>Vi nune ludadas tiun puzlon.
 
-Sind Sie sicher, dass Sie aufgeben wollen?</Translation>
+Ĉu vi certas, ke vi volas ĝin kapitulaci?</Translation>
       <OldEnglish>You are currently playing this level.
 
 Are you sure you wish to give up?</OldEnglish>
     </LevelList_Message_DeleteLevel_CurrentlyPlaying>
     <LevelList_Message_DeleteLevel_Sure>
-      <Translation>Sind Sie sicher, dass Sie dieses Level löschen möchten?</Translation>
+      <Translation>Ĉu vi certas, ke vi volas forigi tiun puzlon?</Translation>
       <OldEnglish>Are you sure you wish to delete this level?</OldEnglish>
     </LevelList_Message_DeleteLevel_Sure>
     <LevelList_Message_DeleteLevel_btnDelete>
-      <Translation>Level löschen</Translation>
+      <Translation>Forigi puzlon</Translation>
       <OldEnglish>Delete level</OldEnglish>
     </LevelList_Message_DeleteLevel_btnDelete>
     <MainArea_Message_DiscardChanges>
-      <Translation>Sollen die Änderungen an dem Level, das Sie gerade bearbeiten, wirklich verworfen werden?</Translation>
+      <Translation>Ĉu vi certas, ke vi volas forigi viajn modifojn ĉe la puzlo, kion vi redaktadas?</Translation>
       <OldEnglish>Are you sure you wish to discard your changes to the level you're editing?</OldEnglish>
     </MainArea_Message_DiscardChanges>
     <MainArea_Message_GiveUp>
-      <Translation>Wollen Sie dieses Level wirklich aufgeben?</Translation>
+      <Translation>Ĉu vi certas, ke vi volas kapitulaci la kurantan puzlon?</Translation>
       <OldEnglish>Are you sure you wish to give up the current level?</OldEnglish>
     </MainArea_Message_GiveUp>
     <Mainform_ChooseName>
-      <Translation>Bitte geben Sie einen Namen ein, bei dem Sie in Highscore-Tabellen genannt werden möchten.</Translation>
+      <Translation>Bonvole elektu nomon, kiu uziĝos por vin identigi en rekordo-tabloj.</Translation>
       <OldEnglish>Please choose a name which will be used to identify you in highscore tables.</OldEnglish>
     </Mainform_ChooseName>
     <Mainform_ChooseName_FirstRun>
-      <Translation>Bitte geben Sie einen Namen ein, bei dem Sie in Highscore-Tabellen genannt werden möchten.
-Sie können diesen Namen später ändern, indem Sie "Spielernamen ändern" im Menü "Level" wählen.</Translation>
+      <Translation>Bonvole elektu nomon, kiu uziĝos por vin identigi en rekordo-tabloj.
+Vi povas poste ŝanĝi tiun nomon klakante "Ŝanĝi ludantan nomon" en la menuo "Puzlo".</Translation>
       <OldEnglish>Please choose a name which will be used to identify you in highscore tables.
 You can change this name later by selecting "Change player name" from the "Level" menu.</OldEnglish>
     </Mainform_ChooseName_FirstRun>
     <Mainform_ChooseName_SolvedLevel>
-      <Translation>Herzlichen Glückwunsch! Sie haben das aktuelle Level gelöst.
-Bitte geben Sie einen Namen ein, bei dem Sie in Highscore-Tabellen genannt werden möchten.
-Wenn Sie sich jetzt keinen Namen zulegen, wird Ihre Punktzahl für dieses Level nicht gespeichert.
-Sie können diesen Namen später ändern, indem Sie "Spielernamen ändern" im Menü "Level" wählen.</Translation>
+      <Translation>Gratulatojn! Vi solvis la kurantan puzlon.
+Bonvole elektu nomon, kiu uziĝos por vin identigi en rekordo-tabloj.
+Se vi nomon nun ne elektas, via poentrezulto ĉe tiu puzlo ne konserviĝos.
+Vi povas poste ŝanĝi tiun nomon klakante "Ŝanĝi ludantan nomon" en la menuo "Puzlo".</Translation>
       <OldEnglish>Congratulations! You've solved the current level.
 Please choose a name which will be used to identify you in highscore tables.
 If you do not choose a name now, your score for this level will not be recorded.
 You can change this name again later by selecting "Change player name" from the "Level" menu.</OldEnglish>
     </Mainform_ChooseName_SolvedLevel>
     <Mainform_Validity_CannotOpen>
-      <Translation>Das Level konnte nicht geöffnet werden, weil es ungültig ist.</Translation>
+      <Translation>La puzlo ne eblis malfermi, ĉar ĝi malvalidas.</Translation>
       <OldEnglish>The level could not be opened because it is invalid.</OldEnglish>
     </Mainform_Validity_CannotOpen>
     <Mainform_Validity_CannotOpen_Fix>
-      <Translation>Sie müssen das Level erst bearbeiten und das Problem beheben. Möchten Sie das Level jetzt bearbeiten?</Translation>
+      <Translation>Bezonas ke vi redaktu la puzlon por ĝin ripari. Ĉu vi volas redakti la puzlon nun?</Translation>
       <OldEnglish>You must edit the level in order to address this issue. Would you like to edit the level now?</OldEnglish>
     </Mainform_Validity_CannotOpen_Fix>
     <Mainform_Validity_CannotOpen_btnEdit>
-      <Translation>Level bearbeiten</Translation>
+      <Translation>Redakti puzlon</Translation>
       <OldEnglish>Edit level</OldEnglish>
     </Mainform_Validity_CannotOpen_btnEdit>
     <Mainform_Validity_CannotSave>
-      <Translation>Das folgende Problem wurde bei diesem Level festgestellt:</Translation>
+      <Translation>La sekvonta problemo troviĝis ĉe tiu puzlo:</Translation>
       <OldEnglish>The following problem has been detected with this level:</OldEnglish>
     </Mainform_Validity_CannotSave>
     <Mainform_Validity_CannotSave_Warning>
-      <Translation>Sie können dieses Level nicht spielen, solange das Problem besteht. Sind Sie sicher, dass das Level in diesem ungültigen Zustand bleiben soll?</Translation>
+      <Translation>Dum ankoraŭ ekzistas la problemo, la puzlo ne ludeblas. Ĉu vi certas, ke vi volas lasi la puzlon en tiu malvalida stato?</Translation>
       <OldEnglish>You cannot play this level until you address this issue. Are you sure you wish to leave the level in this invalid state?</OldEnglish>
     </Mainform_Validity_CannotSave_Warning>
     <Mainform_Validity_CannotSave_btnSave>
-      <Translation>Level trotzdem speichern</Translation>
+      <Translation>Konservi puzlon malgraŭe</Translation>
       <OldEnglish>Save level anyway</OldEnglish>
     </Mainform_Validity_CannotSave_btnSave>
     <Mainform_Validity_CannotSave_btnResume>
-      <Translation>Bearbeitung fortsetzen</Translation>
+      <Translation>Kontinui redaktadon</Translation>
       <OldEnglish>Resume editing</OldEnglish>
     </Mainform_Validity_CannotSave_btnResume>
     <Mainform_InvalidFile>
-      <Translation>Die angegebene Datei ist keine gültige Sokoban-Leveldatei.</Translation>
+      <Translation>La elektita dosiero ne estas valida Sokoban-puzlo-dosiero.</Translation>
       <OldEnglish>The selected file is not a valid Sokoban level file.</OldEnglish>
     </Mainform_InvalidFile>
     <Mainform_InvalidFile_Title>
-      <Translation>Fehler beim Öffnen der Datei</Translation>
+      <Translation>Eraro dum malfarmado de puzlo-dosiero</Translation>
       <OldEnglish>Error opening level file</OldEnglish>
     </Mainform_InvalidFile_Title>
     <Mainform_NoHighscores>
-      <Translation>Für das ausgewählte Level sind bisher noch keine Highscores gespeichert worden.</Translation>
+      <Translation>La elektita puzlo ankoraŭ ne havas konservitajn rekordojn.</Translation>
       <OldEnglish>The selected level does not have any highscores associated with it yet.</OldEnglish>
     </Mainform_NoHighscores>
     <Mainform_NoHighscores_Title>
-      <Translation>Keine Highscores für dieses Level</Translation>
+      <Translation>Neniuj rekordoj ĉe tiu puzlo</Translation>
       <OldEnglish>No highscores for this level</OldEnglish>
     </Mainform_NoHighscores_Title>
     <Mainform_MessageTitle_Exit>
-      <Translation>Expert Sokoban beenden</Translation>
+      <Translation>Eliri Expert Sokoban-on</Translation>
       <OldEnglish>Exit Expert Sokoban</OldEnglish>
     </Mainform_MessageTitle_Exit>
     <Mainform_MessageTitle_OpenLevel>
-      <Translation>Level öffnen</Translation>
+      <Translation>Malfermi puzlon</Translation>
       <OldEnglish>Open level</OldEnglish>
     </Mainform_MessageTitle_OpenLevel>
     <Mainform_MessageTitle_RetryLevel>
-      <Translation>Level neu starten</Translation>
+      <Translation>Relanĉi puzlon</Translation>
       <OldEnglish>Retry level</OldEnglish>
     </Mainform_MessageTitle_RetryLevel>
     <Mainform_MessageTitle_NewLevelFile>
-      <Translation>Neue Leveldatei</Translation>
+      <Translation>Novan puzlo-dosieron</Translation>
       <OldEnglish>New level file</OldEnglish>
     </Mainform_MessageTitle_NewLevelFile>
     <Mainform_MessageTitle_OpenLevelFile>
-      <Translation>Leveldatei öffnen</Translation>
+      <Translation>Malfermi puzlo-dosieron</Translation>
       <OldEnglish>Open level file</OldEnglish>
     </Mainform_MessageTitle_OpenLevelFile>
     <Mainform_MessageTitle_FinishEditing>
-      <Translation>Bearbeitung abschließen</Translation>
+      <Translation>Finigi redaktadon</Translation>
       <OldEnglish>Finish editing</OldEnglish>
     </Mainform_MessageTitle_FinishEditing>
     <Mainform_Error_HelpFileNotFound>
-      <Translation>Die Hilfe-Datei ({0}) konnte nicht gefunden werden.</Translation>
+      <Translation>La helpdosiero ({0}) ne troveblas.</Translation>
       <OldEnglish>The help file ({0}) could not be found.</OldEnglish>
     </Mainform_Error_HelpFileNotFound>
     <Dialogs_btnOK>
@@ -270,21 +270,21 @@ You can change this name again later by selecting "Change player name" from the 
       <OldEnglish>OK</OldEnglish>
     </Dialogs_btnOK>
     <Dialogs_btnCancel>
-      <Translation>Abbrechen</Translation>
+      <Translation>Nuligi</Translation>
       <OldEnglish>Cancel</OldEnglish>
     </Dialogs_btnCancel>
     <Dialogs_btnDiscard>
-      <Translation>Änderungen verwerfen</Translation>
+      <Translation>Forigi modifojn</Translation>
       <OldEnglish>Discard changes</OldEnglish>
     </Dialogs_btnDiscard>
     <Dialogs_btnGiveUp>
-      <Translation>Aufgeben</Translation>
+      <Translation>Kapitulaci</Translation>
       <OldEnglish>Give up</OldEnglish>
     </Dialogs_btnGiveUp>
   </ConfirmationMessages>
   <Highscores>
     <HighscoresForm>
-      <Translation>Highscores</Translation>
+      <Translation>Rekordoj</Translation>
       <OldEnglish>Highscores</OldEnglish>
     </HighscoresForm>
     <Highscores>
@@ -293,10 +293,10 @@ You can change this name again later by selecting "Change player name" from the 
         <item>True</item>
       </IsNumber>
       <Translations>
-        <item>{0} Zug, {1} Schub</item>
-        <item>{0} Züge, {1} Schub</item>
-        <item>{0} Zug, {1} Schübe</item>
-        <item>{0} Züge, {1} Schübe</item>
+        <item>{0} movo, {1} puŝo</item>
+        <item>{0} movoj, {1} puŝo</item>
+        <item>{0} movo, {1} puŝoj</item>
+        <item>{0} movoj, {1} puŝoj</item>
       </Translations>
       <OldEnglish>
         <item>{0} move, {1} push</item>
@@ -312,15 +312,15 @@ You can change this name again later by selecting "Change player name" from the 
   </Highscores>
   <AboutBox>
     <AboutBox>
-      <Translation>Über Expert Sokoban</Translation>
+      <Translation>Pri Expert Sokoban</Translation>
       <OldEnglish>About Expert Sokoban</OldEnglish>
     </AboutBox>
     <lblCredits>
-      <Translation>Danksagungen:
-    Programmierung: Timwi, Roman
-    Grafik: Roman, Timwi
-    Test: Hawthorn
-    Deutsche Übersetzung: Timwi</Translation>
+      <Translation>Dankon al:
+    Programado: Timwi, Roman
+    Grafikoj: Roman, Timwi
+    Testado: Hawthorn
+    Traduko al Esperanto: Timwi</Translation>
       <OldEnglish>Credits:
     Programming: Timwi, Roman
     Graphics: Roman, Timwi
@@ -331,7 +331,7 @@ You can change this name again later by selecting "Change player name" from the 
       <OldEnglish>OK</OldEnglish>
     </btnOK>
     <Version>
-      <Translation>Version {0}</Translation>
+      <Translation>Versio {0}</Translation>
       <OldEnglish>Version {0}</OldEnglish>
     </Version>
   </AboutBox>
@@ -341,321 +341,321 @@ You can change this name again later by selecting "Change player name" from the 
       <OldEnglish>Expert Sokoban</OldEnglish>
     </Mainform>
     <mnuMain>
-      <Translation>Hauptmenü</Translation>
+      <Translation>Ĉefa menuo</Translation>
       <OldEnglish>Main menu</OldEnglish>
     </mnuMain>
     <mnuLevel>
-      <Translation>&amp;Level</Translation>
+      <Translation>&amp;Puzlo</Translation>
       <OldEnglish>&amp;Level</OldEnglish>
     </mnuLevel>
     <mnuLevelNew>
-      <Translation>N&amp;eue Leveldatei</Translation>
+      <Translation>&amp;Novan puzlo-dosieron</Translation>
       <OldEnglish>&amp;New level file</OldEnglish>
     </mnuLevelNew>
     <mnuLevelOpen>
-      <Translation>Leveldatei ö&amp;ffnen...</Translation>
+      <Translation>&amp;Malfermi puzlo-dosieron...</Translation>
       <OldEnglish>&amp;Open level file...</OldEnglish>
     </mnuLevelOpen>
     <mnuLevelSave>
-      <Translation>Leveldatei &amp;speichern</Translation>
+      <Translation>Kon&amp;servi puzlo-dosieron</Translation>
       <OldEnglish>&amp;Save level file</OldEnglish>
     </mnuLevelSave>
     <mnuLevelSaveAs>
-      <Translation>Leveldatei s&amp;peichern als...</Translation>
+      <Translation>&amp;Konservi puzlo-dosieron &amp;kiel...</Translation>
       <OldEnglish>Save level file &amp;as...</OldEnglish>
     </mnuLevelSaveAs>
     <mnuLevelUndo>
-      <Translation>&amp;Zug zurücknehmen</Translation>
+      <Translation>Mal&amp;fari movon</Translation>
       <OldEnglish>&amp;Undo move</OldEnglish>
     </mnuLevelUndo>
     <mnuLevelRedo>
-      <Translation>Zug &amp;wiederherstellen</Translation>
+      <Translation>Refari m&amp;ovon</Translation>
       <OldEnglish>Redo &amp;move</OldEnglish>
     </mnuLevelRedo>
     <mnuLevelRetry>
-      <Translation>Level neu s&amp;tarten</Translation>
+      <Translation>Re&amp;lanĉi puzlon</Translation>
       <OldEnglish>&amp;Retry level</OldEnglish>
     </mnuLevelRetry>
     <mnuLevelHighscores>
-      <Translation>&amp;Highscores anzeigen</Translation>
+      <Translation>Montri &amp;rekordojn</Translation>
       <OldEnglish>Show &amp;highscores</OldEnglish>
     </mnuLevelHighscores>
     <mnuLevelPrevious>
-      <Translation>&amp;Vorheriges Level</Translation>
+      <Translation>&amp;Antaŭa puzlo</Translation>
       <OldEnglish>&amp;Previous level</OldEnglish>
     </mnuLevelPrevious>
     <mnuLevelNext>
-      <Translation>&amp;Nächstes Level</Translation>
+      <Translation>Malantaŭa &amp;puzlo</Translation>
       <OldEnglish>N&amp;ext level</OldEnglish>
     </mnuLevelNext>
     <mnuLevelPreviousUnsolved>
-      <Translation>V&amp;orheriges ungelöstes Level</Translation>
+      <Translation>An&amp;taŭa nesolvita puzlo</Translation>
       <OldEnglish>Pre&amp;vious unsolved level</OldEnglish>
     </mnuLevelPreviousUnsolved>
     <mnuLevelNextUnsolved>
-      <Translation>Nächstes &amp;ungelöstes Level</Translation>
+      <Translation>Malantaŭa nesolv&amp;ita puzlo</Translation>
       <OldEnglish>Next unsolve&amp;d level</OldEnglish>
     </mnuLevelNextUnsolved>
     <mnuLevelChangePlayer>
-      <Translation>Spielernamen än&amp;dern...</Translation>
+      <Translation>Ŝanĝi l&amp;udantan nomon...</Translation>
       <OldEnglish>&amp;Change player name...</OldEnglish>
     </mnuLevelChangePlayer>
     <mnuLevelExit>
-      <Translation>&amp;Beenden</Translation>
+      <Translation>&amp;Eliri</Translation>
       <OldEnglish>E&amp;xit</OldEnglish>
     </mnuLevelExit>
     <mnuEdit>
-      <Translation>&amp;Bearbeiten</Translation>
+      <Translation>&amp;Redaktado</Translation>
       <OldEnglish>&amp;Edit</OldEnglish>
     </mnuEdit>
     <mnuEditCreateLevel>
-      <Translation>&amp;Neues Level erstellen</Translation>
+      <Translation>Krei &amp;novan puzlon</Translation>
       <OldEnglish>Create &amp;new level</OldEnglish>
     </mnuEditCreateLevel>
     <mnuEditEditLevel>
-      <Translation>Level &amp;bearbeiten</Translation>
+      <Translation>&amp;Redakti puzlon</Translation>
       <OldEnglish>&amp;Edit level</OldEnglish>
     </mnuEditEditLevel>
     <mnuEditAddComment>
-      <Translation>K&amp;ommentar hinzufügen...</Translation>
+      <Translation>&amp;Aldoni komenton...</Translation>
       <OldEnglish>Add a co&amp;mment...</OldEnglish>
     </mnuEditAddComment>
     <mnuEditDelete>
-      <Translation>&amp;Level/Kommentar löschen</Translation>
+      <Translation>&amp;Forigi puzlon/komenton</Translation>
       <OldEnglish>&amp;Delete level/comment</OldEnglish>
     </mnuEditDelete>
     <mnuEditCut>
-      <Translation>&amp;Ausschneiden</Translation>
+      <Translation>E&amp;ltranĉi</Translation>
       <OldEnglish>C&amp;ut</OldEnglish>
     </mnuEditCut>
     <mnuEditCopy>
-      <Translation>&amp;Kopieren</Translation>
+      <Translation>&amp;Kopii</Translation>
       <OldEnglish>&amp;Copy</OldEnglish>
     </mnuEditCopy>
     <mnuEditPaste>
-      <Translation>&amp;Einfügen</Translation>
+      <Translation>El&amp;poŝigi</Translation>
       <OldEnglish>&amp;Paste</OldEnglish>
     </mnuEditPaste>
     <mnuEditFinish>
-      <Translation>Bearbeitung ab&amp;schließen</Translation>
+      <Translation>F&amp;inigi redaktadon</Translation>
       <OldEnglish>&amp;Finish editing</OldEnglish>
     </mnuEditFinish>
     <mnuEditCancel>
-      <Translation>Bea&amp;rbeitung abbrechen</Translation>
+      <Translation>N&amp;uligi redaktadon</Translation>
       <OldEnglish>C&amp;ancel editing</OldEnglish>
     </mnuEditCancel>
     <mnuEditWall>
-      <Translation>&amp;Wand platzieren</Translation>
+      <Translation>&amp;Muro-ilo</Translation>
       <OldEnglish>&amp;Wall tool</OldEnglish>
     </mnuEditWall>
     <mnuEditPiece>
-      <Translation>S&amp;tein platzieren</Translation>
+      <Translation>&amp;Ero-ilo</Translation>
       <OldEnglish>P&amp;iece tool</OldEnglish>
     </mnuEditPiece>
     <mnuEditTarget>
-      <Translation>&amp;Ziel platzieren</Translation>
+      <Translation>&amp;Celo-ilo</Translation>
       <OldEnglish>&amp;Target tool</OldEnglish>
     </mnuEditTarget>
     <mnuEditSokoban>
-      <Translation>Sokoban &amp;platzieren</Translation>
+      <Translation>&amp;Sokoban-ilo</Translation>
       <OldEnglish>&amp;Sokoban tool</OldEnglish>
     </mnuEditSokoban>
     <mnuOptions>
-      <Translation>&amp;Optionen</Translation>
+      <Translation>&amp;Opcioj</Translation>
       <OldEnglish>&amp;Options</OldEnglish>
     </mnuOptions>
     <mnuOptionsLevelList>
-      <Translation>&amp;Levelliste anzeigen</Translation>
+      <Translation>&amp;Montri puzlo-liston</Translation>
       <OldEnglish>Display &amp;level list</OldEnglish>
     </mnuOptionsLevelList>
     <mnuOptionsPlayingToolbar>
-      <Translation>S&amp;ymbolleiste "Spielen" anzeigen</Translation>
+      <Translation>Montri ilobreton "Lu&amp;dado"</Translation>
       <OldEnglish>Display pla&amp;ying toolbar</OldEnglish>
     </mnuOptionsPlayingToolbar>
     <mnuOptionsFileToolbars>
-      <Translation>Symbolleisten "Leveldatei &amp;bearbeiten" anzeigen</Translation>
+      <Translation>Montri ilobretojn "&amp;Redaktado de puzlo-dosiero"</Translation>
       <OldEnglish>Display &amp;editing toolbars (level pack)</OldEnglish>
     </mnuOptionsFileToolbars>
     <mnuOptionsEditLevelToolbar>
-      <Translation>Sy&amp;mbolleiste "Level bearbeiten" anzeigen</Translation>
+      <Translation>Montri ilobreton "Redaktado de &amp;puzlo"</Translation>
       <OldEnglish>Display editin&amp;g toolbar (level)</OldEnglish>
     </mnuOptionsEditLevelToolbar>
     <mnuOptionsStatusBar>
-      <Translation>Status&amp;zeile anzeigen</Translation>
+      <Translation>Montri stat&amp;usbreton</Translation>
       <OldEnglish>Display stat&amp;us bar</OldEnglish>
     </mnuOptionsStatusBar>
     <mnuOptionsMoveNo>
-      <Translation>Zugweg &amp;nicht anzeigen</Translation>
+      <Translation>&amp;Ne montri movvojon</Translation>
       <OldEnglish>Don't display &amp;move path</OldEnglish>
     </mnuOptionsMoveNo>
     <mnuOptionsMoveLine>
-      <Translation>Zugweg durch L&amp;inie darstellen</Translation>
+      <Translation>M&amp;ontri movvojon kiel linio</Translation>
       <OldEnglish>Display move path as li&amp;ne</OldEnglish>
     </mnuOptionsMoveLine>
     <mnuOptionsMoveDots>
-      <Translation>Zugweg durch P&amp;unkte darstellen</Translation>
+      <Translation>Mon&amp;tri movvojon kiel punktoj</Translation>
       <OldEnglish>Display move path as &amp;dots</OldEnglish>
     </mnuOptionsMoveDots>
     <mnuOptionsMoveArrows>
-      <Translation>Zugweg durch &amp;Pfeile darstellen</Translation>
+      <Translation>Montr&amp;i movvojon kiel sagoj</Translation>
       <OldEnglish>Display move path as &amp;arrows</OldEnglish>
     </mnuOptionsMoveArrows>
     <mnuOptionsPushNo>
-      <Translation>Schubweg nicht &amp;anzeigen</Translation>
+      <Translation>N&amp;e montri puŝvojon</Translation>
       <OldEnglish>Don't display &amp;push path</OldEnglish>
     </mnuOptionsPushNo>
     <mnuOptionsPushLine>
-      <Translation>Schub&amp;weg durch Linie darstellen</Translation>
+      <Translation>Montri puŝ&amp;vojon kiel linio</Translation>
       <OldEnglish>Display push path as l&amp;ine</OldEnglish>
     </mnuOptionsPushLine>
     <mnuOptionsPushDots>
-      <Translation>Schubweg durch Pun&amp;kte darstellen</Translation>
+      <Translation>Montri puŝvo&amp;jon kiel punktoj</Translation>
       <OldEnglish>Display push path as do&amp;ts</OldEnglish>
     </mnuOptionsPushDots>
     <mnuOptionsPushArrows>
-      <Translation>S&amp;chubweg durch Pfeile darstellen</Translation>
+      <Translation>Montri puŝvojon kiel sa&amp;goj</Translation>
       <OldEnglish>Display push path as a&amp;rrows</OldEnglish>
     </mnuOptionsPushArrows>
     <mnuOptionsEndPos>
-      <Translation>En&amp;dposition von Sokoban und Stein anzeigen</Translation>
+      <Translation>Montri &amp;finlokon de Sokoban kaj ero</Translation>
       <OldEnglish>Display end p&amp;osition of Sokoban and piece</OldEnglish>
     </mnuOptionsEndPos>
     <mnuOptionsAreaSokoban>
-      <Translation>Erreichbare &amp;Fläche für Sokoban markieren</Translation>
+      <Translation>Montri &amp;atingeblan areon de Sokoban</Translation>
       <OldEnglish>Display reac&amp;hable area for Sokoban</OldEnglish>
     </mnuOptionsAreaSokoban>
     <mnuOptionsAreaPiece>
-      <Translation>&amp;Erreichbare Fläche für Stein markieren</Translation>
+      <Translation>Montri atinge&amp;blan areon de ero</Translation>
       <OldEnglish>Display reacha&amp;ble area for piece</OldEnglish>
     </mnuOptionsAreaPiece>
     <mnuOptionsSound>
-      <Translation>&amp;Sound aktivieren</Translation>
+      <Translation>Efektivigi &amp;sonon</Translation>
       <OldEnglish>Enable &amp;sound</OldEnglish>
     </mnuOptionsSound>
     <mnuOptionsChangeLanguage>
-      <Translation>Sp&amp;rache ändern</Translation>
+      <Translation>Ŝanĝi &amp;lingvon</Translation>
       <OldEnglish>&amp;Change language</OldEnglish>
     </mnuOptionsChangeLanguage>
     <mnuHelp>
-      <Translation>&amp;Hilfe</Translation>
+      <Translation>&amp;Helpo</Translation>
       <OldEnglish>&amp;Help</OldEnglish>
     </mnuHelp>
     <mnuHelpKeyboard>
-      <Translation>&amp;Tastaturkürzel</Translation>
+      <Translation>&amp;Klavkomandoj</Translation>
       <OldEnglish>&amp;Keyboard shortcuts</OldEnglish>
     </mnuHelpKeyboard>
     <mnuHelpAbout>
-      <Translation>&amp;Info</Translation>
+      <Translation>&amp;Pri</Translation>
       <OldEnglish>&amp;About</OldEnglish>
     </mnuHelpAbout>
     <lblStatusSolved>
-      <Translation>Sie haben das Level gelöst. Herzlichen Glückwunsch!</Translation>
+      <Translation>Vi solvis tiun puzlon. Gratulojn!</Translation>
       <OldEnglish>You have solved the level. Congratulations!</OldEnglish>
     </lblStatusSolved>
     <lblStatusNull>
-      <Translation>Gegenwärtig ist kein Level ausgewählt. Wählen Sie ein Level aus der Levelliste, um zu spielen.</Translation>
+      <Translation>Neniuj puzloj elektitaj. Elektu puzlon el la puzlo-listo por ludi.</Translation>
       <OldEnglish>No levels currently selected. Select a level from the level list to play.</OldEnglish>
     </lblStatusNull>
     <toolEditLevel>
-      <Translation>Symbolleiste "Level bearbeiten"</Translation>
+      <Translation>Ilobreto "redakti puzlon"</Translation>
       <OldEnglish>Level edit toolbar</OldEnglish>
     </toolEditLevel>
     <btnEditLevelWall>
-      <Translation>Wand platzieren</Translation>
+      <Translation>Muro-ilo</Translation>
       <OldEnglish>Wall tool</OldEnglish>
     </btnEditLevelWall>
     <btnEditLevelPiece>
-      <Translation>Stein platzieren</Translation>
+      <Translation>Ero-ilo</Translation>
       <OldEnglish>Piece tool</OldEnglish>
     </btnEditLevelPiece>
     <btnEditLevelTarget>
-      <Translation>Ziel platzieren</Translation>
+      <Translation>Celo-ilo</Translation>
       <OldEnglish>Target tool</OldEnglish>
     </btnEditLevelTarget>
     <btnEditLevelSokoban>
-      <Translation>Sokoban platzieren</Translation>
+      <Translation>Sokoban-ilo</Translation>
       <OldEnglish>Sokoban tool</OldEnglish>
     </btnEditLevelSokoban>
     <btnEditLevelOK>
-      <Translation>Bearbeitung abschließen</Translation>
+      <Translation>Finigi redaktadon</Translation>
       <OldEnglish>Finish editing</OldEnglish>
     </btnEditLevelOK>
     <btnEditLevelCancel>
-      <Translation>Bearbeitung abbrechen</Translation>
+      <Translation>Nuligi redaktadon</Translation>
       <OldEnglish>Cancel editing</OldEnglish>
     </btnEditLevelCancel>
     <toolFileEdit>
-      <Translation>Symbolleiste "Leveldatei bearbeiten"</Translation>
+      <Translation>Ilobreto "redakti dosieron"</Translation>
       <OldEnglish>File edit toolbar</OldEnglish>
     </toolFileEdit>
     <btnFileEditNewLevel>
-      <Translation>Neues Level erstellen</Translation>
+      <Translation>Krei novan puzlon</Translation>
       <OldEnglish>Create new level</OldEnglish>
     </btnFileEditNewLevel>
     <btnFileEditEditLevel>
-      <Translation>Level bearbeiten</Translation>
+      <Translation>Redakti puzlon</Translation>
       <OldEnglish>Edit level</OldEnglish>
     </btnFileEditEditLevel>
     <btnFileEditAddComment>
-      <Translation>Kommentar hinzufügen</Translation>
+      <Translation>Aldoni komenton</Translation>
       <OldEnglish>Add a comment</OldEnglish>
     </btnFileEditAddComment>
     <btnFileEditDeleteLevel>
-      <Translation>Ausgewählte Levels oder Kommentare löschen</Translation>
+      <Translation>Forigi elektitan puzlon aŭ komenton</Translation>
       <OldEnglish>Delete selected level or comment</OldEnglish>
     </btnFileEditDeleteLevel>
     <toolFile>
-      <Translation>Symbolleiste "Leveldatei"</Translation>
+      <Translation>Ilobreto "dosiero"</Translation>
       <OldEnglish>File toolbar</OldEnglish>
     </toolFile>
     <btnFileNew>
-      <Translation>Neue Leveldatei</Translation>
+      <Translation>Novan puzlo-dosieron</Translation>
       <OldEnglish>New level file</OldEnglish>
     </btnFileNew>
     <btnFileOpen>
-      <Translation>Leveldatei öffnen</Translation>
+      <Translation>Malfermi puzlo-dosieron</Translation>
       <OldEnglish>Open level file</OldEnglish>
     </btnFileOpen>
     <btnFileSave>
-      <Translation>Leveldatei speichern</Translation>
+      <Translation>Konservi puzlo-dosieron</Translation>
       <OldEnglish>Save level file</OldEnglish>
     </btnFileSave>
     <btnFileCut>
-      <Translation>Ausschneiden</Translation>
+      <Translation>Eltranĉi</Translation>
       <OldEnglish>Cut</OldEnglish>
     </btnFileCut>
     <btnFileCopy>
-      <Translation>Kopieren</Translation>
+      <Translation>Kopii</Translation>
       <OldEnglish>Copy</OldEnglish>
     </btnFileCopy>
     <btnFilePaste>
-      <Translation>Einfügen</Translation>
+      <Translation>Elpoŝigi</Translation>
       <OldEnglish>Paste</OldEnglish>
     </btnFilePaste>
     <toolPlay>
-      <Translation>Symbolleiste "Spielen"</Translation>
+      <Translation>Ilobreto "ludado"</Translation>
       <OldEnglish>Playing toolbar</OldEnglish>
     </toolPlay>
     <btnPlayOpenLevel>
-      <Translation>Leveldatei öffnen</Translation>
+      <Translation>Malfermi puzlo-dosieron</Translation>
       <OldEnglish>Open level file</OldEnglish>
     </btnPlayOpenLevel>
     <btnPlayPrevLevel>
-      <Translation>Vorheriges Level</Translation>
+      <Translation>Antaŭa puzlo</Translation>
       <OldEnglish>Previous level</OldEnglish>
     </btnPlayPrevLevel>
     <btnPlayNextLevel>
-      <Translation>Nächstes Level</Translation>
+      <Translation>Malantaŭa puzlo</Translation>
       <OldEnglish>Next level</OldEnglish>
     </btnPlayNextLevel>
     <btnPlayPrevUnsolvedLevel>
-      <Translation>Vorheriges ungelöstes Level</Translation>
+      <Translation>Antaŭa nesolvita puzlo</Translation>
       <OldEnglish>Previous unsolved level</OldEnglish>
     </btnPlayPrevUnsolvedLevel>
     <btnPlayNextUnsolvedLevel>
-      <Translation>Nächstes ungelöstes Level</Translation>
+      <Translation>Malantaŭa nesolvita puzlo</Translation>
       <OldEnglish>Next unsolved level</OldEnglish>
     </btnPlayNextUnsolvedLevel>
   </Mainform>
-  <Language>German</Language>
+  <Language>Esperanto</Language>
 </item>

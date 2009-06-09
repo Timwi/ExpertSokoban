@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using RT.Util.Lingo;
 using RT.Util.Xml;
@@ -10,23 +11,22 @@ namespace ExpertSokoban
     {
         public static Translation Tr = new Translation();
         public static ExpSokSettings Settings;
+        public static bool TranslationEnabled = true;
 
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        public static void Main()
+        public static void Main(string[] args)
         {
+            TranslationEnabled = args.Any(s => s == "translate");
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-#if DEBUG
-            XmlClassify.SaveObjectToXmlFile(Tr, Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), @"ExpSok-translation.template.xml"));
-#endif
-
             try { Settings = XmlClassify.LoadObjectFromXmlFile<ExpSokSettings>(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), @"ExpSok.settings.xml")); }
             catch { Settings = new ExpSokSettings(); }
-            Lingo.TryLoadTranslation("ExpSok", Settings.Language, ref Tr);
+            if (!Lingo.TryLoadTranslation("ExpSok", Settings.Language, ref Tr))
+                Settings.Language = null;
 
             Application.Run(new Mainform());
 

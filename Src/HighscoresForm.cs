@@ -57,7 +57,7 @@ namespace ExpertSokoban
 
                 Highscore h = highscores[playerNames[i]];
                 Label lblScore = new Label();
-                lblScore.Text = Program.Tr.Highscores.Highscores.Fmt(Program.Tr.NumberSystem, h.BestPushScore.Moves, h.BestPushScore.Pushes);
+                lblScore.Text = Program.Tr.Highscores.Highscores.Fmt(Program.Tr.Language.GetNumberSystem(), h.BestPushScore.Moves, h.BestPushScore.Pushes);
                 lblScore.AutoSize = true;
                 lblScore.Margin = new Padding(5);
                 pnlHighscores.Controls.Add(lblScore, 2, i);
