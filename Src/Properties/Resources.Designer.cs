@@ -249,6 +249,13 @@ namespace ExpertSokoban.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap Skin_LevelSolvedRu {
+            get {
+                object obj = ResourceManager.GetObject("Skin_LevelSolvedRu", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap Skin_Piece {
             get {
                 object obj = ResourceManager.GetObject("Skin_Piece", resourceCulture);
