@@ -463,6 +463,8 @@ namespace ExpertSokoban
             SizeF margin = new SizeF(_cellWidth / 5, _cellHeight / 5);
             SizeF diameter = new SizeF(_cellWidth / 2, _cellHeight / 2);
             GraphicsPath result = new GraphicsPath();
+            if (diameter.Width == 0 || diameter.Height == 0)
+                return result;
             for (int i = 0; i < outlines.Length; i++)
             {
                 result.StartFigure();
