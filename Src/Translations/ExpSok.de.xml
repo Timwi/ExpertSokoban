@@ -125,14 +125,6 @@
       <Translation>Sie haben an {0} Änderungen vorgenommen. Sollen diese Änderungen gespeichert werden?</Translation>
       <Old>You have made changes to {0}. Would you like to save those changes?</Old>
     </LevelList_Message_SaveChanges>
-    <LevelList_Message_SaveChanges_btnSave>
-      <Translation>Änderungen abspeichern</Translation>
-      <Old>Save changes</Old>
-    </LevelList_Message_SaveChanges_btnSave>
-    <LevelList_Message_SaveChanges_btnDiscard>
-      <Translation>Änderungen &amp;verwerfen</Translation>
-      <Old>&amp;Discard changes</Old>
-    </LevelList_Message_SaveChanges_btnDiscard>
     <LevelList_Message_DeleteLevel_CurrentlyEditing>
       <Translation>Sie bearbeiten dieses Level gerade.
 
@@ -162,13 +154,13 @@ Are you sure you wish to give up?</Old>
       <Old>Are you sure you wish to delete this level?</Old>
     </LevelList_Message_DeleteLevel_Sure>
     <LevelList_Message_DeleteLevel_btnDelete>
-      <Translation>Level löschen</Translation>
-      <Old>Delete level</Old>
+      <Translation>&amp;Level löschen</Translation>
+      <Old>&amp;Delete level</Old>
     </LevelList_Message_DeleteLevel_btnDelete>
-    <MainArea_Message_DiscardChanges>
-      <Translation>Sollen die Änderungen an dem Level, das Sie gerade bearbeiten, wirklich verworfen werden?</Translation>
-      <Old>Are you sure you wish to discard your changes to the level you're editing?</Old>
-    </MainArea_Message_DiscardChanges>
+    <MainArea_Message_SaveChanges>
+      <Translation>Möchten Sie die Änderungen an dem Level, das Sie gerade bearbeiten, speichern?</Translation>
+      <Old>Would you like to save your changes to the level you're editing?</Old>
+    </MainArea_Message_SaveChanges>
     <MainArea_Message_GiveUp>
       <Translation>Wollen Sie dieses Level wirklich aufgeben?</Translation>
       <Old>Are you sure you wish to give up the current level?</Old>
@@ -202,8 +194,8 @@ You can change this name again later by selecting "Change player name" from the 
       <Old>You must edit the level in order to address this issue. Would you like to edit the level now?</Old>
     </Mainform_Validity_CannotOpen_Fix>
     <Mainform_Validity_CannotOpen_btnEdit>
-      <Translation>Level bearbeiten</Translation>
-      <Old>Edit level</Old>
+      <Translation>Level &amp;bearbeiten</Translation>
+      <Old>&amp;Edit level</Old>
     </Mainform_Validity_CannotOpen_btnEdit>
     <Mainform_Validity_CannotSave>
       <Translation>Das folgende Problem wurde bei diesem Level festgestellt:</Translation>
@@ -214,12 +206,12 @@ You can change this name again later by selecting "Change player name" from the 
       <Old>You cannot play this level until you address this issue. Are you sure you wish to leave the level in this invalid state?</Old>
     </Mainform_Validity_CannotSave_Warning>
     <Mainform_Validity_CannotSave_btnSave>
-      <Translation>Level trotzdem speichern</Translation>
-      <Old>Save level anyway</Old>
+      <Translation>Level trotzdem &amp;speichern</Translation>
+      <Old>&amp;Save level anyway</Old>
     </Mainform_Validity_CannotSave_btnSave>
     <Mainform_Validity_CannotSave_btnResume>
-      <Translation>Bearbeitung fortsetzen</Translation>
-      <Old>Resume editing</Old>
+      <Translation>&amp;Bearbeitung fortsetzen</Translation>
+      <Old>&amp;Resume editing</Old>
     </Mainform_Validity_CannotSave_btnResume>
     <Mainform_InvalidFile>
       <Translation>Die angegebene Datei ist keine gültige Sokoban-Leveldatei.</Translation>
@@ -273,13 +265,17 @@ You can change this name again later by selecting "Change player name" from the 
       <Translation>Abbrechen</Translation>
       <Old>Cancel</Old>
     </Dialogs_btnCancel>
+    <Dialogs_btnSave>
+      <Translation>Änderungen &amp;speichern</Translation>
+      <Old>&amp;Save changes</Old>
+    </Dialogs_btnSave>
     <Dialogs_btnDiscard>
-      <Translation>Änderungen verwerfen</Translation>
-      <Old>Discard changes</Old>
+      <Translation>Änderungen &amp;verwerfen</Translation>
+      <Old>&amp;Discard changes</Old>
     </Dialogs_btnDiscard>
     <Dialogs_btnGiveUp>
-      <Translation>Aufgeben</Translation>
-      <Old>Give up</Old>
+      <Translation>&amp;Aufgeben</Translation>
+      <Old>&amp;Give up</Old>
     </Dialogs_btnGiveUp>
   </ConfirmationMessages>
   <Highscores>
@@ -657,5 +653,47 @@ You can change this name again later by selecting "Change player name" from the 
       <Old>Next unsolved level</Old>
     </btnPlayNextUnsolvedLevel>
   </Mainform>
+  <Context>
+    <mnuContextPlay>
+      <Translation>Level &amp;spielen</Translation>
+      <Old>Pl&amp;ay this level</Old>
+    </mnuContextPlay>
+    <mnuContextEdit>
+      <Translation>Level &amp;bearbeiten</Translation>
+      <Old>&amp;Edit this level</Old>
+    </mnuContextEdit>
+    <mnuContextHighscores>
+      <Translation>&amp;Highscores anzeigen</Translation>
+      <Old>Show &amp;highscores</Old>
+    </mnuContextHighscores>
+    <mnuContextNewLevel>
+      <Translation>Hier ein &amp;neues Level erstellen</Translation>
+      <Old>C&amp;reate a new level here</Old>
+    </mnuContextNewLevel>
+    <mnuContextNewComment>
+      <Translation>Hier einen K&amp;ommentar einfügen</Translation>
+      <Old>&amp;Insert a comment here</Old>
+    </mnuContextNewComment>
+    <mnuContextCut>
+      <Translation>&amp;Ausschneiden</Translation>
+      <Old>C&amp;ut</Old>
+    </mnuContextCut>
+    <mnuContextCopy>
+      <Translation>&amp;Kopieren</Translation>
+      <Old>&amp;Copy</Old>
+    </mnuContextCopy>
+    <mnuContextPaste>
+      <Translation>&amp;Einfügen</Translation>
+      <Old>&amp;Paste</Old>
+    </mnuContextPaste>
+    <mnuContextDelete>
+      <Translation>&amp;Löschen</Translation>
+      <Old>&amp;Delete</Old>
+    </mnuContextDelete>
+    <mnuContextHide>
+      <Translation>Levellist &amp;verbergen</Translation>
+      <Old>Hide &amp;level list</Old>
+    </mnuContextHide>
+  </Context>
   <Language>German</Language>
 </item>

@@ -223,7 +223,7 @@ namespace ExpertSokoban
             this.mnuContextSep3,
             this.mnuContextHide});
             this.mnuContext.Name = "LevelContextMenu";
-            this.mnuContext.Size = new System.Drawing.Size(228, 264);
+            this.mnuContext.Size = new System.Drawing.Size(228, 242);
             // 
             // mnuContextPlay
             // 
@@ -474,7 +474,7 @@ namespace ExpertSokoban
             this.btnFileNew.Name = "btnFileNew";
             this.btnFileNew.Size = new System.Drawing.Size(23, 22);
             this.btnFileNew.Text = "New level file";
-            this.btnFileNew.Click += new System.EventHandler(this.newLevel);
+            this.btnFileNew.Click += new System.EventHandler(this.newLevelFile);
             // 
             // btnFileOpen
             // 
@@ -483,7 +483,7 @@ namespace ExpertSokoban
             this.btnFileOpen.Name = "btnFileOpen";
             this.btnFileOpen.Size = new System.Drawing.Size(23, 22);
             this.btnFileOpen.Text = "Open level file";
-            this.btnFileOpen.Click += new System.EventHandler(this.openLevel);
+            this.btnFileOpen.Click += new System.EventHandler(this.openLevelFile);
             // 
             // btnFileSave
             // 
@@ -492,7 +492,7 @@ namespace ExpertSokoban
             this.btnFileSave.Name = "btnFileSave";
             this.btnFileSave.Size = new System.Drawing.Size(23, 22);
             this.btnFileSave.Text = "Save level file";
-            this.btnFileSave.Click += new System.EventHandler(this.saveLevel);
+            this.btnFileSave.Click += new System.EventHandler(this.saveLevelFile);
             // 
             // sepToolFile
             // 
@@ -550,7 +550,7 @@ namespace ExpertSokoban
             this.btnPlayOpenLevel.Name = "btnPlayOpenLevel";
             this.btnPlayOpenLevel.Size = new System.Drawing.Size(23, 22);
             this.btnPlayOpenLevel.Text = "Open level file";
-            this.btnPlayOpenLevel.Click += new System.EventHandler(this.openLevel);
+            this.btnPlayOpenLevel.Click += new System.EventHandler(this.openLevelFile);
             // 
             // sepPlay1
             // 
@@ -663,7 +663,7 @@ namespace ExpertSokoban
             this.mnuLevelNew.ShortcutKeys = ((System.Windows.Forms.Keys) ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
             this.mnuLevelNew.Size = new System.Drawing.Size(225, 22);
             this.mnuLevelNew.Text = "&New level file";
-            this.mnuLevelNew.Click += new System.EventHandler(this.newLevel);
+            this.mnuLevelNew.Click += new System.EventHandler(this.newLevelFile);
             // 
             // mnuLevelOpen
             // 
@@ -672,7 +672,7 @@ namespace ExpertSokoban
             this.mnuLevelOpen.ShortcutKeys = ((System.Windows.Forms.Keys) ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
             this.mnuLevelOpen.Size = new System.Drawing.Size(225, 22);
             this.mnuLevelOpen.Text = "&Open level file...";
-            this.mnuLevelOpen.Click += new System.EventHandler(this.openLevel);
+            this.mnuLevelOpen.Click += new System.EventHandler(this.openLevelFile);
             // 
             // mnuLevelSave
             // 
@@ -681,14 +681,14 @@ namespace ExpertSokoban
             this.mnuLevelSave.ShortcutKeys = ((System.Windows.Forms.Keys) ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
             this.mnuLevelSave.Size = new System.Drawing.Size(225, 22);
             this.mnuLevelSave.Text = "&Save level file";
-            this.mnuLevelSave.Click += new System.EventHandler(this.saveLevel);
+            this.mnuLevelSave.Click += new System.EventHandler(this.saveLevelFile);
             // 
             // mnuLevelSaveAs
             // 
             this.mnuLevelSaveAs.Name = "mnuLevelSaveAs";
             this.mnuLevelSaveAs.Size = new System.Drawing.Size(225, 22);
             this.mnuLevelSaveAs.Text = "Save level file &as...";
-            this.mnuLevelSaveAs.Click += new System.EventHandler(this.saveLevelAs);
+            this.mnuLevelSaveAs.Click += new System.EventHandler(this.saveLevelFileAs);
             // 
             // mnuLevelSep1
             // 
@@ -1322,6 +1322,7 @@ namespace ExpertSokoban
             this.ctMainArea.TabStop = true;
             this.ctMainArea.Tool = ExpertSokoban.MainAreaTool.Wall;
             this.ctMainArea.Click += new System.EventHandler(this.mainAreaClick);
+            this.ctMainArea.MustSaveLevel += new System.EventHandler(this.saveLevel);
             this.ctMainArea.LevelSolved += new System.EventHandler(this.levelSolved);
             this.ctMainArea.KeyDown += new System.Windows.Forms.KeyEventHandler(this.mainAreaKeyDown);
             // 

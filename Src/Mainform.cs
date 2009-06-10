@@ -29,6 +29,7 @@ namespace ExpertSokoban
         {
             InitializeComponent();
             Lingo.TranslateControl(this, Program.Tr.Mainform);
+            Lingo.TranslateControl(mnuContext, Program.Tr.Context);
             mnuOptionsLanguageEdit = new ToolStripMenuItem("&Edit current language", null, new EventHandler(editCurrentLanguage));
             mnuOptionsLanguageCreate = new ToolStripMenuItem("&Create new language", null, new EventHandler(createNewLanguage));
             initLanguageMenu();
@@ -85,6 +86,7 @@ namespace ExpertSokoban
             Program.Settings.Language = languageCode;
             Program.Tr = translation;
             Lingo.TranslateControl(this, Program.Tr.Mainform);
+            Lingo.TranslateControl(mnuContext, Program.Tr.Context);
             lstLevels.RefreshItems();
             if (ctMainArea.State == MainAreaState.Solved)
                 ctMainArea.Refresh();
@@ -129,7 +131,9 @@ namespace ExpertSokoban
         /// </summary>
         private void formClosing(object sender, FormClosingEventArgs e)
         {
-            if (!mayDestroyEverything(Program.Tr.ConfirmationMessages.Mainform_MessageTitle_Exit))
+            if ((_translationDialog != null && DlgMessage.Show("If you exit now, you will lose all your changes to the translation you are currently editing. Are you sure you wish to do this?\n\nTo save your changes, click \"Cancel\", then switch to the translation editor and click \"Save changes\" there.",
+                    "Exit Expert Sokoban", DlgType.Warning, Program.Tr.ConfirmationMessages.Dialogs_btnOK, Program.Tr.ConfirmationMessages.Dialogs_btnCancel) == 1)
+                || !mayDestroyEverything(Program.Tr.ConfirmationMessages.Mainform_MessageTitle_Exit))
                 e.Cancel = true;
         }
 
@@ -278,9 +282,7 @@ namespace ExpertSokoban
         /// dialogs need to pop up.</param>
         private bool mayDestroyEverything(string caption)
         {
-            bool OK = _translationDialog == null || (DlgMessage.Show("If you exit now, you will lose all your changes to the translation you are currently editing. Are you sure you wish to do this?\n\nTo save your changes, click \"Cancel\", then switch to the translation editor and click \"Save changes\" there.",
-                    caption, DlgType.Warning, Program.Tr.ConfirmationMessages.Dialogs_btnOK, Program.Tr.ConfirmationMessages.Dialogs_btnCancel) == 0);
-            return OK && ctMainArea.MayDestroy(caption) && lstLevels.MayDestroy(caption);
+            return ctMainArea.MayDestroy(caption) && lstLevels.MayDestroy(caption);
         }
 
         /// <summary>
@@ -443,7 +445,7 @@ namespace ExpertSokoban
         /// Invoked by "Level => New level file" or the relevant toolbar button.
         /// Clears the level list (after asking for confirmation if it has changed).
         /// </summary>
-        private void newLevel(object sender, EventArgs e)
+        private void newLevelFile(object sender, EventArgs e)
         {
             if (!mayDestroyEverything(Program.Tr.ConfirmationMessages.Mainform_MessageTitle_NewLevelFile))
                 return;
@@ -459,7 +461,7 @@ namespace ExpertSokoban
         /// Invoked by "Level => Open level file" or the relevant toolbar button.
         /// Allows the user to load a text file containing Sokoban levels.
         /// </summary>
-        private void openLevel(object sender, EventArgs e)
+        private void openLevelFile(object sender, EventArgs e)
         {
             if (!mayDestroyEverything(Program.Tr.ConfirmationMessages.Mainform_MessageTitle_OpenLevelFile))
                 return;
@@ -492,7 +494,7 @@ namespace ExpertSokoban
         /// Saves the level pack to a file, using the existing filename if it exists,
         /// or popping up a Save As dialog if it doesn't.
         /// </summary>
-        private void saveLevel(object sender, EventArgs e)
+        private void saveLevelFile(object sender, EventArgs e)
         {
             lstLevels.SaveWithDialog(false);
         }
@@ -501,7 +503,7 @@ namespace ExpertSokoban
         /// Invoked by "Level => Save level file as" or the relevant toolbar button.
         /// Asks the user where to save the level pack, then saves it there.
         /// </summary>
-        private void saveLevelAs(object sender, EventArgs e)
+        private void saveLevelFileAs(object sender, EventArgs e)
         {
             lstLevels.SaveWithDialog(true);
         }
@@ -726,7 +728,11 @@ namespace ExpertSokoban
                     Program.Tr.ConfirmationMessages.Mainform_Validity_CannotSave_btnResume) == 1)
                     return;
             }
+            saveLevel(sender, e);
+        }
 
+        private void saveLevel(object sender, EventArgs e)
+        {
             SokobanLevel Level = ctMainArea.Level.Clone();
             Level.EnsureSpace(0);
 

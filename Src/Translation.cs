@@ -55,15 +55,13 @@ namespace ExpertSokoban
             public TrString LevelList_Message_PrevUnsolved_Title = "Previous unsolved level";
             public TrString LevelList_Message_NoOtherLevel = "There is no other level in the level file.";
             public TrString LevelList_Message_SaveChanges = "You have made changes to {0}. Would you like to save those changes?";
-            public TrString LevelList_Message_SaveChanges_btnSave = "Save changes";
-            public TrString LevelList_Message_SaveChanges_btnDiscard = "&Discard changes";
             public TrString LevelList_Message_DeleteLevel_CurrentlyEditing = "You are currently editing this level.\n\nIf you delete this level now, all your modifications will be discarded.\n\nAre you sure you wish to do this?";
             public TrString LevelList_Message_DeleteLevel_Title = "Delete level";
             public TrString LevelList_Message_DeleteLevel_CurrentlyPlaying = "You are currently playing this level.\n\nAre you sure you wish to give up?";
             public TrString LevelList_Message_DeleteLevel_Sure = "Are you sure you wish to delete this level?";
-            public TrString LevelList_Message_DeleteLevel_btnDelete = "Delete level";
+            public TrString LevelList_Message_DeleteLevel_btnDelete = "&Delete level";
 
-            public TrString MainArea_Message_DiscardChanges = "Are you sure you wish to discard your changes to the level you're editing?";
+            public TrString MainArea_Message_SaveChanges = "Would you like to save your changes to the level you're editing?";
             public TrString MainArea_Message_GiveUp = "Are you sure you wish to give up the current level?";
 
             public TrString Mainform_ChooseName = "Please choose a name which will be used to identify you in highscore tables.";
@@ -72,11 +70,11 @@ namespace ExpertSokoban
 
             public TrString Mainform_Validity_CannotOpen = "The level could not be opened because it is invalid.";
             public TrString Mainform_Validity_CannotOpen_Fix = "You must edit the level in order to address this issue. Would you like to edit the level now?";
-            public TrString Mainform_Validity_CannotOpen_btnEdit = "Edit level";
+            public TrString Mainform_Validity_CannotOpen_btnEdit = "&Edit level";
             public TrString Mainform_Validity_CannotSave = "The following problem has been detected with this level:";
             public TrString Mainform_Validity_CannotSave_Warning = "You cannot play this level until you address this issue. Are you sure you wish to leave the level in this invalid state?";
-            public TrString Mainform_Validity_CannotSave_btnSave = "Save level anyway";
-            public TrString Mainform_Validity_CannotSave_btnResume = "Resume editing";
+            public TrString Mainform_Validity_CannotSave_btnSave = "&Save level anyway";
+            public TrString Mainform_Validity_CannotSave_btnResume = "&Resume editing";
 
             public TrString Mainform_InvalidFile = "The selected file is not a valid Sokoban level file.";
             public TrString Mainform_InvalidFile_Title = "Error opening level file";
@@ -94,8 +92,9 @@ namespace ExpertSokoban
 
             public TrString Dialogs_btnOK = "OK";
             public TrString Dialogs_btnCancel = "Cancel";
-            public TrString Dialogs_btnDiscard = "Discard changes";
-            public TrString Dialogs_btnGiveUp = "Give up";
+            public TrString Dialogs_btnSave = "&Save changes";
+            public TrString Dialogs_btnDiscard = "&Discard changes";
+            public TrString Dialogs_btnGiveUp = "&Give up";
         }
         public ConfirmationMessagesTranslation ConfirmationMessages = new ConfirmationMessagesTranslation();
 
@@ -218,5 +217,26 @@ namespace ExpertSokoban
             #endregion
         }
         public MainformTranslation Mainform = new MainformTranslation();
+
+#if DEBUG
+        [LingoDebug(RelativePath = @"..\..\main\ExpSok\Translation.cs")]
+#endif
+        [LingoGroup("Right-click menu", @"This group contains all the menu items in the right-click menu.")]
+        public class ContextMenuTranslation
+        {
+            #region ContextMenuTranslation
+            public TrString mnuContextPlay = "Pl&ay this level";
+            public TrString mnuContextEdit = "&Edit this level";
+            public TrString mnuContextHighscores = "Show &highscores";
+            public TrString mnuContextNewLevel = "C&reate a new level here";
+            public TrString mnuContextNewComment = "&Insert a comment here";
+            public TrString mnuContextCut = "C&ut";
+            public TrString mnuContextCopy = "&Copy";
+            public TrString mnuContextPaste = "&Paste";
+            public TrString mnuContextDelete = "&Delete";
+            public TrString mnuContextHide = "Hide &level list";
+            #endregion
+        }
+        public ContextMenuTranslation Context = new ContextMenuTranslation();
     }
 }

@@ -932,8 +932,8 @@ namespace ExpertSokoban
             int result = DlgMessage.Show(Program.Tr.ConfirmationMessages.LevelList_Message_SaveChanges.Fmt(
                     (Program.Settings.LevelFilename == null ? Program.Tr.FileName_Untitled.Translation : Path.GetFileName(Program.Settings.LevelFilename))
                 ), caption, DlgType.Question,
-                Program.Tr.ConfirmationMessages.LevelList_Message_SaveChanges_btnSave,
-                Program.Tr.ConfirmationMessages.LevelList_Message_SaveChanges_btnDiscard,
+                Program.Tr.ConfirmationMessages.Dialogs_btnSave,
+                Program.Tr.ConfirmationMessages.Dialogs_btnDiscard,
                 Program.Tr.ConfirmationMessages.Dialogs_btnCancel);
 
             // If they said "Cancel", bail out immediately.

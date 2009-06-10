@@ -311,6 +311,11 @@ namespace ExpertSokoban
         public event EventHandler LevelSolved;
 
         /// <summary>
+        /// Triggers when the level needs to be saved, with no questions asks. This happens only in <see cref="MayDestroy(string)"/>, where the user may be asked whether they want to save or discard their changes to the level they're editing.
+        /// </summary>
+        public event EventHandler MustSaveLevel;
+
+        /// <summary>
         /// The currently displayed level. Value may be invalid if State == Null.
         /// </summary>
         private SokobanLevel _level;
@@ -1468,12 +1473,23 @@ namespace ExpertSokoban
             if (State == MainAreaState.Solved || State == MainAreaState.Null || !_modified)
                 return true;
 
-            // Ask the user the appropriate question.
-            return State == MainAreaState.Editing
-                ? DlgMessage.Show(Program.Tr.ConfirmationMessages.MainArea_Message_DiscardChanges,
-                    caption, DlgType.Warning, Program.Tr.ConfirmationMessages.Dialogs_btnDiscard, Program.Tr.ConfirmationMessages.Dialogs_btnCancel) == 0
-                : DlgMessage.Show(Program.Tr.ConfirmationMessages.MainArea_Message_GiveUp,
+            // If we're playing, ask the user if they want to give up
+            if (State != MainAreaState.Editing)
+                return DlgMessage.Show(Program.Tr.ConfirmationMessages.MainArea_Message_GiveUp,
                     caption, DlgType.Warning, Program.Tr.ConfirmationMessages.Dialogs_btnGiveUp, Program.Tr.ConfirmationMessages.Dialogs_btnCancel) == 0;
+
+            // If we're editing, ask the user if they want to save or discard their changes
+            var result = DlgMessage.Show(Program.Tr.ConfirmationMessages.MainArea_Message_SaveChanges, caption, DlgType.Warning,
+                Program.Tr.ConfirmationMessages.Dialogs_btnSave,
+                Program.Tr.ConfirmationMessages.Dialogs_btnDiscard,
+                Program.Tr.ConfirmationMessages.Dialogs_btnCancel);
+
+            // If the user opted to save the changes, get them saved
+            if (result == 0 && MustSaveLevel != null)
+                MustSaveLevel(this, new EventArgs());
+
+            // If the user opted to cancel, return false, otherwise true
+            return result != 2;
         }
     }
 }
