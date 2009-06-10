@@ -4,12 +4,13 @@ using System.Linq;
 using System.Windows.Forms;
 using RT.Util.Lingo;
 using RT.Util.Xml;
+using RT.Util;
 
 namespace ExpertSokoban
 {
     public static class Program
     {
-        public static Translation Tr = new Translation();
+        public static Translation Tr;
         public static ExpSokSettings Settings;
         public static bool TranslationEnabled = true;
 
@@ -27,15 +28,14 @@ namespace ExpertSokoban
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            try { Settings = XmlClassify.LoadObjectFromXmlFile<ExpSokSettings>(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), @"ExpSok.settings.xml")); }
+            try { Settings = XmlClassify.LoadObjectFromXmlFile<ExpSokSettings>(PathUtil.AppPathCombine(@"ExpSok.settings.xml")); }
             catch { Settings = new ExpSokSettings(); }
-            if (!Lingo.TryLoadTranslation("ExpSok", Settings.Language, ref Tr))
-                Settings.Language = null;
+            Tr = Lingo.LoadTranslation<Translation>("ExpSok", ref Settings.Language);
 
             Application.Run(new Mainform());
 
             // Store settings
-            XmlClassify.SaveObjectToXmlFile(Settings, Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), @"ExpSok.settings.xml"));
+            XmlClassify.SaveObjectToXmlFile(Settings, PathUtil.AppPathCombine(@"ExpSok.settings.xml"));
         }
     }
 }
