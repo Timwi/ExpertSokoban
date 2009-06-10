@@ -107,7 +107,7 @@ namespace ExpertSokoban
         {
             #region HighscoresFormTranslation
             public TrString HighscoresForm = "Highscores";
-            public TrStringNumbers Highscores = new TrStringNumbers(new[] { "{0} move, {1} push", "{0} moves, {1} push", "{0} move, {1} pushes", "{0} moves, {1} pushes" }, new[] { true, true });
+            public TrStringNum Highscores = new TrStringNum(new[] { "{0} move, {1} push", "{0} moves, {1} push", "{0} move, {1} pushes", "{0} moves, {1} pushes" }, new[] { true, true });
             public TrString btnOK = "OK";
             #endregion
         }

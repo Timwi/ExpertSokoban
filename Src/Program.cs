@@ -19,7 +19,11 @@ namespace ExpertSokoban
         [STAThread]
         public static void Main(string[] args)
         {
+#if DEBUG
+            TranslationEnabled = true;
+#else
             TranslationEnabled = args.Any(s => s == "translate");
+#endif
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
