@@ -1475,14 +1475,12 @@ namespace ExpertSokoban
 
             // If we're playing, ask the user if they want to give up
             if (State != MainAreaState.Editing)
-                return DlgMessage.Show(Program.Tr.ConfirmationMessages.MainArea_Message_GiveUp,
-                    caption, DlgType.Warning, Program.Tr.ConfirmationMessages.Dialogs_btnGiveUp, Program.Tr.ConfirmationMessages.Dialogs_btnCancel) == 0;
+                return DlgMessage.Show(Program.Tr.MainArea_Message_GiveUp,
+                    caption, DlgType.Warning, Program.Tr.Dialogs_btnGiveUp, Program.Tr.Dialogs_btnCancel) == 0;
 
             // If we're editing, ask the user if they want to save or discard their changes
-            var result = DlgMessage.Show(Program.Tr.ConfirmationMessages.MainArea_Message_SaveChanges, caption, DlgType.Warning,
-                Program.Tr.ConfirmationMessages.Dialogs_btnSave,
-                Program.Tr.ConfirmationMessages.Dialogs_btnDiscard,
-                Program.Tr.ConfirmationMessages.Dialogs_btnCancel);
+            var result = DlgMessage.Show(Program.Tr.MainArea_Message_SaveChanges, caption, DlgType.Warning,
+                Program.Tr.Dialogs_btnSave, Program.Tr.Dialogs_btnDiscard, Program.Tr.Dialogs_btnCancel);
 
             // If the user opted to save the changes, get them saved
             if (result == 0 && MustSaveLevel != null)

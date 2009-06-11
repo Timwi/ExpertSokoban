@@ -50,7 +50,7 @@ namespace ExpertSokoban
             showLevelList(Program.Settings.DisplayLevelList);
 
             if (Program.Settings.PlayerName == null || Program.Settings.PlayerName.Length == 0)
-                Program.Settings.PlayerName = InputBox.GetLine(Program.Tr.ConfirmationMessages.Mainform_ChooseName_FirstRun, "", Program.Tr.ProgramName, Program.Tr.ConfirmationMessages.Dialogs_btnOK, Program.Tr.ConfirmationMessages.Dialogs_btnCancel);
+                Program.Settings.PlayerName = InputBox.GetLine(Program.Tr.Mainform_ChooseName_FirstRun, "", Program.Tr.ProgramName, Program.Tr.Dialogs_btnOK, Program.Tr.Dialogs_btnCancel);
 
             // Restore the last used level pack
             try
@@ -132,8 +132,8 @@ namespace ExpertSokoban
         private void formClosing(object sender, FormClosingEventArgs e)
         {
             if ((_translationDialog != null && DlgMessage.Show("If you exit now, you will lose all your changes to the translation you are currently editing. Are you sure you wish to do this?\n\nTo save your changes, click \"Cancel\", then switch to the translation editor and click \"Save changes\" there.",
-                    "Exit Expert Sokoban", DlgType.Warning, Program.Tr.ConfirmationMessages.Dialogs_btnOK, Program.Tr.ConfirmationMessages.Dialogs_btnCancel) == 1)
-                || !mayDestroyEverything(Program.Tr.ConfirmationMessages.Mainform_MessageTitle_Exit))
+                    "Exit Expert Sokoban", DlgType.Warning, Program.Tr.Dialogs_btnOK, Program.Tr.Dialogs_btnCancel) == 1)
+                || !mayDestroyEverything(Program.Tr.Mainform_MessageTitle_Exit))
                 e.Cancel = true;
         }
 
@@ -332,7 +332,7 @@ namespace ExpertSokoban
 
             // If the user hasn't chosen a name for themselves yet, ask them
             if (Program.Settings.PlayerName == null || Program.Settings.PlayerName.Length == 0)
-                Program.Settings.PlayerName = InputBox.GetLine(Program.Tr.ConfirmationMessages.Mainform_ChooseName_SolvedLevel, "", Program.Tr.ProgramName, Program.Tr.ConfirmationMessages.Dialogs_btnOK, Program.Tr.ConfirmationMessages.Dialogs_btnCancel);
+                Program.Settings.PlayerName = InputBox.GetLine(Program.Tr.Mainform_ChooseName_SolvedLevel, "", Program.Tr.ProgramName, Program.Tr.Dialogs_btnOK, Program.Tr.Dialogs_btnCancel);
 
             // If they still haven't chosen a name, discard the high score
             if (Program.Settings.PlayerName == null || Program.Settings.PlayerName.Length == 0)
@@ -375,7 +375,7 @@ namespace ExpertSokoban
         /// </summary>
         private void levelActivating(object sender, ConfirmEventArgs e)
         {
-            e.ConfirmOK = ctMainArea.MayDestroy(Program.Tr.ConfirmationMessages.Mainform_MessageTitle_OpenLevel);
+            e.ConfirmOK = ctMainArea.MayDestroy(Program.Tr.Mainform_MessageTitle_OpenLevel);
         }
 
         /// <summary>
@@ -447,7 +447,7 @@ namespace ExpertSokoban
         /// </summary>
         private void newLevelFile(object sender, EventArgs e)
         {
-            if (!mayDestroyEverything(Program.Tr.ConfirmationMessages.Mainform_MessageTitle_NewLevelFile))
+            if (!mayDestroyEverything(Program.Tr.Mainform_MessageTitle_NewLevelFile))
                 return;
 
             // Show the level list if it isn't already visible
@@ -463,7 +463,7 @@ namespace ExpertSokoban
         /// </summary>
         private void openLevelFile(object sender, EventArgs e)
         {
-            if (!mayDestroyEverything(Program.Tr.ConfirmationMessages.Mainform_MessageTitle_OpenLevelFile))
+            if (!mayDestroyEverything(Program.Tr.Mainform_MessageTitle_OpenLevelFile))
                 return;
 
             OpenFileDialog OpenDialog = new OpenFileDialog();
@@ -479,7 +479,7 @@ namespace ExpertSokoban
             }
             catch (LevelListBox.InvalidLevelException)
             {
-                DlgMessage.ShowError(Program.Tr.ConfirmationMessages.Mainform_InvalidFile, Program.Tr.ConfirmationMessages.Mainform_InvalidFile_Title);
+                DlgMessage.ShowError(Program.Tr.Mainform_InvalidFile, Program.Tr.Mainform_InvalidFile_Title);
                 return;
             }
 
@@ -530,7 +530,7 @@ namespace ExpertSokoban
         /// </summary>
         private void retryLevel(object sender, EventArgs e)
         {
-            if (!ctMainArea.MayDestroy(Program.Tr.ConfirmationMessages.Mainform_MessageTitle_RetryLevel))
+            if (!ctMainArea.MayDestroy(Program.Tr.Mainform_MessageTitle_RetryLevel))
                 return;
 
             if (lstLevels.ActiveLevel != null && ctMainArea.State != MainAreaState.Null)
@@ -575,7 +575,7 @@ namespace ExpertSokoban
         /// </summary>
         private void changePlayer(object sender, EventArgs e)
         {
-            string Result = InputBox.GetLine(Program.Tr.ConfirmationMessages.Mainform_ChooseName, Program.Settings.PlayerName, Program.Tr.ProgramName, Program.Tr.ConfirmationMessages.Dialogs_btnOK, Program.Tr.ConfirmationMessages.Dialogs_btnCancel);
+            string Result = InputBox.GetLine(Program.Tr.Mainform_ChooseName, Program.Settings.PlayerName, Program.Tr.ProgramName, Program.Tr.Dialogs_btnOK, Program.Tr.Dialogs_btnCancel);
             if (Result == null)
                 return;
 
@@ -593,7 +593,7 @@ namespace ExpertSokoban
             {
                 string level = lstLevels.SelectedLevel.ToString();
                 if (!Program.Settings.Highscores.ContainsKey(level))
-                    DlgMessage.Show(Program.Tr.ConfirmationMessages.Mainform_NoHighscores, Program.Tr.ConfirmationMessages.Mainform_NoHighscores_Title, DlgType.Info, Program.Tr.ConfirmationMessages.Dialogs_btnOK);
+                    DlgMessage.Show(Program.Tr.Mainform_NoHighscores, Program.Tr.Mainform_NoHighscores_Title, DlgType.Info, Program.Tr.Dialogs_btnOK);
                 else
                 {
                     HighscoresForm hsf = new HighscoresForm();
@@ -650,7 +650,7 @@ namespace ExpertSokoban
         {
             if (!pnlLevelList.Visible)
                 toggleLevelList(sender, e);
-            string Comment = InputBox.GetLine(Program.Tr.ConfirmationMessages.NewComment_Prompt, "", Program.Tr.ConfirmationMessages.NewComment_Title, Program.Tr.ConfirmationMessages.Dialogs_btnOK, Program.Tr.ConfirmationMessages.Dialogs_btnCancel);
+            string Comment = InputBox.GetLine(Program.Tr.NewComment_Prompt, "", Program.Tr.NewComment_Title, Program.Tr.Dialogs_btnOK, Program.Tr.Dialogs_btnCancel);
             if (Comment != null)
                 lstLevels.AddLevelListItem(Comment);
         }
@@ -721,11 +721,11 @@ namespace ExpertSokoban
                 String Problem = Status == SokobanLevelStatus.NotEnclosed
                     ? Program.Tr.Mainform_Validity_NotEnclosed
                     : Program.Tr.Mainform_Validity_WrongNumber;
-                if (DlgMessage.Show(Program.Tr.ConfirmationMessages.Mainform_Validity_CannotSave + "\n\n" +
-                    Problem + "\n\n" + Program.Tr.ConfirmationMessages.Mainform_Validity_CannotSave_Warning,
-                    Program.Tr.ConfirmationMessages.Mainform_MessageTitle_FinishEditing, DlgType.Error,
-                    Program.Tr.ConfirmationMessages.Mainform_Validity_CannotSave_btnSave,
-                    Program.Tr.ConfirmationMessages.Mainform_Validity_CannotSave_btnResume) == 1)
+                if (DlgMessage.Show(Program.Tr.Mainform_Validity_CannotSave + "\n\n" +
+                    Problem + "\n\n" + Program.Tr.Mainform_Validity_CannotSave_Warning,
+                    Program.Tr.Mainform_MessageTitle_FinishEditing, DlgType.Error,
+                    Program.Tr.Mainform_Validity_CannotSave_btnSave,
+                    Program.Tr.Mainform_Validity_CannotSave_btnResume) == 1)
                     return;
             }
             saveLevel(sender, e);
@@ -887,7 +887,7 @@ namespace ExpertSokoban
             if (File.Exists(helpfile))
                 Help.ShowHelp(this, helpfile, HelpNavigator.TopicId, "30");
             else
-                DlgMessage.ShowWarning(Program.Tr.ConfirmationMessages.Mainform_Error_HelpFileNotFound.Fmt(helpfile), null);
+                DlgMessage.ShowWarning(Program.Tr.Mainform_Error_HelpFileNotFound.Fmt(helpfile), null);
         }
 
         /// <summary>

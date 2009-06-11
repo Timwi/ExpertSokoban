@@ -71,8 +71,8 @@ namespace ExpertSokoban
                     string Problem = status == SokobanLevelStatus.NotEnclosed
                         ? Program.Tr.Mainform_Validity_NotEnclosed
                         : Program.Tr.Mainform_Validity_WrongNumber;
-                    if (DlgMessage.Show(Program.Tr.ConfirmationMessages.Mainform_Validity_CannotOpen + "\n\n" + Problem + "\n\n" + Program.Tr.ConfirmationMessages.Mainform_Validity_CannotOpen_Fix,
-                        Program.Tr.ConfirmationMessages.Mainform_MessageTitle_OpenLevel, DlgType.Error, Program.Tr.ConfirmationMessages.Mainform_Validity_CannotOpen_btnEdit, Program.Tr.ConfirmationMessages.Dialogs_btnCancel) == 0)
+                    if (DlgMessage.Show(Program.Tr.Mainform_Validity_CannotOpen + "\n\n" + Problem + "\n\n" + Program.Tr.Mainform_Validity_CannotOpen_Fix,
+                        Program.Tr.Mainform_MessageTitle_OpenLevel, DlgType.Error, Program.Tr.Mainform_Validity_CannotOpen_btnEdit, Program.Tr.Dialogs_btnCancel) == 0)
                     {
                         _state = LevelListBoxState.Editing;
                         _activeLevelIndex = index.Value;
@@ -230,7 +230,7 @@ namespace ExpertSokoban
                 setActiveLevel(SelectedIndex, LevelListBoxState.Playing);
             else
             {
-                string newComment = InputBox.GetLine(Program.Tr.ConfirmationMessages.EditComment_Prompt, (string) SelectedItem, Program.Tr.ConfirmationMessages.EditComment_Title, Program.Tr.ConfirmationMessages.Dialogs_btnOK, Program.Tr.ConfirmationMessages.Dialogs_btnCancel);
+                string newComment = InputBox.GetLine(Program.Tr.EditComment_Prompt, (string) SelectedItem, Program.Tr.EditComment_Title, Program.Tr.Dialogs_btnOK, Program.Tr.Dialogs_btnCancel);
                 if (newComment != null)
                 {
                     Items[SelectedIndex] = newComment;
@@ -634,7 +634,7 @@ namespace ExpertSokoban
             {
                 // If anything fails here, don't crash. Just tell the caller that save
                 // hasn't actually happened.
-                DlgMessage.ShowError(Program.Tr.ConfirmationMessages.LevelList_Message_CannotSaveSettings + "\n" + e.Message, Program.Tr.ConfirmationMessages.LevelList_Message_CannotSaveSettings_Title);
+                DlgMessage.ShowError(Program.Tr.LevelList_Message_CannotSaveSettings + "\n" + e.Message, Program.Tr.LevelList_Message_CannotSaveSettings_Title);
                 return false;
             }
         }
@@ -826,11 +826,11 @@ namespace ExpertSokoban
             if (i == null)
             {
                 if (congratulateIfAll)
-                    DlgMessage.Show(Program.Tr.ConfirmationMessages.LevelList_Message_AllSolved, Program.Tr.ConfirmationMessages.LevelList_Message_AllSolved_Title, DlgType.Info, Program.Tr.ConfirmationMessages.Dialogs_btnOK);
+                    DlgMessage.Show(Program.Tr.LevelList_Message_AllSolved, Program.Tr.LevelList_Message_AllSolved_Title, DlgType.Info, Program.Tr.Dialogs_btnOK);
                 else if (mustBeUnsolved)
-                    DlgMessage.Show(Program.Tr.ConfirmationMessages.LevelList_Message_NoMoreUnsolved, Program.Tr.ConfirmationMessages.LevelList_Message_NextUnsolved_Title, DlgType.Info, Program.Tr.ConfirmationMessages.Dialogs_btnOK);
+                    DlgMessage.Show(Program.Tr.LevelList_Message_NoMoreUnsolved, Program.Tr.LevelList_Message_NextUnsolved_Title, DlgType.Info, Program.Tr.Dialogs_btnOK);
                 else
-                    DlgMessage.Show(Program.Tr.ConfirmationMessages.LevelList_Message_NoOtherLevel, Program.Tr.ConfirmationMessages.LevelList_Message_Next_Title, DlgType.Info, Program.Tr.ConfirmationMessages.Dialogs_btnOK);
+                    DlgMessage.Show(Program.Tr.LevelList_Message_NoOtherLevel, Program.Tr.LevelList_Message_Next_Title, DlgType.Info, Program.Tr.Dialogs_btnOK);
             }
             else
                 playingIndex = i.Value;
@@ -850,9 +850,9 @@ namespace ExpertSokoban
 
             if (i == null)
                 DlgMessage.Show(
-                    mustBeUnsolved ? Program.Tr.ConfirmationMessages.LevelList_Message_NoMoreUnsolved : Program.Tr.ConfirmationMessages.LevelList_Message_NoOtherLevel,
-                    mustBeUnsolved ? Program.Tr.ConfirmationMessages.LevelList_Message_PrevUnsolved_Title : Program.Tr.ConfirmationMessages.LevelList_Message_Prev_Title,
-                    DlgType.Info, Program.Tr.ConfirmationMessages.Dialogs_btnOK);
+                    mustBeUnsolved ? Program.Tr.LevelList_Message_NoMoreUnsolved : Program.Tr.LevelList_Message_NoOtherLevel,
+                    mustBeUnsolved ? Program.Tr.LevelList_Message_PrevUnsolved_Title : Program.Tr.LevelList_Message_Prev_Title,
+                    DlgType.Info, Program.Tr.Dialogs_btnOK);
             else
                 playingIndex = i.Value;
         }
@@ -929,12 +929,12 @@ namespace ExpertSokoban
                 return true;
 
             // Ask the user if they want to save their changes to the level file.
-            int result = DlgMessage.Show(Program.Tr.ConfirmationMessages.LevelList_Message_SaveChanges.Fmt(
+            int result = DlgMessage.Show(Program.Tr.LevelList_Message_SaveChanges.Fmt(
                     (Program.Settings.LevelFilename == null ? Program.Tr.FileName_Untitled.Translation : Path.GetFileName(Program.Settings.LevelFilename))
                 ), caption, DlgType.Question,
-                Program.Tr.ConfirmationMessages.Dialogs_btnSave,
-                Program.Tr.ConfirmationMessages.Dialogs_btnDiscard,
-                Program.Tr.ConfirmationMessages.Dialogs_btnCancel);
+                Program.Tr.Dialogs_btnSave,
+                Program.Tr.Dialogs_btnDiscard,
+                Program.Tr.Dialogs_btnCancel);
 
             // If they said "Cancel", bail out immediately.
             if (result == 2)
@@ -973,23 +973,23 @@ namespace ExpertSokoban
             // Confirmation message if user is currently editing the selected level
             if (item is SokobanLevel && SelectedIndex == editingIndex)
             {
-                if (DlgMessage.Show(Program.Tr.ConfirmationMessages.LevelList_Message_DeleteLevel_CurrentlyEditing, Program.Tr.ConfirmationMessages.LevelList_Message_DeleteLevel_Title,
-                    DlgType.Warning, Program.Tr.ConfirmationMessages.Dialogs_btnDiscard, Program.Tr.ConfirmationMessages.Dialogs_btnCancel) == 1)
+                if (DlgMessage.Show(Program.Tr.LevelList_Message_DeleteLevel_CurrentlyEditing, Program.Tr.LevelList_Message_DeleteLevel_Title,
+                    DlgType.Warning, Program.Tr.Dialogs_btnDiscard, Program.Tr.Dialogs_btnCancel) == 1)
                     return false;
             }
             // Confirmation message if user is currently playing the selected level
             else if (item is SokobanLevel && SelectedIndex == playingIndex)
             {
-                if (DlgMessage.Show(Program.Tr.ConfirmationMessages.LevelList_Message_DeleteLevel_CurrentlyPlaying, Program.Tr.ConfirmationMessages.LevelList_Message_DeleteLevel_Title,
-                    DlgType.Warning, Program.Tr.ConfirmationMessages.Dialogs_btnGiveUp, Program.Tr.ConfirmationMessages.Dialogs_btnCancel) == 1)
+                if (DlgMessage.Show(Program.Tr.LevelList_Message_DeleteLevel_CurrentlyPlaying, Program.Tr.LevelList_Message_DeleteLevel_Title,
+                    DlgType.Warning, Program.Tr.Dialogs_btnGiveUp, Program.Tr.Dialogs_btnCancel) == 1)
                     return false;
             }
             // Confirmation message if neither of the two cases apply
             else if (item is SokobanLevel)
             {
                 if (normalConfirmation && DlgMessage.Show(
-                    Program.Tr.ConfirmationMessages.LevelList_Message_DeleteLevel_Sure,
-                    Program.Tr.ConfirmationMessages.LevelList_Message_DeleteLevel_Title, DlgType.Question, Program.Tr.ConfirmationMessages.LevelList_Message_DeleteLevel_btnDelete, Program.Tr.ConfirmationMessages.Dialogs_btnCancel) == 1)
+                    Program.Tr.LevelList_Message_DeleteLevel_Sure,
+                    Program.Tr.LevelList_Message_DeleteLevel_Title, DlgType.Question, Program.Tr.LevelList_Message_DeleteLevel_btnDelete, Program.Tr.Dialogs_btnCancel) == 1)
                     return false;
             }
             return true;
