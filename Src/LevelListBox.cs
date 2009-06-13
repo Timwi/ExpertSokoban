@@ -52,8 +52,7 @@ namespace ExpertSokoban
             if (LevelActivating != null)
             {
                 // Confirm with the owner that the level can be changed
-                ConfirmEventArgs args = new ConfirmEventArgs();
-                args.ConfirmOK = true;
+                ConfirmEventArgs args = new ConfirmEventArgs { ConfirmOK = true };
                 LevelActivating(this, args);
                 if (!args.ConfirmOK)
                     return;
