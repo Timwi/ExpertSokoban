@@ -5,33 +5,6 @@ namespace ExpertSokoban
 {
     public enum TranslationGroup
     {
-        [LingoGroup("General", "This group contains general strings pertaining to the application.")]
-        General,
-
-        [LingoGroup("Status bar messages", "This group contains messages that appear in the status bar at the bottom of the main window.")]
-        StatusBar,
-
-        [LingoGroup("Confirmation messages", "This group contains confirmation messages that are displayed to the user in dialog boxes (small windows) containing two or three buttons for the user to choose from.")]
-        Confirm,
-
-        [LingoGroup("Prompts", "This group contains messages that prompt the user to supply information.")]
-        Prompt,
-
-        [LingoGroup("Level list messages", "This group contains messages that are displayed in the level list in the right-hand part of the main window.")]
-        LevelList,
-
-        [LingoGroup("Information messages", "This group contains messages displayed to the user in a dialog box with only an OK button.")]
-        Info,
-
-        [LingoGroup("Message titles", "This group contains strings which are displayed in the title bar of some information messages, prompts or confirmation messages. Most of these are identical to the name of an action (toolbar button or menu item).")]
-        TitleBar,
-
-        [LingoGroup("Highscores", @"This group contains strings which are used in the Highscores window, which appears if you right-click a level and choose ""Display highscores"".")]
-        Highscores,
-
-        [LingoGroup("About", @"This group contains strings which are used in the About window, which appears if you choose ""About"" from the ""Help"" menu.")]
-        About,
-
         [LingoGroup("Menu: Level", @"This group contains strings which are used in the ""Level"" menu.")]
         LevelMenu,
 
@@ -40,19 +13,16 @@ namespace ExpertSokoban
 
         [LingoGroup("Menu: Options", @"This group contains strings which are used in the ""Options"" menu.")]
         OptionsMenu,
-        
+
         [LingoGroup("Menu: Help", @"This group contains strings which are used in the ""Help"" menu.")]
         HelpMenu,
 
         [LingoGroup("Menu: Context", @"This group contains strings which are used in the context menu which appears when the user right-clicks in the level list.")]
         ContextMenu,
 
-        [LingoGroup("Accessibility", @"This group contains strings which are not visually displayed, but may be used by screen readers to help blind users navigate the software.")]
-        Accessibility,
-
         [LingoGroup("Toolbar: Play", @"This strings in this group are tooltips which appear as the user hovers their mouse over a button on the ""Playing"" toolbar.")]
         ToolPlay,
-        
+
         [LingoGroup("Toolbar: File", @"This strings in this group are tooltips which appear as the user hovers their mouse over a button on the ""Level file"" toolbar.")]
         ToolFile,
 
@@ -61,6 +31,36 @@ namespace ExpertSokoban
 
         [LingoGroup("Toolbar: Level edit", @"This strings in this group are tooltips which appear as the user hovers their mouse over a button on the ""Level editing"" toolbar.")]
         ToolEditLevel,
+
+        [LingoGroup("Information messages", "This group contains messages displayed to the user in a dialog box with only an OK button.")]
+        Info,
+
+        [LingoGroup("Confirmation messages", "This group contains confirmation messages (usually yes/no questions) that are displayed to the user in dialog boxes (small windows) containing two or three buttons for the user to choose from.")]
+        Confirm,
+
+        [LingoGroup("Prompts", "This group contains messages that prompt the user to supply information.")]
+        Prompt,
+
+        [LingoGroup("Message titles", "This group contains strings which are displayed in the title bar of some information messages, prompts or confirmation messages. Most of these are identical to the name of an action (toolbar button or menu item).")]
+        TitleBar,
+
+        [LingoGroup("Status bar messages", "This group contains messages that appear in the status bar at the bottom of the main window.")]
+        StatusBar,
+
+        [LingoGroup("Level list messages", "This group contains messages that are displayed in the level list in the right-hand part of the main window.")]
+        LevelList,
+
+        [LingoGroup("Highscores", @"This group contains strings which are used in the Highscores window, which appears if you right-click a level and choose ""Display highscores"".")]
+        Highscores,
+
+        [LingoGroup("About", @"This group contains strings which are used in the About window, which appears if you choose ""About"" from the ""Help"" menu.")]
+        About,
+
+        [LingoGroup("General", "This group contains general strings pertaining to the application.")]
+        General,
+
+        [LingoGroup("Accessibility", @"This group contains strings which are not visually displayed, but may be used by screen readers to help blind users navigate the software.")]
+        Accessibility,
     }
 
     [LingoStringClass]
