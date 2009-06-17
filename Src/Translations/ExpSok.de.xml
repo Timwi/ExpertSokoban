@@ -129,7 +129,7 @@
     <Old>Delete level</Old>
   </LevelList_Message_DeleteLevel_Title>
   <LevelList_Message_SaveChanges>
-    <Translation>Sie haben an {0} Änderungen vorgenommen. Sollen diese Änderungen gespeichert werden?</Translation>
+    <Translation>Sie haben Änderungen an {0} vorgenommen. Sollen diese Änderungen gespeichert werden?</Translation>
     <Old>You have made changes to {0}. Would you like to save those changes?</Old>
   </LevelList_Message_SaveChanges>
   <LevelList_Message_DeleteLevel_CurrentlyEditing>
