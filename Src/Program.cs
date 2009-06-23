@@ -1,10 +1,8 @@
 using System;
-using System.IO;
-using System.Linq;
 using System.Windows.Forms;
+using RT.Util;
 using RT.Util.Lingo;
 using RT.Util.Xml;
-using RT.Util;
 
 namespace ExpertSokoban
 {
@@ -30,6 +28,7 @@ namespace ExpertSokoban
 
             try { Settings = XmlClassify.LoadObjectFromXmlFile<ExpSokSettings>(PathUtil.AppPathCombine(@"ExpSok.settings.xml")); }
             catch { Settings = new ExpSokSettings(); }
+
             Tr = Lingo.LoadTranslation<Translation>("ExpSok", ref Settings.Language);
 
             Application.Run(new Mainform());

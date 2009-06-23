@@ -613,6 +613,7 @@ namespace ExpertSokoban
             this.pnlCloseLevelList.Name = "pnlCloseLevelList";
             this.pnlCloseLevelList.Size = new System.Drawing.Size(147, 10);
             this.pnlCloseLevelList.TabIndex = 5;
+            this.pnlCloseLevelList.Tag = "notranslate";
             this.pnlCloseLevelList.CloseClicked += new System.EventHandler(this.toggleLevelList);
             // 
             // mnuMain

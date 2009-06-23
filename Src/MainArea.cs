@@ -449,24 +449,24 @@ namespace ExpertSokoban
         /// <summary>
         /// Sound played when a level is solved.
         /// </summary>
-        private SoundPlayerAsync _sndLevelSolved = new SoundPlayerAsync(Properties.Resources.SndLevelDone);
+        private SoundPlayerAsync _sndLevelSolved;
 
         /// <summary>
         /// Sound played when an invalid destination cell for a piece is clicked in
         /// playing mode, or when an invalid operation is attempted in editing mode.
         /// </summary>
-        private SoundPlayerAsync _sndMeep = new SoundPlayerAsync(Properties.Resources.SndMeep);
+        private SoundPlayerAsync _sndMeep;
 
         /// <summary>
         /// Sound played when a move is performed in playing mode, or when a piece,
         /// target, or the Sokoban starting position is placed in editing mode.
         /// </summary>
-        private SoundPlayerAsync _sndPiecePlaced = new SoundPlayerAsync(Properties.Resources.SndPiecePlaced);
+        private SoundPlayerAsync _sndPiecePlaced;
 
         /// <summary>
         /// Sound played when a wall is added or removed in editing mode.
         /// </summary>
-        private SoundPlayerAsync _sndEditorClick = new SoundPlayerAsync(Properties.Resources.SndEditorClick);
+        private SoundPlayerAsync _sndEditorClick;
 
         /// <summary>
         /// The currently selected piece for pushing (or null if none).
@@ -550,6 +550,47 @@ namespace ExpertSokoban
             this.Paint += new PaintEventHandler(paint);
             this.PaintBuffer += new PaintEventHandler(paintBuffer);
             this.KeyDown += new KeyEventHandler(keyDown);
+        }
+
+        /// <summary>Identifies a sound. Used in calls to <see cref="playSound(MainAreaSound)"/>.</summary>
+        private enum MainAreaSound
+        {
+            LevelSolved,
+            Meep,
+            PiecePlaced,
+            EditorClick
+        };
+
+        /// <summary>Plays the specified sound.</summary>
+        /// <param name="snd">Identifies the sound to play.</param>
+        private void playSound(MainAreaSound snd)
+        {
+            if (!_soundEnabled)
+                return;
+
+            if (snd == MainAreaSound.LevelSolved)
+            {
+                if (_sndLevelSolved == null)
+                    _sndLevelSolved = new SoundPlayerAsync(Properties.Resources.SndLevelDone);
+            }
+            else if (snd == MainAreaSound.Meep)
+            {
+                if (_sndMeep == null)
+                    _sndMeep = new SoundPlayerAsync(Properties.Resources.SndMeep);
+                _sndMeep.Play();
+            }
+            else if (snd == MainAreaSound.PiecePlaced)
+            {
+                if (_sndPiecePlaced == null)
+                    _sndPiecePlaced = new SoundPlayerAsync(Properties.Resources.SndPiecePlaced);
+                _sndPiecePlaced.Play();
+            }
+            else if (snd == MainAreaSound.EditorClick)
+            {
+                if (_sndEditorClick == null)
+                    _sndEditorClick = new SoundPlayerAsync(Properties.Resources.SndEditorClick);
+                _sndEditorClick.Play();
+            }
         }
 
         /// <summary>
@@ -934,13 +975,11 @@ namespace ExpertSokoban
                 if (_level.SokobanPos != cell)
                 {
                     _level.SetCell(cell, CellType == SokobanCell.Wall ? SokobanCell.Blank : SokobanCell.Wall);
-                    if (_soundEnabled)
-                        _sndEditorClick.Play();
+                    playSound(MainAreaSound.EditorClick);
                     _modified = true;
                 }
                 else
-                    if (_soundEnabled)
-                        _sndMeep.Play();
+                    playSound(MainAreaSound.Meep);
             }
             else if (_tool == MainAreaTool.Piece)
             {
@@ -951,13 +990,11 @@ namespace ExpertSokoban
                         CellType == SokobanCell.Blank ? SokobanCell.Piece :
                         CellType == SokobanCell.Target ? SokobanCell.PieceOnTarget :
                                                                 SokobanCell.Blank);
-                    if (_soundEnabled)
-                        _sndPiecePlaced.Play();
+                    playSound(MainAreaSound.PiecePlaced);
                     _modified = true;
                 }
                 else
-                    if (_soundEnabled)
-                        _sndMeep.Play();
+                    playSound(MainAreaSound.Meep);
             }
             else if (_tool == MainAreaTool.Target)
             {
@@ -968,13 +1005,11 @@ namespace ExpertSokoban
                         CellType == SokobanCell.Blank ? SokobanCell.Target :
                         CellType == SokobanCell.Target ? SokobanCell.Blank :
                                                                 SokobanCell.PieceOnTarget);
-                    if (_soundEnabled)
-                        _sndPiecePlaced.Play();
+                    playSound(MainAreaSound.PiecePlaced);
                     _modified = true;
                 }
                 else
-                    if (_soundEnabled)
-                        _sndMeep.Play();
+                    playSound(MainAreaSound.Meep);
             }
             else if (_tool == MainAreaTool.Sokoban)
             {
@@ -985,13 +1020,11 @@ namespace ExpertSokoban
                     Point PrevSokobanPos = _level.SokobanPos;
                     _level.SetSokobanPos(cell);
                     _renderer.RenderCell(Graphics.FromImage(Buffer), PrevSokobanPos);
-                    if (_soundEnabled)
-                        _sndPiecePlaced.Play();
+                    playSound(MainAreaSound.PiecePlaced);
                     _modified = true;
                 }
                 else
-                    if (_soundEnabled)
-                        _sndMeep.Play();
+                    playSound(MainAreaSound.Meep);
             }
             int PrevSizeX = _level.Width;
             int PrevSizeY = _level.Height;
@@ -1018,8 +1051,7 @@ namespace ExpertSokoban
         {
             if (_moveSequence == null)
             {
-                if (_soundEnabled)
-                    _sndMeep.Play();
+                playSound(MainAreaSound.Meep);
                 return;
             }
 
@@ -1078,8 +1110,7 @@ namespace ExpertSokoban
             {
                 _state = MainAreaState.Solved;
                 _cursorPos = null;
-                if (_soundEnabled)
-                    _sndLevelSolved.Play();
+                playSound(MainAreaSound.LevelSolved);
                 Refresh();
                 if (LevelSolved != null)
                     LevelSolved(this, new EventArgs());
@@ -1087,8 +1118,7 @@ namespace ExpertSokoban
             else
             {
                 // Play a sound
-                if (_soundEnabled)
-                    _sndPiecePlaced.Play();
+                playSound(MainAreaSound.PiecePlaced);
 
                 // Add this action to the undo stack
                 if (OrigPushPos == null)
@@ -1386,8 +1416,7 @@ namespace ExpertSokoban
 
             // If the user selected an invalid cell, meep
             else
-                if (_soundEnabled)
-                    _sndMeep.Play();
+                playSound(MainAreaSound.Meep);
         }
 
         /// <summary>
