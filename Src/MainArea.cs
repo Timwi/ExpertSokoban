@@ -7,6 +7,9 @@ using RT.Util;
 using RT.Util.Controls;
 using RT.Util.Dialogs;
 using RT.Util.Drawing;
+using System.Media;
+using System.IO;
+using ExpertSokoban.Properties;
 
 namespace ExpertSokoban
 {
@@ -447,28 +450,6 @@ namespace ExpertSokoban
         private Pen _cursorPen = new Pen(Color.FromArgb(0, 0, 0x80), 3.5f);
 
         /// <summary>
-        /// Sound played when a level is solved.
-        /// </summary>
-        private SoundPlayerAsync _sndLevelSolved;
-
-        /// <summary>
-        /// Sound played when an invalid destination cell for a piece is clicked in
-        /// playing mode, or when an invalid operation is attempted in editing mode.
-        /// </summary>
-        private SoundPlayerAsync _sndMeep;
-
-        /// <summary>
-        /// Sound played when a move is performed in playing mode, or when a piece,
-        /// target, or the Sokoban starting position is placed in editing mode.
-        /// </summary>
-        private SoundPlayerAsync _sndPiecePlaced;
-
-        /// <summary>
-        /// Sound played when a wall is added or removed in editing mode.
-        /// </summary>
-        private SoundPlayerAsync _sndEditorClick;
-
-        /// <summary>
         /// The currently selected piece for pushing (or null if none).
         /// </summary>
         private Point? _selectedPiece = null;
@@ -561,6 +542,8 @@ namespace ExpertSokoban
             EditorClick
         };
 
+        private Dictionary<MainAreaSound, object> _soundPlayers;
+
         /// <summary>Plays the specified sound.</summary>
         /// <param name="snd">Identifies the sound to play.</param>
         private void playSound(MainAreaSound snd)
@@ -568,29 +551,23 @@ namespace ExpertSokoban
             if (!_soundEnabled)
                 return;
 
-            if (snd == MainAreaSound.LevelSolved)
+            if (_soundPlayers == null)
+                _soundPlayers = new Dictionary<MainAreaSound, object>();
+
+            if (!_soundPlayers.ContainsKey(snd))
             {
-                if (_sndLevelSolved == null)
-                    _sndLevelSolved = new SoundPlayerAsync(Properties.Resources.SndLevelDone);
+                Stream soundStream = snd == MainAreaSound.LevelSolved ? Resources.SndLevelDone :
+                    snd == MainAreaSound.Meep ? Resources.SndMeep :
+                    snd == MainAreaSound.PiecePlaced ? Resources.SndPiecePlaced :
+                    snd == MainAreaSound.EditorClick ? Resources.SndEditorClick : null;
+                _soundPlayers[snd] = Environment.OSVersion.Platform == PlatformID.Win32NT ? (object) new SoundPlayerAsync(soundStream) : new SoundPlayer(soundStream);
             }
-            else if (snd == MainAreaSound.Meep)
-            {
-                if (_sndMeep == null)
-                    _sndMeep = new SoundPlayerAsync(Properties.Resources.SndMeep);
-                _sndMeep.Play();
-            }
-            else if (snd == MainAreaSound.PiecePlaced)
-            {
-                if (_sndPiecePlaced == null)
-                    _sndPiecePlaced = new SoundPlayerAsync(Properties.Resources.SndPiecePlaced);
-                _sndPiecePlaced.Play();
-            }
-            else if (snd == MainAreaSound.EditorClick)
-            {
-                if (_sndEditorClick == null)
-                    _sndEditorClick = new SoundPlayerAsync(Properties.Resources.SndEditorClick);
-                _sndEditorClick.Play();
-            }
+
+            object sound = _soundPlayers[snd];
+            if (sound is SoundPlayerAsync)
+                ((SoundPlayerAsync) sound).Play();
+            else if (sound is SoundPlayer)
+                ((SoundPlayer) sound).Play();
         }
 
         /// <summary>
