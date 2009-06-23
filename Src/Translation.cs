@@ -122,7 +122,7 @@ namespace ExpertSokoban
         [LingoInGroup(TranslationGroup.Info)]
         public TrString LevelList_Message_AllSolved_Title = "Congratulations!";
         [LingoInGroup(TranslationGroup.Info)]
-        public TrString LevelList_Message_AllSolved = "You have solved all levels in this level pack!";
+        public TrString LevelList_Message_AllSolved = "You have solved all levels in this level file!";
         [LingoInGroup(TranslationGroup.Info)]
         public TrString LevelList_Message_Next_Title = "Next level";
         [LingoInGroup(TranslationGroup.Info)]
@@ -345,7 +345,7 @@ namespace ExpertSokoban
             [LingoInGroup(TranslationGroup.OptionsMenu)]
             public TrString mnuOptionsPlayingToolbar = "Display pla&ying toolbar";
             [LingoInGroup(TranslationGroup.OptionsMenu)]
-            public TrString mnuOptionsFileToolbars = "Display &editing toolbars (level pack)";
+            public TrString mnuOptionsFileToolbars = "Display &editing toolbars (level file)";
             [LingoInGroup(TranslationGroup.OptionsMenu)]
             public TrString mnuOptionsEditLevelToolbar = "Display editin&g toolbar (level)";
             [LingoInGroup(TranslationGroup.OptionsMenu)]
