@@ -176,7 +176,7 @@ namespace ExpertSokoban
         [LingoInGroup(TranslationGroup.Confirm)]
         public TrString Mainform_Validity_CannotOpen = "The level could not be opened because it is invalid.";
         [LingoInGroup(TranslationGroup.StatusBar)]
-        [LingoInGroup(TranslationGroup.Confirm)]
+        [LingoNotes("Displayed in the status bar while editing a level. See the next two strings for reasons why a level may be invalid.")]
         public TrString Mainform_Validity_Valid = "The level is valid.";
         [LingoInGroup(TranslationGroup.StatusBar)]
         [LingoInGroup(TranslationGroup.Confirm)]
