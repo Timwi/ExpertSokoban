@@ -258,6 +258,7 @@ namespace ExpertSokoban
             [LingoNotes("Title bar.")]
             public TrString AboutBox = "About Expert Sokoban";
             [LingoInGroup(TranslationGroup.About)]
+            [LingoNotes("This is displayed in a box in the About dialog. Please feel free to add a line to credit yourself for your translation work.")]
             public TrString lblCredits = "Credits:\n    Programming: Timwi, Roman\n    Graphics: Roman, Timwi\n    Testing: Hawthorn";
             [LingoInGroup(TranslationGroup.About)]
             public TrString btnOK = "OK";
