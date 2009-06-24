@@ -74,7 +74,7 @@
   </LevelList_Message_AllSolved_Title>
   <LevelList_Message_AllSolved>
     <Translation>Sie haben alle Levels in dieser Leveldatei gelöst!</Translation>
-    <Old>You have solved all levels in this level pack!</Old>
+    <Old>You have solved all levels in this level file!</Old>
   </LevelList_Message_AllSolved>
   <LevelList_Message_Next_Title>
     <Translation>Nächstes Level</Translation>
@@ -468,7 +468,7 @@ You can change this name again later by selecting "Change player name" from the 
     </mnuOptionsPlayingToolbar>
     <mnuOptionsFileToolbars>
       <Translation>Symbolleisten "Leveldatei &amp;bearbeiten" anzeigen</Translation>
-      <Old>Display &amp;editing toolbars (level pack)</Old>
+      <Old>Display &amp;editing toolbars (level file)</Old>
     </mnuOptionsFileToolbars>
     <mnuOptionsEditLevelToolbar>
       <Translation>Sy&amp;mbolleiste "Level bearbeiten" anzeigen</Translation>

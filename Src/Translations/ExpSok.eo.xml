@@ -74,7 +74,7 @@
   </LevelList_Message_AllSolved_Title>
   <LevelList_Message_AllSolved>
     <Translation>Vi solvis ĉiujn puzlojn en tiu puzlo-dosiero!</Translation>
-    <Old>You have solved all levels in this level pack!</Old>
+    <Old>You have solved all levels in this level file!</Old>
   </LevelList_Message_AllSolved>
   <LevelList_Message_Next_Title>
     <Translation>Malantaŭa puzlo</Translation>
@@ -468,7 +468,7 @@ You can change this name again later by selecting "Change player name" from the 
     </mnuOptionsPlayingToolbar>
     <mnuOptionsFileToolbars>
       <Translation>Montri ilobretojn "&amp;Redaktado de puzlo-dosiero"</Translation>
-      <Old>Display &amp;editing toolbars (level pack)</Old>
+      <Old>Display &amp;editing toolbars (level file)</Old>
     </mnuOptionsFileToolbars>
     <mnuOptionsEditLevelToolbar>
       <Translation>Montri ilobreton "Redaktado de &amp;puzlo"</Translation>
