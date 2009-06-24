@@ -1,0 +1,697 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<item>
+  <ProgramName>
+    <Translation>Expert Sokoban</Translation>
+    <Old>Expert Sokoban</Old>
+  </ProgramName>
+  <LevelSolvedResourceName>
+    <Translation>Skin_LevelSolvedTlh</Translation>
+    <Old>Skin_LevelSolved</Old>
+  </LevelSolvedResourceName>
+  <Mainform_Status_Moves>
+    <Translation>mIwmey: {0}</Translation>
+    <Old>Moves: {0}</Old>
+  </Mainform_Status_Moves>
+  <Mainform_Status_Pushes>
+    <Translation>ta'mey: {0}</Translation>
+    <Old>Pushes: {0}</Old>
+  </Mainform_Status_Pushes>
+  <Mainform_Status_PiecesRemaining>
+    <Translation>ratlhbogh 'ay'mey: {0}</Translation>
+    <Old>Remaining pieces: {0}</Old>
+  </Mainform_Status_PiecesRemaining>
+  <LevelList_LevelSolved>
+    <Translation>DaQapta'</Translation>
+    <Old>Solved</Old>
+  </LevelList_LevelSolved>
+  <LevelList_CurrentlyEditing>
+    <Translation>DaH DachoHtaH</Translation>
+    <Old>Currently editing</Old>
+  </LevelList_CurrentlyEditing>
+  <LevelList_JustSolved>
+    <Translation>DaH DaQapta'</Translation>
+    <Old>Just solved</Old>
+  </LevelList_JustSolved>
+  <LevelList_CurrentlyPlaying>
+    <Translation>DaH DaQujtaH</Translation>
+    <Old>Currently playing</Old>
+  </LevelList_CurrentlyPlaying>
+  <Save_FileType_TextFiles>
+    <Translation>ghItlh De''ay'</Translation>
+    <Old>Text files</Old>
+  </Save_FileType_TextFiles>
+  <Save_FileType_AllFiles>
+    <Translation>Hoch De''ay'mey</Translation>
+    <Old>All files</Old>
+  </Save_FileType_AllFiles>
+  <FileName_Untitled>
+    <Translation>(pong Hutlh)</Translation>
+    <Old>(untitled)</Old>
+  </FileName_Untitled>
+  <PlayerNameMissing>
+    <Translation>(QujwI' pong Hutlh)</Translation>
+    <Old>(no player name)</Old>
+  </PlayerNameMissing>
+  <NewComment_Prompt>
+    <Translation>QIn yIghItlhneS:</Translation>
+    <Old>Please enter a comment:</Old>
+  </NewComment_Prompt>
+  <EditComment_Prompt>
+    <Translation>QIn DachoHta'bogh yIghItlhneS:</Translation>
+    <Old>Please enter the revised comment:</Old>
+  </EditComment_Prompt>
+  <LevelList_Message_CannotSaveSettings_Title>
+    <Translation>DuHmey vIpoltaHvIS qaSpu' Qagh</Translation>
+    <Old>Error saving settings</Old>
+  </LevelList_Message_CannotSaveSettings_Title>
+  <LevelList_Message_CannotSaveSettings>
+    <Translation>DuHmey vIpollaHbe'.</Translation>
+    <Old>The settings could not be saved.</Old>
+  </LevelList_Message_CannotSaveSettings>
+  <LevelList_Message_AllSolved_Title>
+    <Translation>majQa'!</Translation>
+    <Old>Congratulations!</Old>
+  </LevelList_Message_AllSolved_Title>
+  <LevelList_Message_AllSolved>
+    <Translation>patlh ghomDaq Hoch patlhmey DaQapta'!</Translation>
+    <Old>You have solved all levels in this level pack!</Old>
+  </LevelList_Message_AllSolved>
+  <LevelList_Message_Next_Title>
+    <Translation>patlh veb</Translation>
+    <Old>Next level</Old>
+  </LevelList_Message_Next_Title>
+  <LevelList_Message_NextUnsolved_Title>
+    <Translation>patlh veb DaQapta'bu'bogh</Translation>
+    <Old>Next unsolved level</Old>
+  </LevelList_Message_NextUnsolved_Title>
+  <LevelList_Message_Prev_Title>
+    <Translation>patlh vebHa'</Translation>
+    <Old>Previous level</Old>
+  </LevelList_Message_Prev_Title>
+  <LevelList_Message_PrevUnsolved_Title>
+    <Translation>patlh vebHa' DaQapta'bu'bogh</Translation>
+    <Old>Previous unsolved level</Old>
+  </LevelList_Message_PrevUnsolved_Title>
+  <LevelList_Message_NoMoreUnsolved>
+    <Translation>patlh De''ay'Daq patlhmey DaQapta'be'bogh tu'lu'be'.</Translation>
+    <Old>There are no more unsolved levels in this level file.</Old>
+  </LevelList_Message_NoMoreUnsolved>
+  <LevelList_Message_NoOtherLevel>
+    <Translation>patlh De''ay'Daq latlh patlh tu'lu'be'.</Translation>
+    <Old>There is no other level in the level file.</Old>
+  </LevelList_Message_NoOtherLevel>
+  <Mainform_InvalidFile_Title>
+    <Translation>patlh De''ay' vIpoSmoHtaHvIS qaS Qagh</Translation>
+    <Old>Error opening level file</Old>
+  </Mainform_InvalidFile_Title>
+  <Mainform_InvalidFile>
+    <Translation>"Sokoban" De''ay' motlh 'oHbe' De''ay' wIvlu'pu'bogh'e'.</Translation>
+    <Old>The selected file is not a valid Sokoban level file.</Old>
+  </Mainform_InvalidFile>
+  <Mainform_NoHighscores_Title>
+    <Translation>pe''eghmeH tetlh Hutlh patlhvam</Translation>
+    <Old>No highscores for this level</Old>
+  </Mainform_NoHighscores_Title>
+  <Mainform_NoHighscores>
+    <Translation>pe''eghmeH tetlh Hutlh patlh wIvlu'pu'bogh.</Translation>
+    <Old>The selected level does not have any highscores associated with it yet.</Old>
+  </Mainform_NoHighscores>
+  <NewComment_Title>
+    <Translation>QIn chu'</Translation>
+    <Old>New comment</Old>
+  </NewComment_Title>
+  <EditComment_Title>
+    <Translation>QIn choH</Translation>
+    <Old>Edit comment</Old>
+  </EditComment_Title>
+  <LevelList_Message_DeleteLevel_Title>
+    <Translation>patlh teq</Translation>
+    <Old>Delete level</Old>
+  </LevelList_Message_DeleteLevel_Title>
+  <LevelList_Message_SaveChanges>
+    <Translation>{0} DachoHta'. choHmeyvetlh Dapol DaneH'a'?</Translation>
+    <Old>You have made changes to {0}. Would you like to save those changes?</Old>
+  </LevelList_Message_SaveChanges>
+  <LevelList_Message_DeleteLevel_CurrentlyEditing>
+    <Translation>patlhvam DachoHtaH.
+
+DaH patlhvam Dateqchugh Hoch choHmeylIj vIpolHa'.
+
+vaj bIvang DaneHbej'a'?</Translation>
+    <Old>You are currently editing this level.
+
+If you delete this level now, all your modifications will be discarded.
+
+Are you sure you wish to do this?</Old>
+  </LevelList_Message_DeleteLevel_CurrentlyEditing>
+  <LevelList_Message_DeleteLevel_CurrentlyPlaying>
+    <Translation>patlhvam DachoHtaH.
+
+bIjegh 'ej patlhvam Dateq DaneHbej'a'?</Translation>
+    <Old>You are currently playing this level.
+
+Are you sure you wish to give up and delete this level?</Old>
+  </LevelList_Message_DeleteLevel_CurrentlyPlaying>
+  <LevelList_Message_DeleteLevel_Sure>
+    <Translation>patlhvam Dateq DaneHbej'a'?</Translation>
+    <Old>Are you sure you wish to delete this level?</Old>
+  </LevelList_Message_DeleteLevel_Sure>
+  <LevelList_Message_DeleteLevel_btnDelete>
+    <Translation>patlh &amp;teq</Translation>
+    <Old>&amp;Delete level</Old>
+  </LevelList_Message_DeleteLevel_btnDelete>
+  <MainArea_Message_SaveChanges>
+    <Translation>patlh DachoHtaHboghDaq choHmeylIj Dapol DaneH'a'?</Translation>
+    <Old>Would you like to save your changes to the level you're editing?</Old>
+  </MainArea_Message_SaveChanges>
+  <MainArea_Message_GiveUp>
+    <Translation>patlhvam DaQujtaHvIS bIjegh DaneHbej'a'?</Translation>
+    <Old>Are you sure you wish to give up the current level?</Old>
+  </MainArea_Message_GiveUp>
+  <Mainform_ChooseName>
+    <Translation>pe''eghmeH tetlhmeyDaq vIghItlhlaHmeH SoHvaD pong yIwIvneS!</Translation>
+    <Old>Please choose a name which will be used to identify you in highscore tables.</Old>
+  </Mainform_ChooseName>
+  <Mainform_ChooseName_FirstRun>
+    <Translation>pe''eghmeH tetlhmeyDaq vIghItlhlaHmeH SoHvaD pong yIwIvneS!
+pIq "patlh" HIDjolevDaq "QujwI' pong choH" DawIvDI' pongvam DachoHlaH.</Translation>
+    <Old>Please choose a name which will be used to identify you in highscore tables.
+You can change this name later by selecting "Change player name" from the "Level" menu.</Old>
+  </Mainform_ChooseName_FirstRun>
+  <Mainform_ChooseName_SolvedLevel>
+    <Translation>majQa'! patlhvam DaQapta'.
+pe''eghmeH tetlhmeyDaq vIghItlhlaHmeH SoHvaD pong yIwIvneS!
+DaH pong DawIvbe'chugh patlhvamDaq bIpe''eghbe'.
+pIq "patlh" HIDjolevDaq "QujwI' pong choH" DawIvDI' pongvam DachoHlaH.</Translation>
+    <Old>Congratulations! You've solved the current level.
+Please choose a name which will be used to identify you in highscore tables.
+If you do not choose a name now, your score for this level will not be recorded.
+You can change this name again later by selecting "Change player name" from the "Level" menu.</Old>
+  </Mainform_ChooseName_SolvedLevel>
+  <Mainform_Validity_CannotOpen>
+    <Translation>motlhbe'mo' patlh 'oH vIpoSmoHlaH.</Translation>
+    <Old>The level could not be opened because it is invalid.</Old>
+  </Mainform_Validity_CannotOpen>
+  <Mainform_Validity_Valid>
+    <Translation>motlh patlh.</Translation>
+    <Old>The level is valid.</Old>
+  </Mainform_Validity_Valid>
+  <Mainform_Validity_NotEnclosed>
+    <Translation>qatchu'be'mo' yergho motlhbe' patlh.</Translation>
+    <Old>The level is invalid because it is not completely enclosed by a wall.</Old>
+  </Mainform_Validity_NotEnclosed>
+  <Mainform_Validity_WrongNumber>
+    <Translation>ray' 'op rurbe'mo' 'ay'mey 'op motlhbe' patlh.</Translation>
+    <Old>The level is invalid because the number of pieces does not match the number of targets.</Old>
+  </Mainform_Validity_WrongNumber>
+  <Mainform_Validity_CannotOpen_Fix>
+    <Translation>Qaghvam DaQorghmeH patlh DachoHnIS. DaH patlh DachoH DaneH'a'?</Translation>
+    <Old>You must edit the level in order to address this issue. Would you like to edit the level now?</Old>
+  </Mainform_Validity_CannotOpen_Fix>
+  <Mainform_Validity_CannotOpen_btnEdit>
+    <Translation>patlh &amp;choH</Translation>
+    <Old>&amp;Edit level</Old>
+  </Mainform_Validity_CannotOpen_btnEdit>
+  <Mainform_Validity_CannotSave>
+    <Translation>vaj qay' patlhvam:</Translation>
+    <Old>The following problem has been detected with this level:</Old>
+  </Mainform_Validity_CannotSave>
+  <Mainform_Validity_CannotSave_Warning>
+    <Translation>Qaghvam DaQorghpa' patlhvam DaQujlaHbe'. motlhbe'bogh patlhvo' DajaH DaneHbej'a'?</Translation>
+    <Old>You cannot play this level until you address this issue. Are you sure you wish to leave the level in this invalid state?</Old>
+  </Mainform_Validity_CannotSave_Warning>
+  <Mainform_Validity_CannotSave_btnSave>
+    <Translation>'ach patlh &amp;pol</Translation>
+    <Old>&amp;Save level anyway</Old>
+  </Mainform_Validity_CannotSave_btnSave>
+  <Mainform_Validity_CannotSave_btnResume>
+    <Translation>patlh choH&amp;qa'</Translation>
+    <Old>&amp;Resume editing</Old>
+  </Mainform_Validity_CannotSave_btnResume>
+  <Mainform_MessageTitle_Exit>
+    <Translation>"Expert Sokoban"vo' jaH</Translation>
+    <Old>Exit Expert Sokoban</Old>
+  </Mainform_MessageTitle_Exit>
+  <Mainform_MessageTitle_OpenLevel>
+    <Translation>patlh poSmoH</Translation>
+    <Old>Open level</Old>
+  </Mainform_MessageTitle_OpenLevel>
+  <Mainform_MessageTitle_RetryLevel>
+    <Translation>patlh nIDqa'</Translation>
+    <Old>Retry level</Old>
+  </Mainform_MessageTitle_RetryLevel>
+  <Mainform_MessageTitle_NewLevelFile>
+    <Translation>patlh De''ay' chu'</Translation>
+    <Old>New level file</Old>
+  </Mainform_MessageTitle_NewLevelFile>
+  <Mainform_MessageTitle_OpenLevelFile>
+    <Translation>patlh De''ay' poSmoH</Translation>
+    <Old>Open level file</Old>
+  </Mainform_MessageTitle_OpenLevelFile>
+  <Mainform_MessageTitle_FinishEditing>
+    <Translation>choH rIn</Translation>
+    <Old>Finish editing</Old>
+  </Mainform_MessageTitle_FinishEditing>
+  <Mainform_Error_HelpFileNotFound>
+    <Translation>QaH De''ay' ({0}) vItu'laHbe'.</Translation>
+    <Old>The help file ({0}) could not be found.</Old>
+  </Mainform_Error_HelpFileNotFound>
+  <Dialogs_btnOK>
+    <Translation>lu'</Translation>
+    <Old>OK</Old>
+  </Dialogs_btnOK>
+  <Dialogs_btnCancel>
+    <Translation>qIl</Translation>
+    <Old>Cancel</Old>
+  </Dialogs_btnCancel>
+  <Dialogs_btnSave>
+    <Translation>choHmey &amp;pol</Translation>
+    <Old>&amp;Save changes</Old>
+  </Dialogs_btnSave>
+  <Dialogs_btnDiscard>
+    <Translation>choHmey pol&amp;Ha'</Translation>
+    <Old>&amp;Discard changes</Old>
+  </Dialogs_btnDiscard>
+  <Dialogs_btnGiveUp>
+    <Translation>&amp;jegh</Translation>
+    <Old>&amp;Give up</Old>
+  </Dialogs_btnGiveUp>
+  <Highscores>
+    <HighscoresForm>
+      <Translation>pe''eghmeH tetlh</Translation>
+      <Old>Highscores</Old>
+    </HighscoresForm>
+    <Highscores>
+      <IsNumber>
+        <item>True</item>
+        <item>True</item>
+      </IsNumber>
+      <Translations>
+        <item>{0} mIw, {1} ta'</item>
+        <item>{0} mIwmey, {1} ta'</item>
+        <item>{0} mIw, {1} ta'mey</item>
+        <item>{0} mIwmey, {1} ta'mey</item>
+      </Translations>
+      <Old>
+        <item>{0} move, {1} push</item>
+        <item>{0} moves, {1} push</item>
+        <item>{0} move, {1} pushes</item>
+        <item>{0} moves, {1} pushes</item>
+      </Old>
+    </Highscores>
+    <btnOK>
+      <Translation>lu'</Translation>
+      <Old>OK</Old>
+    </btnOK>
+  </Highscores>
+  <AboutBox>
+    <AboutBox>
+      <Translation>"Expert Sokoban" lubopbogh De'mey</Translation>
+      <Old>About Expert Sokoban</Old>
+    </AboutBox>
+    <lblCredits>
+      <Translation>beq:
+    ghunwI'pu': Timwi, Roman
+    DIjwI'pu': Roman, Timwi
+    waHwI': Hawthorn
+    mughwI': Vortarulo </Translation>
+      <Old>Credits:
+    Programming: Timwi, Roman
+    Graphics: Roman, Timwi
+    Testing: Hawthorn</Old>
+    </lblCredits>
+    <btnOK>
+      <Translation>lu'</Translation>
+      <Old>OK</Old>
+    </btnOK>
+    <Version>
+      <Translation>Segh {0}</Translation>
+      <Old>Version {0}</Old>
+    </Version>
+  </AboutBox>
+  <Mainform>
+    <Mainform>
+      <Translation>Expert Sokoban</Translation>
+      <Old>Expert Sokoban</Old>
+    </Mainform>
+    <mnuMain>
+      <Translation>HIDjolev'a'</Translation>
+      <Old>Main menu</Old>
+    </mnuMain>
+    <mnuLevel>
+      <Translation>&amp;patlh</Translation>
+      <Old>&amp;Level</Old>
+    </mnuLevel>
+    <mnuLevelNew>
+      <Translation>patlh De''ay' &amp;chu'</Translation>
+      <Old>&amp;New level file</Old>
+    </mnuLevelNew>
+    <mnuLevelOpen>
+      <Translation>patlh De''ay' p&amp;oSmoH...</Translation>
+      <Old>&amp;Open level file...</Old>
+    </mnuLevelOpen>
+    <mnuLevelSave>
+      <Translation>patlh De''ay' po&amp;l</Translation>
+      <Old>&amp;Save level file</Old>
+    </mnuLevelSave>
+    <mnuLevelSaveAs>
+      <Translation>patlh De''ay' pol 'ej po&amp;ng...</Translation>
+      <Old>Save level file &amp;as...</Old>
+    </mnuLevelSaveAs>
+    <mnuLevelUndo>
+      <Translation>mIw ta'&amp;Ha'</Translation>
+      <Old>&amp;Undo move</Old>
+    </mnuLevelUndo>
+    <mnuLevelRedo>
+      <Translation>mIw ta'&amp;qa'</Translation>
+      <Old>Redo &amp;move</Old>
+    </mnuLevelRedo>
+    <mnuLevelRetry>
+      <Translation>&amp;patlh nIDqa'</Translation>
+      <Old>&amp;Retry level</Old>
+    </mnuLevelRetry>
+    <mnuLevelHighscores>
+      <Translation>pe''eghmeH &amp;tetlh cha'</Translation>
+      <Old>Show &amp;highscores</Old>
+    </mnuLevelHighscores>
+    <mnuLevelPrevious>
+      <Translation>patlh vebH&amp;a'</Translation>
+      <Old>&amp;Previous level</Old>
+    </mnuLevelPrevious>
+    <mnuLevelNext>
+      <Translation>patlh &amp;veb</Translation>
+      <Old>N&amp;ext level</Old>
+    </mnuLevelNext>
+    <mnuLevelPreviousUnsolved>
+      <Translation>patlh ve&amp;bHa' DaQapta'be'bogh</Translation>
+      <Old>Pre&amp;vious unsolved level</Old>
+    </mnuLevelPreviousUnsolved>
+    <mnuLevelNextUnsolved>
+      <Translation>patlh veb &amp;DaQapta'be'bogh</Translation>
+      <Old>Next unsolve&amp;d level</Old>
+    </mnuLevelNextUnsolved>
+    <mnuLevelChangePlayer>
+      <Translation>Q&amp;ujwI' pongqa'...</Translation>
+      <Old>&amp;Change player name...</Old>
+    </mnuLevelChangePlayer>
+    <mnuLevelExit>
+      <Translation>&amp;mej</Translation>
+      <Old>E&amp;xit</Old>
+    </mnuLevelExit>
+    <mnuEdit>
+      <Translation>&amp;choH</Translation>
+      <Old>&amp;Edit</Old>
+    </mnuEdit>
+    <mnuEditCreateLevel>
+      <Translation>patlh c&amp;hu' chenmoH</Translation>
+      <Old>Create &amp;new level</Old>
+    </mnuEditCreateLevel>
+    <mnuEditEditLevel>
+      <Translation>patlh ch&amp;oH</Translation>
+      <Old>&amp;Edit level</Old>
+    </mnuEditEditLevel>
+    <mnuEditAddComment>
+      <Translation>QIn ch&amp;el...</Translation>
+      <Old>Add a co&amp;mment...</Old>
+    </mnuEditAddComment>
+    <mnuEditDelete>
+      <Translation>patlh QIn ghap &amp;teq</Translation>
+      <Old>&amp;Delete level/comment</Old>
+    </mnuEditDelete>
+    <mnuEditCut>
+      <Translation>ch&amp;Ip</Translation>
+      <Old>C&amp;ut</Old>
+    </mnuEditCut>
+    <mnuEditCopy>
+      <Translation>chen&amp;qa'moH</Translation>
+      <Old>&amp;Copy</Old>
+    </mnuEditCopy>
+    <mnuEditPaste>
+      <Translation>ch&amp;agh</Translation>
+      <Old>&amp;Paste</Old>
+    </mnuEditPaste>
+    <mnuEditFinish>
+      <Translation>choH &amp;rIn</Translation>
+      <Old>&amp;Finish editing</Old>
+    </mnuEditFinish>
+    <mnuEditCancel>
+      <Translation>choH qI&amp;l</Translation>
+      <Old>C&amp;ancel editing</Old>
+    </mnuEditCancel>
+    <mnuEditWall>
+      <Translation>&amp;yergho jan</Translation>
+      <Old>&amp;Wall tool</Old>
+    </mnuEditWall>
+    <mnuEditPiece>
+      <Translation>'ay' ja&amp;n</Translation>
+      <Old>P&amp;iece tool</Old>
+    </mnuEditPiece>
+    <mnuEditTarget>
+      <Translation>&amp;DoS jan</Translation>
+      <Old>&amp;Target tool</Old>
+    </mnuEditTarget>
+    <mnuEditSokoban>
+      <Translation>"&amp;Sokoban" jan</Translation>
+      <Old>&amp;Sokoban tool</Old>
+    </mnuEditSokoban>
+    <mnuOptions>
+      <Translation>&amp;DuH</Translation>
+      <Old>&amp;Options</Old>
+    </mnuOptions>
+    <mnuOptionsLevelList>
+      <Translation>patlh &amp;tetlh cha'</Translation>
+      <Old>Display &amp;level list</Old>
+    </mnuOptionsLevelList>
+    <mnuOptionsPlayingToolbar>
+      <Translation>&amp;QujmeH jan tlhegh cha'</Translation>
+      <Old>Display pla&amp;ying toolbar</Old>
+    </mnuOptionsPlayingToolbar>
+    <mnuOptionsFileToolbars>
+      <Translation>patlh &amp;ghom choHlu'meH jan tlheghmey cha'</Translation>
+      <Old>Display &amp;editing toolbars (level file)</Old>
+    </mnuOptionsFileToolbars>
+    <mnuOptionsEditLevelToolbar>
+      <Translation>&amp;patlh choHlu'meH jan tlheghmey cha'</Translation>
+      <Old>Display editin&amp;g toolbar (level)</Old>
+    </mnuOptionsEditLevelToolbar>
+    <mnuOptionsStatusBar>
+      <Translation>D&amp;otlh tlhegh cha'</Translation>
+      <Old>Display stat&amp;us bar</Old>
+    </mnuOptionsStatusBar>
+    <mnuOptionsMoveNo>
+      <Translation>mIw DoDmey cha'&amp;be'</Translation>
+      <Old>Don't display &amp;move path</Old>
+    </mnuOptionsMoveNo>
+    <mnuOptionsMoveLine>
+      <Translation>mIw DoDmey vIcha'meH t&amp;lhegh lo'</Translation>
+      <Old>Display move path as li&amp;ne</Old>
+    </mnuOptionsMoveLine>
+    <mnuOptionsMoveDots>
+      <Translation>mIw DoDmey vIcha'meH g&amp;homey lo'</Translation>
+      <Old>Display move path as &amp;dots</Old>
+    </mnuOptionsMoveDots>
+    <mnuOptionsMoveArrows>
+      <Translation>mIw DoDmey vIcha'meH &amp;naQjejmey lo'</Translation>
+      <Old>Display move path as &amp;arrows</Old>
+    </mnuOptionsMoveArrows>
+    <mnuOptionsPushNo>
+      <Translation>t&amp;a' DoDmey cha'be'</Translation>
+      <Old>Don't display &amp;push path</Old>
+    </mnuOptionsPushNo>
+    <mnuOptionsPushLine>
+      <Translation>ta' DoDmey vIcha'meH tlh&amp;egh lo'</Translation>
+      <Old>Display push path as l&amp;ine</Old>
+    </mnuOptionsPushLine>
+    <mnuOptionsPushDots>
+      <Translation>ta' DoDmey vIcha'meH gho&amp;mey lo'</Translation>
+      <Old>Display push path as do&amp;ts</Old>
+    </mnuOptionsPushDots>
+    <mnuOptionsPushArrows>
+      <Translation>ta' DoDmey vIcha'meH naQ&amp;jejmey lo'</Translation>
+      <Old>Display push path as a&amp;rrows</Old>
+    </mnuOptionsPushArrows>
+    <mnuOptionsEndPos>
+      <Translation>"Sokoban" ngoQ gho' 'a&amp;y' je cha'</Translation>
+      <Old>Display end p&amp;osition of Sokoban and piece</Old>
+    </mnuOptionsEndPos>
+    <mnuOptionsAreaSokoban>
+      <Translation>"Sokoban" pa''e' &amp;SIchlaHbogh vay' cha'</Translation>
+      <Old>Display reac&amp;hable area for Sokoban</Old>
+    </mnuOptionsAreaSokoban>
+    <mnuOptionsAreaPiece>
+      <Translation>'ay' pa''e' S&amp;IchlaHbogh vay' cha'</Translation>
+      <Old>Display reacha&amp;ble area for piece</Old>
+    </mnuOptionsAreaPiece>
+    <mnuOptionsSound>
+      <Translation>&amp;wab chaw'</Translation>
+      <Old>Enable &amp;sound</Old>
+    </mnuOptionsSound>
+    <mnuOptionsChangeLanguage>
+      <Translation>Hol &amp;choH</Translation>
+      <Old>&amp;Change language</Old>
+    </mnuOptionsChangeLanguage>
+    <mnuHelp>
+      <Translation>&amp;QaH</Translation>
+      <Old>&amp;Help</Old>
+    </mnuHelp>
+    <mnuHelpKeyboard>
+      <Translation>Do &amp;chu'wI'mey</Translation>
+      <Old>&amp;Keyboard shortcuts</Old>
+    </mnuHelpKeyboard>
+    <mnuHelpAbout>
+      <Translation>&amp;De'mey</Translation>
+      <Old>&amp;About</Old>
+    </mnuHelpAbout>
+    <lblStatusSolved>
+      <Translation>patlh DaQapta'. majQa'!</Translation>
+      <Old>You have solved the level. Congratulations!</Old>
+    </lblStatusSolved>
+    <lblStatusNull>
+      <Translation>DaH patlhmey wIvlu'pu'be'. DaQujmeH patlh tetlhDaq wa' patlh yIwIvneS!</Translation>
+      <Old>No levels currently selected. Select a level from the level list to play.</Old>
+    </lblStatusNull>
+    <toolEditLevel>
+      <Translation>patlh DachoHmeH jan tlhegh</Translation>
+      <Old>Level edit toolbar</Old>
+    </toolEditLevel>
+    <btnEditLevelWall>
+      <Translation>yergho jan</Translation>
+      <Old>Wall tool</Old>
+    </btnEditLevelWall>
+    <btnEditLevelPiece>
+      <Translation>'ay' jan</Translation>
+      <Old>Piece tool</Old>
+    </btnEditLevelPiece>
+    <btnEditLevelTarget>
+      <Translation>DoS jan</Translation>
+      <Old>Target tool</Old>
+    </btnEditLevelTarget>
+    <btnEditLevelSokoban>
+      <Translation>"Sokoban" jan</Translation>
+      <Old>Sokoban tool</Old>
+    </btnEditLevelSokoban>
+    <btnEditLevelOK>
+      <Translation>choH rIn</Translation>
+      <Old>Finish editing</Old>
+    </btnEditLevelOK>
+    <btnEditLevelCancel>
+      <Translation>choH qIl</Translation>
+      <Old>Cancel editing</Old>
+    </btnEditLevelCancel>
+    <toolFileEdit>
+      <Translation>De''ay' DachoHmeH jan tlhegh</Translation>
+      <Old>File edit toolbar</Old>
+    </toolFileEdit>
+    <btnFileEditNewLevel>
+      <Translation>patlh chu' chenmoH</Translation>
+      <Old>Create new level</Old>
+    </btnFileEditNewLevel>
+    <btnFileEditEditLevel>
+      <Translation>patlh choH</Translation>
+      <Old>Edit level</Old>
+    </btnFileEditEditLevel>
+    <btnFileEditAddComment>
+      <Translation>QIn ghItlh</Translation>
+      <Old>Add a comment</Old>
+    </btnFileEditAddComment>
+    <btnFileEditDeleteLevel>
+      <Translation>patlh QIn ghap wIvlu'pu'bogh teq</Translation>
+      <Old>Delete selected level or comment</Old>
+    </btnFileEditDeleteLevel>
+    <toolFile>
+      <Translation>De''ay' jan tlhegh</Translation>
+      <Old>File toolbar</Old>
+    </toolFile>
+    <btnFileNew>
+      <Translation>patlh De''ay' chu' chenmoH</Translation>
+      <Old>New level file</Old>
+    </btnFileNew>
+    <btnFileOpen>
+      <Translation>patlh De''ay' poSmoH</Translation>
+      <Old>Open level file</Old>
+    </btnFileOpen>
+    <btnFileSave>
+      <Translation>patlh De''ay' pol</Translation>
+      <Old>Save level file</Old>
+    </btnFileSave>
+    <btnFileCut>
+      <Translation>chIp</Translation>
+      <Old>Cut</Old>
+    </btnFileCut>
+    <btnFileCopy>
+      <Translation>chenqa'moH</Translation>
+      <Old>Copy</Old>
+    </btnFileCopy>
+    <btnFilePaste>
+      <Translation>chagh</Translation>
+      <Old>Paste</Old>
+    </btnFilePaste>
+    <toolPlay>
+      <Translation>DaQujmeH jan tlhegh</Translation>
+      <Old>Playing toolbar</Old>
+    </toolPlay>
+    <btnPlayOpenLevel>
+      <Translation>patlh De''ay' poSmoH</Translation>
+      <Old>Open level file</Old>
+    </btnPlayOpenLevel>
+    <btnPlayPrevLevel>
+      <Translation>patlh vebHa'</Translation>
+      <Old>Previous level</Old>
+    </btnPlayPrevLevel>
+    <btnPlayNextLevel>
+      <Translation>patlh veb</Translation>
+      <Old>Next level</Old>
+    </btnPlayNextLevel>
+    <btnPlayPrevUnsolvedLevel>
+      <Translation>patlh vebHa' DaQujta'be'bogh</Translation>
+      <Old>Previous unsolved level</Old>
+    </btnPlayPrevUnsolvedLevel>
+    <btnPlayNextUnsolvedLevel>
+      <Translation>patlh veb DaQujta'be'bogh</Translation>
+      <Old>Next unsolved level</Old>
+    </btnPlayNextUnsolvedLevel>
+  </Mainform>
+  <Context>
+    <mnuContextPlay>
+      <Translation>patlhvam &amp;Quj</Translation>
+      <Old>Pl&amp;ay this level</Old>
+    </mnuContextPlay>
+    <mnuContextEdit>
+      <Translation>patlhvam &amp;choH</Translation>
+      <Old>&amp;Edit this level</Old>
+    </mnuContextEdit>
+    <mnuContextHighscores>
+      <Translation>&amp;pe''eghmeH tetlh cha'</Translation>
+      <Old>Show &amp;highscores</Old>
+    </mnuContextHighscores>
+    <mnuContextNewLevel>
+      <Translation>naDev patlh chu' c&amp;hoH</Translation>
+      <Old>C&amp;reate a new level here</Old>
+    </mnuContextNewLevel>
+    <mnuContextNewComment>
+      <Translation>naDev QIn &amp;ghItlh</Translation>
+      <Old>&amp;Insert a comment here</Old>
+    </mnuContextNewComment>
+    <mnuContextCut>
+      <Translation>ch&amp;Ip</Translation>
+      <Old>C&amp;ut</Old>
+    </mnuContextCut>
+    <mnuContextCopy>
+      <Translation>chenqa'&amp;moH</Translation>
+      <Old>&amp;Copy</Old>
+    </mnuContextCopy>
+    <mnuContextPaste>
+      <Translation>ch&amp;agh</Translation>
+      <Old>&amp;Paste</Old>
+    </mnuContextPaste>
+    <mnuContextDelete>
+      <Translation>&amp;teq</Translation>
+      <Old>&amp;Delete</Old>
+    </mnuContextDelete>
+    <mnuContextHide>
+      <Translation>patlh tetlh &amp;So'</Translation>
+      <Old>Hide &amp;level list</Old>
+    </mnuContextHide>
+  </Context>
+  <Language>Klingon</Language>
+</item>
