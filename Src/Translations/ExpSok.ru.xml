@@ -1,0 +1,691 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<item>
+  <ProgramName>
+    <Translation>Expert Sokoban</Translation>
+    <Old null="1" />
+  </ProgramName>
+  <LevelSolvedResourceName>
+    <Translation>Skin_LevelSolved</Translation>
+    <Old null="1" />
+  </LevelSolvedResourceName>
+  <Mainform_Status_Moves>
+    <Translation>Шагов: {0}</Translation>
+    <Old>Moves: {0}</Old>
+  </Mainform_Status_Moves>
+  <Mainform_Status_Pushes>
+    <Translation>Толчков: {0}</Translation>
+    <Old>Pushes: {0}</Old>
+  </Mainform_Status_Pushes>
+  <Mainform_Status_PiecesRemaining>
+    <Translation>Осталось фигур: {0}</Translation>
+    <Old>Remaining pieces: {0}</Old>
+  </Mainform_Status_PiecesRemaining>
+  <LevelList_LevelSolved>
+    <Translation>Пройден</Translation>
+    <Old>Solved</Old>
+  </LevelList_LevelSolved>
+  <LevelList_CurrentlyEditing>
+    <Translation>Редактируется...</Translation>
+    <Old>Currently editing</Old>
+  </LevelList_CurrentlyEditing>
+  <LevelList_JustSolved>
+    <Translation>Уровень пройден!</Translation>
+    <Old>Just solved</Old>
+  </LevelList_JustSolved>
+  <LevelList_CurrentlyPlaying>
+    <Translation>Решается...</Translation>
+    <Old>Currently playing</Old>
+  </LevelList_CurrentlyPlaying>
+  <Save_FileType_TextFiles>
+    <Translation>Text files</Translation>
+    <Old null="1" />
+  </Save_FileType_TextFiles>
+  <Save_FileType_AllFiles>
+    <Translation>All files</Translation>
+    <Old null="1" />
+  </Save_FileType_AllFiles>
+  <FileName_Untitled>
+    <Translation>(untitled)</Translation>
+    <Old null="1" />
+  </FileName_Untitled>
+  <PlayerNameMissing>
+    <Translation>(no player name)</Translation>
+    <Old null="1" />
+  </PlayerNameMissing>
+  <NewComment_Prompt>
+    <Translation>Please enter a comment:</Translation>
+    <Old null="1" />
+  </NewComment_Prompt>
+  <EditComment_Prompt>
+    <Translation>Please enter the revised comment:</Translation>
+    <Old null="1" />
+  </EditComment_Prompt>
+  <LevelList_Message_CannotSaveSettings_Title>
+    <Translation>Error saving settings</Translation>
+    <Old null="1" />
+  </LevelList_Message_CannotSaveSettings_Title>
+  <LevelList_Message_CannotSaveSettings>
+    <Translation>The settings could not be saved.</Translation>
+    <Old null="1" />
+  </LevelList_Message_CannotSaveSettings>
+  <LevelList_Message_AllSolved_Title>
+    <Translation>Поздравляем!</Translation>
+    <Old>Congratulations!</Old>
+  </LevelList_Message_AllSolved_Title>
+  <LevelList_Message_AllSolved>
+    <Translation>Вы прошли все уровни в данной подборке!</Translation>
+    <Old>You have solved all levels in this level file!</Old>
+  </LevelList_Message_AllSolved>
+  <LevelList_Message_Next_Title>
+    <Translation>Next level</Translation>
+    <Old null="1" />
+  </LevelList_Message_Next_Title>
+  <LevelList_Message_NextUnsolved_Title>
+    <Translation>Next unsolved level</Translation>
+    <Old null="1" />
+  </LevelList_Message_NextUnsolved_Title>
+  <LevelList_Message_Prev_Title>
+    <Translation>Previous level</Translation>
+    <Old null="1" />
+  </LevelList_Message_Prev_Title>
+  <LevelList_Message_PrevUnsolved_Title>
+    <Translation>Previous unsolved level</Translation>
+    <Old null="1" />
+  </LevelList_Message_PrevUnsolved_Title>
+  <LevelList_Message_NoMoreUnsolved>
+    <Translation>There are no more unsolved levels in this level file.</Translation>
+    <Old null="1" />
+  </LevelList_Message_NoMoreUnsolved>
+  <LevelList_Message_NoOtherLevel>
+    <Translation>There is no other level in the level file.</Translation>
+    <Old null="1" />
+  </LevelList_Message_NoOtherLevel>
+  <Mainform_InvalidFile_Title>
+    <Translation>Error opening level file</Translation>
+    <Old null="1" />
+  </Mainform_InvalidFile_Title>
+  <Mainform_InvalidFile>
+    <Translation>The selected file is not a valid Sokoban level file.</Translation>
+    <Old null="1" />
+  </Mainform_InvalidFile>
+  <Mainform_NoHighscores_Title>
+    <Translation>No highscores for this level</Translation>
+    <Old null="1" />
+  </Mainform_NoHighscores_Title>
+  <Mainform_NoHighscores>
+    <Translation>The selected level does not have any highscores associated with it yet.</Translation>
+    <Old null="1" />
+  </Mainform_NoHighscores>
+  <NewComment_Title>
+    <Translation>New comment</Translation>
+    <Old null="1" />
+  </NewComment_Title>
+  <EditComment_Title>
+    <Translation>Edit comment</Translation>
+    <Old null="1" />
+  </EditComment_Title>
+  <LevelList_Message_DeleteLevel_Title>
+    <Translation>Delete level</Translation>
+    <Old null="1" />
+  </LevelList_Message_DeleteLevel_Title>
+  <LevelList_Message_SaveChanges>
+    <Translation>You have made changes to {0}. Would you like to save those changes?</Translation>
+    <Old null="1" />
+  </LevelList_Message_SaveChanges>
+  <LevelList_Message_DeleteLevel_CurrentlyEditing>
+    <Translation>You are currently editing this level.
+
+If you delete this level now, all your modifications will be discarded.
+
+Are you sure you wish to do this?</Translation>
+    <Old null="1" />
+  </LevelList_Message_DeleteLevel_CurrentlyEditing>
+  <LevelList_Message_DeleteLevel_CurrentlyPlaying>
+    <Translation>You are currently playing this level.
+
+Are you sure you wish to give up and delete this level?</Translation>
+    <Old null="1" />
+  </LevelList_Message_DeleteLevel_CurrentlyPlaying>
+  <LevelList_Message_DeleteLevel_Sure>
+    <Translation>Are you sure you wish to delete this level?</Translation>
+    <Old null="1" />
+  </LevelList_Message_DeleteLevel_Sure>
+  <LevelList_Message_DeleteLevel_btnDelete>
+    <Translation>&amp;Delete level</Translation>
+    <Old null="1" />
+  </LevelList_Message_DeleteLevel_btnDelete>
+  <MainArea_Message_SaveChanges>
+    <Translation>Would you like to save your changes to the level you're editing?</Translation>
+    <Old null="1" />
+  </MainArea_Message_SaveChanges>
+  <MainArea_Message_GiveUp>
+    <Translation>Are you sure you wish to give up the current level?</Translation>
+    <Old null="1" />
+  </MainArea_Message_GiveUp>
+  <Mainform_ChooseName>
+    <Translation>Please choose a name which will be used to identify you in highscore tables.</Translation>
+    <Old null="1" />
+  </Mainform_ChooseName>
+  <Mainform_ChooseName_FirstRun>
+    <Translation>Please choose a name which will be used to identify you in highscore tables.
+You can change this name later by selecting "Change player name" from the "Level" menu.</Translation>
+    <Old null="1" />
+  </Mainform_ChooseName_FirstRun>
+  <Mainform_ChooseName_SolvedLevel>
+    <Translation>Congratulations! You've solved the current level.
+Please choose a name which will be used to identify you in highscore tables.
+If you do not choose a name now, your score for this level will not be recorded.
+You can change this name again later by selecting "Change player name" from the "Level" menu.</Translation>
+    <Old null="1" />
+  </Mainform_ChooseName_SolvedLevel>
+  <Mainform_Validity_CannotOpen>
+    <Translation>The level could not be opened because it is invalid.</Translation>
+    <Old null="1" />
+  </Mainform_Validity_CannotOpen>
+  <Mainform_Validity_Valid>
+    <Translation>The level is valid.</Translation>
+    <Old null="1" />
+  </Mainform_Validity_Valid>
+  <Mainform_Validity_NotEnclosed>
+    <Translation>The level is invalid because it is not completely enclosed by a wall.</Translation>
+    <Old null="1" />
+  </Mainform_Validity_NotEnclosed>
+  <Mainform_Validity_WrongNumber>
+    <Translation>The level is invalid because the number of pieces does not match the number of targets.</Translation>
+    <Old null="1" />
+  </Mainform_Validity_WrongNumber>
+  <Mainform_Validity_CannotOpen_Fix>
+    <Translation>You must edit the level in order to address this issue. Would you like to edit the level now?</Translation>
+    <Old null="1" />
+  </Mainform_Validity_CannotOpen_Fix>
+  <Mainform_Validity_CannotOpen_btnEdit>
+    <Translation>&amp;Edit level</Translation>
+    <Old null="1" />
+  </Mainform_Validity_CannotOpen_btnEdit>
+  <Mainform_Validity_CannotSave>
+    <Translation>The following problem has been detected with this level:</Translation>
+    <Old null="1" />
+  </Mainform_Validity_CannotSave>
+  <Mainform_Validity_CannotSave_Warning>
+    <Translation>You cannot play this level until you address this issue. Are you sure you wish to leave the level in this invalid state?</Translation>
+    <Old null="1" />
+  </Mainform_Validity_CannotSave_Warning>
+  <Mainform_Validity_CannotSave_btnSave>
+    <Translation>&amp;Save level anyway</Translation>
+    <Old null="1" />
+  </Mainform_Validity_CannotSave_btnSave>
+  <Mainform_Validity_CannotSave_btnResume>
+    <Translation>&amp;Resume editing</Translation>
+    <Old null="1" />
+  </Mainform_Validity_CannotSave_btnResume>
+  <Mainform_MessageTitle_Exit>
+    <Translation>Exit Expert Sokoban</Translation>
+    <Old null="1" />
+  </Mainform_MessageTitle_Exit>
+  <Mainform_MessageTitle_OpenLevel>
+    <Translation>Open level</Translation>
+    <Old null="1" />
+  </Mainform_MessageTitle_OpenLevel>
+  <Mainform_MessageTitle_RetryLevel>
+    <Translation>Retry level</Translation>
+    <Old null="1" />
+  </Mainform_MessageTitle_RetryLevel>
+  <Mainform_MessageTitle_NewLevelFile>
+    <Translation>New level file</Translation>
+    <Old null="1" />
+  </Mainform_MessageTitle_NewLevelFile>
+  <Mainform_MessageTitle_OpenLevelFile>
+    <Translation>Open level file</Translation>
+    <Old null="1" />
+  </Mainform_MessageTitle_OpenLevelFile>
+  <Mainform_MessageTitle_FinishEditing>
+    <Translation>Finish editing</Translation>
+    <Old null="1" />
+  </Mainform_MessageTitle_FinishEditing>
+  <Mainform_Error_HelpFileNotFound>
+    <Translation>The help file ({0}) could not be found.</Translation>
+    <Old null="1" />
+  </Mainform_Error_HelpFileNotFound>
+  <Dialogs_btnOK>
+    <Translation>OK</Translation>
+    <Old null="1" />
+  </Dialogs_btnOK>
+  <Dialogs_btnCancel>
+    <Translation>Cancel</Translation>
+    <Old null="1" />
+  </Dialogs_btnCancel>
+  <Dialogs_btnSave>
+    <Translation>&amp;Save changes</Translation>
+    <Old null="1" />
+  </Dialogs_btnSave>
+  <Dialogs_btnDiscard>
+    <Translation>&amp;Discard changes</Translation>
+    <Old null="1" />
+  </Dialogs_btnDiscard>
+  <Dialogs_btnGiveUp>
+    <Translation>&amp;Give up</Translation>
+    <Old null="1" />
+  </Dialogs_btnGiveUp>
+  <Highscores>
+    <HighscoresForm>
+      <Translation>Рекорды</Translation>
+      <Old>Highscores</Old>
+    </HighscoresForm>
+    <Highscores>
+      <IsNumber>
+        <item>True</item>
+        <item>True</item>
+      </IsNumber>
+      <Translations>
+        <item>{0} шаг, {1} толчок</item>
+        <item>{0} шага, {1} толчок</item>
+        <item>{0} шагов, {1} толчок</item>
+        <item>{0} шаг, {1} толчка</item>
+        <item>{0} шага, {1} толчка</item>
+        <item>{0} шагов, {1} толчка</item>
+        <item>{0} шаг, {1} толчков</item>
+        <item>{0} шага, {1} толчков</item>
+        <item>{0} шагов, {1} толчков</item>
+      </Translations>
+      <Old>
+        <item>{0} move, {1} push</item>
+        <item>{0} moves, {1} push</item>
+        <item>{0} move, {1} pushes</item>
+        <item>{0} moves, {1} pushes</item>
+      </Old>
+    </Highscores>
+    <btnOK>
+      <Translation>ОК</Translation>
+      <Old>OK</Old>
+    </btnOK>
+  </Highscores>
+  <AboutBox>
+    <AboutBox>
+      <Translation>О программе</Translation>
+      <Old>About Expert Sokoban</Old>
+    </AboutBox>
+    <lblCredits>
+      <Translation>Благодарим:
+    Программирование: Timwi, Roman
+    Графика: Roman, Timwi
+    Тестирование: Hawthorn</Translation>
+      <Old>Credits:
+    Programming: Timwi, Roman
+    Graphics: Roman, Timwi
+    Testing: Hawthorn</Old>
+    </lblCredits>
+    <btnOK>
+      <Translation>ОК</Translation>
+      <Old>OK</Old>
+    </btnOK>
+    <Version>
+      <Translation>Версия {0}</Translation>
+      <Old>Version {0}</Old>
+    </Version>
+  </AboutBox>
+  <Mainform>
+    <Mainform>
+      <Translation>Expert Sokoban</Translation>
+      <Old null="1" />
+    </Mainform>
+    <mnuMain>
+      <Translation>Главное меню</Translation>
+      <Old>Main menu</Old>
+    </mnuMain>
+    <mnuLevel>
+      <Translation>&amp;Уровень</Translation>
+      <Old>&amp;Level</Old>
+    </mnuLevel>
+    <mnuLevelNew>
+      <Translation>Создать &amp;новый уровень</Translation>
+      <Old>&amp;New level file</Old>
+    </mnuLevelNew>
+    <mnuLevelOpen>
+      <Translation>&amp;Открыть уровень...</Translation>
+      <Old>&amp;Open level file...</Old>
+    </mnuLevelOpen>
+    <mnuLevelSave>
+      <Translation>&amp;Сохранить уровень</Translation>
+      <Old>&amp;Save level file</Old>
+    </mnuLevelSave>
+    <mnuLevelSaveAs>
+      <Translation>Сохранить &amp;как...</Translation>
+      <Old>Save level file &amp;as...</Old>
+    </mnuLevelSaveAs>
+    <mnuLevelUndo>
+      <Translation>О&amp;тменить ход</Translation>
+      <Old>&amp;Undo move</Old>
+    </mnuLevelUndo>
+    <mnuLevelRedo>
+      <Translation>&amp;Повторить ход</Translation>
+      <Old>Redo &amp;move</Old>
+    </mnuLevelRedo>
+    <mnuLevelRetry>
+      <Translation>На&amp;чать уровень с начала</Translation>
+      <Old>&amp;Retry level</Old>
+    </mnuLevelRetry>
+    <mnuLevelHighscores>
+      <Translation>Пока&amp;зать рекорды</Translation>
+      <Old>Show &amp;highscores</Old>
+    </mnuLevelHighscores>
+    <mnuLevelPrevious>
+      <Translation>П&amp;редыдущий уровень</Translation>
+      <Old>&amp;Previous level</Old>
+    </mnuLevelPrevious>
+    <mnuLevelNext>
+      <Translation>Сле&amp;дующий уровень</Translation>
+      <Old>N&amp;ext level</Old>
+    </mnuLevelNext>
+    <mnuLevelPreviousUnsolved>
+      <Translation>Пр&amp;ед. не пройденный уровень</Translation>
+      <Old>Pre&amp;vious unsolved level</Old>
+    </mnuLevelPreviousUnsolved>
+    <mnuLevelNextUnsolved>
+      <Translation>След. не про&amp;йденный уровень</Translation>
+      <Old>Next unsolve&amp;d level</Old>
+    </mnuLevelNextUnsolved>
+    <mnuLevelChangePlayer>
+      <Translation>Изменить &amp;имя игрока...</Translation>
+      <Old>&amp;Change player name...</Old>
+    </mnuLevelChangePlayer>
+    <mnuLevelExit>
+      <Translation>В&amp;ыйти</Translation>
+      <Old>E&amp;xit</Old>
+    </mnuLevelExit>
+    <mnuEdit>
+      <Translation>&amp;Edit</Translation>
+      <Old null="1" />
+    </mnuEdit>
+    <mnuEditCreateLevel>
+      <Translation>Create &amp;new level</Translation>
+      <Old null="1" />
+    </mnuEditCreateLevel>
+    <mnuEditEditLevel>
+      <Translation>&amp;Edit level</Translation>
+      <Old null="1" />
+    </mnuEditEditLevel>
+    <mnuEditAddComment>
+      <Translation>Add a co&amp;mment...</Translation>
+      <Old null="1" />
+    </mnuEditAddComment>
+    <mnuEditDelete>
+      <Translation>&amp;Delete level/comment</Translation>
+      <Old null="1" />
+    </mnuEditDelete>
+    <mnuEditCut>
+      <Translation>C&amp;ut</Translation>
+      <Old null="1" />
+    </mnuEditCut>
+    <mnuEditCopy>
+      <Translation>&amp;Copy</Translation>
+      <Old null="1" />
+    </mnuEditCopy>
+    <mnuEditPaste>
+      <Translation>&amp;Paste</Translation>
+      <Old null="1" />
+    </mnuEditPaste>
+    <mnuEditFinish>
+      <Translation>&amp;Finish editing</Translation>
+      <Old null="1" />
+    </mnuEditFinish>
+    <mnuEditCancel>
+      <Translation>C&amp;ancel editing</Translation>
+      <Old null="1" />
+    </mnuEditCancel>
+    <mnuEditWall>
+      <Translation>&amp;Wall tool</Translation>
+      <Old null="1" />
+    </mnuEditWall>
+    <mnuEditPiece>
+      <Translation>P&amp;iece tool</Translation>
+      <Old null="1" />
+    </mnuEditPiece>
+    <mnuEditTarget>
+      <Translation>&amp;Target tool</Translation>
+      <Old null="1" />
+    </mnuEditTarget>
+    <mnuEditSokoban>
+      <Translation>&amp;Sokoban tool</Translation>
+      <Old null="1" />
+    </mnuEditSokoban>
+    <mnuOptions>
+      <Translation>&amp;Options</Translation>
+      <Old null="1" />
+    </mnuOptions>
+    <mnuOptionsLevelList>
+      <Translation>Display &amp;level list</Translation>
+      <Old null="1" />
+    </mnuOptionsLevelList>
+    <mnuOptionsPlayingToolbar>
+      <Translation>Display pla&amp;ying toolbar</Translation>
+      <Old null="1" />
+    </mnuOptionsPlayingToolbar>
+    <mnuOptionsFileToolbars>
+      <Translation>Display &amp;editing toolbars (level file)</Translation>
+      <Old null="1" />
+    </mnuOptionsFileToolbars>
+    <mnuOptionsEditLevelToolbar>
+      <Translation>Display editin&amp;g toolbar (level)</Translation>
+      <Old null="1" />
+    </mnuOptionsEditLevelToolbar>
+    <mnuOptionsStatusBar>
+      <Translation>Display stat&amp;us bar</Translation>
+      <Old null="1" />
+    </mnuOptionsStatusBar>
+    <mnuOptionsMoveNo>
+      <Translation>Don't display &amp;move path</Translation>
+      <Old null="1" />
+    </mnuOptionsMoveNo>
+    <mnuOptionsMoveLine>
+      <Translation>Display move path as li&amp;ne</Translation>
+      <Old null="1" />
+    </mnuOptionsMoveLine>
+    <mnuOptionsMoveDots>
+      <Translation>Display move path as &amp;dots</Translation>
+      <Old null="1" />
+    </mnuOptionsMoveDots>
+    <mnuOptionsMoveArrows>
+      <Translation>Display move path as &amp;arrows</Translation>
+      <Old null="1" />
+    </mnuOptionsMoveArrows>
+    <mnuOptionsPushNo>
+      <Translation>Don't display &amp;push path</Translation>
+      <Old null="1" />
+    </mnuOptionsPushNo>
+    <mnuOptionsPushLine>
+      <Translation>Display push path as l&amp;ine</Translation>
+      <Old null="1" />
+    </mnuOptionsPushLine>
+    <mnuOptionsPushDots>
+      <Translation>Display push path as do&amp;ts</Translation>
+      <Old null="1" />
+    </mnuOptionsPushDots>
+    <mnuOptionsPushArrows>
+      <Translation>Display push path as a&amp;rrows</Translation>
+      <Old null="1" />
+    </mnuOptionsPushArrows>
+    <mnuOptionsEndPos>
+      <Translation>Display end p&amp;osition of Sokoban and piece</Translation>
+      <Old null="1" />
+    </mnuOptionsEndPos>
+    <mnuOptionsAreaSokoban>
+      <Translation>Display reac&amp;hable area for Sokoban</Translation>
+      <Old null="1" />
+    </mnuOptionsAreaSokoban>
+    <mnuOptionsAreaPiece>
+      <Translation>Display reacha&amp;ble area for piece</Translation>
+      <Old null="1" />
+    </mnuOptionsAreaPiece>
+    <mnuOptionsSound>
+      <Translation>Enable &amp;sound</Translation>
+      <Old null="1" />
+    </mnuOptionsSound>
+    <mnuOptionsChangeLanguage>
+      <Translation>&amp;Change language</Translation>
+      <Old null="1" />
+    </mnuOptionsChangeLanguage>
+    <mnuHelp>
+      <Translation>&amp;Справка</Translation>
+      <Old>&amp;Help</Old>
+    </mnuHelp>
+    <mnuHelpKeyboard>
+      <Translation>&amp;Горячие клавиши</Translation>
+      <Old>&amp;Keyboard shortcuts</Old>
+    </mnuHelpKeyboard>
+    <mnuHelpAbout>
+      <Translation>&amp;О программе</Translation>
+      <Old>&amp;About</Old>
+    </mnuHelpAbout>
+    <lblStatusSolved>
+      <Translation>Вы прошли этот уровень. Поздравляем!</Translation>
+      <Old>You have solved the level. Congratulations!</Old>
+    </lblStatusSolved>
+    <lblStatusNull>
+      <Translation>No levels currently selected. Select a level from the level list to play.</Translation>
+      <Old null="1" />
+    </lblStatusNull>
+    <toolEditLevel>
+      <Translation>Панель редактирования уровня</Translation>
+      <Old>Level edit toolbar</Old>
+    </toolEditLevel>
+    <btnEditLevelWall>
+      <Translation>Wall tool</Translation>
+      <Old null="1" />
+    </btnEditLevelWall>
+    <btnEditLevelPiece>
+      <Translation>Piece tool</Translation>
+      <Old null="1" />
+    </btnEditLevelPiece>
+    <btnEditLevelTarget>
+      <Translation>Target tool</Translation>
+      <Old null="1" />
+    </btnEditLevelTarget>
+    <btnEditLevelSokoban>
+      <Translation>Sokoban tool</Translation>
+      <Old null="1" />
+    </btnEditLevelSokoban>
+    <btnEditLevelOK>
+      <Translation>Finish editing</Translation>
+      <Old null="1" />
+    </btnEditLevelOK>
+    <btnEditLevelCancel>
+      <Translation>Cancel editing</Translation>
+      <Old null="1" />
+    </btnEditLevelCancel>
+    <toolFileEdit>
+      <Translation>Панель редактирования файла</Translation>
+      <Old>File edit toolbar</Old>
+    </toolFileEdit>
+    <btnFileEditNewLevel>
+      <Translation>Create new level</Translation>
+      <Old null="1" />
+    </btnFileEditNewLevel>
+    <btnFileEditEditLevel>
+      <Translation>Edit level</Translation>
+      <Old null="1" />
+    </btnFileEditEditLevel>
+    <btnFileEditAddComment>
+      <Translation>Add a comment</Translation>
+      <Old null="1" />
+    </btnFileEditAddComment>
+    <btnFileEditDeleteLevel>
+      <Translation>Delete selected level or comment</Translation>
+      <Old null="1" />
+    </btnFileEditDeleteLevel>
+    <toolFile>
+      <Translation>Панель файла уровня</Translation>
+      <Old>File toolbar</Old>
+    </toolFile>
+    <btnFileNew>
+      <Translation>New level file</Translation>
+      <Old null="1" />
+    </btnFileNew>
+    <btnFileOpen>
+      <Translation>Open level file</Translation>
+      <Old null="1" />
+    </btnFileOpen>
+    <btnFileSave>
+      <Translation>Save level file</Translation>
+      <Old null="1" />
+    </btnFileSave>
+    <btnFileCut>
+      <Translation>Cut</Translation>
+      <Old null="1" />
+    </btnFileCut>
+    <btnFileCopy>
+      <Translation>Copy</Translation>
+      <Old null="1" />
+    </btnFileCopy>
+    <btnFilePaste>
+      <Translation>Paste</Translation>
+      <Old null="1" />
+    </btnFilePaste>
+    <toolPlay>
+      <Translation>Панель игры</Translation>
+      <Old>Playing toolbar</Old>
+    </toolPlay>
+    <btnPlayOpenLevel>
+      <Translation>Open level file</Translation>
+      <Old null="1" />
+    </btnPlayOpenLevel>
+    <btnPlayPrevLevel>
+      <Translation>Previous level</Translation>
+      <Old null="1" />
+    </btnPlayPrevLevel>
+    <btnPlayNextLevel>
+      <Translation>Next level</Translation>
+      <Old null="1" />
+    </btnPlayNextLevel>
+    <btnPlayPrevUnsolvedLevel>
+      <Translation>Previous unsolved level</Translation>
+      <Old null="1" />
+    </btnPlayPrevUnsolvedLevel>
+    <btnPlayNextUnsolvedLevel>
+      <Translation>Next unsolved level</Translation>
+      <Old null="1" />
+    </btnPlayNextUnsolvedLevel>
+  </Mainform>
+  <Context>
+    <mnuContextPlay>
+      <Translation>Pl&amp;ay this level</Translation>
+      <Old null="1" />
+    </mnuContextPlay>
+    <mnuContextEdit>
+      <Translation>&amp;Edit this level</Translation>
+      <Old null="1" />
+    </mnuContextEdit>
+    <mnuContextHighscores>
+      <Translation>Show &amp;highscores</Translation>
+      <Old null="1" />
+    </mnuContextHighscores>
+    <mnuContextNewLevel>
+      <Translation>C&amp;reate a new level here</Translation>
+      <Old null="1" />
+    </mnuContextNewLevel>
+    <mnuContextNewComment>
+      <Translation>&amp;Insert a comment here</Translation>
+      <Old null="1" />
+    </mnuContextNewComment>
+    <mnuContextCut>
+      <Translation>C&amp;ut</Translation>
+      <Old null="1" />
+    </mnuContextCut>
+    <mnuContextCopy>
+      <Translation>&amp;Copy</Translation>
+      <Old null="1" />
+    </mnuContextCopy>
+    <mnuContextPaste>
+      <Translation>&amp;Paste</Translation>
+      <Old null="1" />
+    </mnuContextPaste>
+    <mnuContextDelete>
+      <Translation>&amp;Delete</Translation>
+      <Old null="1" />
+    </mnuContextDelete>
+    <mnuContextHide>
+      <Translation>Hide &amp;level list</Translation>
+      <Old null="1" />
+    </mnuContextHide>
+  </Context>
+  <Language>Russian</Language>
+</item>
