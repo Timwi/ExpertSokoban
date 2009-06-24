@@ -106,7 +106,7 @@ namespace ExpertSokoban
                     if (i != mnuOptionsLanguageEdit)
                         i.Enabled = false;
                 var file = PathUtil.Combine(PathUtil.AppPath, "Translations", "ExpSok." + Program.Settings.Language + ".xml");
-                _translationDialog = new TranslationForm<Translation>(file, Program.Settings.TranslationFormSettings);
+                _translationDialog = new TranslationForm<Translation>(file, Program.Settings.TranslationFormSettings, Icon, "Expert Sokoban");
                 _translationDialog.AcceptChanges += () => setLanguage(XmlClassify.LoadObjectFromXmlFile<Translation>(file), Program.Settings.Language);
                 _translationDialog.FormClosed += (s, v) => { _translationDialog = null; initLanguageMenu(); };
             }
