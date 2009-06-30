@@ -202,10 +202,6 @@ You can change this name again later by selecting "Change player name" from the 
     <Translation>&amp;Edit level</Translation>
     <Old null="1" />
   </Mainform_Validity_CannotOpen_btnEdit>
-  <Mainform_Validity_CannotSave>
-    <Translation>The following problem has been detected with this level:</Translation>
-    <Old null="1" />
-  </Mainform_Validity_CannotSave>
   <Mainform_Validity_CannotSave_Warning>
     <Translation>You cannot play this level until you address this issue. Are you sure you wish to leave the level in this invalid state?</Translation>
     <Old null="1" />

@@ -212,10 +212,6 @@ You can change this name again later by selecting "Change player name" from the 
     <Translation>Level &amp;bearbeiten</Translation>
     <Old>&amp;Edit level</Old>
   </Mainform_Validity_CannotOpen_btnEdit>
-  <Mainform_Validity_CannotSave>
-    <Translation>Das folgende Problem wurde bei diesem Level festgestellt:</Translation>
-    <Old>The following problem has been detected with this level:</Old>
-  </Mainform_Validity_CannotSave>
   <Mainform_Validity_CannotSave_Warning>
     <Translation>Sie können dieses Level nicht spielen, solange das Problem besteht. Sind Sie sicher, dass das Level in diesem ungültigen Zustand bleiben soll?</Translation>
     <Old>You cannot play this level until you address this issue. Are you sure you wish to leave the level in this invalid state?</Old>

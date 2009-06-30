@@ -212,10 +212,6 @@ You can change this name again later by selecting "Change player name" from the 
     <Translation>&amp;Redakti puzlon</Translation>
     <Old>&amp;Edit level</Old>
   </Mainform_Validity_CannotOpen_btnEdit>
-  <Mainform_Validity_CannotSave>
-    <Translation>La sekvonta problemo troviĝis ĉe tiu puzlo:</Translation>
-    <Old>The following problem has been detected with this level:</Old>
-  </Mainform_Validity_CannotSave>
   <Mainform_Validity_CannotSave_Warning>
     <Translation>Dum ankoraŭ ekzistas la problemo, la puzlo ne ludeblas. Ĉu vi certas, ke vi volas lasi la puzlon en tiu malvalida stato?</Translation>
     <Old>You cannot play this level until you address this issue. Are you sure you wish to leave the level in this invalid state?</Old>
