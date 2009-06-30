@@ -721,8 +721,7 @@ namespace ExpertSokoban
                 String Problem = Status == SokobanLevelStatus.NotEnclosed
                     ? Program.Tr.Mainform_Validity_NotEnclosed
                     : Program.Tr.Mainform_Validity_WrongNumber;
-                if (DlgMessage.Show(Program.Tr.Mainform_Validity_CannotSave + "\n\n" +
-                    Problem + "\n\n" + Program.Tr.Mainform_Validity_CannotSave_Warning,
+                if (DlgMessage.Show(Problem + "\n\n" + Program.Tr.Mainform_Validity_CannotSave_Warning,
                     Program.Tr.Mainform_MessageTitle_FinishEditing, DlgType.Error,
                     Program.Tr.Mainform_Validity_CannotSave_btnSave,
                     Program.Tr.Mainform_Validity_CannotSave_btnResume) == 1)

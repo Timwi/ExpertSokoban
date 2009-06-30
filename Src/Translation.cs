@@ -189,8 +189,6 @@ namespace ExpertSokoban
         [LingoInGroup(TranslationGroup.Confirm)]
         public TrString Mainform_Validity_CannotOpen_btnEdit = "&Edit level";
         [LingoInGroup(TranslationGroup.Confirm)]
-        public TrString Mainform_Validity_CannotSave = "The following problem has been detected with this level:";
-        [LingoInGroup(TranslationGroup.Confirm)]
         public TrString Mainform_Validity_CannotSave_Warning = "You cannot play this level until you address this issue. Are you sure you wish to leave the level in this invalid state?";
         [LingoInGroup(TranslationGroup.Confirm)]
         public TrString Mainform_Validity_CannotSave_btnSave = "&Save level anyway";
