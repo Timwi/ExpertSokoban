@@ -5,27 +5,27 @@ using RT.Util.Collections;
 namespace ExpertSokoban
 {
     /// <summary>
-    /// Identifies one of the two modes of operation for a MoveFinder.
+    /// Identifies one of the two modes of operation for a <see cref="MoveFinder"/>.
     /// </summary>
     public enum MoveFinderOption
     {
         /// <summary>
-        /// Represents the normal mode of operation for a MoveFinder, where cells
-        /// reachable from the current Sokoban position are deemed "valid".
+        /// Represents the normal mode of operation for a <see cref="MoveFinder"/>,
+        /// where cells reachable from the current Sokoban position are deemed "valid".
         /// </summary>
         None,
 
         /// <summary>
-        /// Represents a special mode of operation where all cells reachable from the
-        /// Sokoban position are considered "valid" even if a piece is in the way (i.e.
-        /// only walls are considered obstacles).
+        /// Represents a special mode of operation for a <see cref="MoveFinder"/> where
+        /// all cells reachable from the Sokoban position are considered "valid" even if a
+        /// piece is in the way (i.e. only walls are considered obstacles).
         /// </summary>
         IgnorePieces
     }
 
     /// <summary>
     /// Finds out (using a breath-first search) where the Sokoban can move, given a
-    /// SokobanLevel object that represents the current situation of the game.
+    /// <see cref="SokobanLevel"/> object that represents the current situation of the game.
     /// </summary>
     public class MoveFinder : Virtual2DArray<bool>
     {
@@ -190,7 +190,7 @@ namespace ExpertSokoban
     }
 
     /// <summary>
-    /// Encapsulates a MoveFinder, but overrides the methods <see cref="Get(Point)"/> and <see cref="Get(int, int)"/>
+    /// Encapsulates a <see cref="MoveFinder"/>, but overrides the methods <see cref="Get(Point)"/> and <see cref="Get(int, int)"/>
     /// in such a way that it returns true only for the reachable cells at the outline of the level.
     /// </summary>
     public class MoveFinderOutline : MoveFinder

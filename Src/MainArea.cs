@@ -2,14 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Text;
+using System.IO;
+using System.Linq;
+using System.Media;
 using System.Windows.Forms;
+using ExpertSokoban.Properties;
 using RT.Util;
+using RT.Util.Collections;
 using RT.Util.Controls;
 using RT.Util.Dialogs;
 using RT.Util.Drawing;
-using System.Media;
-using System.IO;
-using ExpertSokoban.Properties;
 
 namespace ExpertSokoban
 {
@@ -199,7 +202,7 @@ namespace ExpertSokoban
     }
 
     /// <summary>
-    /// Encapsulates the Main Area of Expert Sokoban's main form -- the area in which a
+    /// Encapsulates the Main Area of Expert Sokoban's main form – the area in which a
     /// level is played or edited.
     /// </summary>
     public class MainArea : DoubleBufferedPanel
@@ -285,6 +288,27 @@ namespace ExpertSokoban
         }
 
         /// <summary>
+        /// Gets or sets whether letter-based control is enabled or not.
+        /// </summary>
+        public bool LetteringEnabled
+        {
+            get { return _letterings != null; }
+            set
+            {
+                if (_letterings != null && !value)
+                {
+                    _letterings = null;
+                    Invalidate();
+                }
+                else if (_letterings == null && value)
+                {
+                    calculateLetterings();
+                    Invalidate();
+                }
+            }
+        }
+
+        /// <summary>
         /// The currently selected tool while editing a level.
         /// </summary>
         public MainAreaTool Tool
@@ -346,6 +370,11 @@ namespace ExpertSokoban
         /// The state the Main Area is in.
         /// </summary>
         private MainAreaState _state;
+
+        /// <summary>
+        /// If letter-based control is enabled, contains the possible letterings the user can cycle through. The first element is the currently-visible lettering.
+        /// </summary>
+        private List<List<Tuple<char, Point>>> _letterings = null;
 
         /// <summary>
         /// Indicates whether a move has been made or any changed to the level being edited.
@@ -531,6 +560,7 @@ namespace ExpertSokoban
             this.Paint += new PaintEventHandler(paint);
             this.PaintBuffer += new PaintEventHandler(paintBuffer);
             this.KeyDown += new KeyEventHandler(keyDown);
+            this.KeyPress += new KeyPressEventHandler(keyPress);
         }
 
         /// <summary>Identifies a sound. Used in calls to <see cref="playSound(MainAreaSound)"/>.</summary>
@@ -574,7 +604,7 @@ namespace ExpertSokoban
         /// Invoked whenever the paint buffer needs to be redrawn. Renders the current
         /// level in its current state and (if applicable) the "level solved" message,
         /// but not the selected piece, move/push region, move/push path, or the
-        /// Sokoban/piece end position (those are all handled in MainArea_Paint()).
+        /// Sokoban/piece end position (those are all handled in <see cref="paint(object,PaintEventArgs)"/>).
         /// </summary>
         private void paintBuffer(object sender, PaintEventArgs e)
         {
@@ -609,9 +639,9 @@ namespace ExpertSokoban
         /// </summary>
         private void reinitMoveFinder()
         {
-            _moveFinder = State == MainAreaState.Editing
-                ? new MoveFinderOutline(_level)
-                : new MoveFinder(_level);
+            _moveFinder = _state == MainAreaState.Editing ? new MoveFinderOutline(_level) : new MoveFinder(_level);
+            if (_state == MainAreaState.Move && _letterings != null)
+                calculateLetterings();
         }
 
         /// <summary>
@@ -623,7 +653,7 @@ namespace ExpertSokoban
         /// </summary>
         private void paint(object sender, PaintEventArgs e)
         {
-            if (_state == MainAreaState.Null)
+            if (_state == MainAreaState.Null || _state == MainAreaState.Solved)
                 return;
 
             e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
@@ -661,12 +691,30 @@ namespace ExpertSokoban
                 e.Graphics.DrawPath(_cursorPen, Path);
             }
 
+            // Draw the selected piece
+            if (_state == MainAreaState.Push)
+                _renderer.DrawCell(e.Graphics, _selectedPiece.Value, SokobanImage.PieceSelected);
+
+            // Draw the current lettering (if any)
+            if ((_state == MainAreaState.Move || _state == MainAreaState.Push) && _letterings != null && _letterings.Count > 0 && _renderer.CellSize.Width > 0 && _renderer.CellSize.Height > 0)
+            {
+                float fontSize = _renderer.FontSizeForLettering(e.Graphics, Font.Name);
+                foreach (var lettering in _letterings[0])
+                {
+                    GraphicsPath gp = new GraphicsPath();
+                    var rect = _renderer.CellRect(lettering.E2);
+                    gp.AddString(char.ToUpperInvariant(lettering.E1).ToString(), Font.FontFamily, (int) FontStyle.Bold, fontSize, new PointF(rect.X + rect.Width / 2, rect.Y + rect.Height / 2), new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
+                    GraphicsPath gp2 = new GraphicsPath();
+                    gp2.AddPath(gp, false);
+                    gp2.Widen(new Pen(Color.White, 3));
+                    e.Graphics.FillPath(new SolidBrush(Color.FromArgb(128, Color.White)), gp2);
+                    e.Graphics.FillPath(new SolidBrush(Color.FromArgb(192, Color.Black)), gp);
+                }
+            }
+
             // If we are not in push mode, we can stop here.
             if (_state != MainAreaState.Push)
                 return;
-
-            // Draw the selected piece
-            _renderer.DrawCell(e.Graphics, _selectedPiece.Value, SokobanImage.PieceSelected);
 
             // If there is no push sequence to show, we can stop here.
             if (_pushSequence == null)
@@ -723,12 +771,12 @@ namespace ExpertSokoban
         /// arrows connecting cells.
         /// </summary>
         /// <param name="g">Graphics object to draw onto.</param>
-        /// <param name="InitialPos">Initial position of the Sokoban (which is the first
+        /// <param name="initialPos">Initial position of the Sokoban (which is the first
         /// cell in the sequence of arrows, but not part of CellSequence).</param>
-        /// <param name="CellSequence">The sequence of cells to render.</param>
-        /// <param name="InflateX">An amount by which the destination rectangles for
+        /// <param name="sequence">The sequence of cells to render.</param>
+        /// <param name="inflateX">An amount by which the destination rectangles for
         /// each arrow are inflated in X direction.</param>
-        /// <param name="InflateY">An amount by which the destination rectangles for
+        /// <param name="inflateY">An amount by which the destination rectangles for
         /// each arrow are inflated in Y direction.</param>
         private void drawArrowSequence(Graphics g, Point initialPos, Point[] sequence, float inflateX, float inflateY)
         {
@@ -775,7 +823,7 @@ namespace ExpertSokoban
         /// the current move path with it, and (2) calculates the push path from it and
         /// updates the current push path with that.
         /// </summary>
-        /// <param name="NewMoveCellSequence">The sequence of cells making up the move
+        /// <param name="newMoveSequence">The sequence of cells making up the move
         /// path. If null, both the move path and push path are cleared.</param>
         private void updatePushPath(Point[] newMoveSequence)
         {
@@ -823,7 +871,7 @@ namespace ExpertSokoban
         /// Takes a RectangleF, rounds all its values to integers, and returns the
         /// result.
         /// </summary>
-        /// <param name="Src">Source RectangleF.</param>
+        /// <param name="src">Source RectangleF.</param>
         /// <returns>Rectangle with rounded values.</returns>
         private Rectangle roundedRectangle(RectangleF src)
         {
@@ -832,19 +880,22 @@ namespace ExpertSokoban
 
         /// <summary>
         /// Determines whether the user has dragged the mouse from a cell to an adjacent
-        /// cell, or pressed Space on a cell and then Enter on an adjacent cell. - If
-        /// you just click a cell to push a piece to, PushFinder will find the shortest
-        /// push-path regardless of where the Sokoban will end up. If you mouse-down
-        /// *next* to the cell you want to push the piece to (or press Space on it), and
-        /// then *drag* onto the cell before releasing (or press Enter on the
-        /// destination cell), then we will try to move the piece in such a way that the
-        /// Sokoban will end up on the original cell. GetOrigMouseDownDir() determines
-        /// in which direction you dragged. (This value is passed on to
-        /// PushFinder.Path().)
+        /// cell, or pressed Space on a cell and then Enter on an adjacent cell.
         /// </summary>
-        /// <param name="Cell">The cell the mouse is pointing at now, or the cell the
+        /// <remarks>
+        /// <para>
+        /// If you just click a cell to push a piece to, <see cref="PushFinder"/> will find the shortest
+        /// push-path regardless of where the Sokoban will end up. If you mouse-down
+        /// <b>next</b> to the cell you want to push the piece to (or press Space on it), and
+        /// then <b>drag</b> onto the cell before releasing (or press Enter on the destination
+        /// cell), then we will try to move the piece in such a way that the Sokoban will
+        /// end up on the original cell. <see cref="origDownDir(Point,Point?)"/> determines in which direction you
+        /// dragged. (This value is passed on to <see cref="PushFinder.Path(Point,int)"/>.)
+        /// </para>
+        /// </remarks>
+        /// <param name="cell">The cell the mouse is pointing at now, or the cell the
         /// user pressed Enter on.</param>
-        /// <param name="OrigDown">The cell the mouse was dragged from, or the cell the
+        /// <param name="origDown">The cell the mouse was dragged from, or the cell the
         /// user pressed Space on.</param>
         /// <returns>0 if the answer is "no"; otherwise:
         /// 1 = user dragged downwards; 2 = user dragged to the right;
@@ -943,7 +994,7 @@ namespace ExpertSokoban
         /// level editor. This happens whenever the user clicks the mouse or presses
         /// Enter or Space.
         /// </summary>
-        /// <param name="Cell">The cell that was "clicked".</param>
+        /// <param name="cell">The cell that was "clicked".</param>
         private void processEditorClick(Point cell)
         {
             SokobanCell CellType = _level.Cell(cell);
@@ -1115,9 +1166,9 @@ namespace ExpertSokoban
         /// <summary>
         /// Discards the current level and replaces it with the specified level.
         /// </summary>
-        /// <param name="Level">New level to display. The object will be cloned
+        /// <param name="level">New level to display. The object will be cloned
         /// internally.</param>
-        /// <param name="State">State to set the Main Area into. If this is set to
+        /// <param name="state">State to set the Main Area into. If this is set to
         /// MainAreaState.Push, nothing happens.</param>
         private void setLevel(SokobanLevel level, MainAreaState state)
         {
@@ -1142,7 +1193,7 @@ namespace ExpertSokoban
         /// <summary>
         /// Discards the current level and allows the user to play the specified level.
         /// </summary>
-        /// <param name="Level">The new level to play. The object will be cloned
+        /// <param name="level">The new level to play. The object will be cloned
         /// internally.</param>
         public void SetLevel(SokobanLevel level)
         {
@@ -1152,7 +1203,7 @@ namespace ExpertSokoban
         /// <summary>
         /// Discards the current level and allows the user to edit the specified level.
         /// </summary>
-        /// <param name="Level">The new level to edit. The object will be cloned
+        /// <param name="level">The new level to edit. The object will be cloned
         /// internally.</param>
         public void SetLevelEdit(SokobanLevel level)
         {
@@ -1259,9 +1310,8 @@ namespace ExpertSokoban
         /// <summary>
         /// Moves the selection rectangle that is controlled by the arrow keys.
         /// </summary>
-        /// <param name="dx">Amount to move in X direction.</param>
-        /// <param name="dy">Amount to move in Y direction.</param>
-        /// <param name="FindPieceOrTarget">If true, will select a piece (if in
+        /// <param name="direction">Direction to move into.</param>
+        /// <param name="findPieceOrTarget">If true, will select a piece (if in
         /// move mode) or a target (if in push mode).</param>
         private void moveKeySelector(int direction, bool findPieceOrTarget)
         {
@@ -1306,9 +1356,9 @@ namespace ExpertSokoban
         }
 
         /// <summary>
-        /// Calls UpdatePushPath() or ClearPushPath() depending on whether the user has
-        /// just moved the keyboard selection cursor onto a cell that represents a valid
-        /// destination for a push.
+        /// Calls <see cref="updatePushPath(Point[])"/> or <see cref="clearPushPath()"/> depending
+        /// on whether the user has just moved the keyboard selection cursor onto a cell
+        /// that represents a valid destination for a push.
         /// </summary>
         private void updatePushPathAfterKeyboardSelectionChange()
         {
@@ -1361,7 +1411,7 @@ namespace ExpertSokoban
         /// selects one with the keyboard and presses Enter. If the given piece is already
         /// selected, deselects it.
         /// </summary>
-        /// <param name="Cell">The cell containing the piece to be selected.</param>
+        /// <param name="cell">The cell containing the piece to be selected.</param>
         private void selectPiece(Point cell)
         {
             if (_state != MainAreaState.Move && _state != MainAreaState.Push) // should never happen
@@ -1388,6 +1438,8 @@ namespace ExpertSokoban
                 _origKeyDown = null;
                 _pushFinder = new PushFinder(_level, cell, _moveFinder);
                 _state = MainAreaState.Push;
+                if (_letterings != null)
+                    calculateLetterings();
                 Invalidate();
             }
 
@@ -1468,10 +1520,82 @@ namespace ExpertSokoban
         }
 
         /// <summary>
+        /// Invoked by a keypress. Interprets the keypresses for letter-based control. (All other keypresses are handled in keyDown().)
+        /// </summary>
+        private void keyPress(object sender, KeyPressEventArgs e)
+        {
+            if (_letterings == null || _letterings.Count == 0)
+                return;
+            foreach (var lettering in _letterings[0].Where(tup => tup.E1 == e.KeyChar || char.ToUpperInvariant(tup.E1) == e.KeyChar))
+            {
+                if (_state == MainAreaState.Move)
+                    selectPiece(lettering.E2);
+                else if (_state == MainAreaState.Push)
+                {
+                    if (lettering.E1 == e.KeyChar && lettering.E1 == '1')
+                    {
+                        _origKeyDown = lettering.E2;
+                        _cursorPos = new Point(lettering.E2.X, lettering.E2.Y + 1);
+                        updatePushPathAfterKeyboardSelectionChange();
+                        executePush();
+                        _cursorPos = null;
+                    }
+                    else if (lettering.E1 == e.KeyChar && lettering.E1 == '2')
+                    {
+                        _origKeyDown = lettering.E2;
+                        _cursorPos = new Point(lettering.E2.X + 1, lettering.E2.Y);
+                        updatePushPathAfterKeyboardSelectionChange();
+                        executePush();
+                        _cursorPos = null;
+                    }
+                    else if (lettering.E1 == e.KeyChar && lettering.E1 == '3')
+                    {
+                        _origKeyDown = lettering.E2;
+                        _cursorPos = new Point(lettering.E2.X - 1, lettering.E2.Y);
+                        updatePushPathAfterKeyboardSelectionChange();
+                        executePush();
+                        _cursorPos = null;
+                    }
+                    else if (lettering.E1 == e.KeyChar && lettering.E1 == '4')
+                    {
+                        _origKeyDown = lettering.E2;
+                        _cursorPos = new Point(lettering.E2.X, lettering.E2.Y - 1);
+                        updatePushPathAfterKeyboardSelectionChange();
+                        executePush();
+                        _cursorPos = null;
+                    }
+                    else if (lettering.E1 == e.KeyChar)
+                    {
+                        _cursorPos = lettering.E2;
+                        updatePushPathAfterKeyboardSelectionChange();
+                        executePush();
+                        _cursorPos = null;
+                    }
+                    else
+                    {
+                        var l = new List<Tuple<char, Point>>();
+                        if (_pushFinder.GetDir(lettering.E2, 1))
+                            l.Add(new Tuple<char, Point>('1', new Point(lettering.E2.X, lettering.E2.Y - 1)));
+                        if (_pushFinder.GetDir(lettering.E2, 2))
+                            l.Add(new Tuple<char, Point>('2', new Point(lettering.E2.X - 1, lettering.E2.Y)));
+                        if (_pushFinder.GetDir(lettering.E2, 3))
+                            l.Add(new Tuple<char, Point>('3', new Point(lettering.E2.X + 1, lettering.E2.Y)));
+                        if (_pushFinder.GetDir(lettering.E2, 4))
+                            l.Add(new Tuple<char, Point>('4', new Point(lettering.E2.X, lettering.E2.Y + 1)));
+                        _letterings.Insert(0, l);
+                    }
+                }
+                Invalidate();
+                e.Handled = true;
+                return;
+            }
+        }
+
+        /// <summary>
         /// Determines (by asking the user if necessary) whether we are allowed to
         /// destroy the contents of the main area.
         /// </summary>
-        /// <param name="Caption">Title bar caption to use in case any confirmation
+        /// <param name="caption">Title bar caption to use in case any confirmation
         /// dialogs need to pop up.</param>
         public bool MayDestroy(string caption)
         {
@@ -1494,6 +1618,105 @@ namespace ExpertSokoban
 
             // If the user opted to cancel, return false, otherwise true
             return result != 2;
+        }
+
+        private void calculateLetterings()
+        {
+            if (_state == MainAreaState.Move)
+            {
+                var ret = new List<List<Tuple<char, Point>>>();
+                var curList = new List<Tuple<char, Point>>();
+                char curLetter = 'a';
+                for (int y = 0; y < _level.Height; y++)
+                {
+                    for (int x = 0; x < _level.Width; x++)
+                    {
+                        if (_level.IsPiece(x, y) && (_moveFinder.Get(x + 1, y) || _moveFinder.Get(x - 1, y) || _moveFinder.Get(x, y + 1) || _moveFinder.Get(x, y - 1)))
+                        {
+                            curList.Add(new Tuple<char, Point>(curLetter, new Point(x, y)));
+                            if (curLetter == 'z')
+                            {
+                                ret.Add(curList);
+                                curList = new List<Tuple<char, Point>>();
+                                curLetter = 'a';
+                            }
+                            else
+                                curLetter++;
+                        }
+                    }
+                }
+                if (curList.Count > 0)
+                    ret.Add(curList);
+                _letterings = ret;
+            }
+            else if (_state == MainAreaState.Push)
+            {
+                var ret = new List<List<Tuple<char, Point>>>();
+                var curList = new List<Tuple<char, Point>>();
+                char curLetter = 'a';
+                for (int y = 0; y < _level.Height; y++)
+                {
+                    for (int x = 0; x < _level.Width; x++)
+                    {
+                        if (_level.Cell(x, y) == SokobanCell.Target && _pushFinder.Get(x, y))
+                        {
+                            curList.Add(new Tuple<char, Point>(curLetter, new Point(x, y)));
+                            if (curLetter == 'z')
+                            {
+                                ret.Add(curList);
+                                curList = new List<Tuple<char, Point>>();
+                                curLetter = 'a';
+                            }
+                            else
+                                curLetter++;
+                        }
+                    }
+                }
+                if (curList.Count > 0)
+                {
+                    ret.Add(curList);
+                    curList = new List<Tuple<char, Point>>();
+                }
+                curLetter = 'a';
+                for (int y = 0; y < _level.Height; y++)
+                {
+                    for (int x = 0; x < _level.Width; x++)
+                    {
+                        if ((_level.Cell(x, y) == SokobanCell.Blank || new Point(x, y) == _selectedPiece) && _pushFinder.Get(x, y))
+                        {
+                            curList.Add(new Tuple<char, Point>(curLetter, new Point(x, y)));
+                            if (curLetter == 'z')
+                            {
+                                ret.Add(curList);
+                                curList = new List<Tuple<char, Point>>();
+                                curLetter = 'a';
+                            }
+                            else
+                                curLetter++;
+                        }
+                    }
+                }
+                if (curList.Count > 0)
+                    ret.Add(curList);
+                _letterings = ret;
+            }
+            else
+                _letterings = new List<List<Tuple<char, Point>>>();
+        }
+
+        /// <summary>
+        /// If letter-based control is enabled, switches to the next available set of letters.
+        /// </summary>
+        public void ShowNextLetterControlSet()
+        {
+            if (_letterings != null && _letterings.Count > 0)
+            {
+                var t = _letterings[0];
+                _letterings.RemoveAt(0);
+                if (t.Count > 0 && t[0].E1 != '1')
+                    _letterings.Add(t);
+                Invalidate();
+            }
         }
     }
 }

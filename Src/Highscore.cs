@@ -2,13 +2,18 @@ using System;
 
 namespace ExpertSokoban
 {
+    /// <summary>Encapsulates a user's score for a specific level.</summary>
     [Serializable]
     public class Score
     {
+        /// <summary>Number of moves.</summary>
         public int Moves;
+        /// <summary>Number of pushes.</summary>
         public int Pushes;
+        /// <summary>Constructor.</summary>
         public Score(int moves, int pushes) { Moves = moves; Pushes = pushes; }
-        // This empty constructor is necessary for XmlClassify to work
+        /// <summary>Constructor.</summary>
+        /// <remarks>This empty constructor is necessary for XmlClassify to work.</remarks>
         public Score() { Moves = 0; Pushes = 0; }
     }
 
@@ -37,7 +42,7 @@ namespace ExpertSokoban
         /// If <paramref name="score"/> is a better score in any of the three respects, updates
         /// the relevant value with Score.
         /// </summary>
-        /// <param name="Score">The Score to update the Highscore with.</param>
+        /// <param name="score">The Score to update the Highscore with.</param>
         public void UpdateWith(Score score)
         {
             if (BestPushScore == null || score.Pushes < BestPushScore.Pushes ||
@@ -64,6 +69,7 @@ namespace ExpertSokoban
                 BestSumScore.Moves + ")";
         }
 
+        /// <summary>Compares this <see cref="Highscore"/> to another.</summary>
         public int CompareTo(Highscore other)
         {
             if (BestPushScore.Pushes < other.BestPushScore.Pushes)

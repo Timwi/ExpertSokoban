@@ -7,10 +7,14 @@ using RT.Util.Lingo;
 
 namespace ExpertSokoban
 {
+    /// <summary>
+    /// Encapsulates the Highscores window.
+    /// </summary>
     public partial class HighscoresForm : ManagedForm
     {
         private SokobanLevel _level;
 
+        /// <summary>Constructor.</summary>
         public HighscoresForm()
             : base(Program.Settings.HighscoresFormSettings)
         {
@@ -26,8 +30,8 @@ namespace ExpertSokoban
         /// <summary>
         /// Sets the form's contents in such a way that the specified highscores are displayed.
         /// </summary>
-        /// <param name="Highscores">A dictionary mapping from player name to highscores.</param>
-        /// <param name="Level">The level whose highscores are being displayed.</param>
+        /// <param name="highscores">A dictionary mapping from player name to highscores.</param>
+        /// <param name="level">The level whose highscores are being displayed.</param>
         public void SetContents(Dictionary<string, Highscore> highscores, SokobanLevel level)
         {
             pnlHighscores.ColumnCount = 3;

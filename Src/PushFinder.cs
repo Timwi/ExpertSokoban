@@ -166,7 +166,7 @@ namespace ExpertSokoban
 
         /// <summary>
         /// Remembers the <see cref="MoveFinder"/> passed in the constructor, which is for the initial
-        /// level situation. It is required in order to construct the beginning of the path in <see cref="Path()"/>.
+        /// level situation. It is required in order to construct the beginning of the path in <see cref="Path(Point,int)"/>.
         /// </summary>
         private MoveFinder _moveFinder;
 

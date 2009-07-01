@@ -20,7 +20,15 @@ namespace ExpertSokoban
         /// <summary>
         /// Encapsulates the state of the level list box.
         /// </summary>
-        public enum LevelListBoxState { Playing, JustSolved, Editing }
+        public enum LevelListBoxState
+        {
+            /// <summary>Indicates that the user is currently playing a level.</summary>
+            Playing,
+            /// <summary>Indicates that the "Level solved" image is currently being displayed.</summary>
+            JustSolved,
+            /// <summary>Indicates that the user is currently editing a level.</summary>
+            Editing
+        }
 
         /// <summary>
         /// Determines whether the user is playing or editing levels.
@@ -411,9 +419,9 @@ namespace ExpertSokoban
         /// Renders the specified level and returns the finished image. Renderings are
         /// cached for efficiency.
         /// </summary>
-        /// <param name="Level">The SokobanLevel to be rendered.</param>
-        /// <param name="Width">Width of the area to render into.</param>
-        /// <param name="Height">Height of the area to render into.</param>
+        /// <param name="level">The SokobanLevel to be rendered.</param>
+        /// <param name="width">Width of the area to render into.</param>
+        /// <param name="height">Height of the area to render into.</param>
         private Image getRendering(SokobanLevel level, int width, int height)
         {
             if (_cachedRenderings.ContainsKey(level))
@@ -489,6 +497,7 @@ namespace ExpertSokoban
         /// </summary>
         public class InvalidLevelException : Exception
         {
+            /// <summary>Constructor.</summary>
             public InvalidLevelException() { }
         }
 
@@ -701,7 +710,7 @@ namespace ExpertSokoban
         /// Adds the specified item to the level list, while ensuring that the level
         /// list's EditingIndex/PlayingIndex remain intact.
         /// </summary>
-        /// <param name="NewItem">The item to insert. May be a SokobanLevel object
+        /// <param name="item">The item to insert. May be a SokobanLevel object
         /// or a string (representing a comment).</param>
         public void AddLevelListItem(object item)
         {
@@ -814,9 +823,9 @@ namespace ExpertSokoban
         /// displayed to the user. The function will trigger the LevelActivating event
         /// before activating the level.
         /// </summary>
-        /// <param name="MustBeUnsolved">Specifies whether to activate the immediately
+        /// <param name="mustBeUnsolved">Specifies whether to activate the immediately
         /// next level (false) or the next unsolved level (true).</param>
-        /// <param name="CongratulateIfAll">If true, congratulates the user about having
+        /// <param name="congratulateIfAll">If true, congratulates the user about having
         /// solved all levels if no more can be found.</param>
         public void PlayNext(bool mustBeUnsolved, bool congratulateIfAll)
         {
@@ -841,7 +850,7 @@ namespace ExpertSokoban
         /// message is displayed to the user. The function will trigger the
         /// LevelActivating event before activating the level.
         /// </summary>
-        /// <param name="MustBeUnsolved">Specifies whether to activate the immediately
+        /// <param name="mustBeUnsolved">Specifies whether to activate the immediately
         /// previous level (false) or the previous unsolved level (true).</param>
         public void PlayPrev(bool mustBeUnsolved)
         {
@@ -860,10 +869,10 @@ namespace ExpertSokoban
         /// Returns the index of the next level in the specified direction, or null if
         /// there is none.
         /// </summary>
-        /// <param name="MustBeUnsolved">If true, finds a level that has not yet been
+        /// <param name="mustBeUnsolved">If true, finds a level that has not yet been
         /// solved by the current player, and returns null if all levels have been
         /// solved. If false, returns the immediately next or previous level.</param>
-        /// <param name="Forward">If true, searches for the next level, otherwise the
+        /// <param name="forward">If true, searches for the next level, otherwise the
         /// previous.</param>
         private int? findPrevNext(bool mustBeUnsolved, bool forward)
         {

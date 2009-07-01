@@ -3,6 +3,8 @@ using RT.Util.Lingo;
 
 namespace ExpertSokoban
 {
+#pragma warning disable 1591    // Missing XML comment for publicly visible type or member
+
     public enum TranslationGroup
     {
         [LingoGroup("Menu: Level", null)]
@@ -364,13 +366,17 @@ namespace ExpertSokoban
             [LingoInGroup(TranslationGroup.OptionsMenu)]
             public TrString mnuOptionsPushDots = "Display push path as do&ts";
             [LingoInGroup(TranslationGroup.OptionsMenu)]
-            public TrString mnuOptionsPushArrows = "Display push path as a&rrows";
+            public TrString mnuOptionsPushArrows = "Display push path as arro&ws";
             [LingoInGroup(TranslationGroup.OptionsMenu)]
             public TrString mnuOptionsEndPos = "Display end p&osition of Sokoban and piece";
             [LingoInGroup(TranslationGroup.OptionsMenu)]
             public TrString mnuOptionsAreaSokoban = "Display reac&hable area for Sokoban";
             [LingoInGroup(TranslationGroup.OptionsMenu)]
             public TrString mnuOptionsAreaPiece = "Display reacha&ble area for piece";
+            [LingoInGroup(TranslationGroup.OptionsMenu)]
+            public TrString mnuOptionsLetterControl = "Enable lette&r control";
+            [LingoInGroup(TranslationGroup.OptionsMenu)]
+            public TrString mnuOptionsLetterControlNext = "Show ne&xt letter control set";
             [LingoInGroup(TranslationGroup.OptionsMenu)]
             public TrString mnuOptionsSound = "Enable &sound";
             [LingoInGroup(TranslationGroup.OptionsMenu)]
@@ -474,4 +480,6 @@ namespace ExpertSokoban
         }
         public ContextMenuTranslation Context = new ContextMenuTranslation();
     }
+
+#pragma warning restore 1591    // Missing XML comment for publicly visible type or member
 }

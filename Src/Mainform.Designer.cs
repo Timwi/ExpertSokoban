@@ -139,6 +139,8 @@ namespace ExpertSokoban
             this.mnuOptionsAreaSokoban = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuOptionsAreaPiece = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuOptionsSep4 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuOptionsLetterControl = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuOptionsLetterControlNext = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuOptionsSound = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuOptionsChangeLanguage = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuOptionsUnusedHotkeys = new System.Windows.Forms.ToolStripMenuItem();
@@ -812,7 +814,7 @@ namespace ExpertSokoban
             this.mnuUnusedCTRLShortcuts.Name = "mnuUnusedCTRLShortcuts";
             this.mnuUnusedCTRLShortcuts.Size = new System.Drawing.Size(225, 22);
             this.mnuUnusedCTRLShortcuts.Tag = "notranslate";
-            this.mnuUnusedCTRLShortcuts.Text = "Unused CTRL shortcuts: agiq";
+            this.mnuUnusedCTRLShortcuts.Text = "Unused CTRL shortcuts: aq";
             this.mnuUnusedCTRLShortcuts.Visible = false;
             // 
             // mnuEdit
@@ -1017,6 +1019,8 @@ namespace ExpertSokoban
             this.mnuOptionsAreaSokoban,
             this.mnuOptionsAreaPiece,
             this.mnuOptionsSep4,
+            this.mnuOptionsLetterControl,
+            this.mnuOptionsLetterControlNext,
             this.mnuOptionsSound,
             this.mnuOptionsChangeLanguage,
             this.mnuOptionsUnusedHotkeys});
@@ -1140,7 +1144,7 @@ namespace ExpertSokoban
             this.mnuOptionsPushArrows.Name = "mnuOptionsPushArrows";
             this.mnuOptionsPushArrows.ParentGroup = this.grpPushPathOptions;
             this.mnuOptionsPushArrows.Size = new System.Drawing.Size(275, 22);
-            this.mnuOptionsPushArrows.Text = "Display push path as a&rrows";
+            this.mnuOptionsPushArrows.Text = "Display push path as arro&ws";
             this.mnuOptionsPushArrows.Value = ExpertSokoban.PathDrawMode.Arrows;
             // 
             // mnuOptionsSep3
@@ -1174,6 +1178,22 @@ namespace ExpertSokoban
             this.mnuOptionsSep4.Name = "mnuOptionsSep4";
             this.mnuOptionsSep4.Size = new System.Drawing.Size(272, 6);
             // 
+            // mnuOptionsLetterControl
+            // 
+            this.mnuOptionsLetterControl.Name = "mnuOptionsLetterControl";
+            this.mnuOptionsLetterControl.ShortcutKeys = ((System.Windows.Forms.Keys) ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.G)));
+            this.mnuOptionsLetterControl.Size = new System.Drawing.Size(275, 22);
+            this.mnuOptionsLetterControl.Text = "Enable lette&r control";
+            this.mnuOptionsLetterControl.Click += new System.EventHandler(this.toggleLettering);
+            // 
+            // mnuOptionsLetterControlNext
+            // 
+            this.mnuOptionsLetterControlNext.Name = "mnuOptionsLetterControlNext";
+            this.mnuOptionsLetterControlNext.ShortcutKeys = ((System.Windows.Forms.Keys) ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I)));
+            this.mnuOptionsLetterControlNext.Size = new System.Drawing.Size(275, 22);
+            this.mnuOptionsLetterControlNext.Text = "Show ne&xt letter control set";
+            this.mnuOptionsLetterControlNext.Click += new System.EventHandler(this.showNextLetterControlSet);
+            // 
             // mnuOptionsSound
             // 
             this.mnuOptionsSound.Name = "mnuOptionsSound";
@@ -1193,7 +1213,7 @@ namespace ExpertSokoban
             this.mnuOptionsUnusedHotkeys.Name = "mnuOptionsUnusedHotkeys";
             this.mnuOptionsUnusedHotkeys.Size = new System.Drawing.Size(275, 22);
             this.mnuOptionsUnusedHotkeys.Tag = "notranslate";
-            this.mnuOptionsUnusedHotkeys.Text = "Unused hotkeys: fjkqvwxz";
+            this.mnuOptionsUnusedHotkeys.Text = "Unused hotkeys: fjkqvz";
             this.mnuOptionsUnusedHotkeys.Visible = false;
             // 
             // mnuHelp
@@ -1309,6 +1329,7 @@ namespace ExpertSokoban
             // 
             this.ctMainArea.BackColor = System.Drawing.Color.FromArgb(((int) (((byte) (255)))), ((int) (((byte) (255)))), ((int) (((byte) (206)))));
             this.ctMainArea.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ctMainArea.LetteringEnabled = false;
             this.ctMainArea.Location = new System.Drawing.Point(0, 0);
             this.ctMainArea.Modified = false;
             this.ctMainArea.MoveDrawMode = ExpertSokoban.PathDrawMode.Line;
@@ -1522,6 +1543,8 @@ namespace ExpertSokoban
         private System.Windows.Forms.ToolStripMenuItem mnuOptionsSound;
         private System.Windows.Forms.ToolStripSeparator mnuOptionsSep4;
         private System.Windows.Forms.ToolStripMenuItem mnuOptionsChangeLanguage;
+        private System.Windows.Forms.ToolStripMenuItem mnuOptionsLetterControl;
+        private System.Windows.Forms.ToolStripMenuItem mnuOptionsLetterControlNext;
     }
 }
 

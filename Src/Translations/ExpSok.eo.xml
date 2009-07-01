@@ -467,7 +467,7 @@ You can change this name again later by selecting "Change player name" from the 
       <Old>Display &amp;editing toolbars (level file)</Old>
     </mnuOptionsFileToolbars>
     <mnuOptionsEditLevelToolbar>
-      <Translation>Montri ilobreton "Redaktado de &amp;puzlo"</Translation>
+      <Translation>Montri ilobreton "Redaktado de pu&amp;zlo"</Translation>
       <Old>Display editin&amp;g toolbar (level)</Old>
     </mnuOptionsEditLevelToolbar>
     <mnuOptionsStatusBar>
@@ -495,7 +495,7 @@ You can change this name again later by selecting "Change player name" from the 
       <Old>Don't display &amp;push path</Old>
     </mnuOptionsPushNo>
     <mnuOptionsPushLine>
-      <Translation>Montri puŝ&amp;vojon kiel linio</Translation>
+      <Translation>Montri &amp;puŝvojon kiel linio</Translation>
       <Old>Display push path as l&amp;ine</Old>
     </mnuOptionsPushLine>
     <mnuOptionsPushDots>
@@ -504,7 +504,7 @@ You can change this name again later by selecting "Change player name" from the 
     </mnuOptionsPushDots>
     <mnuOptionsPushArrows>
       <Translation>Montri puŝvojon kiel sa&amp;goj</Translation>
-      <Old>Display push path as a&amp;rrows</Old>
+      <Old>Display push path as arro&amp;ws</Old>
     </mnuOptionsPushArrows>
     <mnuOptionsEndPos>
       <Translation>Montri &amp;finlokon de Sokoban kaj ero</Translation>
@@ -518,6 +518,14 @@ You can change this name again later by selecting "Change player name" from the 
       <Translation>Montri atinge&amp;blan areon de ero</Translation>
       <Old>Display reacha&amp;ble area for piece</Old>
     </mnuOptionsAreaPiece>
+    <mnuOptionsLetterControl>
+      <Translation>Efe&amp;ktivigi literstiradon</Translation>
+      <Old>Enable lette&amp;r control</Old>
+    </mnuOptionsLetterControl>
+    <mnuOptionsLetterControlNext>
+      <Translation>Montri sek&amp;vantajn stirliterojn</Translation>
+      <Old>Show ne&amp;xt letter control set</Old>
+    </mnuOptionsLetterControlNext>
     <mnuOptionsSound>
       <Translation>Efektivigi &amp;sonon</Translation>
       <Old>Enable &amp;sound</Old>

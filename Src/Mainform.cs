@@ -47,6 +47,7 @@ namespace ExpertSokoban
             mnuOptionsAreaSokoban.Checked = ctMainArea.ShowAreaSokoban = Program.Settings.ShowAreaSokoban;
             mnuOptionsAreaPiece.Checked = ctMainArea.ShowAreaPiece = Program.Settings.ShowAreaPiece;
             mnuOptionsSound.Checked = ctMainArea.SoundEnabled = Program.Settings.SoundEnabled;
+            mnuOptionsLetterControl.Checked = ctMainArea.LetteringEnabled = Program.Settings.LetteringEnabled;
             showLevelList(Program.Settings.DisplayLevelList);
 
             if (Program.Settings.PlayerName == null || Program.Settings.PlayerName.Length == 0)
@@ -278,7 +279,7 @@ namespace ExpertSokoban
         /// Determines (by asking the user if necessary) whether we are allowed to
         /// destroy the contents of both the main area and the level list.
         /// </summary>
-        /// <param name="Caption">Title bar caption to use in case any confirmation
+        /// <param name="caption">Title bar caption to use in case any confirmation
         /// dialogs need to pop up.</param>
         private bool mayDestroyEverything(string caption)
         {
@@ -877,6 +878,15 @@ namespace ExpertSokoban
         }
 
         /// <summary>
+        /// Invoked by "Options => Enable letter-based control". Sets the option.
+        /// </summary>
+        private void toggleLettering(object sender, EventArgs e)
+        {
+            mnuOptionsLetterControl.Checked = !mnuOptionsLetterControl.Checked;
+            ctMainArea.LetteringEnabled = Program.Settings.LetteringEnabled = mnuOptionsLetterControl.Checked;
+        }
+
+        /// <summary>
         /// Invoked by "Help => Keyboard shortcuts". Displays a message box outlining
         /// the keyboard shortcuts that are not directly documented in the menus.
         /// </summary>
@@ -925,5 +935,10 @@ namespace ExpertSokoban
         }
 
         #endregion
+
+        private void showNextLetterControlSet(object sender, EventArgs e)
+        {
+            ctMainArea.ShowNextLetterControlSet();
+        }
     }
 }

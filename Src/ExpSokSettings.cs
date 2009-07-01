@@ -7,6 +7,7 @@ using RT.Util.Lingo;
 
 namespace ExpertSokoban
 {
+    /// <summary>Encapsulates all the user settings that are persisted between runs of the application.</summary>
     public class ExpSokSettings
     {
         /// <summary>The settings for the main form (size, position, etc.).</summary>
@@ -33,6 +34,9 @@ namespace ExpertSokoban
 
         /// <summary>Whether sound is enabled.</summary>
         public bool SoundEnabled = true;
+
+        /// <summary>Whether letter-based control is enabled.</summary>
+        public bool LetteringEnabled = true;
 
         /// <summary>Whether the level list should be displayed</summary>
         public bool DisplayLevelList = true;

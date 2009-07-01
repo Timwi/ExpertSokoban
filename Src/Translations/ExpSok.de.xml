@@ -504,7 +504,7 @@ You can change this name again later by selecting "Change player name" from the 
     </mnuOptionsPushDots>
     <mnuOptionsPushArrows>
       <Translation>S&amp;chubweg durch Pfeile darstellen</Translation>
-      <Old>Display push path as a&amp;rrows</Old>
+      <Old>Display push path as arro&amp;ws</Old>
     </mnuOptionsPushArrows>
     <mnuOptionsEndPos>
       <Translation>En&amp;dposition von Sokoban und Stein anzeigen</Translation>
@@ -518,6 +518,14 @@ You can change this name again later by selecting "Change player name" from the 
       <Translation>&amp;Erreichbare Fläche für Stein markieren</Translation>
       <Old>Display reacha&amp;ble area for piece</Old>
     </mnuOptionsAreaPiece>
+    <mnuOptionsLetterControl>
+      <Translation>Buc&amp;hstabensteuerung aktivieren</Translation>
+      <Old>Enable lette&amp;r control</Old>
+    </mnuOptionsLetterControl>
+    <mnuOptionsLetterControlNext>
+      <Translation>Wei&amp;tere Steuerungsbuchstaben anzeigen</Translation>
+      <Old>Show ne&amp;xt letter control set</Old>
+    </mnuOptionsLetterControlNext>
     <mnuOptionsSound>
       <Translation>&amp;Sound aktivieren</Translation>
       <Old>Enable &amp;sound</Old>

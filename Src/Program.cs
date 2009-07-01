@@ -7,11 +7,11 @@ using RT.Util.Xml;
 
 namespace ExpertSokoban
 {
-    public static class Program
+    internal static class Program
     {
-        public static Translation Tr;
-        public static ExpSokSettings Settings;
-        public static bool TranslationEnabled = true;
+        internal static Translation Tr;
+        internal static ExpSokSettings Settings;
+        internal static bool TranslationEnabled;
 
         /// <summary>
         /// The main entry point for the application.

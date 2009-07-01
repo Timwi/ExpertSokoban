@@ -12,12 +12,19 @@ namespace ExpertSokoban
     /// </summary>
     public enum SokobanImage
     {
+        /// <summary>Indicates a wall.</summary>
         Wall,
+        /// <summary>Indicates a target.</summary>
         Target,
+        /// <summary>Indicates a target that is under a piece.</summary>
         TargetUnderPiece,
+        /// <summary>Indicates a piece.</summary>
         Piece,
+        /// <summary>Indicates a piece that is on a target.</summary>
         PieceOnTarget,
+        /// <summary>Indicates a selected piece.</summary>
         PieceSelected,
+        /// <summary>Indicates the Sokoban.</summary>
         Sokoban
     }
 
@@ -186,6 +193,25 @@ namespace ExpertSokoban
             for (int x = 0; x < _level.Width; x++)
                 for (int y = 0; y < _level.Height; y++)
                     renderCellAsPartOfCompleteRender(g, x, y);
+        }
+
+        /// <summary>Determines the font size to use when rendering the lettering for letter-based control.</summary>
+        /// <param name="g">Specifies the <see cref="Graphics"/> object to use when measuring the font size.</param>
+        /// <param name="font">Name of the font to use.</param>
+        public float FontSizeForLettering(Graphics g, string font)
+        {
+            float low = 1;
+            float high = 1024;
+            while (high - low > 0.1)
+            {
+                float trySize = (low + high) / 2;
+                SizeF sz = g.MeasureString("W", new Font(font, trySize, FontStyle.Bold));
+                if (sz.Width > 0.8f * _cellWidth || sz.Height > 0.8f * _cellHeight)
+                    high = trySize;
+                else
+                    low = trySize;
+            }
+            return high;
         }
 
         /// <summary>Returns the co-ordinates of the cell that contains the given pixel.</summary>
@@ -452,14 +478,172 @@ namespace ExpertSokoban
             return _cachedImage[sz][imageType];
         }
 
+        /// <summary>Given a <see cref="MoveFinder"/> or <see cref="PushFinder"/>, generates the "outline" of the reachable area.
+        /// If there are several disjoint regions, several separate outlines are generated.</summary>
+        /// <param name="input">The input <see cref="MoveFinder"/> or <see cref="PushFinder"/> to generate the outline from.</param>
+        /// <returns>An array of paths, where each path is an array of points. The co-ordinates of the points are the indexes in the input array.</returns>
+        /// <example>
+        /// <para>An input array full of booleans set to false generates an empty output array.</para>
+        /// <para>An input array full of booleans set to true generates a single output path which describes the complete rectangle.</para>
+        /// </example>
+        private static Point[][] boolsToPaths(Virtual2DArray<bool> input)
+        {
+            List<List<Point>> activeSegments = new List<List<Point>>();
+            List<Point[]> completedPaths = new List<Point[]>();
+            for (int y = 0; y <= input.Height; y++)
+            {
+                List<pathEvent> events = findEvents(activeSegments, input, y);
+                for (int i = 0; i < events.Count; i += 2)
+                {
+                    if (events[i] is pathEventSegment && events[i + 1] is pathEventSegment)
+                    {
+                        int index1 = ((pathEventSegment) events[i]).SegmentIndex;
+                        int index2 = ((pathEventSegment) events[i + 1]).SegmentIndex;
+                        bool start = ((pathEventSegment) events[i]).StartOfSegment;
+                        if (index1 == index2 && start)
+                        {
+                            // A segment becomes a closed path
+                            activeSegments[index2].Add(new Point(events[i + 1].X, y));
+                            activeSegments[index2].Add(new Point(events[i].X, y));
+                            completedPaths.Add(activeSegments[index2].ToArray());
+                        }
+                        else if (index1 == index2)
+                        {
+                            // A segment becomes a closed path
+                            activeSegments[index2].Add(new Point(events[i].X, y));
+                            activeSegments[index2].Add(new Point(events[i + 1].X, y));
+                            completedPaths.Add(activeSegments[index2].ToArray());
+                        }
+                        else if (start)
+                        {
+                            // Two segments join up
+                            activeSegments[index2].Add(new Point(events[i + 1].X, y));
+                            activeSegments[index2].Add(new Point(events[i].X, y));
+                            activeSegments[index1].InsertRange(0, activeSegments[index2]);
+                        }
+                        else
+                        {
+                            // Two segments join up
+                            activeSegments[index1].Add(new Point(events[i].X, y));
+                            activeSegments[index1].Add(new Point(events[i + 1].X, y));
+                            activeSegments[index1].AddRange(activeSegments[index2]);
+                        }
+                        activeSegments.RemoveAt(index2);
+                        for (int correction = i + 2; correction < events.Count; correction++)
+                        {
+                            if (events[correction] is pathEventSegment &&
+                                (events[correction] as pathEventSegment).SegmentIndex == index2)
+                                (events[correction] as pathEventSegment).SegmentIndex = index1;
+                            if (events[correction] is pathEventSegment &&
+                                (events[correction] as pathEventSegment).SegmentIndex > index2)
+                                (events[correction] as pathEventSegment).SegmentIndex--;
+                        }
+                    }
+                    else if (events[i] is pathEventChange && events[i + 1] is pathEventChange)
+                    {
+                        // Both events are changes - create a new segment
+                        activeSegments.Add(new List<Point>(new Point[] { 
+                            new Point (events[input.Get(events[i].X, y) ? i : i+1].X,y),
+                            new Point (events[input.Get(events[i].X, y) ? i+1 : i].X,y)
+                        }));
+                    }
+                    else if (events[i] is pathEventSegment) // ... && Events[i+1] is RTUtilPathEventChange
+                    {
+                        pathEventSegment ev = events[i] as pathEventSegment;
+                        if (ev.StartOfSegment)
+                        {
+                            activeSegments[ev.SegmentIndex].Insert(0, new Point(ev.X, y));
+                            if (ev.X != events[i + 1].X)
+                                activeSegments[ev.SegmentIndex].Insert(0, new Point(events[i + 1].X, y));
+                        }
+                        else
+                        {
+                            activeSegments[ev.SegmentIndex].Add(new Point(ev.X, y));
+                            if (ev.X != events[i + 1].X)
+                                activeSegments[ev.SegmentIndex].Add(new Point(events[i + 1].X, y));
+                        }
+                    }
+                    else  // ... Events[i] is pathEventChange && Events[i+1] is pathEventSegment
+                    {
+                        pathEventSegment ev = events[i + 1] as pathEventSegment;
+                        if (ev.StartOfSegment)
+                        {
+                            activeSegments[ev.SegmentIndex].Insert(0, new Point(ev.X, y));
+                            if (ev.X != events[i].X)
+                                activeSegments[ev.SegmentIndex].Insert(0, new Point(events[i].X, y));
+                        }
+                        else
+                        {
+                            activeSegments[ev.SegmentIndex].Add(new Point(ev.X, y));
+                            if (ev.X != events[i].X)
+                                activeSegments[ev.SegmentIndex].Add(new Point(events[i].X, y));
+                        }
+                    }
+                }
+            }
+            return completedPaths.ToArray();
+        }
+
+        private static List<pathEvent> findEvents(List<List<Point>> activeSegments, Virtual2DArray<bool> input, int y)
+        {
+            List<pathEvent> results = new List<pathEvent>();
+
+            // First add all the validity change events in the correct order
+            if (y < input.Height)
+            {
+                for (int x = 0; x <= input.Width; x++)  // "<=" is intentional
+                    if (input.Get(x, y) != input.Get(x - 1, y))
+                        results.Add(new pathEventChange(x));
+            }
+
+            // Now insert the segment events in the right places
+            for (int i = 0; i < activeSegments.Count; i++)
+            {
+                int index = 0;
+                while (index < results.Count && results[index].X <= activeSegments[i][0].X)
+                    index++;
+                results.Insert(index, new pathEventSegment(i, true, activeSegments[i][0].X));
+                index = 0;
+                while (index < results.Count && results[index].X < activeSegments[i][activeSegments[i].Count - 1].X)
+                    index++;
+                results.Insert(index, new pathEventSegment(i, false, activeSegments[i][activeSegments[i].Count - 1].X));
+            }
+            return results;
+        }
+
+        private abstract class pathEvent
+        {
+            public int X;
+        }
+
+        private class pathEventSegment : pathEvent
+        {
+            public int SegmentIndex;
+            public bool StartOfSegment;
+            public pathEventSegment(int index, bool start, int newX)
+            {
+                SegmentIndex = index;
+                StartOfSegment = start;
+                X = newX;
+            }
+        }
+
+        private class pathEventChange : pathEvent
+        {
+            public pathEventChange(int newX)
+            {
+                X = newX;
+            }
+        }
+
         /// <summary>
         /// Given a <see cref="MoveFinder"/> or <see cref="PushFinder"/>, returns a <see cref="GraphicsPath"/> that can be
         /// used to visualise the area deemed "valid" by the relevant finder.
         /// </summary>
-        /// <param name="Finder">A <see cref="MoveFinder"/> or <see cref="PushFinder"/> object.</param>
+        /// <param name="finder">A <see cref="MoveFinder"/> or <see cref="PushFinder"/> object.</param>
         public GraphicsPath ValidPath(Virtual2DArray<bool> finder)
         {
-            Point[][] outlines = GraphicsUtil.BoolsToPaths(finder);
+            Point[][] outlines = boolsToPaths(finder);
             SizeF margin = new SizeF(_cellWidth / 5, _cellHeight / 5);
             SizeF diameter = new SizeF(_cellWidth / 2, _cellHeight / 2);
             GraphicsPath result = new GraphicsPath();
@@ -520,14 +704,14 @@ namespace ExpertSokoban
         /// Returns a GraphicsPath object that can be used to visualise a path through
         /// a sequence of cells. This can be a move path or a push path.
         /// </summary>
-        /// <param name="StartPos">Starting position for the path.</param>
-        /// <param name="CellSequence">Sequence of cells for the path, not including the
+        /// <param name="startPos">Starting position for the path.</param>
+        /// <param name="cellSequence">Sequence of cells for the path, not including the
         /// starting position. Each cell must be directly adjacent to the previous cell,
         /// and the first cell must be directly adjacent to the cell specified by
         /// StartPos. Otherwise, the behaviour is undefined.</param>
-        /// <param name="DiameterX">Proportion of the cell width that is used to round
+        /// <param name="diameterX">Proportion of the cell width that is used to round
         /// the corners.</param>
-        /// <param name="DiameterY">Proportion of the cell height that is used to round
+        /// <param name="diameterY">Proportion of the cell height that is used to round
         /// the corners.</param>
         public GraphicsPath LinePath(Point startPos, Point[] cellSequence, float diameterX, float diameterY)
         {
