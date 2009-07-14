@@ -11,12 +11,12 @@
   !define myRegistryRoot "HKCU"
   !define myRegistry "Software\${myNameNospaces}"
 
-  !define myPath "..\.."
+  !define myPath "..\..\.."
   !define myPathBin "${myPath}\builds\Release-AnyCPU"
-  !define myPathGraphics "${myPath}\Graphics\Installer"
+  !define myPathGraphics "${myPath}\main\Graphics\Installer"
 
 
-  !addincludedir "${myPath}\tools\installer"
+  !addincludedir "${myPath}\main\tools\installer"
   !include "DotNET.nsh"
 
 
