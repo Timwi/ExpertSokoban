@@ -72,7 +72,7 @@ namespace ExpertSokoban
         private void initLanguageMenu()
         {
             mnuOptionsChangeLanguage.DropDownItems.Clear();
-            mnuOptionsChangeLanguage.DropDownItems.AddRange(RT.Util.Lingo.Lingo.LanguageToolStripMenuItems<Translation>("ExpSok", setLanguage, Program.Settings.Language));
+            mnuOptionsChangeLanguage.DropDownItems.AddRange(Lingo.LanguageToolStripMenuItems<Translation>("ExpSok", setLanguage, Program.Settings.Language));
             if (Program.TranslationEnabled)
             {
                 mnuOptionsChangeLanguage.DropDownItems.Add(new ToolStripSeparator());
@@ -82,9 +82,9 @@ namespace ExpertSokoban
             }
         }
 
-        private void setLanguage(Translation translation, string languageCode)
+        private void setLanguage(Translation translation)
         {
-            Program.Settings.Language = languageCode;
+            Program.Settings.Language = translation.Language;
             Program.Tr = translation;
             Lingo.TranslateControl(this, Program.Tr.Mainform);
             Lingo.TranslateControl(mnuContext, Program.Tr.Context);
@@ -96,7 +96,7 @@ namespace ExpertSokoban
         private TranslationForm<Translation> _translationDialog = null;
         private void editCurrentLanguage(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(Program.Settings.Language))
+            if (Program.Settings.Language == Translation.DefaultLanguage)
             {
                 MessageBox.Show("The currently selected language is the native language of this application and cannot be edited.", "Edit current language");
                 return;
@@ -106,9 +106,7 @@ namespace ExpertSokoban
                 foreach (ToolStripItem i in mnuOptionsChangeLanguage.DropDownItems)
                     if (i != mnuOptionsLanguageEdit)
                         i.Enabled = false;
-                var file = PathUtil.Combine(PathUtil.AppPath, "Translations", "ExpSok." + Program.Settings.Language + ".xml");
-                _translationDialog = new TranslationForm<Translation>(file, Program.Settings.TranslationFormSettings, Icon, "Expert Sokoban");
-                _translationDialog.AcceptChanges += () => setLanguage(XmlClassify.LoadObjectFromXmlFile<Translation>(file), Program.Settings.Language);
+                _translationDialog = new TranslationForm<Translation>(Program.Settings.TranslationFormSettings, Icon, "Expert Sokoban", "ExpSok", Program.Settings.Language, setLanguage);
                 _translationDialog.FormClosed += (s, v) => { _translationDialog = null; initLanguageMenu(); };
             }
             _translationDialog.Show();
@@ -116,10 +114,9 @@ namespace ExpertSokoban
 
         private void createNewLanguage(object sender, EventArgs e)
         {
-            var newLanguage = TranslationCreateForm.CreateTranslation<Translation>("ExpSok");
-            if (newLanguage.E1 != null)
+            var newTranslation = TranslationCreateForm.CreateTranslation<Translation>("ExpSok", setLanguage);
+            if (newTranslation != null)
             {
-                setLanguage(newLanguage.E1, newLanguage.E2);
                 initLanguageMenu();
                 editCurrentLanguage(sender, e);
             }

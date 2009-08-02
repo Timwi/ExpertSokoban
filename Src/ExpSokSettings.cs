@@ -71,8 +71,8 @@ namespace ExpertSokoban
         /// <summary>Remembers the path where a file was last opened from or saved to.</summary>
         public string LastOpenSaveDirectory = Path.GetDirectoryName(Application.ExecutablePath);
 
-        /// <summary>Remembers the path where a file was last opened from or saved to.</summary>
-        public string Language = null;
+        /// <summary>Stores the code of the language the user selected.</summary>
+        public Language Language = Translation.DefaultLanguage;
 
         /// <summary>Determines whether the current player has solved the given level.</summary>
         /// <param name="level">String representation of the level to check.</param>

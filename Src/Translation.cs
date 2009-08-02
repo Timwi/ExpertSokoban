@@ -71,7 +71,9 @@ namespace ExpertSokoban
 #endif
     public class Translation : TranslationBase
     {
-        public Translation() : base(Language.EnglishUK) { }
+        public static readonly Language DefaultLanguage = Language.EnglishUK;
+
+        public Translation() : base(DefaultLanguage) { }
 
         [LingoInGroup(TranslationGroup.General)]
         public TrString ProgramName = "Expert Sokoban";
