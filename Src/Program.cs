@@ -21,7 +21,7 @@ namespace ExpertSokoban
         {
 #if DEBUG
             TranslationEnabled = true;
-            bool dummy = new string[] { }.Any();  // hack to prevent removal of "using"
+            bool dummy = new string[0].Any();  // hack to prevent removal of "using"
 #else
             TranslationEnabled = args.Any(s => s == "translate");
 #endif

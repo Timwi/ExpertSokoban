@@ -106,7 +106,8 @@ namespace ExpertSokoban
                 foreach (ToolStripItem i in mnuOptionsChangeLanguage.DropDownItems)
                     if (i != mnuOptionsLanguageEdit)
                         i.Enabled = false;
-                _translationDialog = new TranslationForm<Translation>(Program.Settings.TranslationFormSettings, Icon, "Expert Sokoban", "ExpSok", Program.Settings.Language, setLanguage);
+                _translationDialog = new TranslationForm<Translation>(Program.Settings.TranslationFormSettings, Icon, "Expert Sokoban", "ExpSok", Program.Settings.Language);
+                _translationDialog.TranslationChanged += setLanguage;
                 _translationDialog.FormClosed += (s, v) => { _translationDialog = null; initLanguageMenu(); };
             }
             _translationDialog.Show();
