@@ -386,7 +386,7 @@ namespace ExpertSokoban
             [LingoInGroup(TranslationGroup.HelpMenu)]
             public TrString mnuHelp = "&Help";
             [LingoInGroup(TranslationGroup.HelpMenu)]
-            public TrString mnuHelpKeyboard = "&Keyboard shortcuts";
+            public TrString mnuHelpHelp = "&Help...";
             [LingoInGroup(TranslationGroup.HelpMenu)]
             public TrString mnuHelpAbout = "&About";
             [LingoInGroup(TranslationGroup.StatusBar)]

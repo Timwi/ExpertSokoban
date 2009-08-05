@@ -885,14 +885,13 @@ namespace ExpertSokoban
         }
 
         /// <summary>
-        /// Invoked by "Help => Keyboard shortcuts". Displays a message box outlining
-        /// the keyboard shortcuts that are not directly documented in the menus.
+        /// Invoked by "Help => Help". Displays the helpfile.
         /// </summary>
-        private void helpKeyboardShortcuts(object sender, EventArgs e)
+        private void help(object sender, EventArgs e)
         {
             string helpfile = PathUtil.AppPath + "ExpSok.chm";
             if (File.Exists(helpfile))
-                Help.ShowHelp(this, helpfile, HelpNavigator.TopicId, "30");
+                Help.ShowHelp(this, helpfile, HelpNavigator.TopicId, "20");
             else
                 DlgMessage.ShowWarning(Program.Tr.Mainform_Error_HelpFileNotFound.Fmt(helpfile), null);
         }

@@ -538,10 +538,10 @@ You can change this name again later by selecting "Change player name" from the 
       <Translation>&amp;Hilfe</Translation>
       <Old>&amp;Help</Old>
     </mnuHelp>
-    <mnuHelpKeyboard>
-      <Translation>&amp;Tastaturkürzel</Translation>
-      <Old>&amp;Keyboard shortcuts</Old>
-    </mnuHelpKeyboard>
+    <mnuHelpHelp>
+      <Translation>&amp;Hilfe...</Translation>
+      <Old>&amp;Help...</Old>
+    </mnuHelpHelp>
     <mnuHelpAbout>
       <Translation>&amp;Info</Translation>
       <Old>&amp;About</Old>
