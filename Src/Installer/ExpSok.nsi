@@ -99,13 +99,17 @@ Section "ExpSok" MainSection
   SectionIn RO
 
   !insertmacro CheckDotNET "2"
-  SetOutPath "$INSTDIR"
 
+  SetOutPath "$INSTDIR"
   File "${myPathBin}\ExpSok.exe"
   File "${myPathBin}\RT.Util.dll"
   File "..\OriginalLevels.txt"
   File "..\Timwi.txt"
   File "${myPathBin}\ExpSok.chm"
+
+  SetOutPath "$INSTDIR\Translations"
+  File "..\Translations\ExpSok.de.xml"
+  File "..\Translations\ExpSok.eo.xml"
 
   ;Store installation folder
   WriteRegStr ${myRegistryRoot} ${myRegistry} "Install location" $INSTDIR
@@ -153,9 +157,10 @@ delconfig_no:
   Delete "$INSTDIR\OriginalLevels.txt"
   Delete "$INSTDIR\Timwi.txt"
   Delete "$INSTDIR\ExpSok.chm"
+  Delete "$INSTDIR\Translations\*.xml"
+  RMDir "$INSTDIR\Translations"
 
   Delete "$INSTDIR\Uninstall.exe"
-
   RMDir "$INSTDIR"
 
   ; Remove links

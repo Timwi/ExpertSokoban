@@ -36,7 +36,7 @@ namespace ExpertSokoban
         public bool SoundEnabled = true;
 
         /// <summary>Whether letter-based control is enabled.</summary>
-        public bool LetteringEnabled = true;
+        public bool LetteringEnabled = false;
 
         /// <summary>Whether the level list should be displayed</summary>
         public bool DisplayLevelList = true;
