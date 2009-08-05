@@ -5,8 +5,8 @@
     <Old null="1" />
   </ProgramName>
   <LevelSolvedResourceName>
-    <Translation>Skin_LevelSolved</Translation>
-    <Old null="1" />
+    <Translation>Skin_LevelSolvedRu</Translation>
+    <Old>Skin_LevelSolved</Old>
   </LevelSolvedResourceName>
   <Mainform_Status_Moves>
     <Translation>Шагов: {0}</Translation>
@@ -512,6 +512,14 @@ You can change this name again later by selecting "Change player name" from the 
       <Translation>Display reacha&amp;ble area for piece</Translation>
       <Old null="1" />
     </mnuOptionsAreaPiece>
+    <mnuOptionsLetterControl>
+      <Translation>Enable lette&amp;r control</Translation>
+      <Old null="1" />
+    </mnuOptionsLetterControl>
+    <mnuOptionsLetterControlNext>
+      <Translation>Show ne&amp;xt letter control set</Translation>
+      <Old null="1" />
+    </mnuOptionsLetterControlNext>
     <mnuOptionsSound>
       <Translation>Enable &amp;sound</Translation>
       <Old null="1" />
@@ -524,10 +532,10 @@ You can change this name again later by selecting "Change player name" from the 
       <Translation>&amp;Справка</Translation>
       <Old>&amp;Help</Old>
     </mnuHelp>
-    <mnuHelpKeyboard>
-      <Translation>&amp;Горячие клавиши</Translation>
-      <Old>&amp;Keyboard shortcuts</Old>
-    </mnuHelpKeyboard>
+    <mnuHelpHelp>
+      <Translation>&amp;Help...</Translation>
+      <Old null="1" />
+    </mnuHelpHelp>
     <mnuHelpAbout>
       <Translation>&amp;О программе</Translation>
       <Old>&amp;About</Old>
