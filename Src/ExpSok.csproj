@@ -13,8 +13,7 @@
     <ApplicationIcon>Resources\ExpertSokoban.ico</ApplicationIcon>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkSubset>
-    </TargetFrameworkSubset>
+    <TargetFrameworkSubset></TargetFrameworkSubset>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -108,8 +107,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Translation.cs">
-    </Compile>
+    <Compile Include="Translation.cs"></Compile>
     <Compile Include="Virtual2DArray.cs" />
   </ItemGroup>
   <ItemGroup>
