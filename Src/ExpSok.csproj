@@ -191,6 +191,7 @@
   -->
   <PropertyGroup>
     <PreBuildEvent>copy $(ProjectDir)Help\expsok.chm $(TargetDir)ExpSok.chm</PreBuildEvent>
-    <PostBuildEvent>xcopy /y /i $(ProjectDir)Translations\*.xml $(TargetDir)Translations\</PostBuildEvent>
+    <PostBuildEvent>xcopy /y /i $(ProjectDir)Translations\*.xml $(TargetDir)Translations\
+rd /s /q $(ProjectDir)obj</PostBuildEvent>
   </PropertyGroup>
 </Project>
