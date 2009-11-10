@@ -199,7 +199,7 @@ namespace ExpertSokoban
             _pushLength = new int[arraySize];
             _moveLength = new int[arraySize];
             _predecessor = new int[arraySize];
-            PackedBooleans extracted = new PackedBooleans(arraySize);
+            bool[] extracted = new bool[arraySize];
             _path = new Point[arraySize][][];
             _moveFinder = moveFinder;
 
@@ -227,8 +227,8 @@ namespace ExpertSokoban
                 // have several copies in the priority queue, and we are only interested
                 // in each node the first time it is extracted.
                 int node = priorityQueue.Extract();
-                if (extracted.Get(node)) continue;
-                extracted.Set(node, true);
+                if (extracted[node]) continue;
+                extracted[node] = true;
 
                 // The item we have extracted represents a node in our graph
                 // that we want to run Dijkstra's algorithm on. That node, in
