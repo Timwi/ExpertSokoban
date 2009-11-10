@@ -1367,7 +1367,7 @@ namespace ExpertSokoban
             this.lstLevels.Size = new System.Drawing.Size(147, 256);
             this.lstLevels.TabIndex = 2;
             this.lstLevels.Tag = "notranslate";
-            this.lstLevels.LevelActivating += new RT.Util.ConfirmEventHandler(this.levelActivating);
+            this.lstLevels.LevelActivating += new ExpertSokoban.ConfirmEventHandler(this.levelActivating);
             this.lstLevels.KeyDown += new System.Windows.Forms.KeyEventHandler(this.levelListKeyDown);
             this.lstLevels.LevelActivated += new System.EventHandler(this.levelActivated);
             // 
