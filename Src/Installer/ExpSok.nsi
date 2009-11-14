@@ -6,7 +6,7 @@
 
   !define myName "Expert Sokoban"
   !define myNameNospaces "ExpertSokoban"
-  !define myVer "1.1.0"
+  !define myVer "1.2.0"
   !define myInstDir "$PROGRAMFILES\${myName}"
   !define myRegistryRoot "HKCU"
   !define myRegistry "Software\${myNameNospaces}"
