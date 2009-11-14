@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <item>
+  <Language>Esperanto</Language>
   <ProgramName>
     <Translation>Expert Sokoban</Translation>
     <Old>Expert Sokoban</Old>
@@ -133,24 +134,12 @@
     <Old>You have made changes to {0}. Would you like to save those changes?</Old>
   </LevelList_Message_SaveChanges>
   <LevelList_Message_DeleteLevel_CurrentlyEditing>
-    <Translation>Vi nune redaktadas tiun puzlon.
-
-Se vi forigas tiun puzlon nun, ĉiuj el viaj modifoj forigatos.
-
-Ĉu vi certas, ke vi volas fari tion?</Translation>
-    <Old>You are currently editing this level.
-
-If you delete this level now, all your modifications will be discarded.
-
-Are you sure you wish to do this?</Old>
+    <Translation encoding="c-literal">Vi nune redaktadas tiun puzlon.\n\nSe vi forigas tiun puzlon nun, ĉiuj el viaj modifoj forigatos.\n\nĈu vi certas, ke vi volas fari tion?</Translation>
+    <Old encoding="c-literal">You are currently editing this level.\n\nIf you delete this level now, all your modifications will be discarded.\n\nAre you sure you wish to do this?</Old>
   </LevelList_Message_DeleteLevel_CurrentlyEditing>
   <LevelList_Message_DeleteLevel_CurrentlyPlaying>
-    <Translation>Vi nune ludadas tiun puzlon.
-
-Ĉu vi certas, ke vi volas ĝin kapitulaci kaj forigi?</Translation>
-    <Old>You are currently playing this level.
-
-Are you sure you wish to give up and delete this level?</Old>
+    <Translation encoding="c-literal">Vi nune ludadas tiun puzlon.\n\nĈu vi certas, ke vi volas ĝin kapitulaci kaj forigi?</Translation>
+    <Old encoding="c-literal">You are currently playing this level.\n\nAre you sure you wish to give up and delete this level?</Old>
   </LevelList_Message_DeleteLevel_CurrentlyPlaying>
   <LevelList_Message_DeleteLevel_Sure>
     <Translation>Ĉu vi certas, ke vi volas forigi tiun puzlon?</Translation>
@@ -173,20 +162,12 @@ Are you sure you wish to give up and delete this level?</Old>
     <Old>Please choose a name which will be used to identify you in highscore tables.</Old>
   </Mainform_ChooseName>
   <Mainform_ChooseName_FirstRun>
-    <Translation>Bonvole elektu nomon, kiu uziĝos por vin identigi en rekordo-tabloj.
-Vi povas poste ŝanĝi tiun nomon klakante "Ŝanĝi ludantan nomon" en la menuo "Puzlo".</Translation>
-    <Old>Please choose a name which will be used to identify you in highscore tables.
-You can change this name later by selecting "Change player name" from the "Level" menu.</Old>
+    <Translation encoding="c-literal">Bonvole elektu nomon, kiu uziĝos por vin identigi en rekordo-tabloj.\nVi povas poste ŝanĝi tiun nomon klakante "Ŝanĝi ludantan nomon" en la menuo "Puzlo".</Translation>
+    <Old encoding="c-literal">Please choose a name which will be used to identify you in highscore tables.\nYou can change this name later by selecting "Change player name" from the "Level" menu.</Old>
   </Mainform_ChooseName_FirstRun>
   <Mainform_ChooseName_SolvedLevel>
-    <Translation>Gratulatojn! Vi solvis la kurantan puzlon.
-Bonvole elektu nomon, kiu uziĝos por vin identigi en rekordo-tabloj.
-Se vi nomon nun ne elektas, via poentrezulto ĉe tiu puzlo ne konserviĝos.
-Vi povas poste ŝanĝi tiun nomon klakante "Ŝanĝi ludantan nomon" en la menuo "Puzlo".</Translation>
-    <Old>Congratulations! You've solved the current level.
-Please choose a name which will be used to identify you in highscore tables.
-If you do not choose a name now, your score for this level will not be recorded.
-You can change this name again later by selecting "Change player name" from the "Level" menu.</Old>
+    <Translation encoding="c-literal">Gratulatojn! Vi solvis la kurantan puzlon.\nBonvole elektu nomon, kiu uziĝos por vin identigi en rekordo-tabloj.\nSe vi nomon nun ne elektas, via poentrezulto ĉe tiu puzlo ne konserviĝos.\nVi povas poste ŝanĝi tiun nomon klakante "Ŝanĝi ludantan nomon" en la menuo "Puzlo".</Translation>
+    <Old encoding="c-literal">Congratulations! You've solved the current level.\nPlease choose a name which will be used to identify you in highscore tables.\nIf you do not choose a name now, your score for this level will not be recorded.\nYou can change this name again later by selecting "Change player name" from the "Level" menu.</Old>
   </Mainform_ChooseName_SolvedLevel>
   <Mainform_Validity_CannotOpen>
     <Translation>La puzlo ne eblis malfermi, ĉar ĝi malvalidas.</Translation>
@@ -306,15 +287,8 @@ You can change this name again later by selecting "Change player name" from the 
       <Old>About Expert Sokoban</Old>
     </AboutBox>
     <lblCredits>
-      <Translation>Dankon al:
-    Programado: Timwi, Roman
-    Grafikoj: Roman, Timwi
-    Testado: Hawthorn
-    Traduko al Esperanto: Timwi</Translation>
-      <Old>Credits:
-    Programming: Timwi, Roman
-    Graphics: Roman, Timwi
-    Testing: Hawthorn</Old>
+      <Translation encoding="c-literal">Dankon al:\n    Programado: Timwi, Roman\n    Grafikoj: Roman, Timwi\n    Testado: Hawthorn\n    Traduko al Esperanto: Timwi</Translation>
+      <Old encoding="c-literal">Credits:\n    Programming: Timwi, Roman\n    Graphics: Roman, Timwi\n    Testing: Hawthorn</Old>
     </lblCredits>
     <btnOK>
       <Translation>OK</Translation>
@@ -488,7 +462,7 @@ You can change this name again later by selecting "Change player name" from the 
     </mnuOptionsMoveDots>
     <mnuOptionsMoveArrows>
       <Translation>Montr&amp;i movvojon kiel sagoj</Translation>
-      <Old>Display move path as &amp;arrows</Old>
+      <Old>Display mo&amp;ve path as arrows</Old>
     </mnuOptionsMoveArrows>
     <mnuOptionsPushNo>
       <Translation>N&amp;e montri puŝvojon</Translation>
@@ -516,7 +490,7 @@ You can change this name again later by selecting "Change player name" from the 
     </mnuOptionsAreaSokoban>
     <mnuOptionsAreaPiece>
       <Translation>Montri atinge&amp;blan areon de ero</Translation>
-      <Old>Display reacha&amp;ble area for piece</Old>
+      <Old>Display reachable area &amp;for piece</Old>
     </mnuOptionsAreaPiece>
     <mnuOptionsLetterControl>
       <Translation>Efe&amp;ktivigi literstiradon</Translation>
@@ -530,6 +504,10 @@ You can change this name again later by selecting "Change player name" from the 
       <Translation>Efektivigi &amp;sonon</Translation>
       <Old>Enable &amp;sound</Old>
     </mnuOptionsSound>
+    <mnuOptionsAnimation>
+      <Translation>Efektivigi anima&amp;ciojn</Translation>
+      <Old>Enable &amp;animations</Old>
+    </mnuOptionsAnimation>
     <mnuOptionsChangeLanguage>
       <Translation>Ŝanĝi &amp;lingvon</Translation>
       <Old>&amp;Change language</Old>
@@ -697,5 +675,4 @@ You can change this name again later by selecting "Change player name" from the 
       <Old>Hide &amp;level list</Old>
     </mnuContextHide>
   </Context>
-  <Language>Esperanto</Language>
 </item>
