@@ -288,6 +288,15 @@ namespace ExpertSokoban
         }
 
         /// <summary>
+        /// Gets or sets whether the Sokoban should be animated when playing a move or not.
+        /// </summary>
+        public bool AnimationEnabled
+        {
+            get { return _animationEnabled; }
+            set { _animationEnabled = value; }
+        }
+
+        /// <summary>
         /// Gets or sets whether letter-based control is enabled or not.
         /// </summary>
         public bool LetteringEnabled
@@ -418,6 +427,11 @@ namespace ExpertSokoban
         /// Whether sound is enabled or not.
         /// </summary>
         private bool _soundEnabled;
+
+        /// <summary>
+        /// Whether the Sokoban is animated when it is moved or not.
+        /// </summary>
+        private bool _animationEnabled;
 
         /// <summary>
         /// The brush used to fill the area that indicates where the Sokoban can move.
@@ -1083,49 +1097,56 @@ namespace ExpertSokoban
                 return;
             }
 
-            // Remove the move/push regions/paths by redrawing the plain level
-            CreateGraphics().DrawImage(Buffer, 0, 0);
-
-            // Prepare to move the Sokoban around visibly
-            Graphics g = Graphics.FromImage(Buffer);
-            Point OrigSokPos = _level.SokobanPos;
-            Point? OrigPushPos = null, LastPushPos = null;
-            bool EverPushed = false;
-
             // We need to remember how many moves and pushes were made in this move
             // because we need to save them in the Undo buffer
-            int MovesMade = 0, PushesMade = 0;
+            int movesMade = 0, pushesMade = 0;
 
-            foreach (Point Move in _moveSequence)
+            // Remove the move/push regions/paths by redrawing the plain level
+            Graphics windowGraphics = CreateGraphics();
+            if (_animationEnabled)
+                windowGraphics.DrawImage(Buffer, 0, 0);
+
+            // Prepare to move the Sokoban around visibly
+            Graphics bufferGraphics = Graphics.FromImage(Buffer);
+            Point origSokPos = _level.SokobanPos;
+            Point? origPushPos = null, lastPushPos = null;
+            bool everPushed = false;
+
+            foreach (Point move in _moveSequence)
             {
-                System.Threading.Thread.Sleep(20);
-                Point PrevSokPos = _level.SokobanPos;
-                if (_level.IsPiece(Move))
+                if (_animationEnabled)
+                    System.Threading.Thread.Sleep(20);
+                Point prevSokPos = _level.SokobanPos;
+                if (_level.IsPiece(move))
                 {
                     // need to push a piece
-                    Point PushTo = new Point(2 * Move.X - PrevSokPos.X, 2 * Move.Y - PrevSokPos.Y);
-                    _level.MovePiece(Move, PushTo);
-                    _level.SetSokobanPos(Move);
-                    _renderer.RenderCell(g, PushTo);
-                    if (!EverPushed)
+                    Point pushTo = new Point(2 * move.X - prevSokPos.X, 2 * move.Y - prevSokPos.Y);
+                    _level.MovePiece(move, pushTo);
+                    _level.SetSokobanPos(move);
+                    if (_animationEnabled)
+                        _renderer.RenderCell(bufferGraphics, pushTo);
+                    if (!everPushed)
                     {
-                        OrigPushPos = Move;
-                        EverPushed = true;
+                        origPushPos = move;
+                        everPushed = true;
                     }
-                    LastPushPos = PushTo;
-                    PushesMade++;
+                    lastPushPos = pushTo;
+                    pushesMade++;
                 }
                 else
                     // just move Sokoban
-                    _level.SetSokobanPos(Move);
-                MovesMade++;
-                _renderer.RenderCell(g, Move);
-                _renderer.RenderCell(g, PrevSokPos);
-                CreateGraphics().DrawImage(Buffer, 0, 0);
+                    _level.SetSokobanPos(move);
+                movesMade++;
+                if (_animationEnabled)
+                {
+                    _renderer.RenderCell(bufferGraphics, move);
+                    _renderer.RenderCell(bufferGraphics, prevSokPos);
+                    windowGraphics.DrawImage(Buffer, 0, 0);
+                }
             }
 
-            _moves += MovesMade;
-            _pushes += PushesMade;
+            _moves += movesMade;
+            _pushes += pushesMade;
 
             // No piece is selected after the push
             _selectedPiece = null;
@@ -1149,17 +1170,20 @@ namespace ExpertSokoban
                 playSound(MainAreaSound.PiecePlaced);
 
                 // Add this action to the undo stack
-                if (OrigPushPos == null)
-                    _undo.Push(new UndoMoveItem(OrigSokPos, _level.SokobanPos, MovesMade));
+                if (origPushPos == null)
+                    _undo.Push(new UndoMoveItem(origSokPos, _level.SokobanPos, movesMade));
                 else
-                    _undo.Push(new UndoPushItem(OrigSokPos, _level.SokobanPos, OrigPushPos.Value,
-                        LastPushPos.Value, MovesMade, PushesMade));
+                    _undo.Push(new UndoPushItem(origSokPos, _level.SokobanPos, origPushPos.Value,
+                        lastPushPos.Value, movesMade, pushesMade));
                 _redo = new Stack<UndoItem>();
 
                 // Switch back into move mode
                 _state = MainAreaState.Move;
                 reinitMoveFinder();
-                Invalidate();
+                if (_animationEnabled)
+                    Invalidate();
+                else
+                    Refresh();
             }
         }
 

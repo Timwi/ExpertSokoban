@@ -35,6 +35,9 @@ namespace ExpertSokoban
         /// <summary>Whether sound is enabled.</summary>
         public bool SoundEnabled = true;
 
+        /// <summary>Whether the Sokoban is animated when a move is made.</summary>
+        public bool AnimationEnabled = true;
+
         /// <summary>Whether letter-based control is enabled.</summary>
         public bool LetteringEnabled = false;
 
@@ -44,7 +47,7 @@ namespace ExpertSokoban
         /// <summary>Whether the playing toolbar should be displayed</summary>
         public bool DisplayPlayingToolbar = true;
 
-        /// <summary>Whether the level pack toolbars should be displayed</summary>
+        /// <summary>Whether the level file toolbars should be displayed</summary>
         public bool DisplayFileToolbars = true;
 
         /// <summary>Whether the edit toolbar (level) should be displayed</summary>

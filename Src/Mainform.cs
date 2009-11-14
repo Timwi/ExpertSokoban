@@ -39,7 +39,6 @@ namespace ExpertSokoban
             mnuOptionsFileToolbars.Checked = Program.Settings.DisplayFileToolbars;
             mnuOptionsEditLevelToolbar.Checked = Program.Settings.DisplayEditLevelToolbar;
             ctStatusBar.Visible = mnuOptionsStatusBar.Checked = Program.Settings.DisplayStatusBar;
-            pnlLevelList.Width = Program.Settings.LevelListWidth < 50 ? 50 : Program.Settings.LevelListWidth;
             grpMovePathOptions.SetValue(Program.Settings.MoveDrawMode);
             grpPushPathOptions.SetValue(Program.Settings.PushDrawMode);
             grpEditTool.SetValue(Program.Settings.LastUsedTool);
@@ -47,13 +46,13 @@ namespace ExpertSokoban
             mnuOptionsAreaSokoban.Checked = ctMainArea.ShowAreaSokoban = Program.Settings.ShowAreaSokoban;
             mnuOptionsAreaPiece.Checked = ctMainArea.ShowAreaPiece = Program.Settings.ShowAreaPiece;
             mnuOptionsSound.Checked = ctMainArea.SoundEnabled = Program.Settings.SoundEnabled;
+            mnuOptionsAnimation.Checked = ctMainArea.AnimationEnabled = Program.Settings.AnimationEnabled;
             mnuOptionsLetterControl.Checked = ctMainArea.LetteringEnabled = Program.Settings.LetteringEnabled;
-            showLevelList(Program.Settings.DisplayLevelList);
 
             if (Program.Settings.PlayerName == null || Program.Settings.PlayerName.Length == 0)
                 Program.Settings.PlayerName = InputBox.GetLine(Program.Tr.Mainform_ChooseName_FirstRun, "", Program.Tr.ProgramName, Program.Tr.Dialogs_btnOK, Program.Tr.Dialogs_btnCancel);
 
-            // Restore the last used level pack
+            // Restore the last used level file
             try
             {
                 lstLevels.LoadLevelPack(Program.Settings.LevelFilename);
@@ -65,8 +64,14 @@ namespace ExpertSokoban
                 lstLevels.Modified = false;
             }
 
+            showLevelList(Program.Settings.DisplayLevelList);
             lstLevels.PlayFirstUnsolved();
             updateControls();
+
+            // ManagedForm sets the form's Font in the Load event. This potentially changes the width of the level list, which in turn causes its Resize event, which in turn updates Program.Settings.LevelListWidth.
+            // To work around this, remember the width from the settings file and defer setting the level list's width until the Load event.
+            int levelListWidth = Program.Settings.LevelListWidth < 50 ? 50 : Program.Settings.LevelListWidth;
+            Load += (s, e) => pnlLevelList.Width = levelListWidth;
         }
 
         private void initLanguageMenu()
@@ -351,15 +356,15 @@ namespace ExpertSokoban
         /// or the main area as appropriate.
         /// </summary>
         /// <param name="Show">True: shows the level list. False: hides it.</param>
-        private void showLevelList(bool Show)
+        private void showLevelList(bool show)
         {
-            Program.Settings.DisplayLevelList = Show;
+            Program.Settings.DisplayLevelList = show;
 
-            pnlLevelList.Visible = Show;
-            ctLevelListSplitter.Visible = Show;
-            mnuOptionsLevelList.Checked = Show;
+            pnlLevelList.Visible = show;
+            ctLevelListSplitter.Visible = show;
+            mnuOptionsLevelList.Checked = show;
 
-            if (Show)
+            if (show)
             {
                 lstLevels.RefreshItems();
                 lstLevels.Focus();
@@ -490,7 +495,7 @@ namespace ExpertSokoban
 
         /// <summary>
         /// Invoked by "Level => Save level file" or the relevant toolbar button.
-        /// Saves the level pack to a file, using the existing filename if it exists,
+        /// Saves the level file, using the existing filename if it exists,
         /// or popping up a Save As dialog if it doesn't.
         /// </summary>
         private void saveLevelFile(object sender, EventArgs e)
@@ -500,7 +505,7 @@ namespace ExpertSokoban
 
         /// <summary>
         /// Invoked by "Level => Save level file as" or the relevant toolbar button.
-        /// Asks the user where to save the level pack, then saves it there.
+        /// Asks the user where to save the level file, then saves it there.
         /// </summary>
         private void saveLevelFileAs(object sender, EventArgs e)
         {
@@ -685,10 +690,14 @@ namespace ExpertSokoban
         /// </summary>
         private void paste(object sender, EventArgs e)
         {
-            if (!pnlLevelList.Visible || !Clipboard.ContainsData("SokobanData"))
+            if (!pnlLevelList.Visible)
                 return;
 
-            lstLevels.AddLevelListItem(Clipboard.GetData("SokobanData"));
+            if (Clipboard.ContainsData("SokobanData"))
+                lstLevels.AddLevelListItem(Clipboard.GetData("SokobanData"));
+            else if (Clipboard.ContainsText())
+                try { lstLevels.AddLevelListItem(new SokobanLevel(Clipboard.GetText())); }
+                catch { }
         }
 
         /// <summary>
@@ -791,7 +800,7 @@ namespace ExpertSokoban
         }
 
         /// <summary>
-        /// Invoked by "Options => Display editing toolbars (level pack)". Shows/hides the two toolbars for editing level pack files.
+        /// Invoked by "Options => Display editing toolbars (level file)". Shows/hides the two toolbars for editing level files.
         /// </summary>
         private void toggleFileEditToolbar(object sender, EventArgs e)
         {
@@ -873,6 +882,15 @@ namespace ExpertSokoban
         {
             mnuOptionsSound.Checked = !mnuOptionsSound.Checked;
             ctMainArea.SoundEnabled = Program.Settings.SoundEnabled = mnuOptionsSound.Checked;
+        }
+
+        /// <summary>
+        /// Invoked by "Options => Enable animations". Sets the option.
+        /// </summary>
+        private void toggleAnimation(object sender, EventArgs e)
+        {
+            mnuOptionsAnimation.Checked = !mnuOptionsAnimation.Checked;
+            ctMainArea.AnimationEnabled = Program.Settings.AnimationEnabled = mnuOptionsAnimation.Checked;
         }
 
         /// <summary>

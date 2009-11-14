@@ -360,7 +360,7 @@ namespace ExpertSokoban
             [LingoInGroup(TranslationGroup.OptionsMenu)]
             public TrString mnuOptionsMoveDots = "Display move path as &dots";
             [LingoInGroup(TranslationGroup.OptionsMenu)]
-            public TrString mnuOptionsMoveArrows = "Display move path as &arrows";
+            public TrString mnuOptionsMoveArrows = "Display mo&ve path as arrows";
             [LingoInGroup(TranslationGroup.OptionsMenu)]
             public TrString mnuOptionsPushNo = "Don't display &push path";
             [LingoInGroup(TranslationGroup.OptionsMenu)]
@@ -374,13 +374,15 @@ namespace ExpertSokoban
             [LingoInGroup(TranslationGroup.OptionsMenu)]
             public TrString mnuOptionsAreaSokoban = "Display reac&hable area for Sokoban";
             [LingoInGroup(TranslationGroup.OptionsMenu)]
-            public TrString mnuOptionsAreaPiece = "Display reacha&ble area for piece";
+            public TrString mnuOptionsAreaPiece = "Display reachable area &for piece";
             [LingoInGroup(TranslationGroup.OptionsMenu)]
             public TrString mnuOptionsLetterControl = "Enable lette&r control";
             [LingoInGroup(TranslationGroup.OptionsMenu)]
             public TrString mnuOptionsLetterControlNext = "Show ne&xt letter control set";
             [LingoInGroup(TranslationGroup.OptionsMenu)]
             public TrString mnuOptionsSound = "Enable &sound";
+            [LingoInGroup(TranslationGroup.OptionsMenu)]
+            public TrString mnuOptionsAnimation = "Enable &animations";
             [LingoInGroup(TranslationGroup.OptionsMenu)]
             public TrString mnuOptionsChangeLanguage = "&Change language";
             [LingoInGroup(TranslationGroup.HelpMenu)]

@@ -502,7 +502,7 @@ namespace ExpertSokoban
         }
 
         /// <summary>
-        /// Loads a level pack from the level list.
+        /// Loads a level file from the level list.
         /// </summary>
         public void LoadLevelPack(string path)
         {
@@ -608,7 +608,7 @@ namespace ExpertSokoban
         }
 
         /// <summary>
-        /// Saves the level pack to the currently selected file name. If none, or
+        /// Saves the level file to the currently selected file name. If none, or
         /// if forceDialog is true, a Save dialog is shown first. Returns true if
         /// saved successfully.
         /// </summary>
@@ -800,7 +800,7 @@ namespace ExpertSokoban
             i = findPrevNext(false, true);
 
             if (i == null)
-                playingIndex = null; // empty level pack
+                playingIndex = null; // empty level file
             else
                 playingIndex = i.Value;
         }
