@@ -8,11 +8,11 @@ using RT.Util.Forms;
 
 namespace ExpertSokoban
 {
-    internal static class Program
+    static class Program
     {
-        internal static Translation Tr;
-        internal static ExpSokSettings Settings;
-        internal static bool TranslationEnabled;
+        public static Translation Tr;
+        public static Settings Settings;
+        public static bool TranslationEnabled;
 
         /// <summary>
         /// The main entry point for the application.

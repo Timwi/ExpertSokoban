@@ -10,7 +10,7 @@ namespace ExpertSokoban
 {
     /// <summary>Encapsulates all the user settings that are persisted between runs of the application.</summary>
     [Settings("ExpSok")]
-    public class ExpSokSettings : SettingsBase
+    public class Settings : SettingsThreadedBase
     {
         /// <summary>The settings for the main form (size, position, etc.).</summary>
         public ManagedForm.Settings MainFormSettings = new ManagedForm.Settings();
@@ -105,7 +105,7 @@ namespace ExpertSokoban
         }
 
         /// <summary>Constructor.</summary>
-        public ExpSokSettings()
+        public Settings()
         {
             // Make a default window size of 4/5th the width/height of the working area
             var w = Screen.PrimaryScreen.WorkingArea.Width * 4 / 5;
@@ -118,6 +118,13 @@ namespace ExpertSokoban
                 Height = h,
                 Maximized = false
             };
+        }
+
+        protected override SettingsThreadedBase CloneForSaveThreaded()
+        {
+            // The cloning ensures that the settings are saved exactly as they were at the time when SaveThreaded was called.
+            // This doesn't matter for ExpSok as all settings changes are always saved anyway, so no need to clone.
+            return this;
         }
     }
 }

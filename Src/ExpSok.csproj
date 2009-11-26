@@ -23,7 +23,6 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <DocumentationFile>..\Builds\$(Configuration)\$(AssemblyName).xml</DocumentationFile>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -31,7 +30,6 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <DocumentationFile>..\Builds\$(Configuration)\$(AssemblyName).xml</DocumentationFile>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -55,7 +53,6 @@
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Delegates.cs" />
-    <Compile Include="ExpSokSettings.cs" />
     <Compile Include="Highscore.cs" />
     <Compile Include="HighscoresForm.cs">
       <SubType>Form</SubType>
@@ -75,6 +72,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Renderer.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="SokobanLevel.cs" />
     <Compile Include="Mainform.cs">
       <SubType>Form</SubType>
@@ -186,14 +184,13 @@
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
-  <Target Name="AfterBuild">
-  </Target>
   -->
-  <PropertyGroup>
-    <PreBuildEvent>copy $(ProjectDir)Help\expsok.chm $(TargetDir)ExpSok.chm</PreBuildEvent>
-    <PostBuildEvent>xcopy /y /i $(ProjectDir)Translations\*.xml $(TargetDir)Translations\</PostBuildEvent>
-    <OutputPath>..\Builds\$(Configuration)</OutputPath>
-    <IntermediateOutputPath>..\Builds\$(Configuration)\obj-$(AssemblyName)</IntermediateOutputPath>
-    <BaseIntermediateOutputPath>..\Builds\$(Configuration)\obj-$(AssemblyName)</BaseIntermediateOutputPath>
-  </PropertyGroup>
+  <Target Name="AfterBuild">
+    <ItemGroup>
+      <TranslationFiles Include="Translations\*.xml" />
+      <HelpFile Include="Help\expsok.chm" />
+    </ItemGroup>
+    <Copy SourceFiles="@(TranslationFiles)" DestinationFolder="$(OutputPath)Translations\" />
+    <Copy SourceFiles="@(HelpFile)" DestinationFolder="$(OutputPath)" />
+  </Target>
 </Project>

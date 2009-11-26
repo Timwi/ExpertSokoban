@@ -2,6 +2,7 @@ using System;
 using System.Reflection;
 using System.Windows.Forms;
 using RT.Util.Lingo;
+using RT.Util;
 
 namespace ExpertSokoban
 {
@@ -20,7 +21,7 @@ namespace ExpertSokoban
             //  - Project->Properties->Application->Assembly Information
             //  - AssemblyInfo.cs
             this.lblProductName.Text = AssemblyProduct;
-            this.lblVersion.Text = string.Format(Program.Tr.AboutBox.Version, string.Format("{0}.{1}.{2}", AssemblyVersion.Major, AssemblyVersion.Minor, AssemblyVersion.Revision));
+            this.lblVersion.Text = Program.Tr.AboutBox.Version.Fmt(Ut.VersionOfExe());
             this.lblCopyright.Text = AssemblyCopyright;
             this.lblCompanyName.Text = AssemblyCompany;
         }

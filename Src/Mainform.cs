@@ -71,6 +71,8 @@ namespace ExpertSokoban
             // To work around this, remember the width from the settings file and defer setting the level list's width until the Load event.
             int levelListWidth = Program.Settings.LevelListWidth < 50 ? 50 : Program.Settings.LevelListWidth;
             Load += (s, e) => pnlLevelList.Width = levelListWidth;
+
+            Program.Settings.SaveThreaded();
         }
 
         private void setLanguage(Translation translation)
@@ -82,6 +84,7 @@ namespace ExpertSokoban
             lstLevels.RefreshItems();
             if (ctMainArea.State == MainAreaState.Solved)
                 ctMainArea.Refresh();
+            Program.Settings.SaveThreaded();
         }
 
         /// <summary>
@@ -308,6 +311,7 @@ namespace ExpertSokoban
                 return;
 
             Program.Settings.UpdateHighscore(lstLevels.ActiveLevel.ToString(), ctMainArea.Moves, ctMainArea.Pushes);
+            Program.Settings.SaveThreaded();
 
             lstLevels.RefreshItems();
         }
@@ -324,6 +328,7 @@ namespace ExpertSokoban
         private void showLevelList(bool show)
         {
             Program.Settings.DisplayLevelList = show;
+            Program.Settings.SaveThreaded();
 
             pnlLevelList.Visible = show;
             ctLevelListSplitter.Visible = show;
@@ -371,6 +376,7 @@ namespace ExpertSokoban
         private void levelListPanelResize(object sender, EventArgs e)
         {
             Program.Settings.LevelListWidth = pnlLevelList.Width;
+            Program.Settings.SaveThreaded();
         }
 
         /// <summary>
@@ -453,6 +459,7 @@ namespace ExpertSokoban
             }
 
             Program.Settings.LastOpenSaveDirectory = Path.GetDirectoryName(OpenDialog.FileName);
+            Program.Settings.SaveThreaded();
             ctMainArea.Modified = false;
             showLevelList(true);
             lstLevels.PlayFirstUnsolved();
@@ -549,6 +556,7 @@ namespace ExpertSokoban
                 return;
 
             Program.Settings.PlayerName = Result;
+            Program.Settings.SaveThreaded();
             lstLevels.RefreshItems();
         }
 
@@ -736,6 +744,7 @@ namespace ExpertSokoban
         private void changeEditTool(object sender, EventArgs e)
         {
             ctMainArea.Tool = Program.Settings.LastUsedTool = grpEditTool.Value;
+            Program.Settings.SaveThreaded();
             btnEditLevelWall.Checked = grpEditTool.Value == MainAreaTool.Wall;
             btnEditLevelPiece.Checked = grpEditTool.Value == MainAreaTool.Piece;
             btnEditLevelTarget.Checked = grpEditTool.Value == MainAreaTool.Target;
@@ -762,6 +771,7 @@ namespace ExpertSokoban
         {
             mnuOptionsPlayingToolbar.Checked = !mnuOptionsPlayingToolbar.Checked;
             toolPlay.Visible = Program.Settings.DisplayPlayingToolbar = mnuOptionsPlayingToolbar.Checked;
+            Program.Settings.SaveThreaded();
         }
 
         /// <summary>
@@ -771,6 +781,7 @@ namespace ExpertSokoban
         {
             mnuOptionsFileToolbars.Checked = !mnuOptionsFileToolbars.Checked;
             toolFile.Visible = toolFileEdit.Visible = Program.Settings.DisplayFileToolbars = mnuOptionsFileToolbars.Checked;
+            Program.Settings.SaveThreaded();
         }
 
         /// <summary>
@@ -780,6 +791,7 @@ namespace ExpertSokoban
         {
             mnuOptionsEditLevelToolbar.Checked = !mnuOptionsEditLevelToolbar.Checked;
             toolEditLevel.Visible = Program.Settings.DisplayEditLevelToolbar = mnuOptionsEditLevelToolbar.Checked;
+            Program.Settings.SaveThreaded();
         }
 
         /// <summary>
@@ -790,6 +802,7 @@ namespace ExpertSokoban
         {
             mnuOptionsStatusBar.Checked = !mnuOptionsStatusBar.Checked;
             ctStatusBar.Visible = Program.Settings.DisplayStatusBar = mnuOptionsStatusBar.Checked;
+            Program.Settings.SaveThreaded();
         }
 
         /// <summary>
@@ -799,6 +812,7 @@ namespace ExpertSokoban
         private void changeMovePathOption(object sender, EventArgs e)
         {
             ctMainArea.MoveDrawMode = Program.Settings.MoveDrawMode = grpMovePathOptions.Value;
+            Program.Settings.SaveThreaded();
         }
 
         /// <summary>
@@ -808,6 +822,7 @@ namespace ExpertSokoban
         private void changePushPathOption(object sender, EventArgs e)
         {
             ctMainArea.PushDrawMode = Program.Settings.PushDrawMode = grpPushPathOptions.Value;
+            Program.Settings.SaveThreaded();
         }
 
         /// <summary>
@@ -818,6 +833,7 @@ namespace ExpertSokoban
         {
             mnuOptionsEndPos.Checked = !mnuOptionsEndPos.Checked;
             ctMainArea.ShowEndPos = Program.Settings.ShowEndPos = mnuOptionsEndPos.Checked;
+            Program.Settings.SaveThreaded();
         }
 
         /// <summary>
@@ -828,6 +844,7 @@ namespace ExpertSokoban
         {
             mnuOptionsAreaSokoban.Checked = !mnuOptionsAreaSokoban.Checked;
             ctMainArea.ShowAreaSokoban = Program.Settings.ShowAreaSokoban = mnuOptionsAreaSokoban.Checked;
+            Program.Settings.SaveThreaded();
         }
 
         /// <summary>
@@ -838,6 +855,7 @@ namespace ExpertSokoban
         {
             mnuOptionsAreaPiece.Checked = !mnuOptionsAreaPiece.Checked;
             ctMainArea.ShowAreaPiece = Program.Settings.ShowAreaPiece = mnuOptionsAreaPiece.Checked;
+            Program.Settings.SaveThreaded();
         }
 
         /// <summary>
@@ -847,6 +865,7 @@ namespace ExpertSokoban
         {
             mnuOptionsSound.Checked = !mnuOptionsSound.Checked;
             ctMainArea.SoundEnabled = Program.Settings.SoundEnabled = mnuOptionsSound.Checked;
+            Program.Settings.SaveThreaded();
         }
 
         /// <summary>
@@ -856,6 +875,7 @@ namespace ExpertSokoban
         {
             mnuOptionsAnimation.Checked = !mnuOptionsAnimation.Checked;
             ctMainArea.AnimationEnabled = Program.Settings.AnimationEnabled = mnuOptionsAnimation.Checked;
+            Program.Settings.SaveThreaded();
         }
 
         /// <summary>
@@ -865,6 +885,7 @@ namespace ExpertSokoban
         {
             mnuOptionsLetterControl.Checked = !mnuOptionsLetterControl.Checked;
             ctMainArea.LetteringEnabled = Program.Settings.LetteringEnabled = mnuOptionsLetterControl.Checked;
+            Program.Settings.SaveThreaded();
         }
 
         /// <summary>
