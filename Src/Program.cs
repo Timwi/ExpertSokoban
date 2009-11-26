@@ -29,15 +29,12 @@ namespace ExpertSokoban
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            try { Settings = XmlClassify.LoadObjectFromXmlFile<ExpSokSettings>(PathUtil.AppPathCombine(@"ExpSok.settings.xml")); }
-            catch { Settings = new ExpSokSettings(); }
-
+            SettingsUtil.LoadSettings(out Settings);
             Tr = Lingo.LoadTranslationOrDefault<Translation>("ExpSok", ref Settings.Language);
 
             Application.Run(new Mainform());
 
-            // Store settings
-            XmlClassify.SaveObjectToXmlFile(Settings, PathUtil.AppPathCombine(@"ExpSok.settings.xml"));
+            Settings.Save();
         }
     }
 }

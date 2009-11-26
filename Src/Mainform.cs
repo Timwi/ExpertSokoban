@@ -1,11 +1,11 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using RT.Util;
 using RT.Util.Dialogs;
 using RT.Util.Forms;
 using RT.Util.Lingo;
-using RT.Util.Xml;
 
 namespace ExpertSokoban
 {
@@ -16,8 +16,7 @@ namespace ExpertSokoban
     /// </summary>
     public partial class Mainform : ManagedForm
     {
-        private ToolStripMenuItem mnuOptionsLanguageEdit;
-        private ToolStripMenuItem mnuOptionsLanguageCreate;
+        LanguageMainMenuHelper<Translation> translationHelper;
 
         #region Startup / shutdown
 
@@ -30,9 +29,9 @@ namespace ExpertSokoban
             InitializeComponent();
             Lingo.TranslateControl(this, Program.Tr.Mainform);
             Lingo.TranslateControl(mnuContext, Program.Tr.Context);
-            mnuOptionsLanguageEdit = new ToolStripMenuItem("&Edit current language", null, new EventHandler(editCurrentLanguage));
-            mnuOptionsLanguageCreate = new ToolStripMenuItem("&Create new language", null, new EventHandler(createNewLanguage));
-            initLanguageMenu();
+            translationHelper = new LanguageMainMenuHelper<Translation>("Expert Sokoban", "ExpSok", Translation.DefaultLanguage, Program.Settings.TranslationFormSettings,
+                Icon, setLanguage, mnuOptionsChangeLanguage, () => Program.Tr.Language);
+            translationHelper.TranslationEditingEnabled = Program.TranslationEnabled;
 
             // Restore saved settings
             mnuOptionsPlayingToolbar.Checked = Program.Settings.DisplayPlayingToolbar;
@@ -74,19 +73,6 @@ namespace ExpertSokoban
             Load += (s, e) => pnlLevelList.Width = levelListWidth;
         }
 
-        private void initLanguageMenu()
-        {
-            mnuOptionsChangeLanguage.DropDownItems.Clear();
-            mnuOptionsChangeLanguage.DropDownItems.AddRange(Lingo.LanguageToolStripMenuItems<Translation>("ExpSok", setLanguage, Program.Settings.Language));
-            if (Program.TranslationEnabled)
-            {
-                mnuOptionsChangeLanguage.DropDownItems.Add(new ToolStripSeparator());
-                mnuOptionsChangeLanguage.DropDownItems.Add(mnuOptionsLanguageEdit);
-                mnuOptionsChangeLanguage.DropDownItems.Add(mnuOptionsLanguageCreate);
-                mnuOptionsLanguageCreate.Enabled = true;
-            }
-        }
-
         private void setLanguage(Translation translation)
         {
             Program.Settings.Language = translation.Language;
@@ -98,44 +84,6 @@ namespace ExpertSokoban
                 ctMainArea.Refresh();
         }
 
-        private TranslationForm<Translation> _translationDialog = null;
-        private void editCurrentLanguage(object sender, EventArgs e)
-        {
-            if (Program.Settings.Language == Translation.DefaultLanguage)
-            {
-                MessageBox.Show("The currently selected language is the native language of this application and cannot be edited.", "Edit current language");
-                return;
-            }
-            if (_translationDialog == null)
-            {
-                foreach (ToolStripItem i in mnuOptionsChangeLanguage.DropDownItems)
-                    if (i != mnuOptionsLanguageEdit)
-                        i.Enabled = false;
-                try
-                {
-                    _translationDialog = new TranslationForm<Translation>(Program.Settings.TranslationFormSettings, Icon, "Expert Sokoban", "ExpSok", Program.Settings.Language);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Translation could not be loaded: " + ex.Message);
-                    return;
-                }
-                _translationDialog.TranslationChanged += setLanguage;
-                _translationDialog.FormClosed += (s, v) => { _translationDialog = null; initLanguageMenu(); };
-            }
-            _translationDialog.Show();
-        }
-
-        private void createNewLanguage(object sender, EventArgs e)
-        {
-            var newTranslation = TranslationCreateForm.CreateTranslation<Translation>("ExpSok", setLanguage);
-            if (newTranslation != null)
-            {
-                initLanguageMenu();
-                editCurrentLanguage(sender, e);
-            }
-        }
-
         /// <summary>
         /// Intercepts the user's attempt to close the form and asks for confirmation
         /// if the current level has been played or edited, and if the current level
@@ -143,10 +91,19 @@ namespace ExpertSokoban
         /// </summary>
         private void formClosing(object sender, FormClosingEventArgs e)
         {
-            if ((_translationDialog != null && DlgMessage.Show("If you exit now, you will lose all your changes to the translation you are currently editing. Are you sure you wish to do this?\n\nTo save your changes, click \"Cancel\", then switch to the translation editor and click \"Save changes\" there.",
-                    "Exit Expert Sokoban", DlgType.Warning, Program.Tr.Dialogs_btnOK, Program.Tr.Dialogs_btnCancel) == 1)
+            if (!translationHelper.MayExitApplication()
                 || !mayDestroyEverything(Program.Tr.Mainform_MessageTitle_Exit))
                 e.Cancel = true;
+            else
+                translationHelper.CloseWithoutPrompts();
+        }
+
+        private void Mainform_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            // Ensure all other forms are closed, otherwise their Close events are not fired
+            var forms = Application.OpenForms.Cast<Form>().ToArray(); // otherwise "collection was modified"
+            foreach (var form in forms)
+                form.Close();
         }
 
         #endregion
@@ -963,5 +920,6 @@ namespace ExpertSokoban
         {
             ctMainArea.ShowNextLetterControlSet();
         }
+
     }
 }

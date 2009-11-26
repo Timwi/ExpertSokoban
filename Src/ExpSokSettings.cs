@@ -2,13 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
+using RT.Util;
 using RT.Util.Forms;
 using RT.Util.Lingo;
 
 namespace ExpertSokoban
 {
     /// <summary>Encapsulates all the user settings that are persisted between runs of the application.</summary>
-    public class ExpSokSettings
+    [Settings("ExpSok")]
+    public class ExpSokSettings : SettingsBase
     {
         /// <summary>The settings for the main form (size, position, etc.).</summary>
         public ManagedForm.Settings MainFormSettings = new ManagedForm.Settings();
