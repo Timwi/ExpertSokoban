@@ -101,5 +101,21 @@ namespace ExpertSokoban
                 Highscores[level][PlayerName] = new Highscore();
             Highscores[level][PlayerName].UpdateWith(new Score(moves, pushes));
         }
+
+        /// <summary>Constructor.</summary>
+        public ExpSokSettings()
+        {
+            // Make a default window size of 4/5th the width/height of the working area
+            var w = Screen.PrimaryScreen.WorkingArea.Width * 4 / 5;
+            var h = Screen.PrimaryScreen.WorkingArea.Height * 4 / 5;
+            MainFormSettings.DimensionsByRes[SystemInformation.VirtualScreen.Width + "x" + SystemInformation.VirtualScreen.Height] = new ManagedForm.FormDimensions
+            {
+                Left = Screen.PrimaryScreen.WorkingArea.Width / 2 - w / 2 + Screen.PrimaryScreen.WorkingArea.Left,
+                Top = Screen.PrimaryScreen.WorkingArea.Height / 2 - h / 2 + Screen.PrimaryScreen.WorkingArea.Top,
+                Width = w,
+                Height = h,
+                Maximized = false
+            };
+        }
     }
 }
