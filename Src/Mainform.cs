@@ -111,7 +111,15 @@ namespace ExpertSokoban
                 foreach (ToolStripItem i in mnuOptionsChangeLanguage.DropDownItems)
                     if (i != mnuOptionsLanguageEdit)
                         i.Enabled = false;
-                _translationDialog = new TranslationForm<Translation>(Program.Settings.TranslationFormSettings, Icon, "Expert Sokoban", "ExpSok", Program.Settings.Language);
+                try
+                {
+                    _translationDialog = new TranslationForm<Translation>(Program.Settings.TranslationFormSettings, Icon, "Expert Sokoban", "ExpSok", Program.Settings.Language);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Translation could not be loaded: " + ex.Message);
+                    return;
+                }
                 _translationDialog.TranslationChanged += setLanguage;
                 _translationDialog.FormClosed += (s, v) => { _translationDialog = null; initLanguageMenu(); };
             }
@@ -355,7 +363,7 @@ namespace ExpertSokoban
         /// Switches the visibility of the level list. Focuses either the level list
         /// or the main area as appropriate.
         /// </summary>
-        /// <param name="Show">True: shows the level list. False: hides it.</param>
+        /// <param name="show">True: shows the level list. False: hides it.</param>
         private void showLevelList(bool show)
         {
             Program.Settings.DisplayLevelList = show;

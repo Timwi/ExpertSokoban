@@ -133,24 +133,12 @@
     <Old>You have made changes to {0}. Would you like to save those changes?</Old>
   </LevelList_Message_SaveChanges>
   <LevelList_Message_DeleteLevel_CurrentlyEditing>
-    <Translation>patlhvam DachoHtaH.
-
-DaH patlhvam Dateqchugh Hoch choHmeylIj vIpolHa'.
-
-vaj bIvang DaneHbej'a'?</Translation>
-    <Old>You are currently editing this level.
-
-If you delete this level now, all your modifications will be discarded.
-
-Are you sure you wish to do this?</Old>
+    <Translation encoding="c-literal">patlhvam DachoHtaH.\n\nDaH patlhvam Dateqchugh Hoch choHmeylIj vIpolHa'.\n\nvaj bIvang DaneHbej'a'?</Translation>
+    <Old encoding="c-literal">You are currently editing this level.\n\nIf you delete this level now, all your modifications will be discarded.\n\nAre you sure you wish to do this?</Old>
   </LevelList_Message_DeleteLevel_CurrentlyEditing>
   <LevelList_Message_DeleteLevel_CurrentlyPlaying>
-    <Translation>patlhvam DachoHtaH.
-
-bIjegh 'ej patlhvam Dateq DaneHbej'a'?</Translation>
-    <Old>You are currently playing this level.
-
-Are you sure you wish to give up and delete this level?</Old>
+    <Translation encoding="c-literal">patlhvam DachoHtaH.\n\nbIjegh 'ej patlhvam Dateq DaneHbej'a'?</Translation>
+    <Old encoding="c-literal">You are currently playing this level.\n\nAre you sure you wish to give up and delete this level?</Old>
   </LevelList_Message_DeleteLevel_CurrentlyPlaying>
   <LevelList_Message_DeleteLevel_Sure>
     <Translation>patlhvam Dateq DaneHbej'a'?</Translation>
@@ -173,20 +161,12 @@ Are you sure you wish to give up and delete this level?</Old>
     <Old>Please choose a name which will be used to identify you in highscore tables.</Old>
   </Mainform_ChooseName>
   <Mainform_ChooseName_FirstRun>
-    <Translation>pe''eghmeH tetlhmeyDaq vIghItlhlaHmeH SoHvaD pong yIwIvneS!
-pIq "patlh" HIDjolevDaq "QujwI' pong choH" DawIvDI' pongvam DachoHlaH.</Translation>
-    <Old>Please choose a name which will be used to identify you in highscore tables.
-You can change this name later by selecting "Change player name" from the "Level" menu.</Old>
+    <Translation encoding="c-literal">pe''eghmeH tetlhmeyDaq vIghItlhlaHmeH SoHvaD pong yIwIvneS!\npIq "patlh" HIDjolevDaq "QujwI' pong choH" DawIvDI' pongvam DachoHlaH.</Translation>
+    <Old encoding="c-literal">Please choose a name which will be used to identify you in highscore tables.\nYou can change this name later by selecting "Change player name" from the "Level" menu.</Old>
   </Mainform_ChooseName_FirstRun>
   <Mainform_ChooseName_SolvedLevel>
-    <Translation>majQa'! patlhvam DaQapta'.
-pe''eghmeH tetlhmeyDaq vIghItlhlaHmeH SoHvaD pong yIwIvneS!
-DaH pong DawIvbe'chugh patlhvamDaq bIpe''eghbe'.
-pIq "patlh" HIDjolevDaq "QujwI' pong choH" DawIvDI' pongvam DachoHlaH.</Translation>
-    <Old>Congratulations! You've solved the current level.
-Please choose a name which will be used to identify you in highscore tables.
-If you do not choose a name now, your score for this level will not be recorded.
-You can change this name again later by selecting "Change player name" from the "Level" menu.</Old>
+    <Translation encoding="c-literal">majQa'! patlhvam DaQapta'.\npe''eghmeH tetlhmeyDaq vIghItlhlaHmeH SoHvaD pong yIwIvneS!\nDaH pong DawIvbe'chugh patlhvamDaq bIpe''eghbe'.\npIq "patlh" HIDjolevDaq "QujwI' pong choH" DawIvDI' pongvam DachoHlaH.</Translation>
+    <Old encoding="c-literal">Congratulations! You've solved the current level.\nPlease choose a name which will be used to identify you in highscore tables.\nIf you do not choose a name now, your score for this level will not be recorded.\nYou can change this name again later by selecting "Change player name" from the "Level" menu.</Old>
   </Mainform_ChooseName_SolvedLevel>
   <Mainform_Validity_CannotOpen>
     <Translation>motlhbe'mo' patlh 'oH vIpoSmoHlaH.</Translation>
@@ -306,15 +286,8 @@ You can change this name again later by selecting "Change player name" from the 
       <Old>About Expert Sokoban</Old>
     </AboutBox>
     <lblCredits>
-      <Translation>beq:
-    ghunwI'pu': Timwi, Roman
-    DIjwI'pu': Roman, Timwi
-    waHwI': Hawthorn
-    mughwI': Vortarulo </Translation>
-      <Old>Credits:
-    Programming: Timwi, Roman
-    Graphics: Roman, Timwi
-    Testing: Hawthorn</Old>
+      <Translation encoding="c-literal">beq:\n    ghunwI'pu': Timwi, Roman\n    DIjwI'pu': Roman, Timwi\n    waHwI': Hawthorn\n    mughwI': Vortarulo </Translation>
+      <Old encoding="c-literal">Credits:\n    Programming: Timwi, Roman\n    Graphics: Roman, Timwi\n    Testing: Hawthorn</Old>
     </lblCredits>
     <btnOK>
       <Translation>lu'</Translation>
@@ -518,10 +491,22 @@ You can change this name again later by selecting "Change player name" from the 
       <Translation>'ay' pa''e' S&amp;IchlaHbogh vay' cha'</Translation>
       <Old>Display reacha&amp;ble area for piece</Old>
     </mnuOptionsAreaPiece>
+    <mnuOptionsLetterControl>
+      <Translation>Enable lette&amp;r control</Translation>
+      <Old null="1" />
+    </mnuOptionsLetterControl>
+    <mnuOptionsLetterControlNext>
+      <Translation>Show ne&amp;xt letter control set</Translation>
+      <Old null="1" />
+    </mnuOptionsLetterControlNext>
     <mnuOptionsSound>
       <Translation>&amp;wab chaw'</Translation>
       <Old>Enable &amp;sound</Old>
     </mnuOptionsSound>
+    <mnuOptionsAnimation>
+      <Translation>Enable &amp;animations</Translation>
+      <Old null="1" />
+    </mnuOptionsAnimation>
     <mnuOptionsChangeLanguage>
       <Translation>Hol &amp;choH</Translation>
       <Old>&amp;Change language</Old>
@@ -530,10 +515,10 @@ You can change this name again later by selecting "Change player name" from the 
       <Translation>&amp;QaH</Translation>
       <Old>&amp;Help</Old>
     </mnuHelp>
-    <mnuHelpKeyboard>
-      <Translation>Do &amp;chu'wI'mey</Translation>
-      <Old>&amp;Keyboard shortcuts</Old>
-    </mnuHelpKeyboard>
+    <mnuHelpHelp>
+      <Translation>&amp;Help...</Translation>
+      <Old null="1" />
+    </mnuHelpHelp>
     <mnuHelpAbout>
       <Translation>&amp;De'mey</Translation>
       <Old>&amp;About</Old>
@@ -689,5 +674,4 @@ You can change this name again later by selecting "Change player name" from the 
       <Old>Hide &amp;level list</Old>
     </mnuContextHide>
   </Context>
-  <Language>Klingon</Language>
 </item>

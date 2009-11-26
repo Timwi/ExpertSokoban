@@ -133,17 +133,11 @@
     <Old null="1" />
   </LevelList_Message_SaveChanges>
   <LevelList_Message_DeleteLevel_CurrentlyEditing>
-    <Translation>You are currently editing this level.
-
-If you delete this level now, all your modifications will be discarded.
-
-Are you sure you wish to do this?</Translation>
+    <Translation encoding="c-literal">You are currently editing this level.\n\nIf you delete this level now, all your modifications will be discarded.\n\nAre you sure you wish to do this?</Translation>
     <Old null="1" />
   </LevelList_Message_DeleteLevel_CurrentlyEditing>
   <LevelList_Message_DeleteLevel_CurrentlyPlaying>
-    <Translation>You are currently playing this level.
-
-Are you sure you wish to give up and delete this level?</Translation>
+    <Translation encoding="c-literal">You are currently playing this level.\n\nAre you sure you wish to give up and delete this level?</Translation>
     <Old null="1" />
   </LevelList_Message_DeleteLevel_CurrentlyPlaying>
   <LevelList_Message_DeleteLevel_Sure>
@@ -167,15 +161,11 @@ Are you sure you wish to give up and delete this level?</Translation>
     <Old null="1" />
   </Mainform_ChooseName>
   <Mainform_ChooseName_FirstRun>
-    <Translation>Please choose a name which will be used to identify you in highscore tables.
-You can change this name later by selecting "Change player name" from the "Level" menu.</Translation>
+    <Translation encoding="c-literal">Please choose a name which will be used to identify you in highscore tables.\nYou can change this name later by selecting "Change player name" from the "Level" menu.</Translation>
     <Old null="1" />
   </Mainform_ChooseName_FirstRun>
   <Mainform_ChooseName_SolvedLevel>
-    <Translation>Congratulations! You've solved the current level.
-Please choose a name which will be used to identify you in highscore tables.
-If you do not choose a name now, your score for this level will not be recorded.
-You can change this name again later by selecting "Change player name" from the "Level" menu.</Translation>
+    <Translation encoding="c-literal">Congratulations! You've solved the current level.\nPlease choose a name which will be used to identify you in highscore tables.\nIf you do not choose a name now, your score for this level will not be recorded.\nYou can change this name again later by selecting "Change player name" from the "Level" menu.</Translation>
     <Old null="1" />
   </Mainform_ChooseName_SolvedLevel>
   <Mainform_Validity_CannotOpen>
@@ -301,14 +291,8 @@ You can change this name again later by selecting "Change player name" from the 
       <Old>About Expert Sokoban</Old>
     </AboutBox>
     <lblCredits>
-      <Translation>Благодарим:
-    Программирование: Timwi, Roman
-    Графика: Roman, Timwi
-    Тестирование: Hawthorn</Translation>
-      <Old>Credits:
-    Programming: Timwi, Roman
-    Graphics: Roman, Timwi
-    Testing: Hawthorn</Old>
+      <Translation encoding="c-literal">Благодарим:\n    Программирование: Timwi, Roman\n    Графика: Roman, Timwi\n    Тестирование: Hawthorn</Translation>
+      <Old encoding="c-literal">Credits:\n    Programming: Timwi, Roman\n    Graphics: Roman, Timwi\n    Testing: Hawthorn</Old>
     </lblCredits>
     <btnOK>
       <Translation>ОК</Translation>
@@ -524,6 +508,10 @@ You can change this name again later by selecting "Change player name" from the 
       <Translation>Enable &amp;sound</Translation>
       <Old null="1" />
     </mnuOptionsSound>
+    <mnuOptionsAnimation>
+      <Translation>Enable &amp;animations</Translation>
+      <Old null="1" />
+    </mnuOptionsAnimation>
     <mnuOptionsChangeLanguage>
       <Translation>&amp;Change language</Translation>
       <Old null="1" />
@@ -691,5 +679,4 @@ You can change this name again later by selecting "Change player name" from the 
       <Old null="1" />
     </mnuContextHide>
   </Context>
-  <Language>Russian</Language>
 </item>
