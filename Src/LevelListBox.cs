@@ -640,9 +640,8 @@ namespace ExpertSokoban
             }
             catch (Exception e)
             {
-                // If anything fails here, don't crash. Just tell the caller that save
-                // hasn't actually happened.
-                DlgMessage.ShowError(Program.Tr.LevelList_Message_CannotSaveSettings + "\n" + e.Message, Program.Tr.LevelList_Message_CannotSaveSettings_Title);
+                // If anything fails here, don't crash. Just tell the caller that save hasn't actually happened.
+                DlgMessage.Show(Program.Tr.LevelList_Message_CannotSaveSettings + "\n" + e.Message, Program.Tr.LevelList_Message_CannotSaveSettings_Title, DlgType.Error);
                 return false;
             }
         }

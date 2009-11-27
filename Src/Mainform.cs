@@ -99,14 +99,6 @@ namespace ExpertSokoban
                 translationHelper.CloseWithoutPrompts();
         }
 
-        private void formClosed(object sender, FormClosedEventArgs e)
-        {
-            // Ensure all other forms are closed, otherwise their Close events are not fired
-            var forms = Application.OpenForms.Cast<Form>().ToArray(); // otherwise "collection was modified"
-            foreach (var form in forms)
-                form.Close();
-        }
-
         #endregion
 
         /// <summary>
