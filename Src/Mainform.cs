@@ -71,8 +71,6 @@ namespace ExpertSokoban
             // To work around this, remember the width from the settings file and defer setting the level list's width until the Load event.
             int levelListWidth = Program.Settings.LevelListWidth < 50 ? 50 : Program.Settings.LevelListWidth;
             Load += (s, e) => pnlLevelList.Width = levelListWidth;
-
-            Program.Settings.SaveThreaded();
         }
 
         private void setLanguage(Translation translation)
@@ -101,7 +99,7 @@ namespace ExpertSokoban
                 translationHelper.CloseWithoutPrompts();
         }
 
-        private void Mainform_FormClosed(object sender, FormClosedEventArgs e)
+        private void formClosed(object sender, FormClosedEventArgs e)
         {
             // Ensure all other forms are closed, otherwise their Close events are not fired
             var forms = Application.OpenForms.Cast<Form>().ToArray(); // otherwise "collection was modified"
@@ -320,10 +318,7 @@ namespace ExpertSokoban
 
         #region LevelList-related code
 
-        /// <summary>
-        /// Switches the visibility of the level list. Focuses either the level list
-        /// or the main area as appropriate.
-        /// </summary>
+        /// <summary>Switches the visibility of the level list. Focuses either the level list or the main area as appropriate.</summary>
         /// <param name="show">True: shows the level list. False: hides it.</param>
         private void showLevelList(bool show)
         {
@@ -941,6 +936,5 @@ namespace ExpertSokoban
         {
             ctMainArea.ShowNextLetterControlSet();
         }
-
     }
 }

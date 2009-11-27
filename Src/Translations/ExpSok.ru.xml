@@ -317,7 +317,7 @@
       <Old>&amp;Level</Old>
     </mnuLevel>
     <mnuLevelNew>
-      <Translation>Создать подборку</Translation>
+      <Translation>Создать под&amp;борку</Translation>
       <Old>&amp;New level file</Old>
     </mnuLevelNew>
     <mnuLevelOpen>
@@ -373,147 +373,147 @@
       <Old>E&amp;xit</Old>
     </mnuLevelExit>
     <mnuEdit>
-      <Translation>Правка</Translation>
+      <Translation>&amp;Правка</Translation>
       <Old>&amp;Edit</Old>
     </mnuEdit>
     <mnuEditCreateLevel>
-      <Translation>Создать новый уровень</Translation>
+      <Translation>Создать &amp;новый уровень</Translation>
       <Old>Create &amp;new level</Old>
     </mnuEditCreateLevel>
     <mnuEditEditLevel>
-      <Translation>Править уровень</Translation>
+      <Translation>&amp;Править уровень</Translation>
       <Old>&amp;Edit level</Old>
     </mnuEditEditLevel>
     <mnuEditAddComment>
-      <Translation>Добавить комментарий...</Translation>
+      <Translation>&amp;Добавить комментарий...</Translation>
       <Old>Add a co&amp;mment...</Old>
     </mnuEditAddComment>
     <mnuEditDelete>
-      <Translation>Удалить уровень/комментарий</Translation>
+      <Translation>&amp;Удалить уровень/комментарий</Translation>
       <Old>&amp;Delete level/comment</Old>
     </mnuEditDelete>
     <mnuEditCut>
-      <Translation>Вырезать</Translation>
+      <Translation>&amp;Вырезать</Translation>
       <Old>C&amp;ut</Old>
     </mnuEditCut>
     <mnuEditCopy>
-      <Translation>Копировать</Translation>
+      <Translation>&amp;Копировать</Translation>
       <Old>&amp;Copy</Old>
     </mnuEditCopy>
     <mnuEditPaste>
-      <Translation>Вставить</Translation>
+      <Translation>Вст&amp;авить</Translation>
       <Old>&amp;Paste</Old>
     </mnuEditPaste>
     <mnuEditFinish>
-      <Translation>Завершить правку</Translation>
+      <Translation>&amp;Завершить правку</Translation>
       <Old>&amp;Finish editing</Old>
     </mnuEditFinish>
     <mnuEditCancel>
-      <Translation>Отменить правку</Translation>
+      <Translation>&amp;Отменить правку</Translation>
       <Old>C&amp;ancel editing</Old>
     </mnuEditCancel>
     <mnuEditWall>
-      <Translation>Инструмент: стена</Translation>
+      <Translation>Инструмент: &amp;стена</Translation>
       <Old>&amp;Wall tool</Old>
     </mnuEditWall>
     <mnuEditPiece>
-      <Translation>Инструмент: фишка</Translation>
+      <Translation>Инструмент: &amp;фишка</Translation>
       <Old>P&amp;iece tool</Old>
     </mnuEditPiece>
     <mnuEditTarget>
-      <Translation>Инструмент: цель</Translation>
+      <Translation>Инструмент: &amp;цель</Translation>
       <Old>&amp;Target tool</Old>
     </mnuEditTarget>
     <mnuEditSokoban>
-      <Translation>Инструмент: игрок</Translation>
+      <Translation>Инструмент: &amp;игрок</Translation>
       <Old>&amp;Sokoban tool</Old>
     </mnuEditSokoban>
     <mnuOptions>
-      <Translation>Настройки</Translation>
+      <Translation>&amp;Настройки</Translation>
       <Old>&amp;Options</Old>
     </mnuOptions>
     <mnuOptionsLevelList>
-      <Translation>Показывать список уровней</Translation>
+      <Translation>Показывать &amp;список уровней</Translation>
       <Old>Display &amp;level list</Old>
     </mnuOptionsLevelList>
     <mnuOptionsPlayingToolbar>
-      <Translation>Показывать панель игры</Translation>
+      <Translation>Показывать панель &amp;игры</Translation>
       <Old>Display pla&amp;ying toolbar</Old>
     </mnuOptionsPlayingToolbar>
     <mnuOptionsFileToolbars>
-      <Translation>Показывать панель редактирования (поборка)</Translation>
+      <Translation>Показывать панель редактирования (&amp;поборка)</Translation>
       <Old>Display &amp;editing toolbars (level file)</Old>
     </mnuOptionsFileToolbars>
     <mnuOptionsEditLevelToolbar>
-      <Translation>Показывать панель редактирования (уровень)</Translation>
+      <Translation>Показывать панель редактирования (&amp;уровень)</Translation>
       <Old>Display editin&amp;g toolbar (level)</Old>
     </mnuOptionsEditLevelToolbar>
     <mnuOptionsStatusBar>
-      <Translation>Показывать строку состояния</Translation>
+      <Translation>П&amp;оказывать строку состояния</Translation>
       <Old>Display stat&amp;us bar</Old>
     </mnuOptionsStatusBar>
     <mnuOptionsMoveNo>
-      <Translation>Не показывать путь движения</Translation>
+      <Translation>&amp;Не показывать путь движения</Translation>
       <Old>Don't display &amp;move path</Old>
     </mnuOptionsMoveNo>
     <mnuOptionsMoveLine>
-      <Translation>Показывать путь движения линией</Translation>
+      <Translation>Показывать путь движения &amp;линией</Translation>
       <Old>Display move path as li&amp;ne</Old>
     </mnuOptionsMoveLine>
     <mnuOptionsMoveDots>
-      <Translation>Показывать путь движения точками</Translation>
+      <Translation>Показывать путь движения &amp;точками</Translation>
       <Old>Display move path as &amp;dots</Old>
     </mnuOptionsMoveDots>
     <mnuOptionsMoveArrows>
-      <Translation>Показывать путь движения стрелками</Translation>
+      <Translation>Показывать путь движения ст&amp;релками</Translation>
       <Old>Display mo&amp;ve path as arrows</Old>
     </mnuOptionsMoveArrows>
     <mnuOptionsPushNo>
-      <Translation>Не показывать путь толчков</Translation>
+      <Translation>Н&amp;е показывать путь толчков</Translation>
       <Old>Don't display &amp;push path</Old>
     </mnuOptionsPushNo>
     <mnuOptionsPushLine>
-      <Translation>Показывать путь толчков линией</Translation>
+      <Translation>Показывать путь толчков линие&amp;й</Translation>
       <Old>Display push path as l&amp;ine</Old>
     </mnuOptionsPushLine>
     <mnuOptionsPushDots>
-      <Translation>Показывать путь толчков точками</Translation>
+      <Translation>Показывать путь толчков то&amp;чками</Translation>
       <Old>Display push path as do&amp;ts</Old>
     </mnuOptionsPushDots>
     <mnuOptionsPushArrows>
-      <Translation>Показывать путь толчков стрелками</Translation>
+      <Translation>Показывать путь толчков стрел&amp;ками</Translation>
       <Old>Display push path as arro&amp;ws</Old>
     </mnuOptionsPushArrows>
     <mnuOptionsEndPos>
-      <Translation>Показывать конечное положение игрока и фишки</Translation>
+      <Translation>Показывать конечное положение игрока и &amp;фишки</Translation>
       <Old>Display end p&amp;osition of Sokoban and piece</Old>
     </mnuOptionsEndPos>
     <mnuOptionsAreaSokoban>
-      <Translation>Показывать область, доступную игроку</Translation>
+      <Translation>Показывать о&amp;бласть, доступную игроку</Translation>
       <Old>Display reac&amp;hable area for Sokoban</Old>
     </mnuOptionsAreaSokoban>
     <mnuOptionsAreaPiece>
-      <Translation>Показывать область, доступную фишке</Translation>
+      <Translation>Показывать область, &amp;доступную фишке</Translation>
       <Old>Display reachable area &amp;for piece</Old>
     </mnuOptionsAreaPiece>
     <mnuOptionsLetterControl>
-      <Translation>Включить управление буквами</Translation>
+      <Translation>&amp;Включить управление буквами</Translation>
       <Old>Enable lette&amp;r control</Old>
     </mnuOptionsLetterControl>
     <mnuOptionsLetterControlNext>
-      <Translation>Следующий набор букв</Translation>
+      <Translation>Следу&amp;ющий набор букв</Translation>
       <Old>Show ne&amp;xt letter control set</Old>
     </mnuOptionsLetterControlNext>
     <mnuOptionsSound>
-      <Translation>Включить звук</Translation>
+      <Translation>Включить &amp;звук</Translation>
       <Old>Enable &amp;sound</Old>
     </mnuOptionsSound>
     <mnuOptionsAnimation>
-      <Translation>Включить анимацию</Translation>
+      <Translation>Включить &amp;анимацию</Translation>
       <Old>Enable &amp;animations</Old>
     </mnuOptionsAnimation>
     <mnuOptionsChangeLanguage>
-      <Translation>Изменить язык</Translation>
+      <Translation>Изменить &amp;язык</Translation>
       <Old>&amp;Change language</Old>
     </mnuOptionsChangeLanguage>
     <mnuHelp>
@@ -521,7 +521,7 @@
       <Old>&amp;Help</Old>
     </mnuHelp>
     <mnuHelpHelp>
-      <Translation>Помощь...</Translation>
+      <Translation>&amp;Помощь...</Translation>
       <Old>&amp;Help...</Old>
     </mnuHelpHelp>
     <mnuHelpAbout>
@@ -639,43 +639,43 @@
   </Mainform>
   <Context>
     <mnuContextPlay>
-      <Translation>Играть</Translation>
+      <Translation>&amp;Играть</Translation>
       <Old>Pl&amp;ay this level</Old>
     </mnuContextPlay>
     <mnuContextEdit>
-      <Translation>Править</Translation>
+      <Translation>&amp;Править</Translation>
       <Old>&amp;Edit this level</Old>
     </mnuContextEdit>
     <mnuContextHighscores>
-      <Translation>Показать рекорды</Translation>
+      <Translation>Показать &amp;рекорды</Translation>
       <Old>Show &amp;highscores</Old>
     </mnuContextHighscores>
     <mnuContextNewLevel>
-      <Translation>Вставить новый уровень</Translation>
+      <Translation>Вставить &amp;новый уровень</Translation>
       <Old>C&amp;reate a new level here</Old>
     </mnuContextNewLevel>
     <mnuContextNewComment>
-      <Translation>Вставить комментарий</Translation>
+      <Translation>Вставить к&amp;омментарий</Translation>
       <Old>&amp;Insert a comment here</Old>
     </mnuContextNewComment>
     <mnuContextCut>
-      <Translation>Вырезать</Translation>
+      <Translation>&amp;Вырезать</Translation>
       <Old>C&amp;ut</Old>
     </mnuContextCut>
     <mnuContextCopy>
-      <Translation>Копировать</Translation>
+      <Translation>&amp;Копировать</Translation>
       <Old>&amp;Copy</Old>
     </mnuContextCopy>
     <mnuContextPaste>
-      <Translation>Вставить</Translation>
+      <Translation>Вст&amp;авить</Translation>
       <Old>&amp;Paste</Old>
     </mnuContextPaste>
     <mnuContextDelete>
-      <Translation>Удалить</Translation>
+      <Translation>&amp;Удалить</Translation>
       <Old>&amp;Delete</Old>
     </mnuContextDelete>
     <mnuContextHide>
-      <Translation>Скрыть список уровней</Translation>
+      <Translation>Скр&amp;ыть список уровней</Translation>
       <Old>Hide &amp;level list</Old>
     </mnuContextHide>
   </Context>
