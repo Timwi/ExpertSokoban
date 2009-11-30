@@ -245,8 +245,5 @@ namespace ExpertSokoban
         public TrString Version = "Version {0}";
     }
 
-    public partial class MainformTranslation { }
-    public partial class ContextMenuTranslation { }
-
 #pragma warning restore 1591    // Missing XML comment for publicly visible type or member
 }

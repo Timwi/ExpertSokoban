@@ -12,7 +12,7 @@ namespace ExpertSokoban
     /// <summary>
     /// Encapsulates the main form of the application. Apart from the menus and
     /// toolbars, the two most important components are LevelList (which is of type
-    /// LevelListBox) and MainArea (which is of type MainArea).
+    /// <see cref="LevelListBox"/>) and MainArea (which is of type <see cref="MainArea"/>).
     /// </summary>
     public partial class Mainform : ManagedForm
     {
@@ -29,8 +29,20 @@ namespace ExpertSokoban
             InitializeComponent();
 
 #if DEBUG
-            Lingo.TranslateControl(this, Program.Tr.Mainform, @"..\..\main\ExpSok\TranslationMainform.g.cs");
-            Lingo.TranslateControl(mnuContext, Program.Tr.Context, @"..\..\main\ExpSok\TranslationContextMenu.g.cs");
+            var defaultTranslation = new Translation();
+
+            // Auto-generate the translation classes for automated form translation
+            using (var generator = new Lingo.TranslationFileGenerator(@"..\..\main\ExpSok\Translation.g.cs"))
+            {
+                using (var form = new AboutBox(false))
+                    generator.TranslateControl(form, defaultTranslation.AboutBox);
+
+                using (var form = new HighscoresForm(false))
+                    generator.TranslateControl(form, defaultTranslation.Highscores);
+
+                generator.TranslateControl(this, Program.Tr.Mainform);
+                generator.TranslateControl(mnuContext, Program.Tr.Context);
+            }
 #else
             Lingo.TranslateControl(this, Program.Tr.Mainform);
             Lingo.TranslateControl(mnuContext, Program.Tr.Context);

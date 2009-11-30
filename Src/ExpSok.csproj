@@ -108,16 +108,7 @@
     </Compile>
     <Compile Include="Translation.cs">
     </Compile>
-    <Compile Include="TranslationAbout.g.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="TranslationContextMenu.g.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="TranslationHighscores.g.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="TranslationMainform.g.cs">
+    <Compile Include="Translation.g.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Virtual2DArray.cs" />
