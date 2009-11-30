@@ -1,262 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <item>
-  <ProgramName>
-    <Translation>Expert Sokoban</Translation>
-    <Old>Expert Sokoban</Old>
-  </ProgramName>
-  <LevelSolvedResourceName>
-    <Translation>Skin_LevelSolvedEo</Translation>
-    <Old>Skin_LevelSolved</Old>
-  </LevelSolvedResourceName>
-  <Mainform_Status_Moves>
-    <Translation>Movoj: {0}</Translation>
-    <Old>Moves: {0}</Old>
-  </Mainform_Status_Moves>
-  <Mainform_Status_Pushes>
-    <Translation>Puŝoj: {0}</Translation>
-    <Old>Pushes: {0}</Old>
-  </Mainform_Status_Pushes>
-  <Mainform_Status_PiecesRemaining>
-    <Translation>Eroj restantaj: {0}</Translation>
-    <Old>Remaining pieces: {0}</Old>
-  </Mainform_Status_PiecesRemaining>
-  <LevelList_LevelSolved>
-    <Translation>Solvita</Translation>
-    <Old>Solved</Old>
-  </LevelList_LevelSolved>
-  <LevelList_CurrentlyEditing>
-    <Translation>Redaktatas</Translation>
-    <Old>Currently editing</Old>
-  </LevelList_CurrentlyEditing>
-  <LevelList_JustSolved>
-    <Translation>Ĵus solvita</Translation>
-    <Old>Just solved</Old>
-  </LevelList_JustSolved>
-  <LevelList_CurrentlyPlaying>
-    <Translation>Ludatas</Translation>
-    <Old>Currently playing</Old>
-  </LevelList_CurrentlyPlaying>
-  <Save_FileType_TextFiles>
-    <Translation>Tekstdosieroj</Translation>
-    <Old>Text files</Old>
-  </Save_FileType_TextFiles>
-  <Save_FileType_AllFiles>
-    <Translation>Ĉiuj dosieroj</Translation>
-    <Old>All files</Old>
-  </Save_FileType_AllFiles>
-  <FileName_Untitled>
-    <Translation>(netitolita)</Translation>
-    <Old>(untitled)</Old>
-  </FileName_Untitled>
-  <PlayerNameMissing>
-    <Translation>(neniu ludanta nomo)</Translation>
-    <Old>(no player name)</Old>
-  </PlayerNameMissing>
-  <NewComment_Prompt>
-    <Translation>Bonvole entajpu komenton:</Translation>
-    <Old>Please enter a comment:</Old>
-  </NewComment_Prompt>
-  <EditComment_Prompt>
-    <Translation>Bonvole entajpu modifatan komenton:</Translation>
-    <Old>Please enter the revised comment:</Old>
-  </EditComment_Prompt>
-  <LevelList_Message_CannotSaveSettings_Title>
-    <Translation>Eraro dum konservado de agordoj</Translation>
-    <Old>Error saving settings</Old>
-  </LevelList_Message_CannotSaveSettings_Title>
-  <LevelList_Message_CannotSaveSettings>
-    <Translation>Ne eblis konservi agordon.</Translation>
-    <Old>The settings could not be saved.</Old>
-  </LevelList_Message_CannotSaveSettings>
-  <LevelList_Message_AllSolved_Title>
-    <Translation>Gratulojn!</Translation>
-    <Old>Congratulations!</Old>
-  </LevelList_Message_AllSolved_Title>
-  <LevelList_Message_AllSolved>
-    <Translation>Vi solvis ĉiujn puzlojn en tiu puzlo-dosiero!</Translation>
-    <Old>You have solved all levels in this level file!</Old>
-  </LevelList_Message_AllSolved>
-  <LevelList_Message_Next_Title>
-    <Translation>Malantaŭa puzlo</Translation>
-    <Old>Next level</Old>
-  </LevelList_Message_Next_Title>
-  <LevelList_Message_NextUnsolved_Title>
-    <Translation>Malantaŭa nesolvita puzlo</Translation>
-    <Old>Next unsolved level</Old>
-  </LevelList_Message_NextUnsolved_Title>
-  <LevelList_Message_Prev_Title>
-    <Translation>Antaŭa puzlo</Translation>
-    <Old>Previous level</Old>
-  </LevelList_Message_Prev_Title>
-  <LevelList_Message_PrevUnsolved_Title>
-    <Translation>Antaŭa nesolvita puzlo</Translation>
-    <Old>Previous unsolved level</Old>
-  </LevelList_Message_PrevUnsolved_Title>
-  <LevelList_Message_NoMoreUnsolved>
-    <Translation>Pliajn nesolvitajn puzlojn tiu puzlo-dosiero ne enhavas.</Translation>
-    <Old>There are no more unsolved levels in this level file.</Old>
-  </LevelList_Message_NoMoreUnsolved>
-  <LevelList_Message_NoOtherLevel>
-    <Translation>Alian puzlon tiu puzlo-dosiero ne enhavas.</Translation>
-    <Old>There is no other level in the level file.</Old>
-  </LevelList_Message_NoOtherLevel>
-  <Mainform_InvalidFile_Title>
-    <Translation>Eraro dum malfarmado de puzlo-dosiero</Translation>
-    <Old>Error opening level file</Old>
-  </Mainform_InvalidFile_Title>
-  <Mainform_InvalidFile>
-    <Translation>La elektita dosiero ne estas valida Sokoban-puzlo-dosiero.</Translation>
-    <Old>The selected file is not a valid Sokoban level file.</Old>
-  </Mainform_InvalidFile>
-  <Mainform_NoHighscores_Title>
-    <Translation>Neniuj rekordoj ĉe tiu puzlo</Translation>
-    <Old>No highscores for this level</Old>
-  </Mainform_NoHighscores_Title>
-  <Mainform_NoHighscores>
-    <Translation>La elektita puzlo ankoraŭ ne havas konservitajn rekordojn.</Translation>
-    <Old>The selected level does not have any highscores associated with it yet.</Old>
-  </Mainform_NoHighscores>
-  <NewComment_Title>
-    <Translation>Nova komento</Translation>
-    <Old>New comment</Old>
-  </NewComment_Title>
-  <EditComment_Title>
-    <Translation>Redakti komenton</Translation>
-    <Old>Edit comment</Old>
-  </EditComment_Title>
-  <LevelList_Message_DeleteLevel_Title>
-    <Translation>Forigi puzlon</Translation>
-    <Old>Delete level</Old>
-  </LevelList_Message_DeleteLevel_Title>
-  <LevelList_Message_SaveChanges>
-    <Translation>Vi ŝanĝis la enhavon de {0}. Ĉu vi volas konservi tiujn ŝanĝojn?</Translation>
-    <Old>You have made changes to {0}. Would you like to save those changes?</Old>
-  </LevelList_Message_SaveChanges>
-  <LevelList_Message_DeleteLevel_CurrentlyEditing>
-    <Translation encoding="c-literal">Vi nune redaktadas tiun puzlon.\n\nSe vi forigas tiun puzlon nun, ĉiuj el viaj modifoj forigatos.\n\nĈu vi certas, ke vi volas fari tion?</Translation>
-    <Old encoding="c-literal">You are currently editing this level.\n\nIf you delete this level now, all your modifications will be discarded.\n\nAre you sure you wish to do this?</Old>
-  </LevelList_Message_DeleteLevel_CurrentlyEditing>
-  <LevelList_Message_DeleteLevel_CurrentlyPlaying>
-    <Translation encoding="c-literal">Vi nune ludadas tiun puzlon.\n\nĈu vi certas, ke vi volas ĝin kapitulaci kaj forigi?</Translation>
-    <Old encoding="c-literal">You are currently playing this level.\n\nAre you sure you wish to give up and delete this level?</Old>
-  </LevelList_Message_DeleteLevel_CurrentlyPlaying>
-  <LevelList_Message_DeleteLevel_Sure>
-    <Translation>Ĉu vi certas, ke vi volas forigi tiun puzlon?</Translation>
-    <Old>Are you sure you wish to delete this level?</Old>
-  </LevelList_Message_DeleteLevel_Sure>
-  <LevelList_Message_DeleteLevel_btnDelete>
-    <Translation>&amp;Forigi puzlon</Translation>
-    <Old>&amp;Delete level</Old>
-  </LevelList_Message_DeleteLevel_btnDelete>
-  <MainArea_Message_SaveChanges>
-    <Translation>Ĉu vi volas konservi viajn modifojn ĉe tiu puzlo, kiun vi redaktas?</Translation>
-    <Old>Would you like to save your changes to the level you're editing?</Old>
-  </MainArea_Message_SaveChanges>
-  <MainArea_Message_GiveUp>
-    <Translation>Ĉu vi certas, ke vi volas kapitulaci la kurantan puzlon?</Translation>
-    <Old>Are you sure you wish to give up the current level?</Old>
-  </MainArea_Message_GiveUp>
-  <Mainform_ChooseName>
-    <Translation>Bonvole elektu nomon, kiu uziĝos por vin identigi en rekordo-tabloj.</Translation>
-    <Old>Please choose a name which will be used to identify you in highscore tables.</Old>
-  </Mainform_ChooseName>
-  <Mainform_ChooseName_FirstRun>
-    <Translation encoding="c-literal">Bonvole elektu nomon, kiu uziĝos por vin identigi en rekordo-tabloj.\nVi povas poste ŝanĝi tiun nomon klakante "Ŝanĝi ludantan nomon" en la menuo "Puzlo".</Translation>
-    <Old encoding="c-literal">Please choose a name which will be used to identify you in highscore tables.\nYou can change this name later by selecting "Change player name" from the "Level" menu.</Old>
-  </Mainform_ChooseName_FirstRun>
-  <Mainform_ChooseName_SolvedLevel>
-    <Translation encoding="c-literal">Gratulatojn! Vi solvis la kurantan puzlon.\nBonvole elektu nomon, kiu uziĝos por vin identigi en rekordo-tabloj.\nSe vi nomon nun ne elektas, via poentrezulto ĉe tiu puzlo ne konserviĝos.\nVi povas poste ŝanĝi tiun nomon klakante "Ŝanĝi ludantan nomon" en la menuo "Puzlo".</Translation>
-    <Old encoding="c-literal">Congratulations! You've solved the current level.\nPlease choose a name which will be used to identify you in highscore tables.\nIf you do not choose a name now, your score for this level will not be recorded.\nYou can change this name again later by selecting "Change player name" from the "Level" menu.</Old>
-  </Mainform_ChooseName_SolvedLevel>
-  <Mainform_Validity_CannotOpen>
-    <Translation>La puzlo ne eblis malfermi, ĉar ĝi malvalidas.</Translation>
-    <Old>The level could not be opened because it is invalid.</Old>
-  </Mainform_Validity_CannotOpen>
-  <Mainform_Validity_Valid>
-    <Translation>La puzlo validas.</Translation>
-    <Old>The level is valid.</Old>
-  </Mainform_Validity_Valid>
-  <Mainform_Validity_NotEnclosed>
-    <Translation>La puzlo malvalidas ĉar ĝi ne tute estas kadrita de muro.</Translation>
-    <Old>The level is invalid because it is not completely enclosed by a wall.</Old>
-  </Mainform_Validity_NotEnclosed>
-  <Mainform_Validity_WrongNumber>
-    <Translation>La puzlo malvalidas ĉar la nombro de eroj ne egalas al la nombro de celoj.</Translation>
-    <Old>The level is invalid because the number of pieces does not match the number of targets.</Old>
-  </Mainform_Validity_WrongNumber>
-  <Mainform_Validity_CannotOpen_Fix>
-    <Translation>Bezonas ke vi redaktu la puzlon por ĝin ripari. Ĉu vi volas redakti la puzlon nun?</Translation>
-    <Old>You must edit the level in order to address this issue. Would you like to edit the level now?</Old>
-  </Mainform_Validity_CannotOpen_Fix>
-  <Mainform_Validity_CannotOpen_btnEdit>
-    <Translation>&amp;Redakti puzlon</Translation>
-    <Old>&amp;Edit level</Old>
-  </Mainform_Validity_CannotOpen_btnEdit>
-  <Mainform_Validity_CannotSave_Warning>
-    <Translation>Dum ankoraŭ ekzistas la problemo, la puzlo ne ludeblas. Ĉu vi certas, ke vi volas lasi la puzlon en tiu malvalida stato?</Translation>
-    <Old>You cannot play this level until you address this issue. Are you sure you wish to leave the level in this invalid state?</Old>
-  </Mainform_Validity_CannotSave_Warning>
-  <Mainform_Validity_CannotSave_btnSave>
-    <Translation>&amp;Konservi puzlon malgraŭe</Translation>
-    <Old>&amp;Save level anyway</Old>
-  </Mainform_Validity_CannotSave_btnSave>
-  <Mainform_Validity_CannotSave_btnResume>
-    <Translation>Kontinui &amp;redaktadon</Translation>
-    <Old>&amp;Resume editing</Old>
-  </Mainform_Validity_CannotSave_btnResume>
-  <Mainform_MessageTitle_Exit>
-    <Translation>Eliri Expert Sokoban-on</Translation>
-    <Old>Exit Expert Sokoban</Old>
-  </Mainform_MessageTitle_Exit>
-  <Mainform_MessageTitle_OpenLevel>
-    <Translation>Malfermi puzlon</Translation>
-    <Old>Open level</Old>
-  </Mainform_MessageTitle_OpenLevel>
-  <Mainform_MessageTitle_RetryLevel>
-    <Translation>Relanĉi puzlon</Translation>
-    <Old>Retry level</Old>
-  </Mainform_MessageTitle_RetryLevel>
-  <Mainform_MessageTitle_NewLevelFile>
-    <Translation>Novan puzlo-dosieron</Translation>
-    <Old>New level file</Old>
-  </Mainform_MessageTitle_NewLevelFile>
-  <Mainform_MessageTitle_OpenLevelFile>
-    <Translation>Malfermi puzlo-dosieron</Translation>
-    <Old>Open level file</Old>
-  </Mainform_MessageTitle_OpenLevelFile>
-  <Mainform_MessageTitle_FinishEditing>
-    <Translation>Finigi redaktadon</Translation>
-    <Old>Finish editing</Old>
-  </Mainform_MessageTitle_FinishEditing>
-  <Mainform_Error_HelpFileNotFound>
-    <Translation>La helpdosiero ({0}) ne troveblas.</Translation>
-    <Old>The help file ({0}) could not be found.</Old>
-  </Mainform_Error_HelpFileNotFound>
-  <Dialogs_btnOK>
-    <Translation>OK</Translation>
-    <Old>OK</Old>
-  </Dialogs_btnOK>
-  <Dialogs_btnCancel>
-    <Translation>Nuligi</Translation>
-    <Old>Cancel</Old>
-  </Dialogs_btnCancel>
-  <Dialogs_btnSave>
-    <Translation>&amp;Konservi modifojn</Translation>
-    <Old>&amp;Save changes</Old>
-  </Dialogs_btnSave>
-  <Dialogs_btnDiscard>
-    <Translation>&amp;Forigi modifojn</Translation>
-    <Old>&amp;Discard changes</Old>
-  </Dialogs_btnDiscard>
-  <Dialogs_btnGiveUp>
-    <Translation>&amp;Kapitulaci</Translation>
-    <Old>&amp;Give up</Old>
-  </Dialogs_btnGiveUp>
   <Highscores>
-    <HighscoresForm>
-      <Translation>Rekordoj</Translation>
-      <Old>Highscores</Old>
-    </HighscoresForm>
     <Highscores>
       <IsNumber>
         <item>True</item>
@@ -275,28 +19,32 @@
         <item>{0} moves, {1} pushes</item>
       </Old>
     </Highscores>
+    <HighscoresForm>
+      <Translation>Rekordoj</Translation>
+      <Old>Highscores</Old>
+    </HighscoresForm>
     <btnOK>
       <Translation>OK</Translation>
       <Old>OK</Old>
     </btnOK>
   </Highscores>
   <AboutBox>
+    <Version>
+      <Translation>Versio {0}</Translation>
+      <Old>Version {0}</Old>
+    </Version>
     <AboutBox>
       <Translation>Pri Expert Sokoban</Translation>
       <Old>About Expert Sokoban</Old>
     </AboutBox>
     <lblCredits>
-      <Translation encoding="c-literal">Dankon al:\n    Programado: Timwi, Roman\n    Grafikoj: Roman, Timwi\n    Testado: Hawthorn\n    Traduko al Esperanto: Timwi</Translation>
-      <Old encoding="c-literal">Credits:\n    Programming: Timwi, Roman\n    Graphics: Roman, Timwi\n    Testing: Hawthorn</Old>
+      <Translation encoding="c-literal">Dankon al:\r\n    Programado: Timwi, Roman\r\n    Grafikoj: Roman, Timwi\r\n    Testado: Hawthorn\r\n    Traduko al Esperanto: Timwi</Translation>
+      <Old encoding="c-literal">Credits:\r\n    Programming: Timwi, Roman\r\n    Graphics: Roman, Timwi\r\n    Testing: Hawthorn</Old>
     </lblCredits>
     <btnOK>
       <Translation>OK</Translation>
       <Old>OK</Old>
     </btnOK>
-    <Version>
-      <Translation>Versio {0}</Translation>
-      <Old>Version {0}</Old>
-    </Version>
   </AboutBox>
   <Mainform>
     <Mainform>
@@ -674,4 +422,256 @@
       <Old>Hide &amp;level list</Old>
     </mnuContextHide>
   </Context>
+  <ProgramName>
+    <Translation>Expert Sokoban</Translation>
+    <Old>Expert Sokoban</Old>
+  </ProgramName>
+  <LevelSolvedResourceName>
+    <Translation>Skin_LevelSolvedEo</Translation>
+    <Old>Skin_LevelSolved</Old>
+  </LevelSolvedResourceName>
+  <Mainform_Status_Moves>
+    <Translation>Movoj: {0}</Translation>
+    <Old>Moves: {0}</Old>
+  </Mainform_Status_Moves>
+  <Mainform_Status_Pushes>
+    <Translation>Puŝoj: {0}</Translation>
+    <Old>Pushes: {0}</Old>
+  </Mainform_Status_Pushes>
+  <Mainform_Status_PiecesRemaining>
+    <Translation>Eroj restantaj: {0}</Translation>
+    <Old>Remaining pieces: {0}</Old>
+  </Mainform_Status_PiecesRemaining>
+  <LevelList_LevelSolved>
+    <Translation>Solvita</Translation>
+    <Old>Solved</Old>
+  </LevelList_LevelSolved>
+  <LevelList_CurrentlyEditing>
+    <Translation>Redaktatas</Translation>
+    <Old>Currently editing</Old>
+  </LevelList_CurrentlyEditing>
+  <LevelList_JustSolved>
+    <Translation>Ĵus solvita</Translation>
+    <Old>Just solved</Old>
+  </LevelList_JustSolved>
+  <LevelList_CurrentlyPlaying>
+    <Translation>Ludatas</Translation>
+    <Old>Currently playing</Old>
+  </LevelList_CurrentlyPlaying>
+  <Save_FileType_TextFiles>
+    <Translation>Tekstdosieroj</Translation>
+    <Old>Text files</Old>
+  </Save_FileType_TextFiles>
+  <Save_FileType_AllFiles>
+    <Translation>Ĉiuj dosieroj</Translation>
+    <Old>All files</Old>
+  </Save_FileType_AllFiles>
+  <FileName_Untitled>
+    <Translation>(netitolita)</Translation>
+    <Old>(untitled)</Old>
+  </FileName_Untitled>
+  <PlayerNameMissing>
+    <Translation>(neniu ludanta nomo)</Translation>
+    <Old>(no player name)</Old>
+  </PlayerNameMissing>
+  <NewComment_Prompt>
+    <Translation>Bonvole entajpu komenton:</Translation>
+    <Old>Please enter a comment:</Old>
+  </NewComment_Prompt>
+  <EditComment_Prompt>
+    <Translation>Bonvole entajpu modifatan komenton:</Translation>
+    <Old>Please enter the revised comment:</Old>
+  </EditComment_Prompt>
+  <LevelList_Message_CannotSaveSettings_Title>
+    <Translation>Eraro dum konservado de agordoj</Translation>
+    <Old>Error saving settings</Old>
+  </LevelList_Message_CannotSaveSettings_Title>
+  <LevelList_Message_CannotSaveSettings>
+    <Translation>Ne eblis konservi agordon.</Translation>
+    <Old>The settings could not be saved.</Old>
+  </LevelList_Message_CannotSaveSettings>
+  <LevelList_Message_AllSolved_Title>
+    <Translation>Gratulojn!</Translation>
+    <Old>Congratulations!</Old>
+  </LevelList_Message_AllSolved_Title>
+  <LevelList_Message_AllSolved>
+    <Translation>Vi solvis ĉiujn puzlojn en tiu puzlo-dosiero!</Translation>
+    <Old>You have solved all levels in this level file!</Old>
+  </LevelList_Message_AllSolved>
+  <LevelList_Message_Next_Title>
+    <Translation>Malantaŭa puzlo</Translation>
+    <Old>Next level</Old>
+  </LevelList_Message_Next_Title>
+  <LevelList_Message_NextUnsolved_Title>
+    <Translation>Malantaŭa nesolvita puzlo</Translation>
+    <Old>Next unsolved level</Old>
+  </LevelList_Message_NextUnsolved_Title>
+  <LevelList_Message_Prev_Title>
+    <Translation>Antaŭa puzlo</Translation>
+    <Old>Previous level</Old>
+  </LevelList_Message_Prev_Title>
+  <LevelList_Message_PrevUnsolved_Title>
+    <Translation>Antaŭa nesolvita puzlo</Translation>
+    <Old>Previous unsolved level</Old>
+  </LevelList_Message_PrevUnsolved_Title>
+  <LevelList_Message_NoMoreUnsolved>
+    <Translation>Pliajn nesolvitajn puzlojn tiu puzlo-dosiero ne enhavas.</Translation>
+    <Old>There are no more unsolved levels in this level file.</Old>
+  </LevelList_Message_NoMoreUnsolved>
+  <LevelList_Message_NoOtherLevel>
+    <Translation>Alian puzlon tiu puzlo-dosiero ne enhavas.</Translation>
+    <Old>There is no other level in the level file.</Old>
+  </LevelList_Message_NoOtherLevel>
+  <Mainform_InvalidFile_Title>
+    <Translation>Eraro dum malfarmado de puzlo-dosiero</Translation>
+    <Old>Error opening level file</Old>
+  </Mainform_InvalidFile_Title>
+  <Mainform_InvalidFile>
+    <Translation>La elektita dosiero ne estas valida Sokoban-puzlo-dosiero.</Translation>
+    <Old>The selected file is not a valid Sokoban level file.</Old>
+  </Mainform_InvalidFile>
+  <Mainform_NoHighscores_Title>
+    <Translation>Neniuj rekordoj ĉe tiu puzlo</Translation>
+    <Old>No highscores for this level</Old>
+  </Mainform_NoHighscores_Title>
+  <Mainform_NoHighscores>
+    <Translation>La elektita puzlo ankoraŭ ne havas konservitajn rekordojn.</Translation>
+    <Old>The selected level does not have any highscores associated with it yet.</Old>
+  </Mainform_NoHighscores>
+  <NewComment_Title>
+    <Translation>Nova komento</Translation>
+    <Old>New comment</Old>
+  </NewComment_Title>
+  <EditComment_Title>
+    <Translation>Redakti komenton</Translation>
+    <Old>Edit comment</Old>
+  </EditComment_Title>
+  <LevelList_Message_DeleteLevel_Title>
+    <Translation>Forigi puzlon</Translation>
+    <Old>Delete level</Old>
+  </LevelList_Message_DeleteLevel_Title>
+  <LevelList_Message_SaveChanges>
+    <Translation>Vi ŝanĝis la enhavon de {0}. Ĉu vi volas konservi tiujn ŝanĝojn?</Translation>
+    <Old>You have made changes to {0}. Would you like to save those changes?</Old>
+  </LevelList_Message_SaveChanges>
+  <LevelList_Message_DeleteLevel_CurrentlyEditing>
+    <Translation encoding="c-literal">Vi nune redaktadas tiun puzlon.\n\nSe vi forigas tiun puzlon nun, ĉiuj el viaj modifoj forigatos.\n\nĈu vi certas, ke vi volas fari tion?</Translation>
+    <Old encoding="c-literal">You are currently editing this level.\n\nIf you delete this level now, all your modifications will be discarded.\n\nAre you sure you wish to do this?</Old>
+  </LevelList_Message_DeleteLevel_CurrentlyEditing>
+  <LevelList_Message_DeleteLevel_CurrentlyPlaying>
+    <Translation encoding="c-literal">Vi nune ludadas tiun puzlon.\n\nĈu vi certas, ke vi volas ĝin kapitulaci kaj forigi?</Translation>
+    <Old encoding="c-literal">You are currently playing this level.\n\nAre you sure you wish to give up and delete this level?</Old>
+  </LevelList_Message_DeleteLevel_CurrentlyPlaying>
+  <LevelList_Message_DeleteLevel_Sure>
+    <Translation>Ĉu vi certas, ke vi volas forigi tiun puzlon?</Translation>
+    <Old>Are you sure you wish to delete this level?</Old>
+  </LevelList_Message_DeleteLevel_Sure>
+  <LevelList_Message_DeleteLevel_btnDelete>
+    <Translation>&amp;Forigi puzlon</Translation>
+    <Old>&amp;Delete level</Old>
+  </LevelList_Message_DeleteLevel_btnDelete>
+  <MainArea_Message_SaveChanges>
+    <Translation>Ĉu vi volas konservi viajn modifojn ĉe tiu puzlo, kiun vi redaktas?</Translation>
+    <Old>Would you like to save your changes to the level you're editing?</Old>
+  </MainArea_Message_SaveChanges>
+  <MainArea_Message_GiveUp>
+    <Translation>Ĉu vi certas, ke vi volas kapitulaci la kurantan puzlon?</Translation>
+    <Old>Are you sure you wish to give up the current level?</Old>
+  </MainArea_Message_GiveUp>
+  <Mainform_ChooseName>
+    <Translation>Bonvole elektu nomon, kiu uziĝos por vin identigi en rekordo-tabloj.</Translation>
+    <Old>Please choose a name which will be used to identify you in highscore tables.</Old>
+  </Mainform_ChooseName>
+  <Mainform_ChooseName_FirstRun>
+    <Translation encoding="c-literal">Bonvole elektu nomon, kiu uziĝos por vin identigi en rekordo-tabloj.\nVi povas poste ŝanĝi tiun nomon klakante "Ŝanĝi ludantan nomon" en la menuo "Puzlo".</Translation>
+    <Old encoding="c-literal">Please choose a name which will be used to identify you in highscore tables.\nYou can change this name later by selecting "Change player name" from the "Level" menu.</Old>
+  </Mainform_ChooseName_FirstRun>
+  <Mainform_ChooseName_SolvedLevel>
+    <Translation encoding="c-literal">Gratulatojn! Vi solvis la kurantan puzlon.\nBonvole elektu nomon, kiu uziĝos por vin identigi en rekordo-tabloj.\nSe vi nomon nun ne elektas, via poentrezulto ĉe tiu puzlo ne konserviĝos.\nVi povas poste ŝanĝi tiun nomon klakante "Ŝanĝi ludantan nomon" en la menuo "Puzlo".</Translation>
+    <Old encoding="c-literal">Congratulations! You've solved the current level.\nPlease choose a name which will be used to identify you in highscore tables.\nIf you do not choose a name now, your score for this level will not be recorded.\nYou can change this name again later by selecting "Change player name" from the "Level" menu.</Old>
+  </Mainform_ChooseName_SolvedLevel>
+  <Mainform_Validity_CannotOpen>
+    <Translation>La puzlo ne eblis malfermi, ĉar ĝi malvalidas.</Translation>
+    <Old>The level could not be opened because it is invalid.</Old>
+  </Mainform_Validity_CannotOpen>
+  <Mainform_Validity_Valid>
+    <Translation>La puzlo validas.</Translation>
+    <Old>The level is valid.</Old>
+  </Mainform_Validity_Valid>
+  <Mainform_Validity_NotEnclosed>
+    <Translation>La puzlo malvalidas ĉar ĝi ne tute estas kadrita de muro.</Translation>
+    <Old>The level is invalid because it is not completely enclosed by a wall.</Old>
+  </Mainform_Validity_NotEnclosed>
+  <Mainform_Validity_WrongNumber>
+    <Translation>La puzlo malvalidas ĉar la nombro de eroj ne egalas al la nombro de celoj.</Translation>
+    <Old>The level is invalid because the number of pieces does not match the number of targets.</Old>
+  </Mainform_Validity_WrongNumber>
+  <Mainform_Validity_CannotOpen_Fix>
+    <Translation>Bezonas ke vi redaktu la puzlon por ĝin ripari. Ĉu vi volas redakti la puzlon nun?</Translation>
+    <Old>You must edit the level in order to address this issue. Would you like to edit the level now?</Old>
+  </Mainform_Validity_CannotOpen_Fix>
+  <Mainform_Validity_CannotOpen_btnEdit>
+    <Translation>&amp;Redakti puzlon</Translation>
+    <Old>&amp;Edit level</Old>
+  </Mainform_Validity_CannotOpen_btnEdit>
+  <Mainform_Validity_CannotSave_Warning>
+    <Translation>Dum ankoraŭ ekzistas la problemo, la puzlo ne ludeblas. Ĉu vi certas, ke vi volas lasi la puzlon en tiu malvalida stato?</Translation>
+    <Old>You cannot play this level until you address this issue. Are you sure you wish to leave the level in this invalid state?</Old>
+  </Mainform_Validity_CannotSave_Warning>
+  <Mainform_Validity_CannotSave_btnSave>
+    <Translation>&amp;Konservi puzlon malgraŭe</Translation>
+    <Old>&amp;Save level anyway</Old>
+  </Mainform_Validity_CannotSave_btnSave>
+  <Mainform_Validity_CannotSave_btnResume>
+    <Translation>Kontinui &amp;redaktadon</Translation>
+    <Old>&amp;Resume editing</Old>
+  </Mainform_Validity_CannotSave_btnResume>
+  <Mainform_MessageTitle_Exit>
+    <Translation>Eliri Expert Sokoban-on</Translation>
+    <Old>Exit Expert Sokoban</Old>
+  </Mainform_MessageTitle_Exit>
+  <Mainform_MessageTitle_OpenLevel>
+    <Translation>Malfermi puzlon</Translation>
+    <Old>Open level</Old>
+  </Mainform_MessageTitle_OpenLevel>
+  <Mainform_MessageTitle_RetryLevel>
+    <Translation>Relanĉi puzlon</Translation>
+    <Old>Retry level</Old>
+  </Mainform_MessageTitle_RetryLevel>
+  <Mainform_MessageTitle_NewLevelFile>
+    <Translation>Novan puzlo-dosieron</Translation>
+    <Old>New level file</Old>
+  </Mainform_MessageTitle_NewLevelFile>
+  <Mainform_MessageTitle_OpenLevelFile>
+    <Translation>Malfermi puzlo-dosieron</Translation>
+    <Old>Open level file</Old>
+  </Mainform_MessageTitle_OpenLevelFile>
+  <Mainform_MessageTitle_FinishEditing>
+    <Translation>Finigi redaktadon</Translation>
+    <Old>Finish editing</Old>
+  </Mainform_MessageTitle_FinishEditing>
+  <Mainform_Error_HelpFileNotFound>
+    <Translation>La helpdosiero ({0}) ne troveblas.</Translation>
+    <Old>The help file ({0}) could not be found.</Old>
+  </Mainform_Error_HelpFileNotFound>
+  <Dialogs_btnOK>
+    <Translation>OK</Translation>
+    <Old>OK</Old>
+  </Dialogs_btnOK>
+  <Dialogs_btnCancel>
+    <Translation>Nuligi</Translation>
+    <Old>Cancel</Old>
+  </Dialogs_btnCancel>
+  <Dialogs_btnSave>
+    <Translation>&amp;Konservi modifojn</Translation>
+    <Old>&amp;Save changes</Old>
+  </Dialogs_btnSave>
+  <Dialogs_btnDiscard>
+    <Translation>&amp;Forigi modifojn</Translation>
+    <Old>&amp;Discard changes</Old>
+  </Dialogs_btnDiscard>
+  <Dialogs_btnGiveUp>
+    <Translation>&amp;Kapitulaci</Translation>
+    <Old>&amp;Give up</Old>
+  </Dialogs_btnGiveUp>
 </item>

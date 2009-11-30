@@ -66,14 +66,17 @@ namespace ExpertSokoban
     }
 
     [LingoStringClass]
-#if DEBUG
-    [LingoDebug(@"..\..\main\ExpSok\Translation.cs")]
-#endif
     public class Translation : TranslationBase
     {
         public static readonly Language DefaultLanguage = Language.EnglishUK;
 
         public Translation() : base(DefaultLanguage) { }
+
+        // Classes containing auto-generated string codes
+        public HighscoresFormTranslation Highscores = new HighscoresFormTranslation();
+        public AboutBoxTranslation AboutBox = new AboutBoxTranslation();
+        public MainformTranslation Mainform = new MainformTranslation();
+        public ContextMenuTranslation Context = new ContextMenuTranslation();
 
         [LingoInGroup(TranslationGroup.General)]
         public TrString ProgramName = "Expert Sokoban";
@@ -230,260 +233,20 @@ namespace ExpertSokoban
         [LingoInGroup(TranslationGroup.Confirm)]
         [LingoNotes(@"Button in dialogs where the user has a choice to give up the level they are currently playing.")]
         public TrString Dialogs_btnGiveUp = "&Give up";
-
-#if DEBUG
-        [LingoDebug(@"..\..\main\ExpSok\Translation.cs")]
-#endif
-        [LingoStringClass]
-        public class HighscoresFormTranslation
-        {
-            #region HighscoresFormTranslation
-            [LingoInGroup(TranslationGroup.Highscores)]
-            [LingoNotes("Title bar.")]
-            public TrString HighscoresForm = "Highscores";
-            [LingoInGroup(TranslationGroup.Highscores)]
-            public TrStringNum Highscores = new TrStringNum(new[] { "{0} move, {1} push", "{0} moves, {1} push", "{0} move, {1} pushes", "{0} moves, {1} pushes" }, new[] { true, true });
-            [LingoInGroup(TranslationGroup.Highscores)]
-            public TrString btnOK = "OK";
-            #endregion
-        }
-        public HighscoresFormTranslation Highscores = new HighscoresFormTranslation();
-
-#if DEBUG
-        [LingoDebug(@"..\..\main\ExpSok\Translation.cs")]
-#endif
-        [LingoStringClass]
-        public class AboutBoxTranslation
-        {
-            #region AboutBoxTranslation
-            [LingoInGroup(TranslationGroup.About)]
-            [LingoNotes("Title bar.")]
-            public TrString AboutBox = "About Expert Sokoban";
-            [LingoInGroup(TranslationGroup.About)]
-            [LingoNotes("This is displayed in a box in the About dialog. Please feel free to add a line to credit yourself for your translation work.")]
-            public TrString lblCredits = "Credits:\n    Programming: Timwi, Roman\n    Graphics: Roman, Timwi\n    Testing: Hawthorn";
-            [LingoInGroup(TranslationGroup.About)]
-            public TrString btnOK = "OK";
-            #endregion
-            [LingoInGroup(TranslationGroup.About)]
-            public TrString Version = "Version {0}";
-        }
-        public AboutBoxTranslation AboutBox = new AboutBoxTranslation();
-
-#if DEBUG
-        [LingoDebug(@"..\..\main\ExpSok\Translation.cs")]
-#endif
-        [LingoStringClass]
-        public class MainformTranslation
-        {
-            #region MainformTranslation
-            [LingoInGroup(TranslationGroup.General)]
-            [LingoNotes("Main window title bar.")]
-            public TrString Mainform = "Expert Sokoban";
-            [LingoInGroup(TranslationGroup.Accessibility)]
-            [LingoNotes("Describes the main menu bar.")]
-            public TrString mnuMain = "Main menu";
-            [LingoInGroup(TranslationGroup.LevelMenu)]
-            public TrString mnuLevel = "&Level";
-            [LingoInGroup(TranslationGroup.LevelMenu)]
-            public TrString mnuLevelNew = "&New level file";
-            [LingoInGroup(TranslationGroup.LevelMenu)]
-            public TrString mnuLevelOpen = "&Open level file...";
-            [LingoInGroup(TranslationGroup.LevelMenu)]
-            public TrString mnuLevelSave = "&Save level file";
-            [LingoInGroup(TranslationGroup.LevelMenu)]
-            public TrString mnuLevelSaveAs = "Save level file &as...";
-            [LingoInGroup(TranslationGroup.LevelMenu)]
-            public TrString mnuLevelUndo = "&Undo move";
-            [LingoInGroup(TranslationGroup.LevelMenu)]
-            public TrString mnuLevelRedo = "Redo &move";
-            [LingoInGroup(TranslationGroup.LevelMenu)]
-            public TrString mnuLevelRetry = "&Retry level";
-            [LingoInGroup(TranslationGroup.LevelMenu)]
-            public TrString mnuLevelHighscores = "Show &highscores";
-            [LingoInGroup(TranslationGroup.LevelMenu)]
-            public TrString mnuLevelPrevious = "&Previous level";
-            [LingoInGroup(TranslationGroup.LevelMenu)]
-            public TrString mnuLevelNext = "N&ext level";
-            [LingoInGroup(TranslationGroup.LevelMenu)]
-            public TrString mnuLevelPreviousUnsolved = "Pre&vious unsolved level";
-            [LingoInGroup(TranslationGroup.LevelMenu)]
-            public TrString mnuLevelNextUnsolved = "Next unsolve&d level";
-            [LingoInGroup(TranslationGroup.LevelMenu)]
-            public TrString mnuLevelChangePlayer = "&Change player name...";
-            [LingoInGroup(TranslationGroup.LevelMenu)]
-            public TrString mnuLevelExit = "E&xit";
-            [LingoInGroup(TranslationGroup.EditMenu)]
-            public TrString mnuEdit = "&Edit";
-            [LingoInGroup(TranslationGroup.EditMenu)]
-            public TrString mnuEditCreateLevel = "Create &new level";
-            [LingoInGroup(TranslationGroup.EditMenu)]
-            public TrString mnuEditEditLevel = "&Edit level";
-            [LingoInGroup(TranslationGroup.EditMenu)]
-            public TrString mnuEditAddComment = "Add a co&mment...";
-            [LingoInGroup(TranslationGroup.EditMenu)]
-            public TrString mnuEditDelete = "&Delete level/comment";
-            [LingoInGroup(TranslationGroup.EditMenu)]
-            public TrString mnuEditCut = "C&ut";
-            [LingoInGroup(TranslationGroup.EditMenu)]
-            public TrString mnuEditCopy = "&Copy";
-            [LingoInGroup(TranslationGroup.EditMenu)]
-            public TrString mnuEditPaste = "&Paste";
-            [LingoInGroup(TranslationGroup.EditMenu)]
-            public TrString mnuEditFinish = "&Finish editing";
-            [LingoInGroup(TranslationGroup.EditMenu)]
-            public TrString mnuEditCancel = "C&ancel editing";
-            [LingoInGroup(TranslationGroup.EditMenu)]
-            public TrString mnuEditWall = "&Wall tool";
-            [LingoInGroup(TranslationGroup.EditMenu)]
-            public TrString mnuEditPiece = "P&iece tool";
-            [LingoInGroup(TranslationGroup.EditMenu)]
-            public TrString mnuEditTarget = "&Target tool";
-            [LingoInGroup(TranslationGroup.EditMenu)]
-            public TrString mnuEditSokoban = "&Sokoban tool";
-            [LingoInGroup(TranslationGroup.OptionsMenu)]
-            public TrString mnuOptions = "&Options";
-            [LingoInGroup(TranslationGroup.OptionsMenu)]
-            public TrString mnuOptionsLevelList = "Display &level list";
-            [LingoInGroup(TranslationGroup.OptionsMenu)]
-            public TrString mnuOptionsPlayingToolbar = "Display pla&ying toolbar";
-            [LingoInGroup(TranslationGroup.OptionsMenu)]
-            public TrString mnuOptionsFileToolbars = "Display &editing toolbars (level file)";
-            [LingoInGroup(TranslationGroup.OptionsMenu)]
-            public TrString mnuOptionsEditLevelToolbar = "Display editin&g toolbar (level)";
-            [LingoInGroup(TranslationGroup.OptionsMenu)]
-            public TrString mnuOptionsStatusBar = "Display stat&us bar";
-            [LingoInGroup(TranslationGroup.OptionsMenu)]
-            public TrString mnuOptionsMoveNo = "Don't display &move path";
-            [LingoInGroup(TranslationGroup.OptionsMenu)]
-            public TrString mnuOptionsMoveLine = "Display move path as li&ne";
-            [LingoInGroup(TranslationGroup.OptionsMenu)]
-            public TrString mnuOptionsMoveDots = "Display move path as &dots";
-            [LingoInGroup(TranslationGroup.OptionsMenu)]
-            public TrString mnuOptionsMoveArrows = "Display mo&ve path as arrows";
-            [LingoInGroup(TranslationGroup.OptionsMenu)]
-            public TrString mnuOptionsPushNo = "Don't display &push path";
-            [LingoInGroup(TranslationGroup.OptionsMenu)]
-            public TrString mnuOptionsPushLine = "Display push path as l&ine";
-            [LingoInGroup(TranslationGroup.OptionsMenu)]
-            public TrString mnuOptionsPushDots = "Display push path as do&ts";
-            [LingoInGroup(TranslationGroup.OptionsMenu)]
-            public TrString mnuOptionsPushArrows = "Display push path as arro&ws";
-            [LingoInGroup(TranslationGroup.OptionsMenu)]
-            public TrString mnuOptionsEndPos = "Display end p&osition of Sokoban and piece";
-            [LingoInGroup(TranslationGroup.OptionsMenu)]
-            public TrString mnuOptionsAreaSokoban = "Display reac&hable area for Sokoban";
-            [LingoInGroup(TranslationGroup.OptionsMenu)]
-            public TrString mnuOptionsAreaPiece = "Display reachable area &for piece";
-            [LingoInGroup(TranslationGroup.OptionsMenu)]
-            public TrString mnuOptionsLetterControl = "Enable lette&r control";
-            [LingoInGroup(TranslationGroup.OptionsMenu)]
-            public TrString mnuOptionsLetterControlNext = "Show ne&xt letter control set";
-            [LingoInGroup(TranslationGroup.OptionsMenu)]
-            public TrString mnuOptionsSound = "Enable &sound";
-            [LingoInGroup(TranslationGroup.OptionsMenu)]
-            public TrString mnuOptionsAnimation = "Enable &animations";
-            [LingoInGroup(TranslationGroup.OptionsMenu)]
-            public TrString mnuOptionsChangeLanguage = "&Change language";
-            [LingoInGroup(TranslationGroup.HelpMenu)]
-            public TrString mnuHelp = "&Help";
-            [LingoInGroup(TranslationGroup.HelpMenu)]
-            public TrString mnuHelpHelp = "&Help...";
-            [LingoInGroup(TranslationGroup.HelpMenu)]
-            public TrString mnuHelpAbout = "&About";
-            [LingoInGroup(TranslationGroup.StatusBar)]
-            public TrString lblStatusSolved = "You have solved the level. Congratulations!";
-            [LingoInGroup(TranslationGroup.StatusBar)]
-            public TrString lblStatusNull = "No levels currently selected. Select a level from the level list to play.";
-            [LingoInGroup(TranslationGroup.Accessibility)]
-            [LingoNotes(@"Describes the toolbar which contains commands for editing a level.")]
-            public TrString toolEditLevel = "Level edit toolbar";
-            [LingoInGroup(TranslationGroup.ToolEditLevel)]
-            public TrString btnEditLevelWall = "Wall tool";
-            [LingoInGroup(TranslationGroup.ToolEditLevel)]
-            public TrString btnEditLevelPiece = "Piece tool";
-            [LingoInGroup(TranslationGroup.ToolEditLevel)]
-            public TrString btnEditLevelTarget = "Target tool";
-            [LingoInGroup(TranslationGroup.ToolEditLevel)]
-            public TrString btnEditLevelSokoban = "Sokoban tool";
-            [LingoInGroup(TranslationGroup.ToolEditLevel)]
-            public TrString btnEditLevelOK = "Finish editing";
-            [LingoInGroup(TranslationGroup.ToolEditLevel)]
-            public TrString btnEditLevelCancel = "Cancel editing";
-            [LingoInGroup(TranslationGroup.Accessibility)]
-            [LingoNotes(@"Describes the toolbar which contains commands for editing a level file.")]
-            public TrString toolFileEdit = "File edit toolbar";
-            [LingoInGroup(TranslationGroup.ToolFileEdit)]
-            public TrString btnFileEditNewLevel = "Create new level";
-            [LingoInGroup(TranslationGroup.ToolFileEdit)]
-            public TrString btnFileEditEditLevel = "Edit level";
-            [LingoInGroup(TranslationGroup.ToolFileEdit)]
-            public TrString btnFileEditAddComment = "Add a comment";
-            [LingoInGroup(TranslationGroup.ToolFileEdit)]
-            public TrString btnFileEditDeleteLevel = "Delete selected level or comment";
-            [LingoInGroup(TranslationGroup.Accessibility)]
-            [LingoNotes(@"Describes the toolbar which contains commands for handling level files.")]
-            public TrString toolFile = "File toolbar";
-            [LingoInGroup(TranslationGroup.ToolFile)]
-            public TrString btnFileNew = "New level file";
-            [LingoInGroup(TranslationGroup.ToolFile)]
-            public TrString btnFileOpen = "Open level file";
-            [LingoInGroup(TranslationGroup.ToolFile)]
-            public TrString btnFileSave = "Save level file";
-            [LingoInGroup(TranslationGroup.ToolFile)]
-            public TrString btnFileCut = "Cut";
-            [LingoInGroup(TranslationGroup.ToolFile)]
-            public TrString btnFileCopy = "Copy";
-            [LingoInGroup(TranslationGroup.ToolFile)]
-            public TrString btnFilePaste = "Paste";
-            [LingoInGroup(TranslationGroup.Accessibility)]
-            [LingoNotes(@"Describes the toolbar which contains commands for playing the game.")]
-            public TrString toolPlay = "Playing toolbar";
-            [LingoInGroup(TranslationGroup.ToolPlay)]
-            public TrString btnPlayOpenLevel = "Open level file";
-            [LingoInGroup(TranslationGroup.ToolPlay)]
-            public TrString btnPlayPrevLevel = "Previous level";
-            [LingoInGroup(TranslationGroup.ToolPlay)]
-            public TrString btnPlayNextLevel = "Next level";
-            [LingoInGroup(TranslationGroup.ToolPlay)]
-            public TrString btnPlayPrevUnsolvedLevel = "Previous unsolved level";
-            [LingoInGroup(TranslationGroup.ToolPlay)]
-            public TrString btnPlayNextUnsolvedLevel = "Next unsolved level";
-            #endregion
-        }
-        public MainformTranslation Mainform = new MainformTranslation();
-
-#if DEBUG
-        [LingoDebug(@"..\..\main\ExpSok\Translation.cs")]
-#endif
-        [LingoStringClass]
-        public class ContextMenuTranslation
-        {
-            #region ContextMenuTranslation
-            [LingoInGroup(TranslationGroup.ContextMenu)]
-            public TrString mnuContextPlay = "Pl&ay this level";
-            [LingoInGroup(TranslationGroup.ContextMenu)]
-            public TrString mnuContextEdit = "&Edit this level";
-            [LingoInGroup(TranslationGroup.ContextMenu)]
-            public TrString mnuContextHighscores = "Show &highscores";
-            [LingoInGroup(TranslationGroup.ContextMenu)]
-            public TrString mnuContextNewLevel = "C&reate a new level here";
-            [LingoInGroup(TranslationGroup.ContextMenu)]
-            public TrString mnuContextNewComment = "&Insert a comment here";
-            [LingoInGroup(TranslationGroup.ContextMenu)]
-            public TrString mnuContextCut = "C&ut";
-            [LingoInGroup(TranslationGroup.ContextMenu)]
-            public TrString mnuContextCopy = "&Copy";
-            [LingoInGroup(TranslationGroup.ContextMenu)]
-            public TrString mnuContextPaste = "&Paste";
-            [LingoInGroup(TranslationGroup.ContextMenu)]
-            public TrString mnuContextDelete = "&Delete";
-            [LingoInGroup(TranslationGroup.ContextMenu)]
-            public TrString mnuContextHide = "Hide &level list";
-            #endregion
-        }
-        public ContextMenuTranslation Context = new ContextMenuTranslation();
     }
+
+    public partial class HighscoresFormTranslation
+    {
+        public TrStringNum Highscores = new TrStringNum(new[] { "{0} move, {1} push", "{0} moves, {1} push", "{0} move, {1} pushes", "{0} moves, {1} pushes" }, new[] { true, true });
+    }
+
+    public partial class AboutBoxTranslation
+    {
+        public TrString Version = "Version {0}";
+    }
+
+    public partial class MainformTranslation { }
+    public partial class ContextMenuTranslation { }
 
 #pragma warning restore 1591    // Missing XML comment for publicly visible type or member
 }

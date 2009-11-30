@@ -18,6 +18,8 @@
     <OutputPath>..\Builds\$(Configuration)</OutputPath>
     <IntermediateOutputPath>..\Builds\$(Configuration)\obj-$(AssemblyName)</IntermediateOutputPath>
     <BaseIntermediateOutputPath>..\Builds\$(Configuration)\obj-$(AssemblyName)</BaseIntermediateOutputPath>
+    <StartupObject>
+    </StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -105,6 +107,18 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Translation.cs">
+    </Compile>
+    <Compile Include="TranslationAbout.g.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TranslationContextMenu.g.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TranslationHighscores.g.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TranslationMainform.g.cs">
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="Virtual2DArray.cs" />
   </ItemGroup>

@@ -27,8 +27,15 @@ namespace ExpertSokoban
             : base(Program.Settings.MainFormSettings)
         {
             InitializeComponent();
+
+#if DEBUG
+            Lingo.TranslateControl(this, Program.Tr.Mainform, @"..\..\main\ExpSok\TranslationMainform.g.cs");
+            Lingo.TranslateControl(mnuContext, Program.Tr.Context, @"..\..\main\ExpSok\TranslationContextMenu.g.cs");
+#else
             Lingo.TranslateControl(this, Program.Tr.Mainform);
             Lingo.TranslateControl(mnuContext, Program.Tr.Context);
+#endif
+
             translationHelper = new LanguageMainMenuHelper<Translation>("Expert Sokoban", "ExpSok", Translation.DefaultLanguage, Program.Settings.TranslationFormSettings,
                 Icon, setLanguage, mnuOptionsChangeLanguage, () => Program.Tr.Language);
             translationHelper.TranslationEditingEnabled = Program.TranslationEnabled;

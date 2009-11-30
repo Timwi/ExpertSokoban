@@ -8,9 +8,7 @@ namespace ExpertSokoban
 {
     partial class AboutBox : Form
     {
-        /// <summary>
-        /// Main constructor.
-        /// </summary>
+        /// <summary>Main constructor.</summary>
         public AboutBox()
         {
             InitializeComponent();
@@ -25,6 +23,13 @@ namespace ExpertSokoban
             this.lblCopyright.Text = AssemblyCopyright;
             this.lblCompanyName.Text = AssemblyCompany;
         }
+
+#if DEBUG
+        public AboutBox(bool dummy)
+        {
+            InitializeComponent();
+        }
+#endif
 
         #region Assembly Attribute Accessors
 

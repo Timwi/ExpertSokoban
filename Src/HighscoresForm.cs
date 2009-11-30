@@ -22,6 +22,15 @@ namespace ExpertSokoban
             Lingo.TranslateControl(this, Program.Tr.Highscores);
         }
 
+#if DEBUG
+        /// <summary>Constructor.</summary>
+        public HighscoresForm(bool dummy)
+            : base(Program.Settings.HighscoresFormSettings)
+        {
+            InitializeComponent();
+        }
+#endif
+
         private void okClick(object sender, EventArgs e)
         {
             DialogResult = DialogResult.OK;
