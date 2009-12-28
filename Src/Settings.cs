@@ -9,7 +9,7 @@ using RT.Util.Lingo;
 namespace ExpertSokoban
 {
     /// <summary>Encapsulates all the user settings that are persisted between runs of the application.</summary>
-    [Settings("ExpSok")]
+    [Settings("ExpSok", SettingsKind.UserSpecific)]
     public class Settings : SettingsThreadedBase
     {
         /// <summary>The settings for the main form (size, position, etc.).</summary>
