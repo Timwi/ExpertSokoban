@@ -29,22 +29,20 @@ namespace ExpertSokoban
             InitializeComponent();
 
 #if DEBUG
-            var defaultTranslation = new Translation();
-
             // Auto-generate the translation classes for automated form translation
             using (var generator = new Lingo.TranslationFileGenerator(@"..\..\main\ExpSok\Translation.g.cs"))
             {
                 using (var form = new AboutBox(false))
-                    generator.TranslateControl(form, defaultTranslation.AboutBox);
+                    generator.TranslateControl(form, Program.Tr.AboutBox);
 
                 using (var form = new HighscoresForm(false))
-                    generator.TranslateControl(form, defaultTranslation.Highscores);
+                    generator.TranslateControl(form, Program.Tr.Highscores);
 
                 generator.TranslateControl(this, Program.Tr.Mainform);
                 generator.TranslateControl(mnuContext, Program.Tr.Context);
             }
 
-            Lingo.WarnOfUnusedStrings(typeof(Translation), new Assembly[] { Assembly.GetExecutingAssembly() });
+            Lingo.WarnOfUnusedStrings(typeof(Translation), Assembly.GetExecutingAssembly());
 #else
             Lingo.TranslateControl(this, Program.Tr.Mainform);
             Lingo.TranslateControl(mnuContext, Program.Tr.Context);
