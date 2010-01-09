@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
 using RT.Util;
 using RT.Util.Dialogs;
@@ -43,6 +43,8 @@ namespace ExpertSokoban
                 generator.TranslateControl(this, Program.Tr.Mainform);
                 generator.TranslateControl(mnuContext, Program.Tr.Context);
             }
+
+            Lingo.WarnOfUnusedStrings(typeof(Translation), new Assembly[] { Assembly.GetExecutingAssembly() });
 #else
             Lingo.TranslateControl(this, Program.Tr.Mainform);
             Lingo.TranslateControl(mnuContext, Program.Tr.Context);
