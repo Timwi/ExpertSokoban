@@ -195,25 +195,6 @@ namespace ExpertSokoban
                     renderCellAsPartOfCompleteRender(g, x, y);
         }
 
-        /// <summary>Determines the font size to use when rendering the lettering for letter-based control.</summary>
-        /// <param name="g">Specifies the <see cref="Graphics"/> object to use when measuring the font size.</param>
-        /// <param name="font">Name of the font to use.</param>
-        public float FontSizeForLettering(Graphics g, string font)
-        {
-            float low = 1;
-            float high = 1024;
-            while (high - low > 0.1)
-            {
-                float trySize = (low + high) / 2;
-                SizeF sz = g.MeasureString("W", new Font(font, trySize, FontStyle.Bold));
-                if (sz.Width > 0.8f * _cellWidth || sz.Height > 0.8f * _cellHeight)
-                    high = trySize;
-                else
-                    low = trySize;
-            }
-            return high;
-        }
-
         /// <summary>Returns the co-ordinates of the cell that contains the given pixel.</summary>
         /// <param name="pixel">Co-ordinates of a pixel.</param>
         /// <returns>Co-ordinates of a cell.</returns>

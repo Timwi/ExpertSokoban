@@ -712,7 +712,7 @@ namespace ExpertSokoban
             // Draw the current lettering (if any)
             if ((_state == MainAreaState.Move || _state == MainAreaState.Push) && _letterings != null && _letterings.Count > 0 && _renderer.CellSize.Width > 0 && _renderer.CellSize.Height > 0)
             {
-                float fontSize = _renderer.FontSizeForLettering(e.Graphics, Font.Name);
+                float fontSize = e.Graphics.GetMaximumFontSize(new SizeF(0.9f * _renderer.CellWidth, 0.9f * _renderer.CellHeight), Font.FontFamily, "W");
                 foreach (var lettering in _letterings[0])
                 {
                     GraphicsPath gp = new GraphicsPath();
