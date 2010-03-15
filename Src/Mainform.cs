@@ -899,7 +899,7 @@ namespace ExpertSokoban
         /// </summary>
         private void help(object sender, EventArgs e)
         {
-            string helpfile = PathUtil.AppPath + "ExpSok.chm";
+            string helpfile = PathUtil.AppPathCombine("ExpSok.chm");
             if (File.Exists(helpfile))
                 Help.ShowHelp(this, helpfile, HelpNavigator.TopicId, "20");
             else
