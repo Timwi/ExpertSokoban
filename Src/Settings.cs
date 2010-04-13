@@ -10,7 +10,7 @@ namespace ExpertSokoban
 {
     /// <summary>Encapsulates all the user settings that are persisted between runs of the application.</summary>
     [Settings("ExpSok", SettingsKind.UserSpecific)]
-    public class Settings : SettingsThreadedBase
+    class Settings : SettingsThreadedBase
     {
         /// <summary>The settings for the main form (size, position, etc.).</summary>
         public ManagedForm.Settings MainFormSettings = new ManagedForm.Settings();

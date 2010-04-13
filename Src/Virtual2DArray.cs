@@ -7,7 +7,7 @@ namespace ExpertSokoban
 {
     /// <summary>Encapsulates a two-dimensional array of values of a specified type which are retrieved using a Get() method.</summary>
     /// <remarks><see cref="MoveFinder"/> and <see cref="PushFinder"/> implement this.</remarks>
-    public interface Virtual2DArray<T>
+    interface Virtual2DArray<T>
     {
         /// <summary>Width of the array.</summary>
         int Width { get; }

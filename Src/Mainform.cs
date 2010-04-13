@@ -14,7 +14,7 @@ namespace ExpertSokoban
     /// toolbars, the two most important components are LevelList (which is of type
     /// <see cref="LevelListBox"/>) and MainArea (which is of type <see cref="MainArea"/>).
     /// </summary>
-    public partial class Mainform : ManagedForm
+    partial class Mainform : ManagedForm
     {
         LanguageMainMenuHelper<Translation> translationHelper;
 

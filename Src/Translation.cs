@@ -5,7 +5,7 @@ namespace ExpertSokoban
 {
 #pragma warning disable 1591    // Missing XML comment for publicly visible type or member
 
-    public enum TranslationGroup
+    enum TranslationGroup
     {
         [LingoGroup("Menu: Level", null)]
         LevelMenu,
@@ -66,7 +66,7 @@ namespace ExpertSokoban
     }
 
     [LingoStringClass]
-    public class Translation : TranslationBase
+    sealed class Translation : TranslationBase
     {
         public static readonly Language DefaultLanguage = Language.EnglishUK;
 
@@ -235,12 +235,12 @@ namespace ExpertSokoban
         public TrString Dialogs_btnGiveUp = "&Give up";
     }
 
-    public partial class HighscoresFormTranslation
+    sealed partial class HighscoresFormTranslation
     {
         public TrStringNum Highscores = new TrStringNum(new[] { "{0} move, {1} push", "{0} moves, {1} push", "{0} move, {1} pushes", "{0} moves, {1} pushes" }, new[] { true, true });
     }
 
-    public partial class AboutBoxTranslation
+    sealed partial class AboutBoxTranslation
     {
         public TrString Version = "Version {0}";
     }

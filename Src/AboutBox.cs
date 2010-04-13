@@ -6,7 +6,7 @@ using RT.Util;
 
 namespace ExpertSokoban
 {
-    partial class AboutBox : Form
+    sealed partial class AboutBox : Form
     {
         /// <summary>Main constructor.</summary>
         public AboutBox()

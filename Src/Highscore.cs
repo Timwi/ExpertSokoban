@@ -4,7 +4,7 @@ namespace ExpertSokoban
 {
     /// <summary>Encapsulates a user's score for a specific level.</summary>
     [Serializable]
-    public class Score
+    sealed class Score
     {
         /// <summary>Number of moves.</summary>
         public int Moves;
@@ -21,7 +21,7 @@ namespace ExpertSokoban
     /// Encapsulates a player's highscore in a level.
     /// </summary>
     [Serializable]
-    public class Highscore : IComparable<Highscore>
+    sealed class Highscore : IComparable<Highscore>
     {
         /// <summary>
         /// The player's best result, where "best" means "fewest pushes".

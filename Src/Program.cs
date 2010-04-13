@@ -17,7 +17,7 @@ namespace ExpertSokoban
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        public static void Main(string[] args)
+        static void Main(string[] args)
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

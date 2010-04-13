@@ -10,7 +10,7 @@ namespace ExpertSokoban
     /// <summary>
     /// Enumerates the various images used in visually rendering a SokobanLevel.
     /// </summary>
-    public enum SokobanImage
+    enum SokobanImage
     {
         /// <summary>Indicates a wall.</summary>
         Wall,
@@ -31,7 +31,7 @@ namespace ExpertSokoban
     /// <summary>
     /// Encapsulates the fields and methods used in visually rendering a SokobanLevel.
     /// </summary>
-    public class Renderer
+    sealed class Renderer
     {
         /// <summary>
         /// The SokobanLevel that is being rendered.
@@ -597,7 +597,7 @@ namespace ExpertSokoban
             public int X;
         }
 
-        private class pathEventSegment : pathEvent
+        private sealed class pathEventSegment : pathEvent
         {
             public int SegmentIndex;
             public bool StartOfSegment;
@@ -609,7 +609,7 @@ namespace ExpertSokoban
             }
         }
 
-        private class pathEventChange : pathEvent
+        private sealed class pathEventChange : pathEvent
         {
             public pathEventChange(int newX)
             {

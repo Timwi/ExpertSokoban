@@ -13,7 +13,7 @@ namespace ExpertSokoban
     /// <summary>
     /// Encapsulates a list box that displays Sokoban levels and comments.
     /// </summary>
-    public class LevelListBox : ListBox
+    sealed class LevelListBox : ListBox
     {
         #region Current level and state
 
@@ -487,15 +487,15 @@ namespace ExpertSokoban
         #region Loading from / saving to files
 
         /// <summary>
-        /// Used only by LoadLevelPack(). Encapsulates the states that occur while
+        /// Used only by <see cref="LoadLevelPack(string)"/>. Encapsulates the states that occur while
         /// reading a text file containing levels.
         /// </summary>
         private enum levelReaderState { Empty, Comment, Level }
 
         /// <summary>
-        /// The exception thrown by LoadLevelPack() if the level file is invalid.
+        /// The exception thrown by <see cref="LoadLevelPack(string)"/> if the level file is invalid.
         /// </summary>
-        public class InvalidLevelException : Exception
+        public sealed class InvalidLevelException : Exception
         {
             /// <summary>Constructor.</summary>
             public InvalidLevelException() { }

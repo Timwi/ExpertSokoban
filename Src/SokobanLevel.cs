@@ -6,7 +6,7 @@ namespace ExpertSokoban
     /// <summary>
     /// Represents the possible contents of a single cell in a Sokoban level.
     /// </summary>
-    public enum SokobanCell
+    enum SokobanCell
     {
         /// <summary>The cell is empty.</summary>
         Blank,
@@ -25,7 +25,7 @@ namespace ExpertSokoban
     }
 
     /// <summary>Represents possible errors that can make a Sokoban level unplayable.</summary>
-    public enum SokobanLevelStatus
+    enum SokobanLevelStatus
     {
         /// <summary>The level is valid.</summary>
         Valid,
@@ -41,7 +41,7 @@ namespace ExpertSokoban
 
     /// <summary>Represents a Sokoban level, or a specific situation during the game.</summary>
     [Serializable]
-    public class SokobanLevel : IEquatable<SokobanLevel>
+    sealed class SokobanLevel : IEquatable<SokobanLevel>
     {
         /// <summary>Stores the individual cells of the level.</summary>
         private SokobanCell[] _cells;

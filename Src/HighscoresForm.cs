@@ -10,7 +10,7 @@ namespace ExpertSokoban
     /// <summary>
     /// Encapsulates the Highscores window.
     /// </summary>
-    public partial class HighscoresForm : ManagedForm
+    sealed partial class HighscoresForm : ManagedForm
     {
         private SokobanLevel _level;
 

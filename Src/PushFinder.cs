@@ -10,7 +10,7 @@ namespace ExpertSokoban
     /// the piece can be pushed to, and for each such cell, the optimal path (where "optimal"
     /// means "smallest number of pushes").
     /// </summary>
-    public class PushFinder : Virtual2DArray<bool>
+    class PushFinder : Virtual2DArray<bool>
     {
         /// <summary>
         /// Stores the number of pushes required to push the piece to a specific
@@ -52,34 +52,34 @@ namespace ExpertSokoban
         private Point[][][] _path;
 
         #region SpecialHeap class
-        private class SpecialHeap
+        private sealed class specialHeap
         {
-            private class ThreeIntegers
+            private sealed class threeIntegers
             {
                 private int _index, _pushLen, _moveLen;
-                public ThreeIntegers(int index, int pushLen, int moveLen)
+                public threeIntegers(int index, int pushLen, int moveLen)
                 { _index = index; _pushLen = pushLen; _moveLen = moveLen; }
                 public int Index { get { return _index; } }
                 public int PushLen { get { return _pushLen; } }
                 public int MoveLen { get { return _moveLen; } }
             }
             private PushFinder _pushFinder;
-            private ThreeIntegers[] _element;
+            private threeIntegers[] _element;
             private int _size;
 
             public bool Empty { get { return _size == 0; } }
 
-            public SpecialHeap(PushFinder pushFinder)
+            public specialHeap(PushFinder pushFinder)
             {
                 _pushFinder = pushFinder;
-                _element = new ThreeIntegers[64];
+                _element = new threeIntegers[64];
                 _size = 0;
             }
 
             private int compare(int xIndex, int yIndex)
             {
-                ThreeIntegers x = _element[xIndex];
-                ThreeIntegers y = _element[yIndex];
+                threeIntegers x = _element[xIndex];
+                threeIntegers y = _element[yIndex];
                 if (x.PushLen < y.PushLen) return -1;
                 if (x.PushLen > y.PushLen) return 1;
                 if (x.MoveLen < y.MoveLen) return -1;
@@ -89,7 +89,7 @@ namespace ExpertSokoban
 
             private void swap(int xIndex, int yIndex)
             {
-                ThreeIntegers tmp = _element[xIndex];
+                threeIntegers tmp = _element[xIndex];
                 _element[xIndex] = _element[yIndex];
                 _element[yIndex] = tmp;
             }
@@ -141,11 +141,11 @@ namespace ExpertSokoban
             {
                 if (_size == _element.Length)
                 {
-                    ThreeIntegers[] newArray = new ThreeIntegers[2 * _element.Length];
+                    threeIntegers[] newArray = new threeIntegers[2 * _element.Length];
                     Array.Copy(_element, newArray, _element.Length);
                     _element = newArray;
                 }
-                _element[_size] = new ThreeIntegers(i, _pushFinder._pushLength[i], _pushFinder._moveLength[i]);
+                _element[_size] = new threeIntegers(i, _pushFinder._pushLength[i], _pushFinder._moveLength[i]);
                 _size++;
                 reheapifyUp(_size - 1);
             }
@@ -192,7 +192,7 @@ namespace ExpertSokoban
         public PushFinder(SokobanLevel level, Point selectedPiece, MoveFinder moveFinder)
         {
             _level = level;
-            SpecialHeap priorityQueue = new SpecialHeap(this);
+            specialHeap priorityQueue = new specialHeap(this);
             Point origPiecePos = selectedPiece;
             Point origSokPos = _level.SokobanPos;
             int arraySize = 4 * level.Width * level.Height;
@@ -293,7 +293,7 @@ namespace ExpertSokoban
         /// <param name="arrIndex">Index of the node the Sokoban is moving to.</param>
         /// <param name="pos">Co-ordinates of the cell the Sokoban is moving to.</param>
         /// <param name="priorityQueue">The priority queue.</param>
-        private void addIfValid(int arrIndex, Point pos, SpecialHeap priorityQueue)
+        private void addIfValid(int arrIndex, Point pos, specialHeap priorityQueue)
         {
             if (_moveFinder.Get(pos))
             {
@@ -309,7 +309,7 @@ namespace ExpertSokoban
         /// shorter way to reach <paramref name="toNode"/> from the source node, and if so, update the node with the new path
         /// lengths and the new predecessor, and insert it into the priority queue.
         /// </summary>
-        private void relaxEdge(int fromNode, int toNode, int pushLength, int moveLength, SpecialHeap priorityQueue)
+        private void relaxEdge(int fromNode, int toNode, int pushLength, int moveLength, specialHeap priorityQueue)
         {
             if (
                 // Either we haven't discovered this node yet...

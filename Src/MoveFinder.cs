@@ -7,7 +7,7 @@ namespace ExpertSokoban
     /// <summary>
     /// Identifies one of the two modes of operation for a <see cref="MoveFinder"/>.
     /// </summary>
-    public enum MoveFinderOption
+    enum MoveFinderOption
     {
         /// <summary>
         /// Represents the normal mode of operation for a <see cref="MoveFinder"/>,
@@ -27,7 +27,7 @@ namespace ExpertSokoban
     /// Finds out (using a breath-first search) where the Sokoban can move, given a
     /// <see cref="SokobanLevel"/> object that represents the current situation of the game.
     /// </summary>
-    public class MoveFinder : Virtual2DArray<bool>
+    class MoveFinder : Virtual2DArray<bool>
     {
         /// <summary>The <see cref="SokobanLevel"/> we are examining.</summary>
         protected SokobanLevel _level;
@@ -193,7 +193,7 @@ namespace ExpertSokoban
     /// Encapsulates a <see cref="MoveFinder"/>, but overrides the methods <see cref="Get(Point)"/> and <see cref="Get(int, int)"/>
     /// in such a way that it returns true only for the reachable cells at the outline of the level.
     /// </summary>
-    public class MoveFinderOutline : MoveFinder
+    sealed class MoveFinderOutline : MoveFinder
     {
         /// <summary>
         /// Main constructor.

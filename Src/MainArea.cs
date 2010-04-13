@@ -20,7 +20,7 @@ namespace ExpertSokoban
     /// Encapsulates the different states the Main Area can be in.
     /// Used by the property MainArea.State.
     /// </summary>
-    public enum MainAreaState
+    enum MainAreaState
     {
         /// <summary>
         /// The Main Area is empty. It is not displaying a level. In this state, the
@@ -55,7 +55,7 @@ namespace ExpertSokoban
     /// Encapsulates the different tools a user can use while editing a level.
     /// Used by the property MainArea.Tool.
     /// </summary>
-    public enum MainAreaTool
+    enum MainAreaTool
     {
         /// <summary>
         /// Clicking a cell places or removes a wall.
@@ -83,7 +83,7 @@ namespace ExpertSokoban
     /// (move path and push path) while the user selects a destination cell for a piece.
     /// Used by the properties MainArea.MoveDrawMode and MainArea.PushDrawMode.
     /// </summary>
-    public enum PathDrawMode
+    enum PathDrawMode
     {
         /// <summary>
         /// The path is not displayed.
@@ -110,12 +110,12 @@ namespace ExpertSokoban
     /// Abstract base class for items in the Undo buffer.
     /// Subclasses are UndoMoveItem and UndoPushItem.
     /// </summary>
-    public abstract class UndoItem { }
+    abstract class UndoItem { }
 
     /// <summary>
     /// An item in the Undo buffer representing a Sokoban move (but no push).
     /// </summary>
-    public class UndoMoveItem : UndoItem
+    sealed class UndoMoveItem : UndoItem
     {
         /// <summary>
         /// The position from where the Sokoban moved.
@@ -149,7 +149,7 @@ namespace ExpertSokoban
     /// <summary>
     /// An item in the Undo buffer representing a push (including the corresponding move).
     /// </summary>
-    public class UndoPushItem : UndoItem
+    sealed class UndoPushItem : UndoItem
     {
         /// <summary>
         /// The position from where the Sokoban moved.
@@ -205,7 +205,7 @@ namespace ExpertSokoban
     /// Encapsulates the Main Area of Expert Sokoban's main form – the area in which a
     /// level is played or edited.
     /// </summary>
-    public class MainArea : DoubleBufferedPanel
+    sealed class MainArea : DoubleBufferedPanel
     {
         /// <summary>
         /// Gets the current state of the main area.
@@ -578,7 +578,7 @@ namespace ExpertSokoban
         }
 
         /// <summary>Identifies a sound. Used in calls to <see cref="playSound(MainAreaSound)"/>.</summary>
-        private enum MainAreaSound
+        private enum mainAreaSound
         {
             LevelSolved,
             Meep,
@@ -586,24 +586,24 @@ namespace ExpertSokoban
             EditorClick
         };
 
-        private Dictionary<MainAreaSound, object> _soundPlayers;
+        private Dictionary<mainAreaSound, object> _soundPlayers;
 
         /// <summary>Plays the specified sound.</summary>
         /// <param name="snd">Identifies the sound to play.</param>
-        private void playSound(MainAreaSound snd)
+        private void playSound(mainAreaSound snd)
         {
             if (!_soundEnabled)
                 return;
 
             if (_soundPlayers == null)
-                _soundPlayers = new Dictionary<MainAreaSound, object>();
+                _soundPlayers = new Dictionary<mainAreaSound, object>();
 
             if (!_soundPlayers.ContainsKey(snd))
             {
-                Stream soundStream = snd == MainAreaSound.LevelSolved ? Resources.SndLevelDone :
-                    snd == MainAreaSound.Meep ? Resources.SndMeep :
-                    snd == MainAreaSound.PiecePlaced ? Resources.SndPiecePlaced :
-                    snd == MainAreaSound.EditorClick ? Resources.SndEditorClick : null;
+                Stream soundStream = snd == mainAreaSound.LevelSolved ? Resources.SndLevelDone :
+                    snd == mainAreaSound.Meep ? Resources.SndMeep :
+                    snd == mainAreaSound.PiecePlaced ? Resources.SndPiecePlaced :
+                    snd == mainAreaSound.EditorClick ? Resources.SndEditorClick : null;
                 _soundPlayers[snd] = Environment.OSVersion.Platform == PlatformID.Win32NT ? (object) new SoundPlayerAsync(soundStream) : new SoundPlayer(soundStream);
             }
 
@@ -1017,11 +1017,11 @@ namespace ExpertSokoban
                 if (_level.SokobanPos != cell)
                 {
                     _level.SetCell(cell, CellType == SokobanCell.Wall ? SokobanCell.Blank : SokobanCell.Wall);
-                    playSound(MainAreaSound.EditorClick);
+                    playSound(mainAreaSound.EditorClick);
                     _modified = true;
                 }
                 else
-                    playSound(MainAreaSound.Meep);
+                    playSound(mainAreaSound.Meep);
             }
             else if (_tool == MainAreaTool.Piece)
             {
@@ -1032,11 +1032,11 @@ namespace ExpertSokoban
                         CellType == SokobanCell.Blank ? SokobanCell.Piece :
                         CellType == SokobanCell.Target ? SokobanCell.PieceOnTarget :
                                                                 SokobanCell.Blank);
-                    playSound(MainAreaSound.PiecePlaced);
+                    playSound(mainAreaSound.PiecePlaced);
                     _modified = true;
                 }
                 else
-                    playSound(MainAreaSound.Meep);
+                    playSound(mainAreaSound.Meep);
             }
             else if (_tool == MainAreaTool.Target)
             {
@@ -1047,11 +1047,11 @@ namespace ExpertSokoban
                         CellType == SokobanCell.Blank ? SokobanCell.Target :
                         CellType == SokobanCell.Target ? SokobanCell.Blank :
                                                                 SokobanCell.PieceOnTarget);
-                    playSound(MainAreaSound.PiecePlaced);
+                    playSound(mainAreaSound.PiecePlaced);
                     _modified = true;
                 }
                 else
-                    playSound(MainAreaSound.Meep);
+                    playSound(mainAreaSound.Meep);
             }
             else if (_tool == MainAreaTool.Sokoban)
             {
@@ -1062,11 +1062,11 @@ namespace ExpertSokoban
                     Point PrevSokobanPos = _level.SokobanPos;
                     _level.SetSokobanPos(cell);
                     _renderer.RenderCell(Graphics.FromImage(Buffer), PrevSokobanPos);
-                    playSound(MainAreaSound.PiecePlaced);
+                    playSound(mainAreaSound.PiecePlaced);
                     _modified = true;
                 }
                 else
-                    playSound(MainAreaSound.Meep);
+                    playSound(mainAreaSound.Meep);
             }
             int PrevSizeX = _level.Width;
             int PrevSizeY = _level.Height;
@@ -1093,7 +1093,7 @@ namespace ExpertSokoban
         {
             if (_moveSequence == null)
             {
-                playSound(MainAreaSound.Meep);
+                playSound(mainAreaSound.Meep);
                 return;
             }
 
@@ -1159,7 +1159,7 @@ namespace ExpertSokoban
             {
                 _state = MainAreaState.Solved;
                 _cursorPos = null;
-                playSound(MainAreaSound.LevelSolved);
+                playSound(mainAreaSound.LevelSolved);
                 Refresh();
                 if (LevelSolved != null)
                     LevelSolved(this, new EventArgs());
@@ -1167,7 +1167,7 @@ namespace ExpertSokoban
             else
             {
                 // Play a sound
-                playSound(MainAreaSound.PiecePlaced);
+                playSound(mainAreaSound.PiecePlaced);
 
                 // Add this action to the undo stack
                 if (origPushPos == null)
@@ -1469,7 +1469,7 @@ namespace ExpertSokoban
 
             // If the user selected an invalid cell, meep
             else
-                playSound(MainAreaSound.Meep);
+                playSound(mainAreaSound.Meep);
         }
 
         /// <summary>
