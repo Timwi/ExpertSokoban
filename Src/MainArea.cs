@@ -383,7 +383,7 @@ namespace ExpertSokoban
         /// <summary>
         /// If letter-based control is enabled, contains the possible letterings the user can cycle through. The first element is the currently-visible lettering.
         /// </summary>
-        private List<List<Tuple<char, Point>>> _letterings = null;
+        private List<List<RT.Util.Collections.Tuple<char, Point>>> _letterings = null;
 
         /// <summary>
         /// Indicates whether a move has been made or any changed to the level being edited.
@@ -1597,15 +1597,15 @@ namespace ExpertSokoban
                     }
                     else
                     {
-                        var l = new List<Tuple<char, Point>>();
+                        var l = new List<RT.Util.Collections.Tuple<char, Point>>();
                         if (_pushFinder.GetDir(lettering.E2, 1))
-                            l.Add(new Tuple<char, Point>('1', new Point(lettering.E2.X, lettering.E2.Y - 1)));
+                            l.Add(new RT.Util.Collections.Tuple<char, Point>('1', new Point(lettering.E2.X, lettering.E2.Y - 1)));
                         if (_pushFinder.GetDir(lettering.E2, 2))
-                            l.Add(new Tuple<char, Point>('2', new Point(lettering.E2.X - 1, lettering.E2.Y)));
+                            l.Add(new RT.Util.Collections.Tuple<char, Point>('2', new Point(lettering.E2.X - 1, lettering.E2.Y)));
                         if (_pushFinder.GetDir(lettering.E2, 3))
-                            l.Add(new Tuple<char, Point>('3', new Point(lettering.E2.X + 1, lettering.E2.Y)));
+                            l.Add(new RT.Util.Collections.Tuple<char, Point>('3', new Point(lettering.E2.X + 1, lettering.E2.Y)));
                         if (_pushFinder.GetDir(lettering.E2, 4))
-                            l.Add(new Tuple<char, Point>('4', new Point(lettering.E2.X, lettering.E2.Y + 1)));
+                            l.Add(new RT.Util.Collections.Tuple<char, Point>('4', new Point(lettering.E2.X, lettering.E2.Y + 1)));
                         _letterings.Insert(0, l);
                     }
                 }
@@ -1648,8 +1648,8 @@ namespace ExpertSokoban
         {
             if (_state == MainAreaState.Move)
             {
-                var ret = new List<List<Tuple<char, Point>>>();
-                var curList = new List<Tuple<char, Point>>();
+                var ret = new List<List<RT.Util.Collections.Tuple<char, Point>>>();
+                var curList = new List<RT.Util.Collections.Tuple<char, Point>>();
                 char curLetter = 'a';
                 for (int y = 0; y < _level.Height; y++)
                 {
@@ -1657,11 +1657,11 @@ namespace ExpertSokoban
                     {
                         if (_level.IsPiece(x, y) && (_moveFinder.Get(x + 1, y) || _moveFinder.Get(x - 1, y) || _moveFinder.Get(x, y + 1) || _moveFinder.Get(x, y - 1)))
                         {
-                            curList.Add(new Tuple<char, Point>(curLetter, new Point(x, y)));
+                            curList.Add(new RT.Util.Collections.Tuple<char, Point>(curLetter, new Point(x, y)));
                             if (curLetter == 'z')
                             {
                                 ret.Add(curList);
-                                curList = new List<Tuple<char, Point>>();
+                                curList = new List<RT.Util.Collections.Tuple<char, Point>>();
                                 curLetter = 'a';
                             }
                             else
@@ -1675,8 +1675,8 @@ namespace ExpertSokoban
             }
             else if (_state == MainAreaState.Push)
             {
-                var ret = new List<List<Tuple<char, Point>>>();
-                var curList = new List<Tuple<char, Point>>();
+                var ret = new List<List<RT.Util.Collections.Tuple<char, Point>>>();
+                var curList = new List<RT.Util.Collections.Tuple<char, Point>>();
                 char curLetter = 'a';
                 for (int y = 0; y < _level.Height; y++)
                 {
@@ -1684,11 +1684,11 @@ namespace ExpertSokoban
                     {
                         if (_level.Cell(x, y) == SokobanCell.Target && _pushFinder.Get(x, y))
                         {
-                            curList.Add(new Tuple<char, Point>(curLetter, new Point(x, y)));
+                            curList.Add(new RT.Util.Collections.Tuple<char, Point>(curLetter, new Point(x, y)));
                             if (curLetter == 'z')
                             {
                                 ret.Add(curList);
-                                curList = new List<Tuple<char, Point>>();
+                                curList = new List<RT.Util.Collections.Tuple<char, Point>>();
                                 curLetter = 'a';
                             }
                             else
@@ -1699,7 +1699,7 @@ namespace ExpertSokoban
                 if (curList.Count > 0)
                 {
                     ret.Add(curList);
-                    curList = new List<Tuple<char, Point>>();
+                    curList = new List<RT.Util.Collections.Tuple<char, Point>>();
                 }
                 curLetter = 'a';
                 for (int y = 0; y < _level.Height; y++)
@@ -1708,11 +1708,11 @@ namespace ExpertSokoban
                     {
                         if ((_level.Cell(x, y) == SokobanCell.Blank || new Point(x, y) == _selectedPiece) && _pushFinder.Get(x, y))
                         {
-                            curList.Add(new Tuple<char, Point>(curLetter, new Point(x, y)));
+                            curList.Add(new RT.Util.Collections.Tuple<char, Point>(curLetter, new Point(x, y)));
                             if (curLetter == 'z')
                             {
                                 ret.Add(curList);
-                                curList = new List<Tuple<char, Point>>();
+                                curList = new List<RT.Util.Collections.Tuple<char, Point>>();
                                 curLetter = 'a';
                             }
                             else
@@ -1725,7 +1725,7 @@ namespace ExpertSokoban
                 _letterings = ret;
             }
             else
-                _letterings = new List<List<Tuple<char, Point>>>();
+                _letterings = new List<List<RT.Util.Collections.Tuple<char, Point>>>();
         }
 
         /// <summary>
