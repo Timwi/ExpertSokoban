@@ -16,10 +16,8 @@
     <OutputPath>..\Builds\$(Configuration)</OutputPath>
     <IntermediateOutputPath>..\Builds\$(Configuration)\obj-$(AssemblyName)</IntermediateOutputPath>
     <BaseIntermediateOutputPath>..\Builds\$(Configuration)\obj-$(AssemblyName)</BaseIntermediateOutputPath>
-    <StartupObject>
-    </StartupObject>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
+    <StartupObject></StartupObject>
+    <FileUpgradeFlags></FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
     <PublishUrl>publish\</PublishUrl>
@@ -126,8 +124,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Translation.cs">
-    </Compile>
+    <Compile Include="Translation.cs"></Compile>
     <Compile Include="Translation.g.cs">
       <SubType>Code</SubType>
     </Compile>
