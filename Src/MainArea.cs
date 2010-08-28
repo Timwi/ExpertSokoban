@@ -383,7 +383,7 @@ namespace ExpertSokoban
         /// <summary>
         /// If letter-based control is enabled, contains the possible letterings the user can cycle through. The first element is the currently-visible lettering.
         /// </summary>
-        private List<List<RT.Util.ObsoleteTuple.Tuple<char, Point>>> _letterings = null;
+        private List<List<Tuple<char, Point>>> _letterings = null;
 
         /// <summary>
         /// Indicates whether a move has been made or any changed to the level being edited.
@@ -716,8 +716,8 @@ namespace ExpertSokoban
                 foreach (var lettering in _letterings[0])
                 {
                     GraphicsPath gp = new GraphicsPath();
-                    var rect = _renderer.CellRect(lettering.E2);
-                    gp.AddString(char.ToUpperInvariant(lettering.E1).ToString(), Font.FontFamily, (int) FontStyle.Bold, fontSize, new PointF(rect.X + rect.Width / 2, rect.Y + rect.Height / 2), new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
+                    var rect = _renderer.CellRect(lettering.Item2);
+                    gp.AddString(char.ToUpperInvariant(lettering.Item1).ToString(), Font.FontFamily, (int) FontStyle.Bold, fontSize, new PointF(rect.X + rect.Width / 2, rect.Y + rect.Height / 2), new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
                     GraphicsPath gp2 = new GraphicsPath();
                     gp2.AddPath(gp, false);
                     gp2.Widen(new Pen(Color.White, 3));
@@ -1550,62 +1550,62 @@ namespace ExpertSokoban
         {
             if (_letterings == null || _letterings.Count == 0)
                 return;
-            foreach (var lettering in _letterings[0].Where(tup => tup.E1 == e.KeyChar || char.ToUpperInvariant(tup.E1) == e.KeyChar))
+            foreach (var lettering in _letterings[0].Where(tup => tup.Item1 == e.KeyChar || char.ToUpperInvariant(tup.Item1) == e.KeyChar))
             {
                 if (_state == MainAreaState.Move)
-                    selectPiece(lettering.E2);
+                    selectPiece(lettering.Item2);
                 else if (_state == MainAreaState.Push)
                 {
-                    if (lettering.E1 == e.KeyChar && lettering.E1 == '1')
+                    if (lettering.Item1 == e.KeyChar && lettering.Item1 == '1')
                     {
-                        _origKeyDown = lettering.E2;
-                        _cursorPos = new Point(lettering.E2.X, lettering.E2.Y + 1);
+                        _origKeyDown = lettering.Item2;
+                        _cursorPos = new Point(lettering.Item2.X, lettering.Item2.Y + 1);
                         updatePushPathAfterKeyboardSelectionChange();
                         executePush();
                         _cursorPos = null;
                     }
-                    else if (lettering.E1 == e.KeyChar && lettering.E1 == '2')
+                    else if (lettering.Item1 == e.KeyChar && lettering.Item1 == '2')
                     {
-                        _origKeyDown = lettering.E2;
-                        _cursorPos = new Point(lettering.E2.X + 1, lettering.E2.Y);
+                        _origKeyDown = lettering.Item2;
+                        _cursorPos = new Point(lettering.Item2.X + 1, lettering.Item2.Y);
                         updatePushPathAfterKeyboardSelectionChange();
                         executePush();
                         _cursorPos = null;
                     }
-                    else if (lettering.E1 == e.KeyChar && lettering.E1 == '3')
+                    else if (lettering.Item1 == e.KeyChar && lettering.Item1 == '3')
                     {
-                        _origKeyDown = lettering.E2;
-                        _cursorPos = new Point(lettering.E2.X - 1, lettering.E2.Y);
+                        _origKeyDown = lettering.Item2;
+                        _cursorPos = new Point(lettering.Item2.X - 1, lettering.Item2.Y);
                         updatePushPathAfterKeyboardSelectionChange();
                         executePush();
                         _cursorPos = null;
                     }
-                    else if (lettering.E1 == e.KeyChar && lettering.E1 == '4')
+                    else if (lettering.Item1 == e.KeyChar && lettering.Item1 == '4')
                     {
-                        _origKeyDown = lettering.E2;
-                        _cursorPos = new Point(lettering.E2.X, lettering.E2.Y - 1);
+                        _origKeyDown = lettering.Item2;
+                        _cursorPos = new Point(lettering.Item2.X, lettering.Item2.Y - 1);
                         updatePushPathAfterKeyboardSelectionChange();
                         executePush();
                         _cursorPos = null;
                     }
-                    else if (lettering.E1 == e.KeyChar)
+                    else if (lettering.Item1 == e.KeyChar)
                     {
-                        _cursorPos = lettering.E2;
+                        _cursorPos = lettering.Item2;
                         updatePushPathAfterKeyboardSelectionChange();
                         executePush();
                         _cursorPos = null;
                     }
                     else
                     {
-                        var l = new List<RT.Util.ObsoleteTuple.Tuple<char, Point>>();
-                        if (_pushFinder.GetDir(lettering.E2, 1))
-                            l.Add(new RT.Util.ObsoleteTuple.Tuple<char, Point>('1', new Point(lettering.E2.X, lettering.E2.Y - 1)));
-                        if (_pushFinder.GetDir(lettering.E2, 2))
-                            l.Add(new RT.Util.ObsoleteTuple.Tuple<char, Point>('2', new Point(lettering.E2.X - 1, lettering.E2.Y)));
-                        if (_pushFinder.GetDir(lettering.E2, 3))
-                            l.Add(new RT.Util.ObsoleteTuple.Tuple<char, Point>('3', new Point(lettering.E2.X + 1, lettering.E2.Y)));
-                        if (_pushFinder.GetDir(lettering.E2, 4))
-                            l.Add(new RT.Util.ObsoleteTuple.Tuple<char, Point>('4', new Point(lettering.E2.X, lettering.E2.Y + 1)));
+                        var l = new List<Tuple<char, Point>>();
+                        if (_pushFinder.GetDir(lettering.Item2, 1))
+                            l.Add(Tuple.Create('1', new Point(lettering.Item2.X, lettering.Item2.Y - 1)));
+                        if (_pushFinder.GetDir(lettering.Item2, 2))
+                            l.Add(Tuple.Create('2', new Point(lettering.Item2.X - 1, lettering.Item2.Y)));
+                        if (_pushFinder.GetDir(lettering.Item2, 3))
+                            l.Add(Tuple.Create('3', new Point(lettering.Item2.X + 1, lettering.Item2.Y)));
+                        if (_pushFinder.GetDir(lettering.Item2, 4))
+                            l.Add(Tuple.Create('4', new Point(lettering.Item2.X, lettering.Item2.Y + 1)));
                         _letterings.Insert(0, l);
                     }
                 }
@@ -1648,8 +1648,8 @@ namespace ExpertSokoban
         {
             if (_state == MainAreaState.Move)
             {
-                var ret = new List<List<RT.Util.ObsoleteTuple.Tuple<char, Point>>>();
-                var curList = new List<RT.Util.ObsoleteTuple.Tuple<char, Point>>();
+                var ret = new List<List<Tuple<char, Point>>>();
+                var curList = new List<Tuple<char, Point>>();
                 char curLetter = 'a';
                 for (int y = 0; y < _level.Height; y++)
                 {
@@ -1657,11 +1657,11 @@ namespace ExpertSokoban
                     {
                         if (_level.IsPiece(x, y) && (_moveFinder.Get(x + 1, y) || _moveFinder.Get(x - 1, y) || _moveFinder.Get(x, y + 1) || _moveFinder.Get(x, y - 1)))
                         {
-                            curList.Add(new RT.Util.ObsoleteTuple.Tuple<char, Point>(curLetter, new Point(x, y)));
+                            curList.Add(Tuple.Create(curLetter, new Point(x, y)));
                             if (curLetter == 'z')
                             {
                                 ret.Add(curList);
-                                curList = new List<RT.Util.ObsoleteTuple.Tuple<char, Point>>();
+                                curList = new List<Tuple<char, Point>>();
                                 curLetter = 'a';
                             }
                             else
@@ -1675,8 +1675,8 @@ namespace ExpertSokoban
             }
             else if (_state == MainAreaState.Push)
             {
-                var ret = new List<List<RT.Util.ObsoleteTuple.Tuple<char, Point>>>();
-                var curList = new List<RT.Util.ObsoleteTuple.Tuple<char, Point>>();
+                var ret = new List<List<Tuple<char, Point>>>();
+                var curList = new List<Tuple<char, Point>>();
                 char curLetter = 'a';
                 for (int y = 0; y < _level.Height; y++)
                 {
@@ -1684,11 +1684,11 @@ namespace ExpertSokoban
                     {
                         if (_level.Cell(x, y) == SokobanCell.Target && _pushFinder.Get(x, y))
                         {
-                            curList.Add(new RT.Util.ObsoleteTuple.Tuple<char, Point>(curLetter, new Point(x, y)));
+                            curList.Add(Tuple.Create(curLetter, new Point(x, y)));
                             if (curLetter == 'z')
                             {
                                 ret.Add(curList);
-                                curList = new List<RT.Util.ObsoleteTuple.Tuple<char, Point>>();
+                                curList = new List<Tuple<char, Point>>();
                                 curLetter = 'a';
                             }
                             else
@@ -1699,7 +1699,7 @@ namespace ExpertSokoban
                 if (curList.Count > 0)
                 {
                     ret.Add(curList);
-                    curList = new List<RT.Util.ObsoleteTuple.Tuple<char, Point>>();
+                    curList = new List<Tuple<char, Point>>();
                 }
                 curLetter = 'a';
                 for (int y = 0; y < _level.Height; y++)
@@ -1708,11 +1708,11 @@ namespace ExpertSokoban
                     {
                         if ((_level.Cell(x, y) == SokobanCell.Blank || new Point(x, y) == _selectedPiece) && _pushFinder.Get(x, y))
                         {
-                            curList.Add(new RT.Util.ObsoleteTuple.Tuple<char, Point>(curLetter, new Point(x, y)));
+                            curList.Add(Tuple.Create(curLetter, new Point(x, y)));
                             if (curLetter == 'z')
                             {
                                 ret.Add(curList);
-                                curList = new List<RT.Util.ObsoleteTuple.Tuple<char, Point>>();
+                                curList = new List<Tuple<char, Point>>();
                                 curLetter = 'a';
                             }
                             else
@@ -1725,7 +1725,7 @@ namespace ExpertSokoban
                 _letterings = ret;
             }
             else
-                _letterings = new List<List<RT.Util.ObsoleteTuple.Tuple<char, Point>>>();
+                _letterings = new List<List<Tuple<char, Point>>>();
         }
 
         /// <summary>
@@ -1737,7 +1737,7 @@ namespace ExpertSokoban
             {
                 var t = _letterings[0];
                 _letterings.RemoveAt(0);
-                if (t.Count > 0 && t[0].E1 != '1')
+                if (t.Count > 0 && t[0].Item1 != '1')
                     _letterings.Add(t);
                 Invalidate();
             }
