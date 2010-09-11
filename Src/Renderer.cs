@@ -1,9 +1,8 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using RT.Util.Collections;
-using RT.Util.Drawing;
+using System.Linq;
 
 namespace ExpertSokoban
 {
@@ -476,88 +475,76 @@ namespace ExpertSokoban
                 List<pathEvent> events = findEvents(activeSegments, input, y);
                 for (int i = 0; i < events.Count; i += 2)
                 {
-                    if (events[i] is pathEventSegment && events[i + 1] is pathEventSegment)
+                    var eventSegment1 = events[i] as pathEventSegment;
+                    var eventSegment2 = events[i + 1] as pathEventSegment;
+
+                    if (eventSegment1 != null && eventSegment2 != null)
                     {
-                        int index1 = ((pathEventSegment) events[i]).SegmentIndex;
-                        int index2 = ((pathEventSegment) events[i + 1]).SegmentIndex;
-                        bool start = ((pathEventSegment) events[i]).StartOfSegment;
-                        if (index1 == index2 && start)
+                        // Both events are segments — join them up
+                        var segment1 = eventSegment1.Segment;
+                        var segment2 = eventSegment2.Segment;
+                        bool segment1IsStart = eventSegment1.IsStartOfSegment;
+                        if (segment1 == segment2 && segment1IsStart)
                         {
-                            // A segment becomes a closed path
-                            activeSegments[index2].Add(new Point(events[i + 1].X, y));
-                            activeSegments[index2].Add(new Point(events[i].X, y));
-                            completedPaths.Add(activeSegments[index2].ToArray());
+                            // A segment becomes a closed path (clockwise — around the outside)
+                            segment2.Add(new Point(events[i + 1].X, y));
+                            segment2.Add(new Point(events[i].X, y));
+                            completedPaths.Add(segment2.ToArray());
                         }
-                        else if (index1 == index2)
+                        else if (segment1 == segment2)
                         {
-                            // A segment becomes a closed path
-                            activeSegments[index2].Add(new Point(events[i].X, y));
-                            activeSegments[index2].Add(new Point(events[i + 1].X, y));
-                            completedPaths.Add(activeSegments[index2].ToArray());
+                            // A segment becomes a closed path (anti-clockwise — it’s a “hole” inside an outer path)
+                            segment2.Add(new Point(events[i].X, y));
+                            segment2.Add(new Point(events[i + 1].X, y));
+                            completedPaths.Add(segment2.ToArray());
                         }
-                        else if (start)
+                        else if (segment1IsStart)
                         {
                             // Two segments join up
-                            activeSegments[index2].Add(new Point(events[i + 1].X, y));
-                            activeSegments[index2].Add(new Point(events[i].X, y));
-                            activeSegments[index1].InsertRange(0, activeSegments[index2]);
+                            segment2.Add(new Point(events[i + 1].X, y));
+                            segment2.Add(new Point(events[i].X, y));
+                            segment1.InsertRange(0, segment2);
                         }
                         else
                         {
                             // Two segments join up
-                            activeSegments[index1].Add(new Point(events[i].X, y));
-                            activeSegments[index1].Add(new Point(events[i + 1].X, y));
-                            activeSegments[index1].AddRange(activeSegments[index2]);
+                            segment1.Add(new Point(events[i].X, y));
+                            segment1.Add(new Point(events[i + 1].X, y));
+                            segment1.AddRange(segment2);
                         }
-                        activeSegments.RemoveAt(index2);
-                        for (int correction = i + 2; correction < events.Count; correction++)
-                        {
-                            if (events[correction] is pathEventSegment &&
-                                (events[correction] as pathEventSegment).SegmentIndex == index2)
-                                (events[correction] as pathEventSegment).SegmentIndex = index1;
-                            if (events[correction] is pathEventSegment &&
-                                (events[correction] as pathEventSegment).SegmentIndex > index2)
-                                (events[correction] as pathEventSegment).SegmentIndex--;
-                        }
+
+                        // Segment2 has now been joined onto segment1, so the old segment2 can be removed
+                        activeSegments.Remove(segment2);
+
+                        // Change all the other events that still point to segment2 so that they point to segment1 instead
+                        foreach (var seg in Enumerable.Range(i + 2, events.Count - i - 2).Select(idx => events[idx]).OfType<pathEventSegment>().Where(seg => seg.Segment == segment2))
+                            seg.Segment = segment1;
                     }
-                    else if (events[i] is pathEventChange && events[i + 1] is pathEventChange)
+                    else if (eventSegment1 == null && eventSegment2 == null)
                     {
-                        // Both events are changes - create a new segment
-                        activeSegments.Add(new List<Point>(new Point[] { 
-                            new Point (events[input.Get(events[i].X, y) ? i : i+1].X,y),
-                            new Point (events[input.Get(events[i].X, y) ? i+1 : i].X,y)
-                        }));
+                        // Both events are changes — create a new segment
+                        activeSegments.Add(new List<Point> {
+                            new Point(events[input.Get(events[i].X, y) ? i : i+1].X, y),
+                            new Point(events[input.Get(events[i].X, y) ? i+1 : i].X, y)
+                        });
                     }
-                    else if (events[i] is pathEventSegment) // ... && Events[i+1] is RTUtilPathEventChange
+                    else
                     {
-                        pathEventSegment ev = events[i] as pathEventSegment;
-                        if (ev.StartOfSegment)
+                        // One of the events is a segment, the other a change. We need to extend the segment.
+                        var segment = eventSegment1 ?? eventSegment2;
+                        var change = events[eventSegment1 == null ? i : i + 1];
+
+                        if (segment.IsStartOfSegment)
                         {
-                            activeSegments[ev.SegmentIndex].Insert(0, new Point(ev.X, y));
-                            if (ev.X != events[i + 1].X)
-                                activeSegments[ev.SegmentIndex].Insert(0, new Point(events[i + 1].X, y));
+                            segment.Segment.Insert(0, new Point(segment.X, y));
+                            if (segment.X != change.X)
+                                segment.Segment.Insert(0, new Point(change.X, y));
                         }
                         else
                         {
-                            activeSegments[ev.SegmentIndex].Add(new Point(ev.X, y));
-                            if (ev.X != events[i + 1].X)
-                                activeSegments[ev.SegmentIndex].Add(new Point(events[i + 1].X, y));
-                        }
-                    }
-                    else  // ... Events[i] is pathEventChange && Events[i+1] is pathEventSegment
-                    {
-                        pathEventSegment ev = events[i + 1] as pathEventSegment;
-                        if (ev.StartOfSegment)
-                        {
-                            activeSegments[ev.SegmentIndex].Insert(0, new Point(ev.X, y));
-                            if (ev.X != events[i].X)
-                                activeSegments[ev.SegmentIndex].Insert(0, new Point(events[i].X, y));
-                        }
-                        else
-                        {
-                            activeSegments[ev.SegmentIndex].Add(new Point(ev.X, y));
-                            if (ev.X != events[i].X)
-                                activeSegments[ev.SegmentIndex].Add(new Point(events[i].X, y));
+                            segment.Segment.Add(new Point(segment.X, y));
+                            if (segment.X != change.X)
+                                segment.Segment.Add(new Point(change.X, y));
                         }
                     }
                 }
@@ -569,52 +556,47 @@ namespace ExpertSokoban
         {
             List<pathEvent> results = new List<pathEvent>();
 
-            // First add all the validity change events in the correct order
+            // Add all the change events
             if (y < input.Height)
             {
-                for (int x = 0; x <= input.Width; x++)  // "<=" is intentional
+                // "<=" is intentional: need to detect changes on the right edge of the board too
+                for (int x = 0; x <= input.Width; x++)
                     if (input.Get(x, y) != input.Get(x - 1, y))
-                        results.Add(new pathEventChange(x));
+                        results.Add(new pathEvent(x));
             }
 
-            // Now insert the segment events in the right places
+            // Add all the segment events
             for (int i = 0; i < activeSegments.Count; i++)
             {
-                int index = 0;
-                while (index < results.Count && results[index].X <= activeSegments[i][0].X)
-                    index++;
-                results.Insert(index, new pathEventSegment(i, true, activeSegments[i][0].X));
-                index = 0;
-                while (index < results.Count && results[index].X < activeSegments[i][activeSegments[i].Count - 1].X)
-                    index++;
-                results.Insert(index, new pathEventSegment(i, false, activeSegments[i][activeSegments[i].Count - 1].X));
+                results.Add(new pathEventSegment(activeSegments[i], true, activeSegments[i][0].X));
+                results.Add(new pathEventSegment(activeSegments[i], false, activeSegments[i][activeSegments[i].Count - 1].X));
             }
+
+            // Sort by X
+            results.Sort();
+
             return results;
         }
 
-        private abstract class pathEvent
+        private class pathEvent : IComparable<pathEvent>
         {
-            public int X;
+            public int X { get; private set; }
+            public pathEvent(int x) { X = x; }
+            public int CompareTo(pathEvent other) { return X < other.X ? -1 : X > other.X ? 1 : 0; }
+            public override string ToString() { return X.ToString(); }
         }
 
         private sealed class pathEventSegment : pathEvent
         {
-            public int SegmentIndex;
-            public bool StartOfSegment;
-            public pathEventSegment(int index, bool start, int newX)
+            public List<Point> Segment { get; set; }
+            public bool IsStartOfSegment { get; private set; }
+            public pathEventSegment(List<Point> segment, bool start, int x)
+                : base(x)
             {
-                SegmentIndex = index;
-                StartOfSegment = start;
-                X = newX;
+                Segment = segment;
+                IsStartOfSegment = start;
             }
-        }
-
-        private sealed class pathEventChange : pathEvent
-        {
-            public pathEventChange(int newX)
-            {
-                X = newX;
-            }
+            public override string ToString() { return X.ToString() + " (" + IsStartOfSegment + ")"; }
         }
 
         /// <summary>
