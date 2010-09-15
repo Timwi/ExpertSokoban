@@ -75,10 +75,10 @@ namespace ExpertSokoban
                 SokobanLevelStatus status;
                 if (state == LevelListBoxState.Playing && (status = ((SokobanLevel) Items[index.Value]).Validity) != SokobanLevelStatus.Valid)
                 {
-                    string Problem = status == SokobanLevelStatus.NotEnclosed
+                    string problem = status == SokobanLevelStatus.NotEnclosed
                         ? Program.Tr.Mainform_Validity_NotEnclosed
                         : Program.Tr.Mainform_Validity_WrongNumber;
-                    if (DlgMessage.Show(Program.Tr.Mainform_Validity_CannotOpen + "\n\n" + Problem + "\n\n" + Program.Tr.Mainform_Validity_CannotOpen_Fix,
+                    if (DlgMessage.Show(Program.Tr.Mainform_Validity_CannotOpen + "\n\n" + problem + "\n\n" + Program.Tr.Mainform_Validity_CannotOpen_Fix,
                         Program.Tr.Mainform_MessageTitle_OpenLevel, DlgType.Error, Program.Tr.Mainform_Validity_CannotOpen_btnEdit, Program.Tr.Dialogs_btnCancel) == 0)
                     {
                         _state = LevelListBoxState.Editing;
@@ -576,8 +576,8 @@ namespace ExpertSokoban
             _activeLevelIndex = null;
             BeginUpdate();
             Items.Clear();
-            foreach (object Item in loadedItems)
-                Items.Add(Item);
+            foreach (object item in loadedItems)
+                Items.Add(item);
             EndUpdate();
             sr.Close();
 

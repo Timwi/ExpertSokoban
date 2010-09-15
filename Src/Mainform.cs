@@ -141,13 +141,13 @@ namespace ExpertSokoban
             // Status bar text
             if (MainAreaEditing)
             {
-                string Message = Program.Tr.Mainform_Validity_Valid;
-                SokobanLevelStatus Status = ctMainArea.Level.Validity;
-                if (Status == SokobanLevelStatus.NotEnclosed)
-                    Message = Program.Tr.Mainform_Validity_NotEnclosed;
-                else if (Status == SokobanLevelStatus.TargetsPiecesMismatch)
-                    Message = Program.Tr.Mainform_Validity_WrongNumber;
-                lblStatusEdit.Text = Message;
+                string message = Program.Tr.Mainform_Validity_Valid;
+                SokobanLevelStatus status = ctMainArea.Level.Validity;
+                if (status == SokobanLevelStatus.NotEnclosed)
+                    message = Program.Tr.Mainform_Validity_NotEnclosed;
+                else if (status == SokobanLevelStatus.TargetsPiecesMismatch)
+                    message = Program.Tr.Mainform_Validity_WrongNumber;
+                lblStatusEdit.Text = message;
             }
             else if (!MainAreaNull)
             {
@@ -447,16 +447,16 @@ namespace ExpertSokoban
             if (!mayDestroyEverything(Program.Tr.Mainform_MessageTitle_OpenLevelFile))
                 return;
 
-            OpenFileDialog OpenDialog = new OpenFileDialog();
-            OpenDialog.DefaultExt = "txt";
-            OpenDialog.Filter = Program.Tr.Save_FileType_TextFiles + "|*.txt|" + Program.Tr.Save_FileType_AllFiles + "|*.*";
-            OpenDialog.InitialDirectory = Program.Settings.LastOpenSaveDirectory;
-            if (OpenDialog.ShowDialog() != DialogResult.OK)
+            OpenFileDialog openDlg = new OpenFileDialog();
+            openDlg.DefaultExt = "txt";
+            openDlg.Filter = Program.Tr.Save_FileType_TextFiles + "|*.txt|" + Program.Tr.Save_FileType_AllFiles + "|*.*";
+            openDlg.InitialDirectory = Program.Settings.LastOpenSaveDirectory;
+            if (openDlg.ShowDialog() != DialogResult.OK)
                 return;
 
             try
             {
-                lstLevels.LoadLevelPack(OpenDialog.FileName);
+                lstLevels.LoadLevelPack(openDlg.FileName);
             }
             catch (LevelListBox.InvalidLevelException)
             {
@@ -464,7 +464,7 @@ namespace ExpertSokoban
                 return;
             }
 
-            Program.Settings.LastOpenSaveDirectory = Path.GetDirectoryName(OpenDialog.FileName);
+            Program.Settings.LastOpenSaveDirectory = Path.GetDirectoryName(openDlg.FileName);
             Program.Settings.SaveThreaded();
             ctMainArea.Modified = false;
             showLevelList(true);
@@ -557,11 +557,11 @@ namespace ExpertSokoban
         /// </summary>
         private void changePlayer(object sender, EventArgs e)
         {
-            string Result = InputBox.GetLine(Program.Tr.Mainform_ChooseName, Program.Settings.PlayerName, Program.Tr.ProgramName, Program.Tr.Dialogs_btnOK, Program.Tr.Dialogs_btnCancel);
-            if (Result == null)
+            string result = InputBox.GetLine(Program.Tr.Mainform_ChooseName, Program.Settings.PlayerName, Program.Tr.ProgramName, Program.Tr.Dialogs_btnOK, Program.Tr.Dialogs_btnCancel);
+            if (result == null)
                 return;
 
-            Program.Settings.PlayerName = Result;
+            Program.Settings.PlayerName = result;
             Program.Settings.SaveThreaded();
             lstLevels.RefreshItems();
         }
@@ -633,9 +633,9 @@ namespace ExpertSokoban
         {
             if (!pnlLevelList.Visible)
                 toggleLevelList(sender, e);
-            string Comment = InputBox.GetLine(Program.Tr.NewComment_Prompt, "", Program.Tr.NewComment_Title, Program.Tr.Dialogs_btnOK, Program.Tr.Dialogs_btnCancel);
-            if (Comment != null)
-                lstLevels.AddLevelListItem(Comment);
+            string comment = InputBox.GetLine(Program.Tr.NewComment_Prompt, "", Program.Tr.NewComment_Title, Program.Tr.Dialogs_btnOK, Program.Tr.Dialogs_btnCancel);
+            if (comment != null)
+                lstLevels.AddLevelListItem(comment);
         }
 
         /// <summary>
@@ -702,13 +702,13 @@ namespace ExpertSokoban
             if (lstLevels.ActiveLevel == null || lstLevels.State != LevelListBox.LevelListBoxState.Editing) // this should never happen
                 Ut.InternalError();
 
-            SokobanLevelStatus Status = ctMainArea.Level.Validity;
-            if (Status != SokobanLevelStatus.Valid)
+            SokobanLevelStatus status = ctMainArea.Level.Validity;
+            if (status != SokobanLevelStatus.Valid)
             {
-                String Problem = Status == SokobanLevelStatus.NotEnclosed
+                string problem = status == SokobanLevelStatus.NotEnclosed
                     ? Program.Tr.Mainform_Validity_NotEnclosed
                     : Program.Tr.Mainform_Validity_WrongNumber;
-                if (DlgMessage.Show(Problem + "\n\n" + Program.Tr.Mainform_Validity_CannotSave_Warning,
+                if (DlgMessage.Show(problem + "\n\n" + Program.Tr.Mainform_Validity_CannotSave_Warning,
                     Program.Tr.Mainform_MessageTitle_FinishEditing, DlgType.Error,
                     Program.Tr.Mainform_Validity_CannotSave_btnSave,
                     Program.Tr.Mainform_Validity_CannotSave_btnResume) == 1)
@@ -719,16 +719,16 @@ namespace ExpertSokoban
 
         private void saveLevel(object sender, EventArgs e)
         {
-            SokobanLevel Level = ctMainArea.Level.Clone();
-            Level.EnsureSpace(0);
+            SokobanLevel level = ctMainArea.Level.Clone();
+            level.EnsureSpace(0);
 
-            // LevelList.EditAccept() will trigger LevelList_LevelActivating(), which in
+            // LevelList.EditAccept() will trigger the LevelActivating event, which in
             // turn will ask the user if they want to discard their changes to the level.
             // Since we don't want this, we have to set the Modified flag for the MainArea
             // to false before calling LevelList.EditAccept().
             ctMainArea.Modified = false;
 
-            lstLevels.EditAccept(Level);
+            lstLevels.EditAccept(level);
         }
 
         /// <summary>
