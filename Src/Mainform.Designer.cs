@@ -1,4 +1,4 @@
-namespace ExpertSokoban
+﻿namespace ExpertSokoban
 {
     partial class Mainform
     {
@@ -30,6 +30,7 @@ namespace ExpertSokoban
         {
             this.components = new System.ComponentModel.Container();
             this.pnlLevelList = new System.Windows.Forms.Panel();
+            this.lstLevels = new ExpertSokoban.LevelListBox();
             this.mnuContext = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.mnuContextPlay = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuContextEdit = new System.Windows.Forms.ToolStripMenuItem();
@@ -109,6 +110,11 @@ namespace ExpertSokoban
             this.mnuEditFinish = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuEditCancel = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuEditSep3 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuEditWall = new ExpertSokoban.MenuRadioItemMainAreaTool();
+            this.grpEditTool = new ExpertSokoban.MenuRadioGroupMainAreaTool();
+            this.mnuEditPiece = new ExpertSokoban.MenuRadioItemMainAreaTool();
+            this.mnuEditTarget = new ExpertSokoban.MenuRadioItemMainAreaTool();
+            this.mnuEditSokoban = new ExpertSokoban.MenuRadioItemMainAreaTool();
             this.mnuEditUnusedHotkeys = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuOptions = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuOptionsLevelList = new System.Windows.Forms.ToolStripMenuItem();
@@ -117,7 +123,17 @@ namespace ExpertSokoban
             this.mnuOptionsEditLevelToolbar = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuOptionsStatusBar = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuOptionsSep1 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuOptionsMoveNo = new ExpertSokoban.MenuRadioItemPathDrawMode();
+            this.grpMovePathOptions = new ExpertSokoban.MenuRadioGroupPathDrawMode();
+            this.mnuOptionsMoveLine = new ExpertSokoban.MenuRadioItemPathDrawMode();
+            this.mnuOptionsMoveDots = new ExpertSokoban.MenuRadioItemPathDrawMode();
+            this.mnuOptionsMoveArrows = new ExpertSokoban.MenuRadioItemPathDrawMode();
             this.mnuOptionsSep2 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuOptionsPushNo = new ExpertSokoban.MenuRadioItemPathDrawMode();
+            this.grpPushPathOptions = new ExpertSokoban.MenuRadioGroupPathDrawMode();
+            this.mnuOptionsPushLine = new ExpertSokoban.MenuRadioItemPathDrawMode();
+            this.mnuOptionsPushDots = new ExpertSokoban.MenuRadioItemPathDrawMode();
+            this.mnuOptionsPushArrows = new ExpertSokoban.MenuRadioItemPathDrawMode();
             this.mnuOptionsSep3 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuOptionsEndPos = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuOptionsAreaSokoban = new System.Windows.Forms.ToolStripMenuItem();
@@ -141,26 +157,10 @@ namespace ExpertSokoban
             this.lblStatusEdit = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblStatusSolved = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblStatusNull = new System.Windows.Forms.ToolStripStatusLabel();
+            this.ctMainArea = new ExpertSokoban.MainArea();
             this.ctLevelListSplitter = new System.Windows.Forms.Splitter();
             this.tmrBugWorkaround = new System.Windows.Forms.Timer(this.components);
             this.tmrUpdateControls = new System.Windows.Forms.Timer(this.components);
-            this.ctMainArea = new ExpertSokoban.MainArea();
-            this.mnuEditWall = new ExpertSokoban.MenuRadioItemMainAreaTool();
-            this.grpEditTool = new ExpertSokoban.MenuRadioGroupMainAreaTool();
-            this.mnuEditPiece = new ExpertSokoban.MenuRadioItemMainAreaTool();
-            this.mnuEditTarget = new ExpertSokoban.MenuRadioItemMainAreaTool();
-            this.mnuEditSokoban = new ExpertSokoban.MenuRadioItemMainAreaTool();
-            this.mnuOptionsMoveNo = new ExpertSokoban.MenuRadioItemPathDrawMode();
-            this.grpMovePathOptions = new ExpertSokoban.MenuRadioGroupPathDrawMode();
-            this.mnuOptionsMoveLine = new ExpertSokoban.MenuRadioItemPathDrawMode();
-            this.mnuOptionsMoveDots = new ExpertSokoban.MenuRadioItemPathDrawMode();
-            this.mnuOptionsMoveArrows = new ExpertSokoban.MenuRadioItemPathDrawMode();
-            this.mnuOptionsPushNo = new ExpertSokoban.MenuRadioItemPathDrawMode();
-            this.grpPushPathOptions = new ExpertSokoban.MenuRadioGroupPathDrawMode();
-            this.mnuOptionsPushLine = new ExpertSokoban.MenuRadioItemPathDrawMode();
-            this.mnuOptionsPushDots = new ExpertSokoban.MenuRadioItemPathDrawMode();
-            this.mnuOptionsPushArrows = new ExpertSokoban.MenuRadioItemPathDrawMode();
-            this.lstLevels = new ExpertSokoban.LevelListBox();
             this.pnlLevelList.SuspendLayout();
             this.mnuContext.SuspendLayout();
             this.toolEditLevel.SuspendLayout();
@@ -191,6 +191,24 @@ namespace ExpertSokoban
             this.pnlLevelList.TabIndex = 6;
             this.pnlLevelList.Visible = false;
             this.pnlLevelList.Resize += new System.EventHandler(this.levelListPanelResize);
+            // 
+            // lstLevels
+            // 
+            this.lstLevels.ContextMenuStrip = this.mnuContext;
+            this.lstLevels.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lstLevels.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.lstLevels.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
+            this.lstLevels.IntegralHeight = false;
+            this.lstLevels.Location = new System.Drawing.Point(0, 110);
+            this.lstLevels.Modified = false;
+            this.lstLevels.Name = "lstLevels";
+            this.lstLevels.ScrollAlwaysVisible = true;
+            this.lstLevels.Size = new System.Drawing.Size(147, 463);
+            this.lstLevels.TabIndex = 2;
+            this.lstLevels.Tag = "notranslate";
+            this.lstLevels.LevelActivating += new ExpertSokoban.ConfirmEventHandler(this.levelActivating);
+            this.lstLevels.LevelActivated += new System.EventHandler(this.levelActivated);
+            this.lstLevels.KeyDown += new System.Windows.Forms.KeyEventHandler(this.levelListKeyDown);
             // 
             // mnuContext
             // 
@@ -923,6 +941,56 @@ namespace ExpertSokoban
             this.mnuEditSep3.Name = "mnuEditSep3";
             this.mnuEditSep3.Size = new System.Drawing.Size(222, 6);
             // 
+            // mnuEditWall
+            // 
+            this.mnuEditWall.Image = global::ExpertSokoban.Properties.Resources.Skin_ToolBrick;
+            this.mnuEditWall.Name = "mnuEditWall";
+            this.mnuEditWall.ParentGroup = this.grpEditTool;
+            this.mnuEditWall.ShortcutKeyDisplayString = "";
+            this.mnuEditWall.ShortcutKeys = ((System.Windows.Forms.Keys) ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
+            this.mnuEditWall.Size = new System.Drawing.Size(225, 22);
+            this.mnuEditWall.Text = "&Wall tool";
+            this.mnuEditWall.Value = ExpertSokoban.MainAreaTool.Wall;
+            // 
+            // grpEditTool
+            // 
+            this.grpEditTool.ValueChanged += new System.EventHandler(this.changeEditTool);
+            // 
+            // mnuEditPiece
+            // 
+            this.mnuEditPiece.Image = global::ExpertSokoban.Properties.Resources.Skin_ToolPiece;
+            this.mnuEditPiece.Name = "mnuEditPiece";
+            this.mnuEditPiece.ParentGroup = this.grpEditTool;
+            this.mnuEditPiece.ShortcutKeyDisplayString = "";
+            this.mnuEditPiece.ShortcutKeys = ((System.Windows.Forms.Keys) ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
+            this.mnuEditPiece.Size = new System.Drawing.Size(225, 22);
+            this.mnuEditPiece.Text = "P&iece tool";
+            this.mnuEditPiece.Value = ExpertSokoban.MainAreaTool.Piece;
+            // 
+            // mnuEditTarget
+            // 
+            this.mnuEditTarget.Image = global::ExpertSokoban.Properties.Resources.Skin_ToolTarget;
+            this.mnuEditTarget.Name = "mnuEditTarget";
+            this.mnuEditTarget.ParentGroup = this.grpEditTool;
+            this.mnuEditTarget.ShortcutKeyDisplayString = "";
+            this.mnuEditTarget.ShortcutKeys = ((System.Windows.Forms.Keys) ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
+            this.mnuEditTarget.Size = new System.Drawing.Size(225, 22);
+            this.mnuEditTarget.Text = "&Target tool";
+            this.mnuEditTarget.Value = ExpertSokoban.MainAreaTool.Target;
+            // 
+            // mnuEditSokoban
+            // 
+            this.mnuEditSokoban.Checked = true;
+            this.mnuEditSokoban.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.mnuEditSokoban.Image = global::ExpertSokoban.Properties.Resources.Skin_ToolSokoban;
+            this.mnuEditSokoban.Name = "mnuEditSokoban";
+            this.mnuEditSokoban.ParentGroup = this.grpEditTool;
+            this.mnuEditSokoban.ShortcutKeyDisplayString = "";
+            this.mnuEditSokoban.ShortcutKeys = ((System.Windows.Forms.Keys) ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.K)));
+            this.mnuEditSokoban.Size = new System.Drawing.Size(225, 22);
+            this.mnuEditSokoban.Text = "&Sokoban tool";
+            this.mnuEditSokoban.Value = ExpertSokoban.MainAreaTool.Sokoban;
+            // 
             // mnuEditUnusedHotkeys
             // 
             this.mnuEditUnusedHotkeys.Enabled = false;
@@ -1007,10 +1075,82 @@ namespace ExpertSokoban
             this.mnuOptionsSep1.Name = "mnuOptionsSep1";
             this.mnuOptionsSep1.Size = new System.Drawing.Size(272, 6);
             // 
+            // mnuOptionsMoveNo
+            // 
+            this.mnuOptionsMoveNo.Name = "mnuOptionsMoveNo";
+            this.mnuOptionsMoveNo.ParentGroup = this.grpMovePathOptions;
+            this.mnuOptionsMoveNo.Size = new System.Drawing.Size(275, 22);
+            this.mnuOptionsMoveNo.Text = "Don’t display &move path";
+            this.mnuOptionsMoveNo.Value = ExpertSokoban.PathDrawMode.None;
+            // 
+            // grpMovePathOptions
+            // 
+            this.grpMovePathOptions.ValueChanged += new System.EventHandler(this.changeMovePathOption);
+            // 
+            // mnuOptionsMoveLine
+            // 
+            this.mnuOptionsMoveLine.Name = "mnuOptionsMoveLine";
+            this.mnuOptionsMoveLine.ParentGroup = this.grpMovePathOptions;
+            this.mnuOptionsMoveLine.Size = new System.Drawing.Size(275, 22);
+            this.mnuOptionsMoveLine.Text = "Display move path as li&ne";
+            this.mnuOptionsMoveLine.Value = ExpertSokoban.PathDrawMode.Line;
+            // 
+            // mnuOptionsMoveDots
+            // 
+            this.mnuOptionsMoveDots.Name = "mnuOptionsMoveDots";
+            this.mnuOptionsMoveDots.ParentGroup = this.grpMovePathOptions;
+            this.mnuOptionsMoveDots.Size = new System.Drawing.Size(275, 22);
+            this.mnuOptionsMoveDots.Text = "Display move path as &dots";
+            this.mnuOptionsMoveDots.Value = ExpertSokoban.PathDrawMode.Dots;
+            // 
+            // mnuOptionsMoveArrows
+            // 
+            this.mnuOptionsMoveArrows.Name = "mnuOptionsMoveArrows";
+            this.mnuOptionsMoveArrows.ParentGroup = this.grpMovePathOptions;
+            this.mnuOptionsMoveArrows.Size = new System.Drawing.Size(275, 22);
+            this.mnuOptionsMoveArrows.Text = "Display mo&ve path as arrows";
+            this.mnuOptionsMoveArrows.Value = ExpertSokoban.PathDrawMode.Arrows;
+            // 
             // mnuOptionsSep2
             // 
             this.mnuOptionsSep2.Name = "mnuOptionsSep2";
             this.mnuOptionsSep2.Size = new System.Drawing.Size(272, 6);
+            // 
+            // mnuOptionsPushNo
+            // 
+            this.mnuOptionsPushNo.Name = "mnuOptionsPushNo";
+            this.mnuOptionsPushNo.ParentGroup = this.grpPushPathOptions;
+            this.mnuOptionsPushNo.Size = new System.Drawing.Size(275, 22);
+            this.mnuOptionsPushNo.Text = "Don’t display &push path";
+            this.mnuOptionsPushNo.Value = ExpertSokoban.PathDrawMode.None;
+            // 
+            // grpPushPathOptions
+            // 
+            this.grpPushPathOptions.ValueChanged += new System.EventHandler(this.changePushPathOption);
+            // 
+            // mnuOptionsPushLine
+            // 
+            this.mnuOptionsPushLine.Name = "mnuOptionsPushLine";
+            this.mnuOptionsPushLine.ParentGroup = this.grpPushPathOptions;
+            this.mnuOptionsPushLine.Size = new System.Drawing.Size(275, 22);
+            this.mnuOptionsPushLine.Text = "Display push path as l&ine";
+            this.mnuOptionsPushLine.Value = ExpertSokoban.PathDrawMode.Line;
+            // 
+            // mnuOptionsPushDots
+            // 
+            this.mnuOptionsPushDots.Name = "mnuOptionsPushDots";
+            this.mnuOptionsPushDots.ParentGroup = this.grpPushPathOptions;
+            this.mnuOptionsPushDots.Size = new System.Drawing.Size(275, 22);
+            this.mnuOptionsPushDots.Text = "Display push path as do&ts";
+            this.mnuOptionsPushDots.Value = ExpertSokoban.PathDrawMode.Dots;
+            // 
+            // mnuOptionsPushArrows
+            // 
+            this.mnuOptionsPushArrows.Name = "mnuOptionsPushArrows";
+            this.mnuOptionsPushArrows.ParentGroup = this.grpPushPathOptions;
+            this.mnuOptionsPushArrows.Size = new System.Drawing.Size(275, 22);
+            this.mnuOptionsPushArrows.Text = "Display push path as arro&ws";
+            this.mnuOptionsPushArrows.Value = ExpertSokoban.PathDrawMode.Arrows;
             // 
             // mnuOptionsSep3
             // 
@@ -1111,14 +1251,14 @@ namespace ExpertSokoban
             this.mnuHelpHelp.Image = global::ExpertSokoban.Properties.Resources.help;
             this.mnuHelpHelp.Name = "mnuHelpHelp";
             this.mnuHelpHelp.ShortcutKeys = System.Windows.Forms.Keys.F1;
-            this.mnuHelpHelp.Size = new System.Drawing.Size(126, 22);
+            this.mnuHelpHelp.Size = new System.Drawing.Size(152, 22);
             this.mnuHelpHelp.Text = "&Help...";
             this.mnuHelpHelp.Click += new System.EventHandler(this.help);
             // 
             // mnuHelpAbout
             // 
             this.mnuHelpAbout.Name = "mnuHelpAbout";
-            this.mnuHelpAbout.Size = new System.Drawing.Size(126, 22);
+            this.mnuHelpAbout.Size = new System.Drawing.Size(152, 22);
             this.mnuHelpAbout.Text = "&About";
             this.mnuHelpAbout.Click += new System.EventHandler(this.helpAbout);
             // 
@@ -1206,6 +1346,31 @@ namespace ExpertSokoban
             this.lblStatusNull.Text = "No levels currently selected. Select a level from the level list to play.";
             this.lblStatusNull.Visible = false;
             // 
+            // ctMainArea
+            // 
+            this.ctMainArea.AnimationEnabled = false;
+            this.ctMainArea.BackColor = System.Drawing.Color.FromArgb(((int) (((byte) (255)))), ((int) (((byte) (255)))), ((int) (((byte) (206)))));
+            this.ctMainArea.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ctMainArea.LetteringEnabled = false;
+            this.ctMainArea.Location = new System.Drawing.Point(0, 0);
+            this.ctMainArea.Modified = false;
+            this.ctMainArea.MoveDrawMode = ExpertSokoban.PathDrawMode.Line;
+            this.ctMainArea.Name = "ctMainArea";
+            this.ctMainArea.PushDrawMode = ExpertSokoban.PathDrawMode.Arrows;
+            this.ctMainArea.RefreshOnResize = true;
+            this.ctMainArea.ShowAreaPiece = false;
+            this.ctMainArea.ShowAreaSokoban = false;
+            this.ctMainArea.ShowEndPos = false;
+            this.ctMainArea.Size = new System.Drawing.Size(645, 527);
+            this.ctMainArea.SoundEnabled = false;
+            this.ctMainArea.TabIndex = 1;
+            this.ctMainArea.TabStop = true;
+            this.ctMainArea.Tool = ExpertSokoban.MainAreaTool.Wall;
+            this.ctMainArea.LevelSolved += new System.EventHandler(this.levelSolved);
+            this.ctMainArea.MustSaveLevel += new System.EventHandler(this.saveLevel);
+            this.ctMainArea.KeyDown += new System.Windows.Forms.KeyEventHandler(this.mainAreaKeyDown);
+            this.ctMainArea.Click += new System.EventHandler(this.mainAreaClick);
+            // 
             // ctLevelListSplitter
             // 
             this.ctLevelListSplitter.Dock = System.Windows.Forms.DockStyle.Right;
@@ -1227,171 +1392,6 @@ namespace ExpertSokoban
             this.tmrUpdateControls.Enabled = true;
             this.tmrUpdateControls.Interval = 10;
             this.tmrUpdateControls.Tick += new System.EventHandler(this.updateControls);
-            // 
-            // ctMainArea
-            // 
-            this.ctMainArea.AnimationEnabled = false;
-            this.ctMainArea.BackColor = System.Drawing.Color.FromArgb(((int) (((byte) (255)))), ((int) (((byte) (255)))), ((int) (((byte) (206)))));
-            this.ctMainArea.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ctMainArea.LetteringEnabled = false;
-            this.ctMainArea.Location = new System.Drawing.Point(0, 0);
-            this.ctMainArea.Modified = false;
-            this.ctMainArea.MoveDrawMode = ExpertSokoban.PathDrawMode.Line;
-            this.ctMainArea.Name = "ctMainArea";
-            this.ctMainArea.PushDrawMode = ExpertSokoban.PathDrawMode.Arrows;
-            this.ctMainArea.RefreshOnResize = true;
-            this.ctMainArea.ShowAreaPiece = false;
-            this.ctMainArea.ShowAreaSokoban = false;
-            this.ctMainArea.ShowEndPos = false;
-            this.ctMainArea.Size = new System.Drawing.Size(645, 527);
-            this.ctMainArea.SoundEnabled = false;
-            this.ctMainArea.TabIndex = 1;
-            this.ctMainArea.TabStop = true;
-            this.ctMainArea.Tool = ExpertSokoban.MainAreaTool.Wall;
-            this.ctMainArea.Click += new System.EventHandler(this.mainAreaClick);
-            this.ctMainArea.MustSaveLevel += new System.EventHandler(this.saveLevel);
-            this.ctMainArea.LevelSolved += new System.EventHandler(this.levelSolved);
-            this.ctMainArea.KeyDown += new System.Windows.Forms.KeyEventHandler(this.mainAreaKeyDown);
-            // 
-            // mnuEditWall
-            // 
-            this.mnuEditWall.Image = global::ExpertSokoban.Properties.Resources.Skin_ToolBrick;
-            this.mnuEditWall.Name = "mnuEditWall";
-            this.mnuEditWall.ParentGroup = this.grpEditTool;
-            this.mnuEditWall.ShortcutKeyDisplayString = "";
-            this.mnuEditWall.ShortcutKeys = ((System.Windows.Forms.Keys) ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
-            this.mnuEditWall.Size = new System.Drawing.Size(225, 22);
-            this.mnuEditWall.Text = "&Wall tool";
-            this.mnuEditWall.Value = ExpertSokoban.MainAreaTool.Wall;
-            // 
-            // grpEditTool
-            // 
-            this.grpEditTool.ValueChanged += new System.EventHandler(this.changeEditTool);
-            // 
-            // mnuEditPiece
-            // 
-            this.mnuEditPiece.Image = global::ExpertSokoban.Properties.Resources.Skin_ToolPiece;
-            this.mnuEditPiece.Name = "mnuEditPiece";
-            this.mnuEditPiece.ParentGroup = this.grpEditTool;
-            this.mnuEditPiece.ShortcutKeyDisplayString = "";
-            this.mnuEditPiece.ShortcutKeys = ((System.Windows.Forms.Keys) ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-            this.mnuEditPiece.Size = new System.Drawing.Size(225, 22);
-            this.mnuEditPiece.Text = "P&iece tool";
-            this.mnuEditPiece.Value = ExpertSokoban.MainAreaTool.Piece;
-            // 
-            // mnuEditTarget
-            // 
-            this.mnuEditTarget.Image = global::ExpertSokoban.Properties.Resources.Skin_ToolTarget;
-            this.mnuEditTarget.Name = "mnuEditTarget";
-            this.mnuEditTarget.ParentGroup = this.grpEditTool;
-            this.mnuEditTarget.ShortcutKeyDisplayString = "";
-            this.mnuEditTarget.ShortcutKeys = ((System.Windows.Forms.Keys) ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
-            this.mnuEditTarget.Size = new System.Drawing.Size(225, 22);
-            this.mnuEditTarget.Text = "&Target tool";
-            this.mnuEditTarget.Value = ExpertSokoban.MainAreaTool.Target;
-            // 
-            // mnuEditSokoban
-            // 
-            this.mnuEditSokoban.Checked = true;
-            this.mnuEditSokoban.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.mnuEditSokoban.Image = global::ExpertSokoban.Properties.Resources.Skin_ToolSokoban;
-            this.mnuEditSokoban.Name = "mnuEditSokoban";
-            this.mnuEditSokoban.ParentGroup = this.grpEditTool;
-            this.mnuEditSokoban.ShortcutKeyDisplayString = "";
-            this.mnuEditSokoban.ShortcutKeys = ((System.Windows.Forms.Keys) ((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.K)));
-            this.mnuEditSokoban.Size = new System.Drawing.Size(225, 22);
-            this.mnuEditSokoban.Text = "&Sokoban tool";
-            this.mnuEditSokoban.Value = ExpertSokoban.MainAreaTool.Sokoban;
-            // 
-            // mnuOptionsMoveNo
-            // 
-            this.mnuOptionsMoveNo.Name = "mnuOptionsMoveNo";
-            this.mnuOptionsMoveNo.ParentGroup = this.grpMovePathOptions;
-            this.mnuOptionsMoveNo.Size = new System.Drawing.Size(275, 22);
-            this.mnuOptionsMoveNo.Text = "Don\'t display &move path";
-            this.mnuOptionsMoveNo.Value = ExpertSokoban.PathDrawMode.None;
-            // 
-            // grpMovePathOptions
-            // 
-            this.grpMovePathOptions.ValueChanged += new System.EventHandler(this.changeMovePathOption);
-            // 
-            // mnuOptionsMoveLine
-            // 
-            this.mnuOptionsMoveLine.Name = "mnuOptionsMoveLine";
-            this.mnuOptionsMoveLine.ParentGroup = this.grpMovePathOptions;
-            this.mnuOptionsMoveLine.Size = new System.Drawing.Size(275, 22);
-            this.mnuOptionsMoveLine.Text = "Display move path as li&ne";
-            this.mnuOptionsMoveLine.Value = ExpertSokoban.PathDrawMode.Line;
-            // 
-            // mnuOptionsMoveDots
-            // 
-            this.mnuOptionsMoveDots.Name = "mnuOptionsMoveDots";
-            this.mnuOptionsMoveDots.ParentGroup = this.grpMovePathOptions;
-            this.mnuOptionsMoveDots.Size = new System.Drawing.Size(275, 22);
-            this.mnuOptionsMoveDots.Text = "Display move path as &dots";
-            this.mnuOptionsMoveDots.Value = ExpertSokoban.PathDrawMode.Dots;
-            // 
-            // mnuOptionsMoveArrows
-            // 
-            this.mnuOptionsMoveArrows.Name = "mnuOptionsMoveArrows";
-            this.mnuOptionsMoveArrows.ParentGroup = this.grpMovePathOptions;
-            this.mnuOptionsMoveArrows.Size = new System.Drawing.Size(275, 22);
-            this.mnuOptionsMoveArrows.Text = "Display mo&ve path as arrows";
-            this.mnuOptionsMoveArrows.Value = ExpertSokoban.PathDrawMode.Arrows;
-            // 
-            // mnuOptionsPushNo
-            // 
-            this.mnuOptionsPushNo.Name = "mnuOptionsPushNo";
-            this.mnuOptionsPushNo.ParentGroup = this.grpPushPathOptions;
-            this.mnuOptionsPushNo.Size = new System.Drawing.Size(275, 22);
-            this.mnuOptionsPushNo.Text = "Don\'t display &push path";
-            this.mnuOptionsPushNo.Value = ExpertSokoban.PathDrawMode.None;
-            // 
-            // grpPushPathOptions
-            // 
-            this.grpPushPathOptions.ValueChanged += new System.EventHandler(this.changePushPathOption);
-            // 
-            // mnuOptionsPushLine
-            // 
-            this.mnuOptionsPushLine.Name = "mnuOptionsPushLine";
-            this.mnuOptionsPushLine.ParentGroup = this.grpPushPathOptions;
-            this.mnuOptionsPushLine.Size = new System.Drawing.Size(275, 22);
-            this.mnuOptionsPushLine.Text = "Display push path as l&ine";
-            this.mnuOptionsPushLine.Value = ExpertSokoban.PathDrawMode.Line;
-            // 
-            // mnuOptionsPushDots
-            // 
-            this.mnuOptionsPushDots.Name = "mnuOptionsPushDots";
-            this.mnuOptionsPushDots.ParentGroup = this.grpPushPathOptions;
-            this.mnuOptionsPushDots.Size = new System.Drawing.Size(275, 22);
-            this.mnuOptionsPushDots.Text = "Display push path as do&ts";
-            this.mnuOptionsPushDots.Value = ExpertSokoban.PathDrawMode.Dots;
-            // 
-            // mnuOptionsPushArrows
-            // 
-            this.mnuOptionsPushArrows.Name = "mnuOptionsPushArrows";
-            this.mnuOptionsPushArrows.ParentGroup = this.grpPushPathOptions;
-            this.mnuOptionsPushArrows.Size = new System.Drawing.Size(275, 22);
-            this.mnuOptionsPushArrows.Text = "Display push path as arro&ws";
-            this.mnuOptionsPushArrows.Value = ExpertSokoban.PathDrawMode.Arrows;
-            // 
-            // lstLevels
-            // 
-            this.lstLevels.ContextMenuStrip = this.mnuContext;
-            this.lstLevels.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lstLevels.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.lstLevels.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
-            this.lstLevels.IntegralHeight = false;
-            this.lstLevels.Location = new System.Drawing.Point(0, 110);
-            this.lstLevels.Modified = false;
-            this.lstLevels.Name = "lstLevels";
-            this.lstLevels.ScrollAlwaysVisible = true;
-            this.lstLevels.Size = new System.Drawing.Size(147, 463);
-            this.lstLevels.TabIndex = 2;
-            this.lstLevels.Tag = "notranslate";
-            this.lstLevels.LevelActivating += new ExpertSokoban.ConfirmEventHandler(this.levelActivating);
-            this.lstLevels.KeyDown += new System.Windows.Forms.KeyEventHandler(this.levelListKeyDown);
-            this.lstLevels.LevelActivated += new System.EventHandler(this.levelActivated);
             // 
             // Mainform
             // 
