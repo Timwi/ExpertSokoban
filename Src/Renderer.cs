@@ -557,34 +557,35 @@ namespace ExpertSokoban
         {
             List<pathEvent> results = new List<pathEvent>();
 
-            // Add all the change events
+            // First add all the change events in the correct order
             if (y < input.Height)
             {
-                // "<=" is intentional: need to detect changes on the right edge of the board too
-                for (int x = 0; x <= input.Width; x++)
+                for (int x = 0; x <= input.Width; x++)  // "<=" is intentional
                     if (input.Get(x, y) != input.Get(x - 1, y))
                         results.Add(new pathEvent(x));
             }
 
-            // Add all the segment events
+            // Now insert the segment events in the right places
             for (int i = 0; i < activeSegments.Count; i++)
             {
-                results.Add(new pathEventSegment(activeSegments[i], true, activeSegments[i][0].X));
-                results.Add(new pathEventSegment(activeSegments[i], false, activeSegments[i][activeSegments[i].Count - 1].X));
+                int index = 0;
+                // This needs a “<=” so that a START-of-segment event comes AFTER a change event with the same X
+                while (index < results.Count && results[index].X <= activeSegments[i][0].X)
+                    index++;
+                results.Insert(index, new pathEventSegment(activeSegments[i], true, activeSegments[i][0].X));
+                index = 0;
+                // This needs a “<” so that an END-of-segment event comes BEFORE a change event with the same X
+                while (index < results.Count && results[index].X < activeSegments[i][activeSegments[i].Count - 1].X)
+                    index++;
+                results.Insert(index, new pathEventSegment(activeSegments[i], false, activeSegments[i][activeSegments[i].Count - 1].X));
             }
-
-            // Sort by X
-            results.Sort();
-
             return results;
         }
 
-        private class pathEvent : IComparable<pathEvent>
+        private class pathEvent
         {
             public int X { get; private set; }
             public pathEvent(int x) { X = x; }
-            public int CompareTo(pathEvent other) { return X < other.X ? -1 : X > other.X ? 1 : this is pathEventSegment ? 1 : other is pathEventSegment ? -1 : 0; }
-            public override string ToString() { return X.ToString(); }
         }
 
         private sealed class pathEventSegment : pathEvent
@@ -597,7 +598,6 @@ namespace ExpertSokoban
                 Segment = segment;
                 IsStartOfSegment = start;
             }
-            public override string ToString() { return X.ToString() + " (" + IsStartOfSegment + ")"; }
         }
 
         /// <summary>
