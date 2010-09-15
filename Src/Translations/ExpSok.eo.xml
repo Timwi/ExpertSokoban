@@ -1,6 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <item>
   <Highscores>
+    <HighscoresForm>
+      <Translation>Rekordoj</Translation>
+      <Old>Highscores</Old>
+    </HighscoresForm>
+    <btnOK>
+      <Translation>OK</Translation>
+      <Old>OK</Old>
+    </btnOK>
     <Highscores>
       <IsNumber>
         <item>True</item>
@@ -19,20 +27,8 @@
         <item>{0} moves, {1} pushes</item>
       </Old>
     </Highscores>
-    <HighscoresForm>
-      <Translation>Rekordoj</Translation>
-      <Old>Highscores</Old>
-    </HighscoresForm>
-    <btnOK>
-      <Translation>OK</Translation>
-      <Old>OK</Old>
-    </btnOK>
   </Highscores>
   <AboutBox>
-    <Version>
-      <Translation>Versio {0}</Translation>
-      <Old>Version {0}</Old>
-    </Version>
     <AboutBox>
       <Translation>Pri Expert Sokoban</Translation>
       <Old>About Expert Sokoban</Old>
@@ -45,6 +41,10 @@
       <Translation>OK</Translation>
       <Old>OK</Old>
     </btnOK>
+    <Version>
+      <Translation>Versio {0}</Translation>
+      <Old>Version {0}</Old>
+    </Version>
   </AboutBox>
   <Mainform>
     <Mainform>
@@ -180,15 +180,15 @@
       <Old>Display &amp;level list</Old>
     </mnuOptionsLevelList>
     <mnuOptionsPlayingToolbar>
-      <Translation>Montri ilobreton "Lu&amp;dado"</Translation>
+      <Translation>Montri ilobreton “Lu&amp;dado”</Translation>
       <Old>Display pla&amp;ying toolbar</Old>
     </mnuOptionsPlayingToolbar>
     <mnuOptionsFileToolbars>
-      <Translation>Montri ilobretojn "&amp;Redaktado de puzlo-dosiero"</Translation>
+      <Translation>Montri ilobretojn “&amp;Redaktado de puzlo-dosiero”</Translation>
       <Old>Display &amp;editing toolbars (level file)</Old>
     </mnuOptionsFileToolbars>
     <mnuOptionsEditLevelToolbar>
-      <Translation>Montri ilobreton "Redaktado de pu&amp;zlo"</Translation>
+      <Translation>Montri ilobreton “Redaktado de pu&amp;zlo”</Translation>
       <Old>Display editin&amp;g toolbar (level)</Old>
     </mnuOptionsEditLevelToolbar>
     <mnuOptionsStatusBar>
@@ -197,7 +197,7 @@
     </mnuOptionsStatusBar>
     <mnuOptionsMoveNo>
       <Translation>&amp;Ne montri movvojon</Translation>
-      <Old>Don't display &amp;move path</Old>
+      <Old>Don’t display &amp;move path</Old>
     </mnuOptionsMoveNo>
     <mnuOptionsMoveLine>
       <Translation>M&amp;ontri movvojon kiel linio</Translation>
@@ -213,7 +213,7 @@
     </mnuOptionsMoveArrows>
     <mnuOptionsPushNo>
       <Translation>N&amp;e montri puŝvojon</Translation>
-      <Old>Don't display &amp;push path</Old>
+      <Old>Don’t display &amp;push path</Old>
     </mnuOptionsPushNo>
     <mnuOptionsPushLine>
       <Translation>Montri &amp;puŝvojon kiel linio</Translation>
@@ -280,7 +280,7 @@
       <Old>No levels currently selected. Select a level from the level list to play.</Old>
     </lblStatusNull>
     <toolEditLevel>
-      <Translation>Ilobreto "redakti puzlon"</Translation>
+      <Translation>Ilobreto “redakti puzlon”</Translation>
       <Old>Level edit toolbar</Old>
     </toolEditLevel>
     <btnEditLevelWall>
@@ -308,7 +308,7 @@
       <Old>Cancel editing</Old>
     </btnEditLevelCancel>
     <toolFileEdit>
-      <Translation>Ilobreto "redakti dosieron"</Translation>
+      <Translation>Ilobreto “redakti dosieron”</Translation>
       <Old>File edit toolbar</Old>
     </toolFileEdit>
     <btnFileEditNewLevel>
@@ -328,7 +328,7 @@
       <Old>Delete selected level or comment</Old>
     </btnFileEditDeleteLevel>
     <toolFile>
-      <Translation>Ilobreto "dosiero"</Translation>
+      <Translation>Ilobreto “dosiero”</Translation>
       <Old>File toolbar</Old>
     </toolFile>
     <btnFileNew>
@@ -356,7 +356,7 @@
       <Old>Paste</Old>
     </btnFilePaste>
     <toolPlay>
-      <Translation>Ilobreto "ludado"</Translation>
+      <Translation>Ilobreto “ludado”</Translation>
       <Old>Playing toolbar</Old>
     </toolPlay>
     <btnPlayOpenLevel>
@@ -572,7 +572,7 @@
   </LevelList_Message_DeleteLevel_btnDelete>
   <MainArea_Message_SaveChanges>
     <Translation>Ĉu vi volas konservi viajn modifojn ĉe tiu puzlo, kiun vi redaktas?</Translation>
-    <Old>Would you like to save your changes to the level you're editing?</Old>
+    <Old>Would you like to save your changes to the level you’re editing?</Old>
   </MainArea_Message_SaveChanges>
   <MainArea_Message_GiveUp>
     <Translation>Ĉu vi certas, ke vi volas kapitulaci la kurantan puzlon?</Translation>
@@ -583,12 +583,12 @@
     <Old>Please choose a name which will be used to identify you in highscore tables.</Old>
   </Mainform_ChooseName>
   <Mainform_ChooseName_FirstRun>
-    <Translation encoding="c-literal">Bonvole elektu nomon, kiu uziĝos por vin identigi en rekordo-tabloj.\nVi povas poste ŝanĝi tiun nomon klakante "Ŝanĝi ludantan nomon" en la menuo "Puzlo".</Translation>
-    <Old encoding="c-literal">Please choose a name which will be used to identify you in highscore tables.\nYou can change this name later by selecting "Change player name" from the "Level" menu.</Old>
+    <Translation encoding="c-literal">Bonvole elektu nomon, kiu uziĝos por vin identigi en rekordo-tabloj.\r\nVi povas poste ŝanĝi tiun nomon klakante “Ŝanĝi ludantan nomon” en la menuo “Puzlo”.</Translation>
+    <Old encoding="c-literal">Please choose a name which will be used to identify you in highscore tables.\nYou can change this name later by selecting “Change player name” from the “Level” menu.</Old>
   </Mainform_ChooseName_FirstRun>
   <Mainform_ChooseName_SolvedLevel>
-    <Translation encoding="c-literal">Gratulatojn! Vi solvis la kurantan puzlon.\nBonvole elektu nomon, kiu uziĝos por vin identigi en rekordo-tabloj.\nSe vi nomon nun ne elektas, via poentrezulto ĉe tiu puzlo ne konserviĝos.\nVi povas poste ŝanĝi tiun nomon klakante "Ŝanĝi ludantan nomon" en la menuo "Puzlo".</Translation>
-    <Old encoding="c-literal">Congratulations! You've solved the current level.\nPlease choose a name which will be used to identify you in highscore tables.\nIf you do not choose a name now, your score for this level will not be recorded.\nYou can change this name again later by selecting "Change player name" from the "Level" menu.</Old>
+    <Translation encoding="c-literal">Gratulatojn! Vi solvis la kurantan puzlon.\r\nBonvole elektu nomon, kiu uziĝos por vin identigi en rekordo-tabloj.\r\nSe vi nomon nun ne elektas, via poentrezulto ĉe tiu puzlo ne konserviĝos.\r\nVi povas poste ŝanĝi tiun nomon klakante “Ŝanĝi ludantan nomon” en la menuo “Puzlo”.</Translation>
+    <Old encoding="c-literal">Congratulations! You’ve solved the current level.\nPlease choose a name which will be used to identify you in highscore tables.\nIf you do not choose a name now, your score for this level will not be recorded.\nYou can change this name again later by selecting “Change player name” from the “Level” menu.</Old>
   </Mainform_ChooseName_SolvedLevel>
   <Mainform_Validity_CannotOpen>
     <Translation>La puzlo ne eblis malfermi, ĉar ĝi malvalidas.</Translation>

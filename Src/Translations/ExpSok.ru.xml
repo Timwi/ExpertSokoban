@@ -1,6 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <item>
   <Highscores>
+    <HighscoresForm>
+      <Translation>Рекорды</Translation>
+      <Old>Highscores</Old>
+    </HighscoresForm>
+    <btnOK>
+      <Translation>ОК</Translation>
+      <Old>OK</Old>
+    </btnOK>
     <Highscores>
       <IsNumber>
         <item>True</item>
@@ -24,20 +32,8 @@
         <item>{0} moves, {1} pushes</item>
       </Old>
     </Highscores>
-    <HighscoresForm>
-      <Translation>Рекорды</Translation>
-      <Old>Highscores</Old>
-    </HighscoresForm>
-    <btnOK>
-      <Translation>ОК</Translation>
-      <Old>OK</Old>
-    </btnOK>
   </Highscores>
   <AboutBox>
-    <Version>
-      <Translation>Версия {0}</Translation>
-      <Old>Version {0}</Old>
-    </Version>
     <AboutBox>
       <Translation>О программе</Translation>
       <Old>About Expert Sokoban</Old>
@@ -50,6 +46,10 @@
       <Translation>ОК</Translation>
       <Old>OK</Old>
     </btnOK>
+    <Version>
+      <Translation>Версия {0}</Translation>
+      <Old>Version {0}</Old>
+    </Version>
   </AboutBox>
   <Mainform>
     <Mainform>
@@ -588,12 +588,12 @@
     <Old>Please choose a name which will be used to identify you in highscore tables.</Old>
   </Mainform_ChooseName>
   <Mainform_ChooseName_FirstRun>
-    <Translation encoding="c-literal">Введите имя, под которым будут записаны Ваши рекорды в таблице рекордов.\r\nВы сможете изменить имя позже, используя пункт "Изменить имя игрока" в меню "Уровень".</Translation>
-    <Old encoding="c-literal">Please choose a name which will be used to identify you in highscore tables.\nYou can change this name later by selecting "Change player name" from the "Level" menu.</Old>
+    <Translation encoding="c-literal">Введите имя, под которым будут записаны Ваши рекорды в таблице рекордов.\r\nВы сможете изменить имя позже, используя пункт “Изменить имя игрока” в меню “Уровень”.</Translation>
+    <Old encoding="c-literal">Please choose a name which will be used to identify you in highscore tables.\nYou can change this name later by selecting “Change player name” from the “Level” menu.</Old>
   </Mainform_ChooseName_FirstRun>
   <Mainform_ChooseName_SolvedLevel>
-    <Translation encoding="c-literal">Поздравляем! Вы прошли этот уровень.\r\nВведите имя, под которым будут записаны Ваши рекорды в таблице рекордов.\r\nВы сможете изменить имя позже, используя пункт "Изменить имя игрока" в меню "Уровень".\r\n\r\nЕсли Вы не укажете имя сейчас, то Ваш результат на этом уровне записан не будет.</Translation>
-    <Old encoding="c-literal">Congratulations! You've solved the current level.\nPlease choose a name which will be used to identify you in highscore tables.\nIf you do not choose a name now, your score for this level will not be recorded.\nYou can change this name again later by selecting "Change player name" from the "Level" menu.</Old>
+    <Translation encoding="c-literal">Поздравляем! Вы прошли этот уровень.\r\nВведите имя, под которым будут записаны Ваши рекорды в таблице рекордов.\r\nВы сможете изменить имя позже, используя пункт “Изменить имя игрока” в меню “Уровень”.\r\n\r\nЕсли Вы не укажете имя сейчас, то Ваш результат на этом уровне записан не будет.</Translation>
+    <Old encoding="c-literal">Congratulations! You’ve solved the current level.\nPlease choose a name which will be used to identify you in highscore tables.\nIf you do not choose a name now, your score for this level will not be recorded.\nYou can change this name again later by selecting “Change player name” from the “Level” menu.</Old>
   </Mainform_ChooseName_SolvedLevel>
   <Mainform_Validity_CannotOpen>
     <Translation>Не удалось открыть уровень так как в нем есть ошибки.</Translation>

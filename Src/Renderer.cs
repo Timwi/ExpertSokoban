@@ -560,7 +560,8 @@ namespace ExpertSokoban
             // First add all the change events in the correct order
             if (y < input.Height)
             {
-                for (int x = 0; x <= input.Width; x++)  // "<=" is intentional
+                // "<=" is intentional: need to detect changes on the right edge of the board too
+                for (int x = 0; x <= input.Width; x++)
                     if (input.Get(x, y) != input.Get(x - 1, y))
                         results.Add(new pathEvent(x));
             }
