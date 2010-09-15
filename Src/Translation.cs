@@ -1,4 +1,4 @@
-using RT.Util;
+Ôªøusing RT.Util;
 using RT.Util.Lingo;
 
 namespace ExpertSokoban
@@ -22,16 +22,16 @@ namespace ExpertSokoban
         [LingoGroup("Menu: Context", @"The context menu which appears when the user right-clicks in the level list.")]
         ContextMenu,
 
-        [LingoGroup("Toolbar: Play", @"Tooltips which appear as the user hovers their mouse over a button on the ìPlayingî toolbar.")]
+        [LingoGroup("Toolbar: Play", @"Tooltips which appear as the user hovers their mouse over a button on the ‚ÄúPlaying‚Äù toolbar.")]
         ToolPlay,
 
-        [LingoGroup("Toolbar: File", @"Tooltips which appear as the user hovers their mouse over a button on the ìLevel fileî toolbar.")]
+        [LingoGroup("Toolbar: File", @"Tooltips which appear as the user hovers their mouse over a button on the ‚ÄúLevel file‚Äù toolbar.")]
         ToolFile,
 
-        [LingoGroup("Toolbar: File edit", @"Tooltips which appear as the user hovers their mouse over a button on the ìLevel file editingî toolbar.")]
+        [LingoGroup("Toolbar: File edit", @"Tooltips which appear as the user hovers their mouse over a button on the ‚ÄúLevel file editing‚Äù toolbar.")]
         ToolFileEdit,
 
-        [LingoGroup("Toolbar: Level edit", @"Tooltips which appear as the user hovers their mouse over a button on the ìLevel editingî toolbar.")]
+        [LingoGroup("Toolbar: Level edit", @"Tooltips which appear as the user hovers their mouse over a button on the ‚ÄúLevel editing‚Äù toolbar.")]
         ToolEditLevel,
 
         [LingoGroup("Information messages", "Messages displayed to the user in a dialog box with only an OK button.")]
@@ -52,10 +52,10 @@ namespace ExpertSokoban
         [LingoGroup("Level list messages", "Messages displayed in the level list in the right-hand part of the main window.")]
         LevelList,
 
-        [LingoGroup("Highscores", @"The Highscores window, which appears if you right-click a level and choose ìDisplay highscoresî.")]
+        [LingoGroup("Highscores", @"The Highscores window, which appears if you right-click a level and choose ‚ÄúDisplay highscores‚Äù.")]
         Highscores,
 
-        [LingoGroup("About", @"The About window, which appears if you choose ìAboutî from the ìHelpî menu.")]
+        [LingoGroup("About", @"The About window, which appears if you choose ‚ÄúAbout‚Äù from the ‚ÄúHelp‚Äù menu.")]
         About,
 
         [LingoGroup("General", null)]
@@ -102,23 +102,23 @@ namespace ExpertSokoban
         public TrString LevelList_CurrentlyPlaying = "Currently playing";
 
         [LingoInGroup(TranslationGroup.General)]
-        [LingoNotes(@"Used in the ìFile typeî drop-down in the ìSaveî dialog to refer to text files, i.e. files with the *.txt extension.")]
+        [LingoNotes(@"Used in the ‚ÄúFile type‚Äù drop-down in the ‚ÄúSave‚Äù dialog to refer to text files, i.e. files with the *.txt extension.")]
         public TrString Save_FileType_TextFiles = "Text files";
         [LingoInGroup(TranslationGroup.General)]
-        [LingoNotes(@"Used in the ìFile typeî drop-down in the ìSaveî dialog to refer to all files.")]
+        [LingoNotes(@"Used in the ‚ÄúFile type‚Äù drop-down in the ‚ÄúSave‚Äù dialog to refer to all files.")]
         public TrString Save_FileType_AllFiles = "All files";
         [LingoInGroup(TranslationGroup.General)]
-        [LingoNotes("Displayed in the main windowís title bar to signify that the current level file has not yet been named (i.e. it has no filename).")]
+        [LingoNotes("Displayed in the main window‚Äôs title bar to signify that the current level file has not yet been named (i.e. it has no filename).")]
         public TrString FileName_Untitled = "(untitled)";
         [LingoInGroup(TranslationGroup.General)]
-        [LingoNotes("Displayed in the main windowís title bar if the player has not chosen a name yet.")]
+        [LingoNotes("Displayed in the main window‚Äôs title bar if the player has not chosen a name yet.")]
         public TrString PlayerNameMissing = "(no player name)";
 
         [LingoInGroup(TranslationGroup.Prompt)]
-        [LingoNotes(@"Displayed when the user clicks ìNew commentî.")]
+        [LingoNotes(@"Displayed when the user clicks ‚ÄúNew comment‚Äù.")]
         public TrString NewComment_Prompt = "Please enter a comment:";
         [LingoInGroup(TranslationGroup.Prompt)]
-        [LingoNotes(@"Displayed when the user clicks ìEdit commentî.")]
+        [LingoNotes(@"Displayed when the user clicks ‚ÄúEdit comment‚Äù.")]
         public TrString EditComment_Prompt = "Please enter the revised comment:";
 
         [LingoInGroup(TranslationGroup.Info)]
@@ -169,16 +169,16 @@ namespace ExpertSokoban
         [LingoInGroup(TranslationGroup.Confirm)]
         public TrString LevelList_Message_DeleteLevel_btnDelete = "&Delete level";
         [LingoInGroup(TranslationGroup.Confirm)]
-        public TrString MainArea_Message_SaveChanges = "Would you like to save your changes to the level youíre editing?";
+        public TrString MainArea_Message_SaveChanges = "Would you like to save your changes to the level you‚Äôre editing?";
         [LingoInGroup(TranslationGroup.Confirm)]
         public TrString MainArea_Message_GiveUp = "Are you sure you wish to give up the current level?";
 
         [LingoInGroup(TranslationGroup.Prompt)]
         public TrString Mainform_ChooseName = "Please choose a name which will be used to identify you in highscore tables.";
         [LingoInGroup(TranslationGroup.Prompt)]
-        public TrString Mainform_ChooseName_FirstRun = "Please choose a name which will be used to identify you in highscore tables.\nYou can change this name later by selecting ìChange player nameî from the ìLevelî menu.";
+        public TrString Mainform_ChooseName_FirstRun = "Please choose a name which will be used to identify you in highscore tables.\nYou can change this name later by selecting ‚ÄúChange player name‚Äù from the ‚ÄúLevel‚Äù menu.";
         [LingoInGroup(TranslationGroup.Prompt)]
-        public TrString Mainform_ChooseName_SolvedLevel = "Congratulations! Youíve solved the current level.\nPlease choose a name which will be used to identify you in highscore tables.\nIf you do not choose a name now, your score for this level will not be recorded.\nYou can change this name again later by selecting ìChange player nameî from the ìLevelî menu.";
+        public TrString Mainform_ChooseName_SolvedLevel = "Congratulations! You‚Äôve solved the current level.\nPlease choose a name which will be used to identify you in highscore tables.\nIf you do not choose a name now, your score for this level will not be recorded.\nYou can change this name again later by selecting ‚ÄúChange player name‚Äù from the ‚ÄúLevel‚Äù menu.";
 
         [LingoInGroup(TranslationGroup.Confirm)]
         public TrString Mainform_Validity_CannotOpen = "The level could not be opened because it is invalid.";
@@ -219,10 +219,10 @@ namespace ExpertSokoban
         public TrString Mainform_Error_HelpFileNotFound = "The help file ({0}) could not be found.";
 
         [LingoInGroup(TranslationGroup.Confirm)]
-        [LingoNotes(@"Button in many dialogs; goes together with the ìCancelî button below.")]
+        [LingoNotes(@"Button in many dialogs; goes together with the ‚ÄúCancel‚Äù button below.")]
         public TrString Dialogs_btnOK = "OK";
         [LingoInGroup(TranslationGroup.Confirm)]
-        [LingoNotes(@"Button in many dialogs; goes together with the ìOKî button above.")]
+        [LingoNotes(@"Button in many dialogs; goes together with the ‚ÄúOK‚Äù button above.")]
         public TrString Dialogs_btnCancel = "Cancel";
         [LingoInGroup(TranslationGroup.Confirm)]
         [LingoNotes(@"Button in dialogs where the user has a choice to save or discard their changes to a level or to the level file.")]
