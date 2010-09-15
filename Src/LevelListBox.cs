@@ -428,7 +428,8 @@ namespace ExpertSokoban
                 return (Image) _cachedRenderings[level];
 
             Image rendering = new Bitmap(width, height);
-            new Renderer(level, width, height, new SolidBrush(Color.Transparent)).Render(Graphics.FromImage(rendering));
+            using (var graphics = Graphics.FromImage(rendering))
+                new Renderer(level, width, height, new SolidBrush(Color.Transparent)).Render(graphics);
             _cachedRenderings[level] = rendering;
             return rendering;
         }

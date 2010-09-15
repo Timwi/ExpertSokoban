@@ -441,16 +441,17 @@ namespace ExpertSokoban
             // Create scaled versions
             _cachedImage[sz] = new Dictionary<SokobanImage, Bitmap>();
             RectangleF dest = new RectangleF(0, 0, CellWidth * 1.5f + 1f, CellHeight * 1.5f + 1f);
-            Graphics g;
             foreach (SokobanImage si in Enum.GetValues(typeof(SokobanImage)))
             {
                 _cachedImage[sz][si] = new Bitmap((int) dest.Width + 1, (int) dest.Height + 1);
-                g = Graphics.FromImage(_cachedImage[sz][si]);
-                if (si == SokobanImage.Wall)
-                    g.InterpolationMode = InterpolationMode.Bicubic;
-                else
-                    g.InterpolationMode = InterpolationMode.High;
-                g.DrawImage(getImage(si), dest);
+                using (var g = Graphics.FromImage(_cachedImage[sz][si]))
+                {
+                    if (si == SokobanImage.Wall)
+                        g.InterpolationMode = InterpolationMode.Bicubic;
+                    else
+                        g.InterpolationMode = InterpolationMode.High;
+                    g.DrawImage(getImage(si), dest);
+                }
             }
 
             // Return the requested one

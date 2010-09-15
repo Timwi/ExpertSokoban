@@ -2,14 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Drawing.Text;
 using System.IO;
 using System.Linq;
 using System.Media;
 using System.Windows.Forms;
 using ExpertSokoban.Properties;
 using RT.Util;
-using RT.Util.Collections;
 using RT.Util.Controls;
 using RT.Util.Dialogs;
 using RT.Util.Drawing;
@@ -1011,12 +1009,13 @@ namespace ExpertSokoban
         /// <param name="cell">The cell that was "clicked".</param>
         private void processEditorClick(Point cell)
         {
-            SokobanCell CellType = _level.Cell(cell);
+            SokobanCell cellType = _level.Cell(cell);
+            Point? prevSokobanPos = null;
             if (_tool == MainAreaTool.Wall)
             {
                 if (_level.SokobanPos != cell)
                 {
-                    _level.SetCell(cell, CellType == SokobanCell.Wall ? SokobanCell.Blank : SokobanCell.Wall);
+                    _level.SetCell(cell, cellType == SokobanCell.Wall ? SokobanCell.Blank : SokobanCell.Wall);
                     playSound(mainAreaSound.EditorClick);
                     _modified = true;
                 }
@@ -1025,12 +1024,12 @@ namespace ExpertSokoban
             }
             else if (_tool == MainAreaTool.Piece)
             {
-                if (_level.SokobanPos != cell && CellType != SokobanCell.Wall)
+                if (_level.SokobanPos != cell && cellType != SokobanCell.Wall)
                 {
                     _level.SetCell(cell,
-                        CellType == SokobanCell.PieceOnTarget ? SokobanCell.Target :
-                        CellType == SokobanCell.Blank ? SokobanCell.Piece :
-                        CellType == SokobanCell.Target ? SokobanCell.PieceOnTarget :
+                        cellType == SokobanCell.PieceOnTarget ? SokobanCell.Target :
+                        cellType == SokobanCell.Blank ? SokobanCell.Piece :
+                        cellType == SokobanCell.Target ? SokobanCell.PieceOnTarget :
                                                                 SokobanCell.Blank);
                     playSound(mainAreaSound.PiecePlaced);
                     _modified = true;
@@ -1040,12 +1039,12 @@ namespace ExpertSokoban
             }
             else if (_tool == MainAreaTool.Target)
             {
-                if (CellType != SokobanCell.Wall)
+                if (cellType != SokobanCell.Wall)
                 {
                     _level.SetCell(cell,
-                        CellType == SokobanCell.PieceOnTarget ? SokobanCell.Piece :
-                        CellType == SokobanCell.Blank ? SokobanCell.Target :
-                        CellType == SokobanCell.Target ? SokobanCell.Blank :
+                        cellType == SokobanCell.PieceOnTarget ? SokobanCell.Piece :
+                        cellType == SokobanCell.Blank ? SokobanCell.Target :
+                        cellType == SokobanCell.Target ? SokobanCell.Blank :
                                                                 SokobanCell.PieceOnTarget);
                     playSound(mainAreaSound.PiecePlaced);
                     _modified = true;
@@ -1055,31 +1054,35 @@ namespace ExpertSokoban
             }
             else if (_tool == MainAreaTool.Sokoban)
             {
-                if (CellType != SokobanCell.Wall &&
-                    CellType != SokobanCell.Piece &&
-                    CellType != SokobanCell.PieceOnTarget)
+                if (cellType != SokobanCell.Wall &&
+                    cellType != SokobanCell.Piece &&
+                    cellType != SokobanCell.PieceOnTarget)
                 {
-                    Point PrevSokobanPos = _level.SokobanPos;
+                    prevSokobanPos = _level.SokobanPos;
                     _level.SetSokobanPos(cell);
-                    _renderer.RenderCell(Graphics.FromImage(Buffer), PrevSokobanPos);
                     playSound(mainAreaSound.PiecePlaced);
                     _modified = true;
                 }
                 else
                     playSound(mainAreaSound.Meep);
             }
-            int PrevSizeX = _level.Width;
-            int PrevSizeY = _level.Height;
-            // Ensure a one-cell margin around the level. This way the level grows
-            // automatically whenever the user draws walls or other things near the
-            // edge.
+
+            // Ensure a one-cell margin around the level. This way the level grows automatically 
+            // whenever the user draws walls or other things near the edge.
+            int prevSizeX = _level.Width;
+            int prevSizeY = _level.Height;
             _level.EnsureSpace(1);
             reinitMoveFinder();
-            if (_level.Width != PrevSizeX || _level.Height != PrevSizeY)
+            if (_level.Width != prevSizeX || _level.Height != prevSizeY)
                 Refresh();
             else
             {
-                _renderer.RenderCell(Graphics.FromImage(Buffer), cell);
+                using (var graphics = Graphics.FromImage(Buffer))
+                {
+                    _renderer.RenderCell(graphics, cell);
+                    if (prevSokobanPos != null)
+                        _renderer.RenderCell(graphics, prevSokobanPos.Value);
+                }
                 Invalidate();
             }
         }
@@ -1102,88 +1105,92 @@ namespace ExpertSokoban
             int movesMade = 0, pushesMade = 0;
 
             // Remove the move/push regions/paths by redrawing the plain level
-            Graphics windowGraphics = CreateGraphics();
-            if (_animationEnabled)
-                windowGraphics.DrawImage(Buffer, 0, 0);
-
-            // Prepare to move the Sokoban around visibly
-            Graphics bufferGraphics = Graphics.FromImage(Buffer);
-            Point origSokPos = _level.SokobanPos;
-            Point? origPushPos = null, lastPushPos = null;
-            bool everPushed = false;
-
-            foreach (Point move in _moveSequence)
+            using (Graphics windowGraphics = CreateGraphics())
             {
                 if (_animationEnabled)
-                    System.Threading.Thread.Sleep(20);
-                Point prevSokPos = _level.SokobanPos;
-                if (_level.IsPiece(move))
-                {
-                    // need to push a piece
-                    Point pushTo = new Point(2 * move.X - prevSokPos.X, 2 * move.Y - prevSokPos.Y);
-                    _level.MovePiece(move, pushTo);
-                    _level.SetSokobanPos(move);
-                    if (_animationEnabled)
-                        _renderer.RenderCell(bufferGraphics, pushTo);
-                    if (!everPushed)
-                    {
-                        origPushPos = move;
-                        everPushed = true;
-                    }
-                    lastPushPos = pushTo;
-                    pushesMade++;
-                }
-                else
-                    // just move Sokoban
-                    _level.SetSokobanPos(move);
-                movesMade++;
-                if (_animationEnabled)
-                {
-                    _renderer.RenderCell(bufferGraphics, move);
-                    _renderer.RenderCell(bufferGraphics, prevSokPos);
                     windowGraphics.DrawImage(Buffer, 0, 0);
+
+                // Prepare to move the Sokoban around visibly
+                using (Graphics bufferGraphics = Graphics.FromImage(Buffer))
+                {
+                    Point origSokPos = _level.SokobanPos;
+                    Point? origPushPos = null, lastPushPos = null;
+                    bool everPushed = false;
+
+                    foreach (Point move in _moveSequence)
+                    {
+                        if (_animationEnabled)
+                            System.Threading.Thread.Sleep(20);
+                        Point prevSokPos = _level.SokobanPos;
+                        if (_level.IsPiece(move))
+                        {
+                            // need to push a piece
+                            Point pushTo = new Point(2 * move.X - prevSokPos.X, 2 * move.Y - prevSokPos.Y);
+                            _level.MovePiece(move, pushTo);
+                            _level.SetSokobanPos(move);
+                            if (_animationEnabled)
+                                _renderer.RenderCell(bufferGraphics, pushTo);
+                            if (!everPushed)
+                            {
+                                origPushPos = move;
+                                everPushed = true;
+                            }
+                            lastPushPos = pushTo;
+                            pushesMade++;
+                        }
+                        else
+                            // just move Sokoban
+                            _level.SetSokobanPos(move);
+                        movesMade++;
+                        if (_animationEnabled)
+                        {
+                            _renderer.RenderCell(bufferGraphics, move);
+                            _renderer.RenderCell(bufferGraphics, prevSokPos);
+                            windowGraphics.DrawImage(Buffer, 0, 0);
+                        }
+                    }
+
+                    _moves += movesMade;
+                    _pushes += pushesMade;
+
+                    // No piece is selected after the push
+                    _selectedPiece = null;
+
+                    // Level has now been "modified" (i.e. player made a move)
+                    _modified = true;
+
+                    // Did this push solve the level?
+                    if (_level.Solved)
+                    {
+                        _state = MainAreaState.Solved;
+                        _cursorPos = null;
+                        playSound(mainAreaSound.LevelSolved);
+                        Refresh();
+                        if (LevelSolved != null)
+                            LevelSolved(this, new EventArgs());
+                    }
+                    else
+                    {
+                        // Play a sound
+                        playSound(mainAreaSound.PiecePlaced);
+
+                        // Add this action to the undo stack
+                        if (origPushPos == null)
+                            _undo.Push(new UndoMoveItem(origSokPos, _level.SokobanPos, movesMade));
+                        else
+                            _undo.Push(new UndoPushItem(origSokPos, _level.SokobanPos, origPushPos.Value,
+                                lastPushPos.Value, movesMade, pushesMade));
+                        _redo = new Stack<UndoItem>();
+
+                        // Switch back into move mode
+                        _state = MainAreaState.Move;
+                        reinitMoveFinder();
+                        if (_animationEnabled)
+                            Invalidate();
+                        else
+                            Refresh();
+                    }
                 }
-            }
-
-            _moves += movesMade;
-            _pushes += pushesMade;
-
-            // No piece is selected after the push
-            _selectedPiece = null;
-
-            // Level has now been "modified" (i.e. player made a move)
-            _modified = true;
-
-            // Did this push solve the level?
-            if (_level.Solved)
-            {
-                _state = MainAreaState.Solved;
-                _cursorPos = null;
-                playSound(mainAreaSound.LevelSolved);
-                Refresh();
-                if (LevelSolved != null)
-                    LevelSolved(this, new EventArgs());
-            }
-            else
-            {
-                // Play a sound
-                playSound(mainAreaSound.PiecePlaced);
-
-                // Add this action to the undo stack
-                if (origPushPos == null)
-                    _undo.Push(new UndoMoveItem(origSokPos, _level.SokobanPos, movesMade));
-                else
-                    _undo.Push(new UndoPushItem(origSokPos, _level.SokobanPos, origPushPos.Value,
-                        lastPushPos.Value, movesMade, pushesMade));
-                _redo = new Stack<UndoItem>();
-
-                // Switch back into move mode
-                _state = MainAreaState.Move;
-                reinitMoveFinder();
-                if (_animationEnabled)
-                    Invalidate();
-                else
-                    Refresh();
             }
         }
 
