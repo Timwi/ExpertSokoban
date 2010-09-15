@@ -583,7 +583,7 @@ namespace ExpertSokoban
         {
             public int X { get; private set; }
             public pathEvent(int x) { X = x; }
-            public int CompareTo(pathEvent other) { return X < other.X ? -1 : X > other.X ? 1 : 0; }
+            public int CompareTo(pathEvent other) { return X < other.X ? -1 : X > other.X ? 1 : this is pathEventSegment ? 1 : other is pathEventSegment ? -1 : 0; }
             public override string ToString() { return X.ToString(); }
         }
 
