@@ -459,8 +459,7 @@ namespace ExpertSokoban
             return _cachedImage[sz][imageType];
         }
 
-        private enum HorizArrow { None, Left, Right }
-        private enum VertArrow { None, Up, Down }
+        private enum Direction { Up, Down, Left, Right }
 
         /// <summary>Given a <see cref="MoveFinder"/> or <see cref="PushFinder"/>, generates the "outline" of the reachable area.
         /// If there are several disjoint regions, several separate outlines are generated.</summary>
@@ -475,147 +474,101 @@ namespace ExpertSokoban
             int width = input.Width;
             int height = input.Height;
 
-            HorizArrow[][] horiz = new HorizArrow[width][];
+            var results = new List<Point[]>();
+            var visitedUpArrow = new bool[width][];
             for (int i = 0; i < width; i++)
-            {
-                horiz[i] = new HorizArrow[height + 1];
-                for (int j = 0; j <= height; j++)
-                {
-                    bool ij = input.Get(i, j);
-                    if (ij != input.Get(i, j - 1))
-                        horiz[i][j] = ij ? HorizArrow.Right : HorizArrow.Left;
-                }
-            }
+                visitedUpArrow[i] = new bool[height];
 
-            VertArrow[][] vert = new VertArrow[width + 1][];
-            for (int i = 0; i <= width; i++)
-            {
-                vert[i] = new VertArrow[height];
+            for (int i = 0; i < width; i++)
                 for (int j = 0; j < height; j++)
-                {
-                    bool ij = input.Get(i, j);
-                    if (ij != input.Get(i - 1, j))
-                        vert[i][j] = ij ? VertArrow.Up : VertArrow.Down;
-                }
-            }
+                    // every region must have at least one up arrow (left edge)
+                    if (!visitedUpArrow[i][j] && input.Get(i, j) && !input.Get(i - 1, j))
+                        results.Add(tracePolygon(input, i, j, visitedUpArrow));
 
-            var allPolygons = new List<Point[]>();
-
-            // Find any horizontal arrow. If there is none, there won’t be a vertical one either.
-            for (int i = 0; i < horiz.Length; i++)
-                for (int j = 0; j < horiz[i].Length; j++)
-                    if (horiz[i][j] != HorizArrow.None)
-                        allPolygons.Add(tracePolygon(i, j, horiz, vert, width, height));
-
-            return allPolygons.ToArray();
+            return results.ToArray();
         }
 
-        private static Point[] tracePolygon(int i, int j, HorizArrow[][] horiz, VertArrow[][] vert, int width, int height)
+        private static Point[] tracePolygon(Virtual2DArray<bool> input, int i, int j, bool[][] visitedUpArrow)
         {
-            int iOrig = i, jOrig = j;
-            var curPolygon = new List<Point>();
-            bool isHoriz = true;
-            bool leftOrUp = horiz[i][j] == HorizArrow.Left;
+            var result = new List<Point>();
+            var dir = Direction.Up;
 
             while (true)
             {
-                // Move on to the next arrow
-                if (isHoriz)
+                // In each iteration of this loop, we move from the current edge to the next one.
+                // We have to prioritise right-turns so that the diagonal-adjacent case is handled correctly.
+                // Every time we take a 90° turn, we add the corner coordinate to the result list.
+                // When we get back to the original edge, the polygon is complete.
+                switch (dir)
                 {
-                    if (leftOrUp)
-                    {
-                        if (j > 0 && vert[i][j - 1] == VertArrow.Up)
+                    case Direction.Up:
+                        // If we’re back at the beginning, we’re done with this polygon
+                        if (visitedUpArrow[i][j])
+                            return result.ToArray();
+
+                        visitedUpArrow[i][j] = true;
+
+                        if (!input.Get(i, j - 1))
                         {
-                            curPolygon.Add(new Point(i, j));
-                            isHoriz = false;
-                            j--;
+                            result.Add(new Point(i, j));
+                            dir = Direction.Right;
                         }
-                        else if (i > 0 && horiz[i - 1][j] == HorizArrow.Left)
-                            i--;
-                        else if (j < height && vert[i][j] == VertArrow.Down)
+                        else if (input.Get(i - 1, j - 1))
                         {
-                            curPolygon.Add(new Point(i, j));
-                            isHoriz = false;
-                            leftOrUp = false;
-                        }
-                        else
-                            throw new InvalidOperationException("Dead end?");
-                    }
-                    else
-                    {
-                        i++;
-                        if (j < height && vert[i][j] == VertArrow.Down)
-                        {
-                            isHoriz = false;
-                            curPolygon.Add(new Point(i, j));
-                        }
-                        else if (horiz[i][j] == HorizArrow.Right)
-                        {
-                        }
-                        else if (j > 0 && vert[i][j - 1] == VertArrow.Up)
-                        {
-                            isHoriz = false;
-                            leftOrUp = true;
-                            curPolygon.Add(new Point(i, j));
-                            j--;
-                        }
-                        else
-                            throw new InvalidOperationException("Dead end?");
-                    }
-                }
-                else
-                {
-                    if (leftOrUp)
-                    {
-                        if (i < width && horiz[i][j] == HorizArrow.Right)
-                        {
-                            curPolygon.Add(new Point(i, j));
-                            isHoriz = true;
-                            leftOrUp = false;
-                        }
-                        else if (j > 0 && vert[i][j - 1] == VertArrow.Up)
-                            j--;
-                        else if (i > 0 && horiz[i - 1][j] == HorizArrow.Left)
-                        {
-                            curPolygon.Add(new Point(i, j));
-                            isHoriz = true;
+                            result.Add(new Point(i, j));
+                            dir = Direction.Left;
                             i--;
                         }
                         else
-                            throw new InvalidOperationException("Dead end?");
-                    }
-                    else
-                    {
+                            j--;
+                        break;
+
+                    case Direction.Down:
                         j++;
-                        if (i > 0 && horiz[i - 1][j] == HorizArrow.Left)
+                        if (!input.Get(i - 1, j))
                         {
-                            isHoriz = true;
-                            leftOrUp = true;
-                            curPolygon.Add(new Point(i, j));
+                            result.Add(new Point(i, j));
+                            dir = Direction.Left;
                             i--;
                         }
-                        else if (vert[i][j] == VertArrow.Down)
+                        else if (input.Get(i, j))
                         {
+                            result.Add(new Point(i, j));
+                            dir = Direction.Right;
                         }
-                        else if (i < width && horiz[i][j] == HorizArrow.Right)
+                        break;
+
+                    case Direction.Left:
+                        if (!input.Get(i - 1, j - 1))
                         {
-                            isHoriz = true;
-                            curPolygon.Add(new Point(i, j));
+                            result.Add(new Point(i, j));
+                            dir = Direction.Up;
+                            j--;
+                        }
+                        else if (input.Get(i - 1, j))
+                        {
+                            result.Add(new Point(i, j));
+                            dir = Direction.Down;
                         }
                         else
-                            throw new InvalidOperationException("Dead end?");
-                    }
+                            i--;
+                        break;
+
+                    case Direction.Right:
+                        i++;
+                        if (!input.Get(i, j))
+                        {
+                            result.Add(new Point(i, j));
+                            dir = Direction.Down;
+                        }
+                        else if (input.Get(i, j - 1))
+                        {
+                            result.Add(new Point(i, j));
+                            dir = Direction.Up;
+                            j--;
+                        }
+                        break;
                 }
-
-                // Remove the new arrow
-                if (isHoriz)
-                    horiz[i][j] = HorizArrow.None;
-                else
-                    vert[i][j] = VertArrow.None;
-
-                // If we’re back at the beginning, we’re done with this polygon
-                if (isHoriz && i == iOrig && j == jOrig)
-                    return curPolygon.ToArray();
             }
         }
 
