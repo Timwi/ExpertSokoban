@@ -459,6 +459,9 @@ namespace ExpertSokoban
             return _cachedImage[sz][imageType];
         }
 
+        private enum HorizArrow { None, Left, Right }
+        private enum VertArrow { None, Up, Down }
+
         /// <summary>Given a <see cref="MoveFinder"/> or <see cref="PushFinder"/>, generates the "outline" of the reachable area.
         /// If there are several disjoint regions, several separate outlines are generated.</summary>
         /// <param name="input">The input <see cref="MoveFinder"/> or <see cref="PushFinder"/> to generate the outline from.</param>
@@ -469,135 +472,150 @@ namespace ExpertSokoban
         /// </example>
         private static Point[][] boolsToPaths(Virtual2DArray<bool> input)
         {
-            List<List<Point>> activeSegments = new List<List<Point>>();
-            List<Point[]> completedPaths = new List<Point[]>();
-            for (int y = 0; y <= input.Height; y++)
-            {
-                List<pathEvent> events = findEvents(activeSegments, input, y);
-                for (int i = 0; i < events.Count; i += 2)
-                {
-                    var eventSegment1 = events[i] as pathEventSegment;
-                    var eventSegment2 = events[i + 1] as pathEventSegment;
+            int width = input.Width;
+            int height = input.Height;
 
-                    if (eventSegment1 != null && eventSegment2 != null)
+            HorizArrow[][] horiz = new HorizArrow[width][];
+            for (int i = 0; i < width; i++)
+            {
+                horiz[i] = new HorizArrow[height + 1];
+                for (int j = 0; j <= height; j++)
+                {
+                    bool ij = input.Get(i, j);
+                    if (ij != input.Get(i, j - 1))
+                        horiz[i][j] = ij ? HorizArrow.Right : HorizArrow.Left;
+                }
+            }
+
+            VertArrow[][] vert = new VertArrow[width + 1][];
+            for (int i = 0; i <= width; i++)
+            {
+                vert[i] = new VertArrow[height];
+                for (int j = 0; j < height; j++)
+                {
+                    bool ij = input.Get(i, j);
+                    if (ij != input.Get(i - 1, j))
+                        vert[i][j] = ij ? VertArrow.Up : VertArrow.Down;
+                }
+            }
+
+            var allPolygons = new List<Point[]>();
+
+            // Find any horizontal arrow. If there is none, there won’t be a vertical one either.
+            for (int i = 0; i < horiz.Length; i++)
+                for (int j = 0; j < horiz[i].Length; j++)
+                    if (horiz[i][j] != HorizArrow.None)
+                        allPolygons.Add(tracePolygon(i, j, horiz, vert, width, height));
+
+            return allPolygons.ToArray();
+        }
+
+        private static Point[] tracePolygon(int i, int j, HorizArrow[][] horiz, VertArrow[][] vert, int width, int height)
+        {
+            int iOrig = i, jOrig = j;
+            var curPolygon = new List<Point>();
+            bool isHoriz = true;
+            bool leftOrUp = horiz[i][j] == HorizArrow.Left;
+
+            while (true)
+            {
+                // Move on to the next arrow
+                if (isHoriz)
+                {
+                    if (leftOrUp)
                     {
-                        // Both events are segments — join them up
-                        var segment1 = eventSegment1.Segment;
-                        var segment2 = eventSegment2.Segment;
-                        bool segment1IsStart = eventSegment1.IsStartOfSegment;
-                        if (segment1 == segment2 && segment1IsStart)
+                        if (j > 0 && vert[i][j - 1] == VertArrow.Up)
                         {
-                            // A segment becomes a closed path (clockwise — around the outside)
-                            segment2.Add(new Point(events[i + 1].X, y));
-                            segment2.Add(new Point(events[i].X, y));
-                            completedPaths.Add(segment2.ToArray());
+                            curPolygon.Add(new Point(i, j));
+                            isHoriz = false;
+                            j--;
                         }
-                        else if (segment1 == segment2)
+                        else if (i > 0 && horiz[i - 1][j] == HorizArrow.Left)
+                            i--;
+                        else if (j < height && vert[i][j] == VertArrow.Down)
                         {
-                            // A segment becomes a closed path (anti-clockwise — it’s a “hole” inside an outer path)
-                            segment2.Add(new Point(events[i].X, y));
-                            segment2.Add(new Point(events[i + 1].X, y));
-                            completedPaths.Add(segment2.ToArray());
-                        }
-                        else if (segment1IsStart)
-                        {
-                            // Two segments join up
-                            segment2.Add(new Point(events[i + 1].X, y));
-                            segment2.Add(new Point(events[i].X, y));
-                            segment1.InsertRange(0, segment2);
+                            curPolygon.Add(new Point(i, j));
+                            isHoriz = false;
+                            leftOrUp = false;
                         }
                         else
-                        {
-                            // Two segments join up
-                            segment1.Add(new Point(events[i].X, y));
-                            segment1.Add(new Point(events[i + 1].X, y));
-                            segment1.AddRange(segment2);
-                        }
-
-                        // Segment2 has now been joined onto segment1, so the old segment2 can be removed
-                        activeSegments.Remove(segment2);
-
-                        // Change all the other events that still point to segment2 so that they point to segment1 instead
-                        foreach (var seg in Enumerable.Range(i + 2, events.Count - i - 2).Select(idx => events[idx]).OfType<pathEventSegment>().Where(seg => seg.Segment == segment2))
-                            seg.Segment = segment1;
-                    }
-                    else if (eventSegment1 == null && eventSegment2 == null)
-                    {
-                        // Both events are changes — create a new segment
-                        activeSegments.Add(new List<Point> {
-                            new Point(events[input.Get(events[i].X, y) ? i : i+1].X, y),
-                            new Point(events[input.Get(events[i].X, y) ? i+1 : i].X, y)
-                        });
+                            throw new InvalidOperationException("Dead end?");
                     }
                     else
                     {
-                        // One of the events is a segment, the other a change. We need to extend the segment.
-                        var segment = eventSegment1 ?? eventSegment2;
-                        var change = events[eventSegment1 == null ? i : i + 1];
-
-                        if (segment.IsStartOfSegment)
+                        i++;
+                        if (j < height && vert[i][j] == VertArrow.Down)
                         {
-                            segment.Segment.Insert(0, new Point(segment.X, y));
-                            if (segment.X != change.X)
-                                segment.Segment.Insert(0, new Point(change.X, y));
+                            isHoriz = false;
+                            curPolygon.Add(new Point(i, j));
+                        }
+                        else if (horiz[i][j] == HorizArrow.Right)
+                        {
+                        }
+                        else if (j > 0 && vert[i][j - 1] == VertArrow.Up)
+                        {
+                            isHoriz = false;
+                            leftOrUp = true;
+                            curPolygon.Add(new Point(i, j));
+                            j--;
                         }
                         else
-                        {
-                            segment.Segment.Add(new Point(segment.X, y));
-                            if (segment.X != change.X)
-                                segment.Segment.Add(new Point(change.X, y));
-                        }
+                            throw new InvalidOperationException("Dead end?");
                     }
                 }
-            }
-            return completedPaths.ToArray();
-        }
+                else
+                {
+                    if (leftOrUp)
+                    {
+                        if (i < width && horiz[i][j] == HorizArrow.Right)
+                        {
+                            curPolygon.Add(new Point(i, j));
+                            isHoriz = true;
+                            leftOrUp = false;
+                        }
+                        else if (j > 0 && vert[i][j - 1] == VertArrow.Up)
+                            j--;
+                        else if (i > 0 && horiz[i - 1][j] == HorizArrow.Left)
+                        {
+                            curPolygon.Add(new Point(i, j));
+                            isHoriz = true;
+                            i--;
+                        }
+                        else
+                            throw new InvalidOperationException("Dead end?");
+                    }
+                    else
+                    {
+                        j++;
+                        if (i > 0 && horiz[i - 1][j] == HorizArrow.Left)
+                        {
+                            isHoriz = true;
+                            leftOrUp = true;
+                            curPolygon.Add(new Point(i, j));
+                            i--;
+                        }
+                        else if (vert[i][j] == VertArrow.Down)
+                        {
+                        }
+                        else if (i < width && horiz[i][j] == HorizArrow.Right)
+                        {
+                            isHoriz = true;
+                            curPolygon.Add(new Point(i, j));
+                        }
+                        else
+                            throw new InvalidOperationException("Dead end?");
+                    }
+                }
 
-        private static List<pathEvent> findEvents(List<List<Point>> activeSegments, Virtual2DArray<bool> input, int y)
-        {
-            List<pathEvent> results = new List<pathEvent>();
+                // Remove the new arrow
+                if (isHoriz)
+                    horiz[i][j] = HorizArrow.None;
+                else
+                    vert[i][j] = VertArrow.None;
 
-            // First add all the change events in the correct order
-            if (y < input.Height)
-            {
-                // "<=" is intentional: need to detect changes on the right edge of the board too
-                for (int x = 0; x <= input.Width; x++)
-                    if (input.Get(x, y) != input.Get(x - 1, y))
-                        results.Add(new pathEvent(x));
-            }
-
-            // Now insert the segment events in the right places
-            for (int i = 0; i < activeSegments.Count; i++)
-            {
-                int index = 0;
-                // This needs a “<=” so that a START-of-segment event comes AFTER a change event with the same X
-                while (index < results.Count && results[index].X <= activeSegments[i][0].X)
-                    index++;
-                results.Insert(index, new pathEventSegment(activeSegments[i], true, activeSegments[i][0].X));
-                index = 0;
-                // This needs a “<” so that an END-of-segment event comes BEFORE a change event with the same X
-                while (index < results.Count && results[index].X < activeSegments[i][activeSegments[i].Count - 1].X)
-                    index++;
-                results.Insert(index, new pathEventSegment(activeSegments[i], false, activeSegments[i][activeSegments[i].Count - 1].X));
-            }
-            return results;
-        }
-
-        private class pathEvent
-        {
-            public int X { get; private set; }
-            public pathEvent(int x) { X = x; }
-        }
-
-        private sealed class pathEventSegment : pathEvent
-        {
-            public List<Point> Segment { get; set; }
-            public bool IsStartOfSegment { get; private set; }
-            public pathEventSegment(List<Point> segment, bool start, int x)
-                : base(x)
-            {
-                Segment = segment;
-                IsStartOfSegment = start;
+                // If we’re back at the beginning, we’re done with this polygon
+                if (isHoriz && i == iOrig && j == jOrig)
+                    return curPolygon.ToArray();
             }
         }
 
