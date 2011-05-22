@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using RT.Util;
 
 namespace ExpertSokoban
 {
@@ -475,9 +476,7 @@ namespace ExpertSokoban
             int height = input.Height;
 
             var results = new List<Point[]>();
-            var visitedUpArrow = new bool[width][];
-            for (int i = 0; i < width; i++)
-                visitedUpArrow[i] = new bool[height];
+            var visitedUpArrow = Ut.NewArray<bool>(width, height);
 
             for (int i = 0; i < width; i++)
                 for (int j = 0; j < height; j++)
