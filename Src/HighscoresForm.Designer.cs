@@ -61,6 +61,7 @@ namespace ExpertSokoban
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(95, 25);
             this.btnOK.TabIndex = 0;
+            this.btnOK.Tag = "notranslate";
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.okClick);

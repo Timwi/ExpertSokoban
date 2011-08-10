@@ -20,6 +20,7 @@ namespace ExpertSokoban
         {
             InitializeComponent();
             Lingo.TranslateControl(this, Program.Tr.Highscores);
+            btnOK.Text = Program.Tr.Dialogs_btnOK;
         }
 
 #if DEBUG
