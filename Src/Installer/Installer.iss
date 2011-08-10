@@ -19,7 +19,7 @@ UseRelativePaths=true
 [Setup]
 AppCopyright=© 2006-2011 CuteBits
 AppName=Expert Sokoban
-DefaultDirName={pf}\Expert Sokoban
+DefaultDirName={code:GetDefaultDirName}
 OutputDir=..\..\..\builds\ExpSok\Installer
 OutputBaseFilename=ExpertSokobanSetup-{#ShortVerStr}
 AppID={{62058A0A-DECE-43A8-9B56-52D161CE0EE7}
@@ -43,6 +43,7 @@ AllowNoIcons=true
 DefaultDialogFontName=Segoe UI
 LicenseFile=LicenseAgreement.rtf
 AppMutex=Global\ExpSokMutex7FDC0158CF9E
+DirExistsWarning=no
 
 [Icons]
 Name: "{group}\{cm:UninstallProgram, Expert Sokoban}"; Filename: {uninstallexe};
@@ -112,7 +113,7 @@ begin
   // "Upgrade" from an NSIS installation
   if RegQueryStringValue(HKCU, 'Software\ExpertSokoban', 'Install location', ExpSokOldPath) then begin
     if FileExists(ExpSokOldPath + '\Uninstall.exe') then begin
-      if SuppressibleMsgBox('An earlier version of Expert Sokoban is installed on your system. This must be uninstalled first. Don''t worry, your maps and progress will be preserved. Proceed?', mbConfirmation, MB_OKCANCEL, IDCANCEL) = IDOK then begin
+      if SuppressibleMsgBox('An earlier version of Expert Sokoban is installed on your system. It must be uninstalled first.'#13#10#13#10'Don''t worry, all your levels and progress will be preserved. Proceed?', mbConfirmation, MB_OKCANCEL, IDCANCEL) = IDOK then begin
         // Copy the settings file
         ForceDirectories(ExpandConstant('{userappdata}\ExpSok\UpgradeFromNSIS'));
         FileCopy(ExpSokOldPath + '\ExpSok.settings.xml', ExpandConstant('{userappdata}\ExpSok\ExpSok.Settings.xml'), True);
@@ -163,5 +164,16 @@ begin
     end;
     // Delete the marker directory
     RemoveDir(AppDataExpSok + 'UpgradeFromNSIS');
+  end;
+end;
+
+function GetDefaultDirName(Param: String): String;
+var
+  ExpSokOldPath: String;
+begin
+  if RegQueryStringValue(HKCU, 'Software\ExpertSokoban', 'Install location', ExpSokOldPath) then begin
+    Result := ExpSokOldPath;
+  end else begin
+    Result := ExpandConstant('{pf}\Expert Sokoban');
   end;
 end;
