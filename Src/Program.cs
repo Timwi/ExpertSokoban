@@ -1,6 +1,5 @@
 using System;
-using System.Linq;
-using System.Reflection;
+using System.Threading;
 using System.Windows.Forms;
 using RT.Util;
 using RT.Util.Lingo;
@@ -11,7 +10,7 @@ namespace ExpertSokoban
     {
         public static Translation Tr;
         public static Settings Settings;
-        public static bool TranslationEnabled;
+        public static bool TranslationEnabled = true;
 
         /// <summary>
         /// The main entry point for the application.
@@ -22,17 +21,17 @@ namespace ExpertSokoban
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            SettingsUtil.LoadSettings(out Settings);
+            Mutex m = null;
+            try { m = new Mutex(true, "Global\\ExpSokMutex7FDC0158CF9E"); }
+            catch { }
 
-#if DEBUG
-            TranslationEnabled = true;
-#else
-            TranslationEnabled = args.Any(s => s == "translate");
-#endif
+            SettingsUtil.LoadSettings(out Settings);
 
             Tr = Lingo.LoadTranslationOrDefault<Translation>("ExpSok", ref Settings.Language);
 
             Application.Run(new Mainform());
+
+            GC.KeepAlive(m);
 
             Settings.Save();
         }

@@ -3,6 +3,7 @@ using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 using RT.Util;
+using RT.Util.Controls;
 using RT.Util.Dialogs;
 using RT.Util.Forms;
 using RT.Util.Lingo;
@@ -27,6 +28,8 @@ namespace ExpertSokoban
             : base(Program.Settings.MainFormSettings)
         {
             InitializeComponent();
+            mnuMain.Renderer = new NativeToolStripRenderer();
+            mnuContext.Renderer = new NativeToolStripRenderer();
 
 #if DEBUG
             // Auto-generate the translation classes for automated form translation

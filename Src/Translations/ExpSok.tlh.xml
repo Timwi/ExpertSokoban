@@ -1,6 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <item>
   <Highscores>
+    <HighscoresForm>
+      <Translation>pe''eghmeH tetlh</Translation>
+      <Old>Highscores</Old>
+    </HighscoresForm>
+    <btnOK>
+      <Translation>lu'</Translation>
+      <Old>OK</Old>
+    </btnOK>
     <Highscores>
       <IsNumber>
         <item>True</item>
@@ -19,20 +27,8 @@
         <item>{0} moves, {1} pushes</item>
       </Old>
     </Highscores>
-    <HighscoresForm>
-      <Translation>pe''eghmeH tetlh</Translation>
-      <Old>Highscores</Old>
-    </HighscoresForm>
-    <btnOK>
-      <Translation>lu'</Translation>
-      <Old>OK</Old>
-    </btnOK>
   </Highscores>
   <AboutBox>
-    <Version>
-      <Translation>Segh {0}</Translation>
-      <Old>Version {0}</Old>
-    </Version>
     <AboutBox>
       <Translation>"Expert Sokoban" lubopbogh De'mey</Translation>
       <Old>About Expert Sokoban</Old>
@@ -45,12 +41,24 @@
       <Translation>lu'</Translation>
       <Old>OK</Old>
     </btnOK>
+    <Version>
+      <Translation>Segh {0}</Translation>
+      <Old>Version {0}</Old>
+    </Version>
   </AboutBox>
   <Mainform>
     <Mainform>
       <Translation>Expert Sokoban</Translation>
       <Old>Expert Sokoban</Old>
     </Mainform>
+    <lblStatusSolved>
+      <Translation>patlh DaQapta'. majQa'!</Translation>
+      <Old>You have solved the level. Congratulations!</Old>
+    </lblStatusSolved>
+    <lblStatusNull>
+      <Translation>DaH patlhmey wIvlu'pu'be'. DaQujmeH patlh tetlhDaq wa' patlh yIwIvneS!</Translation>
+      <Old>No levels currently selected. Select a level from the level list to play.</Old>
+    </lblStatusNull>
     <mnuMain>
       <Translation>HIDjolev'a'</Translation>
       <Old>Main menu</Old>
@@ -197,7 +205,7 @@
     </mnuOptionsStatusBar>
     <mnuOptionsMoveNo>
       <Translation>mIw DoDmey cha'&amp;be'</Translation>
-      <Old>Don't display &amp;move path</Old>
+      <Old>Don’t display &amp;move path</Old>
     </mnuOptionsMoveNo>
     <mnuOptionsMoveLine>
       <Translation>mIw DoDmey vIcha'meH t&amp;lhegh lo'</Translation>
@@ -213,7 +221,7 @@
     </mnuOptionsMoveArrows>
     <mnuOptionsPushNo>
       <Translation>t&amp;a' DoDmey cha'be'</Translation>
-      <Old>Don't display &amp;push path</Old>
+      <Old>Don’t display &amp;push path</Old>
     </mnuOptionsPushNo>
     <mnuOptionsPushLine>
       <Translation>ta' DoDmey vIcha'meH tlh&amp;egh lo'</Translation>
@@ -271,14 +279,6 @@
       <Translation>&amp;De'mey</Translation>
       <Old>&amp;About</Old>
     </mnuHelpAbout>
-    <lblStatusSolved>
-      <Translation>patlh DaQapta'. majQa'!</Translation>
-      <Old>You have solved the level. Congratulations!</Old>
-    </lblStatusSolved>
-    <lblStatusNull>
-      <Translation>DaH patlhmey wIvlu'pu'be'. DaQujmeH patlh tetlhDaq wa' patlh yIwIvneS!</Translation>
-      <Old>No levels currently selected. Select a level from the level list to play.</Old>
-    </lblStatusNull>
     <toolEditLevel>
       <Translation>patlh DachoHmeH jan tlhegh</Translation>
       <Old>Level edit toolbar</Old>
@@ -572,7 +572,7 @@
   </LevelList_Message_DeleteLevel_btnDelete>
   <MainArea_Message_SaveChanges>
     <Translation>patlh DachoHtaHboghDaq choHmeylIj Dapol DaneH'a'?</Translation>
-    <Old>Would you like to save your changes to the level you're editing?</Old>
+    <Old>Would you like to save your changes to the level you’re editing?</Old>
   </MainArea_Message_SaveChanges>
   <MainArea_Message_GiveUp>
     <Translation>patlhvam DaQujtaHvIS bIjegh DaneHbej'a'?</Translation>
@@ -583,12 +583,12 @@
     <Old>Please choose a name which will be used to identify you in highscore tables.</Old>
   </Mainform_ChooseName>
   <Mainform_ChooseName_FirstRun>
-    <Translation encoding="c-literal">pe''eghmeH tetlhmeyDaq vIghItlhlaHmeH SoHvaD pong yIwIvneS!\npIq "patlh" HIDjolevDaq "QujwI' pong choH" DawIvDI' pongvam DachoHlaH.</Translation>
-    <Old encoding="c-literal">Please choose a name which will be used to identify you in highscore tables.\nYou can change this name later by selecting "Change player name" from the "Level" menu.</Old>
+    <Translation encoding="c-literal">pe''eghmeH tetlhmeyDaq vIghItlhlaHmeH SoHvaD pong yIwIvneS!\r\npIq \"patlh\" HIDjolevDaq \"QujwI' pong choH\" DawIvDI' pongvam DachoHlaH.</Translation>
+    <Old encoding="c-literal">Please choose a name which will be used to identify you in highscore tables.\nYou can change this name later by selecting “Change player name” from the “Level” menu.</Old>
   </Mainform_ChooseName_FirstRun>
   <Mainform_ChooseName_SolvedLevel>
-    <Translation encoding="c-literal">majQa'! patlhvam DaQapta'.\npe''eghmeH tetlhmeyDaq vIghItlhlaHmeH SoHvaD pong yIwIvneS!\nDaH pong DawIvbe'chugh patlhvamDaq bIpe''eghbe'.\npIq "patlh" HIDjolevDaq "QujwI' pong choH" DawIvDI' pongvam DachoHlaH.</Translation>
-    <Old encoding="c-literal">Congratulations! You've solved the current level.\nPlease choose a name which will be used to identify you in highscore tables.\nIf you do not choose a name now, your score for this level will not be recorded.\nYou can change this name again later by selecting "Change player name" from the "Level" menu.</Old>
+    <Translation encoding="c-literal">majQa'! patlhvam DaQapta'.\r\npe''eghmeH tetlhmeyDaq vIghItlhlaHmeH SoHvaD pong yIwIvneS!\r\nDaH pong DawIvbe'chugh patlhvamDaq bIpe''eghbe'.\r\npIq \"patlh\" HIDjolevDaq \"QujwI' pong choH\" DawIvDI' pongvam DachoHlaH.</Translation>
+    <Old encoding="c-literal">Congratulations! You’ve solved the current level.\nPlease choose a name which will be used to identify you in highscore tables.\nIf you do not choose a name now, your score for this level will not be recorded.\nYou can change this name again later by selecting “Change player name” from the “Level” menu.</Old>
   </Mainform_ChooseName_SolvedLevel>
   <Mainform_Validity_CannotOpen>
     <Translation>motlhbe'mo' patlh 'oH vIpoSmoHlaH.</Translation>

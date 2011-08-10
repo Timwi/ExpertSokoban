@@ -37,6 +37,11 @@
   </Target>
 
 
+  <Target Name="BuildInstaller">
+    <Exec Command='"$(InnoSetup)" Installer.iss' WorkingDirectory='Installer'/>
+  </Target>
+
+
   <Target Name="BuildRelease">
     <MSBuild Projects="$(BuildSingleProj)" Targets="Build;Merge"
              Properties="Configuration=Release;Platform=$(Platform);CompiledFileName=$(CompiledFileName);ProjectName=$(ProjectName);SolutionFile=$(SolutionFile);Root=$(Root);Caller=$(MSBuildProjectFullPath)"/>
@@ -64,5 +69,7 @@
   <Target Name="OD" DependsOnTargets="ObfuscateDebug"/>
   <Target Name="OR" DependsOnTargets="ObfuscateRelease"/>
   <Target Name="OA" DependsOnTargets="ObfuscateAll"/>
+
+  <Target Name="BI" DependsOnTargets="BuildInstaller"/>
 
 </Project>

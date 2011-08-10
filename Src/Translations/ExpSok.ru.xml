@@ -56,6 +56,14 @@
       <Translation>Expert Sokoban</Translation>
       <Old>Expert Sokoban</Old>
     </Mainform>
+    <lblStatusSolved>
+      <Translation>Вы прошли этот уровень. Поздравляем!</Translation>
+      <Old>You have solved the level. Congratulations!</Old>
+    </lblStatusSolved>
+    <lblStatusNull>
+      <Translation>Выберите уровень из списка уровней.</Translation>
+      <Old>No levels currently selected. Select a level from the level list to play.</Old>
+    </lblStatusNull>
     <mnuMain>
       <Translation>Главное меню</Translation>
       <Old>Main menu</Old>
@@ -202,7 +210,7 @@
     </mnuOptionsStatusBar>
     <mnuOptionsMoveNo>
       <Translation>&amp;Не показывать путь движения</Translation>
-      <Old>Don't display &amp;move path</Old>
+      <Old>Don’t display &amp;move path</Old>
     </mnuOptionsMoveNo>
     <mnuOptionsMoveLine>
       <Translation>Показывать путь движения &amp;линией</Translation>
@@ -218,7 +226,7 @@
     </mnuOptionsMoveArrows>
     <mnuOptionsPushNo>
       <Translation>Н&amp;е показывать путь толчков</Translation>
-      <Old>Don't display &amp;push path</Old>
+      <Old>Don’t display &amp;push path</Old>
     </mnuOptionsPushNo>
     <mnuOptionsPushLine>
       <Translation>Показывать путь толчков линие&amp;й</Translation>
@@ -276,14 +284,6 @@
       <Translation>&amp;О программе</Translation>
       <Old>&amp;About</Old>
     </mnuHelpAbout>
-    <lblStatusSolved>
-      <Translation>Вы прошли этот уровень. Поздравляем!</Translation>
-      <Old>You have solved the level. Congratulations!</Old>
-    </lblStatusSolved>
-    <lblStatusNull>
-      <Translation>Выберите уровень из списка уровней.</Translation>
-      <Old>No levels currently selected. Select a level from the level list to play.</Old>
-    </lblStatusNull>
     <toolEditLevel>
       <Translation>Панель редактирования уровня</Translation>
       <Old>Level edit toolbar</Old>
@@ -577,7 +577,7 @@
   </LevelList_Message_DeleteLevel_btnDelete>
   <MainArea_Message_SaveChanges>
     <Translation>Сохранить изменения в текущем уровне?</Translation>
-    <Old>Would you like to save your changes to the level you're editing?</Old>
+    <Old>Would you like to save your changes to the level you’re editing?</Old>
   </MainArea_Message_SaveChanges>
   <MainArea_Message_GiveUp>
     <Translation>Хотите сдаться на данном уровне?</Translation>
