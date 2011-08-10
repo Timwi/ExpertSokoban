@@ -30,25 +30,28 @@ namespace ExpertSokoban
             this.ctLogo = new System.Windows.Forms.PictureBox();
             this.lblVersion = new System.Windows.Forms.Label();
             this.lblCopyright = new System.Windows.Forms.Label();
-            this.lblCompanyName = new System.Windows.Forms.Label();
             this.btnOK = new System.Windows.Forms.Button();
             this.lblProductName = new System.Windows.Forms.Label();
-            this.pnlProduct = new System.Windows.Forms.Panel();
             this.lblURL = new System.Windows.Forms.Label();
             this.pnlMain = new System.Windows.Forms.TableLayoutPanel();
+            this.pnlFlowRight = new System.Windows.Forms.FlowLayoutPanel();
             this.lblCredits = new System.Windows.Forms.Label();
+            this.lblRummage = new RT.Util.Controls.LabelEx();
+            this.pnlFlowLeft = new System.Windows.Forms.FlowLayoutPanel();
             ((System.ComponentModel.ISupportInitialize) (this.ctLogo)).BeginInit();
-            this.pnlProduct.SuspendLayout();
             this.pnlMain.SuspendLayout();
+            this.pnlFlowRight.SuspendLayout();
+            this.pnlFlowLeft.SuspendLayout();
             this.SuspendLayout();
             // 
             // ctLogo
             // 
             this.ctLogo.Image = global::ExpertSokoban.Properties.Resources.Skin_Sokoban;
-            this.ctLogo.Location = new System.Drawing.Point(10, 10);
+            this.ctLogo.Location = new System.Drawing.Point(0, 0);
             this.ctLogo.Margin = new System.Windows.Forms.Padding(0);
             this.ctLogo.Name = "ctLogo";
-            this.ctLogo.Size = new System.Drawing.Size(150, 150);
+            this.ctLogo.Padding = new System.Windows.Forms.Padding(0, 10, 0, 0);
+            this.ctLogo.Size = new System.Drawing.Size(150, 160);
             this.ctLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.ctLogo.TabIndex = 12;
             this.ctLogo.TabStop = false;
@@ -58,10 +61,10 @@ namespace ExpertSokoban
             // 
             this.lblVersion.AutoSize = true;
             this.lblVersion.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
-            this.lblVersion.Location = new System.Drawing.Point(-3, 18);
-            this.lblVersion.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
+            this.lblVersion.Location = new System.Drawing.Point(6, 28);
+            this.lblVersion.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblVersion.Name = "lblVersion";
-            this.lblVersion.Size = new System.Drawing.Size(57, 17);
+            this.lblVersion.Size = new System.Drawing.Size(56, 17);
             this.lblVersion.TabIndex = 0;
             this.lblVersion.Tag = "notranslate";
             this.lblVersion.Text = "Version";
@@ -71,8 +74,8 @@ namespace ExpertSokoban
             // 
             this.lblCopyright.AutoSize = true;
             this.lblCopyright.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
-            this.lblCopyright.Location = new System.Drawing.Point(-3, 48);
-            this.lblCopyright.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
+            this.lblCopyright.Location = new System.Drawing.Point(6, 55);
+            this.lblCopyright.Margin = new System.Windows.Forms.Padding(6, 10, 6, 0);
             this.lblCopyright.Name = "lblCopyright";
             this.lblCopyright.Size = new System.Drawing.Size(70, 17);
             this.lblCopyright.TabIndex = 21;
@@ -80,31 +83,15 @@ namespace ExpertSokoban
             this.lblCopyright.Text = "Copyright";
             this.lblCopyright.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // lblCompanyName
-            // 
-            this.lblCompanyName.AutoSize = true;
-            this.lblCompanyName.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
-            this.lblCompanyName.Location = new System.Drawing.Point(10, 166);
-            this.lblCompanyName.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
-            this.lblCompanyName.MaximumSize = new System.Drawing.Size(0, 17);
-            this.lblCompanyName.Name = "lblCompanyName";
-            this.lblCompanyName.Size = new System.Drawing.Size(114, 17);
-            this.lblCompanyName.TabIndex = 22;
-            this.lblCompanyName.Tag = "notranslate";
-            this.lblCompanyName.Text = "Company Name";
-            this.lblCompanyName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblCompanyName.Visible = false;
-            // 
             // btnOK
             // 
-            this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles) (((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnOK.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
-            this.btnOK.Location = new System.Drawing.Point(0, 169);
+            this.btnOK.Location = new System.Drawing.Point(465, 371);
             this.btnOK.Margin = new System.Windows.Forms.Padding(0);
             this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(208, 26);
+            this.btnOK.Size = new System.Drawing.Size(129, 26);
             this.btnOK.TabIndex = 24;
             this.btnOK.Text = "OK";
             // 
@@ -112,8 +99,8 @@ namespace ExpertSokoban
             // 
             this.lblProductName.AutoSize = true;
             this.lblProductName.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
-            this.lblProductName.Location = new System.Drawing.Point(-3, 0);
-            this.lblProductName.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
+            this.lblProductName.Location = new System.Drawing.Point(6, 10);
+            this.lblProductName.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblProductName.Name = "lblProductName";
             this.lblProductName.Size = new System.Drawing.Size(108, 18);
             this.lblProductName.TabIndex = 20;
@@ -121,31 +108,16 @@ namespace ExpertSokoban
             this.lblProductName.Text = "Product Name";
             this.lblProductName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // pnlProduct
-            // 
-            this.pnlProduct.AutoSize = true;
-            this.pnlProduct.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.pnlProduct.Controls.Add(this.lblURL);
-            this.pnlProduct.Controls.Add(this.lblProductName);
-            this.pnlProduct.Controls.Add(this.lblVersion);
-            this.pnlProduct.Controls.Add(this.lblCopyright);
-            this.pnlProduct.Location = new System.Drawing.Point(0, 0);
-            this.pnlProduct.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlProduct.Name = "pnlProduct";
-            this.pnlProduct.Size = new System.Drawing.Size(180, 80);
-            this.pnlProduct.TabIndex = 26;
-            this.pnlProduct.Tag = "notranslate";
-            // 
             // lblURL
             // 
             this.lblURL.AutoSize = true;
             this.lblURL.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lblURL.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
-            this.lblURL.ForeColor = System.Drawing.Color.Blue;
-            this.lblURL.Location = new System.Drawing.Point(-3, 65);
-            this.lblURL.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
+            this.lblURL.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
+            this.lblURL.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.lblURL.Location = new System.Drawing.Point(6, 72);
+            this.lblURL.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblURL.Name = "lblURL";
-            this.lblURL.Size = new System.Drawing.Size(180, 15);
+            this.lblURL.Size = new System.Drawing.Size(179, 15);
             this.lblURL.TabIndex = 26;
             this.lblURL.Tag = "notranslate";
             this.lblURL.Text = "http://www.cutebits.com/ExpSok";
@@ -156,33 +128,76 @@ namespace ExpertSokoban
             // 
             this.pnlMain.AutoSize = true;
             this.pnlMain.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.pnlMain.ColumnCount = 1;
+            this.pnlMain.ColumnCount = 2;
             this.pnlMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.pnlMain.Controls.Add(this.lblCredits, 0, 1);
-            this.pnlMain.Controls.Add(this.pnlProduct, 0, 0);
-            this.pnlMain.Controls.Add(this.btnOK, 0, 2);
-            this.pnlMain.Location = new System.Drawing.Point(163, 10);
+            this.pnlMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.pnlMain.Controls.Add(this.pnlFlowRight, 1, 0);
+            this.pnlMain.Controls.Add(this.pnlFlowLeft, 0, 0);
+            this.pnlMain.Controls.Add(this.btnOK, 1, 1);
+            this.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlMain.Location = new System.Drawing.Point(10, 10);
             this.pnlMain.Margin = new System.Windows.Forms.Padding(0);
             this.pnlMain.Name = "pnlMain";
-            this.pnlMain.RowCount = 3;
+            this.pnlMain.RowCount = 2;
+            this.pnlMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.pnlMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.pnlMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.pnlMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.pnlMain.Size = new System.Drawing.Size(208, 195);
+            this.pnlMain.Size = new System.Drawing.Size(594, 397);
             this.pnlMain.TabIndex = 27;
             this.pnlMain.Tag = "notranslate";
+            // 
+            // pnlFlowRight
+            // 
+            this.pnlFlowRight.AutoSize = true;
+            this.pnlFlowRight.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.pnlFlowRight.Controls.Add(this.lblProductName);
+            this.pnlFlowRight.Controls.Add(this.lblVersion);
+            this.pnlFlowRight.Controls.Add(this.lblCopyright);
+            this.pnlFlowRight.Controls.Add(this.lblURL);
+            this.pnlFlowRight.Controls.Add(this.lblCredits);
+            this.pnlFlowRight.Controls.Add(this.lblRummage);
+            this.pnlFlowRight.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.pnlFlowRight.Font = new System.Drawing.Font("Arial", 9.75F);
+            this.pnlFlowRight.Location = new System.Drawing.Point(159, 3);
+            this.pnlFlowRight.Name = "pnlFlowRight";
+            this.pnlFlowRight.Padding = new System.Windows.Forms.Padding(0, 10, 10, 10);
+            this.pnlFlowRight.Size = new System.Drawing.Size(247, 197);
+            this.pnlFlowRight.TabIndex = 29;
             // 
             // lblCredits
             // 
             this.lblCredits.AutoSize = true;
             this.lblCredits.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
-            this.lblCredits.Location = new System.Drawing.Point(0, 90);
-            this.lblCredits.Margin = new System.Windows.Forms.Padding(0, 10, 0, 15);
+            this.lblCredits.Location = new System.Drawing.Point(6, 97);
+            this.lblCredits.Margin = new System.Windows.Forms.Padding(6, 10, 6, 0);
             this.lblCredits.Name = "lblCredits";
             this.lblCredits.Size = new System.Drawing.Size(191, 64);
             this.lblCredits.TabIndex = 26;
             this.lblCredits.Text = "Credits:\r\n    Programming: Timwi, Roman\r\n    Graphics: Roman, Timwi\r\n    Testing:" +
                 " Hawthorn";
+            // 
+            // lblRummage
+            // 
+            this.lblRummage.Font = new System.Drawing.Font("Arial", 9.75F);
+            this.lblRummage.Location = new System.Drawing.Point(6, 171);
+            this.lblRummage.Margin = new System.Windows.Forms.Padding(6, 10, 6, 0);
+            this.lblRummage.Name = "lblRummage";
+            this.lblRummage.Size = new System.Drawing.Size(225, 16);
+            this.lblRummage.TabIndex = 27;
+            this.lblRummage.TabStop = true;
+            this.lblRummage.Text = "This game is protected by {Rummage}.";
+            this.lblRummage.LinkActivated += new RT.Util.Controls.LinkEventHandler(this.clickRummageUrl);
+            // 
+            // pnlFlowLeft
+            // 
+            this.pnlFlowLeft.AutoSize = true;
+            this.pnlFlowLeft.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.pnlFlowLeft.Controls.Add(this.ctLogo);
+            this.pnlFlowLeft.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.pnlFlowLeft.Font = new System.Drawing.Font("Arial", 9.75F);
+            this.pnlFlowLeft.Location = new System.Drawing.Point(3, 3);
+            this.pnlFlowLeft.Name = "pnlFlowLeft";
+            this.pnlFlowLeft.Size = new System.Drawing.Size(150, 160);
+            this.pnlFlowLeft.TabIndex = 28;
             // 
             // AboutBox
             // 
@@ -191,10 +206,8 @@ namespace ExpertSokoban
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.CancelButton = this.btnOK;
-            this.ClientSize = new System.Drawing.Size(431, 284);
+            this.ClientSize = new System.Drawing.Size(614, 417);
             this.Controls.Add(this.pnlMain);
-            this.Controls.Add(this.lblCompanyName);
-            this.Controls.Add(this.ctLogo);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -205,10 +218,12 @@ namespace ExpertSokoban
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "About Expert Sokoban";
             ((System.ComponentModel.ISupportInitialize) (this.ctLogo)).EndInit();
-            this.pnlProduct.ResumeLayout(false);
-            this.pnlProduct.PerformLayout();
             this.pnlMain.ResumeLayout(false);
             this.pnlMain.PerformLayout();
+            this.pnlFlowRight.ResumeLayout(false);
+            this.pnlFlowRight.PerformLayout();
+            this.pnlFlowLeft.ResumeLayout(false);
+            this.pnlFlowLeft.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -219,12 +234,13 @@ namespace ExpertSokoban
         private System.Windows.Forms.PictureBox ctLogo;
         private System.Windows.Forms.Label lblVersion;
         private System.Windows.Forms.Label lblCopyright;
-        private System.Windows.Forms.Label lblCompanyName;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Label lblProductName;
-        private System.Windows.Forms.Panel pnlProduct;
         private System.Windows.Forms.Label lblURL;
         private System.Windows.Forms.TableLayoutPanel pnlMain;
         private System.Windows.Forms.Label lblCredits;
+        private System.Windows.Forms.FlowLayoutPanel pnlFlowLeft;
+        private System.Windows.Forms.FlowLayoutPanel pnlFlowRight;
+        private RT.Util.Controls.LabelEx lblRummage;
     }
 }

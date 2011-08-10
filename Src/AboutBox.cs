@@ -21,7 +21,6 @@ namespace ExpertSokoban
             this.lblProductName.Text = AssemblyProduct;
             this.lblVersion.Text = Program.Tr.AboutBox.Version.Fmt(Ut.VersionOfExe());
             this.lblCopyright.Text = AssemblyCopyright;
-            this.lblCompanyName.Text = AssemblyCompany;
         }
 
 #if DEBUG
@@ -102,25 +101,16 @@ namespace ExpertSokoban
                 return ((AssemblyCopyrightAttribute) attributes[0]).Copyright;
             }
         }
-
-        public string AssemblyCompany
-        {
-            get
-            {
-                // Get all Company attributes on this assembly
-                object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCompanyAttribute), false);
-                // If there aren't any Company attributes, return an empty string
-                if (attributes.Length == 0)
-                    return "";
-                // If there is a Company attribute, return its value
-                return ((AssemblyCompanyAttribute) attributes[0]).Company;
-            }
-        }
         #endregion
 
         private void clickUrl(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start(lblURL.Text);
+        }
+
+        private void clickRummageUrl(object sender, RT.Util.Controls.LinkEventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://www.aldaray.com/Rummage");
         }
     }
 }

@@ -47,7 +47,7 @@ DirExistsWarning=no
 
 [Icons]
 Name: "{group}\{cm:UninstallProgram, Expert Sokoban}"; Filename: {uninstallexe};
-Name: {group}\Expert Sokoban; Filename: {app}\ExpSok.exe; Comment: "Expert Sokoban is a Sokoban game aimed at the expert."; 
+Name: {group}\Expert Sokoban; Filename: {app}\ExpSok.exe; Comment: "Expert Sokoban is a Sokoban game aimed at the expert.";
 
 [Code]
 
@@ -90,7 +90,7 @@ end;
 
 function IsNetFrameworkV4Installed(): Boolean;
 begin
-  Result := 
+  Result :=
       RegValueExists(HKLM,'Software\Microsoft\NET Framework Setup\NDP\v4\Client', 'Install')
       or
       RegValueExists(HKLM,'Software\Microsoft\NET Framework Setup\NDP\v4\Full', 'Install');
@@ -113,12 +113,12 @@ begin
   // "Upgrade" from an NSIS installation
   if RegQueryStringValue(HKCU, 'Software\ExpertSokoban', 'Install location', ExpSokOldPath) then begin
     if FileExists(ExpSokOldPath + '\Uninstall.exe') then begin
-      if SuppressibleMsgBox('An earlier version of Expert Sokoban is installed on your system. It must be uninstalled first.'#13#10#13#10'Don''t worry, all your levels and progress will be preserved. Proceed?', mbConfirmation, MB_OKCANCEL, IDCANCEL) = IDOK then begin
+      if SuppressibleMsgBox('An earlier version of Expert Sokoban is installed on your system. It must be uninstalled first.'#13#10#13#10'Don''t worry, all your levels and highscores will be preserved. Proceed?', mbConfirmation, MB_OKCANCEL, IDCANCEL) = IDOK then begin
         // Copy the settings file
         ForceDirectories(ExpandConstant('{userappdata}\ExpSok\UpgradeFromNSIS'));
         FileCopy(ExpSokOldPath + '\ExpSok.settings.xml', ExpandConstant('{userappdata}\ExpSok\ExpSok.Settings.xml'), True);
         FileCopy(ExpSokOldPath + '\ExpSok.settings.xml', ExpandConstant('{userappdata}\ExpSok\ExpSok.Settings.xml.backup'), False);
-        // Copy all maps to the profile dir, as a backup
+        // Copy all level files to the profile dir, as a backup
         if FindFirst(ExpSokOldPath + '\*.txt', FindRec) then begin
           try
             repeat
@@ -148,7 +148,7 @@ begin
   AppDataExpSok := ExpandConstant('{userappdata}\ExpSok\');
   Result := 0;
   if DirExists(AppDataExpSok + 'UpgradeFromNSIS') then begin
-    // Move all the maps to the install dir, overwriting any existing files
+    // Move all the level files to the install dir, overwriting any existing files
     if FindFirst(AppDataExpSok + '*.txt', FindRec) then begin
       try
         repeat
