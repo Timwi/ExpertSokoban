@@ -75,6 +75,7 @@ namespace ExpertSokoban
         // Classes containing auto-generated string codes
         public HighscoresFormTranslation Highscores = new HighscoresFormTranslation();
         public AboutBoxTranslation AboutBox = new AboutBoxTranslation();
+        public ChoosePlayerNameTranslation ChoosePlayerName = new ChoosePlayerNameTranslation();
         public MainformTranslation Mainform = new MainformTranslation();
         public ContextMenuTranslation Context = new ContextMenuTranslation();
 
@@ -243,6 +244,10 @@ namespace ExpertSokoban
     sealed partial class AboutBoxTranslation
     {
         public TrString Version = "Version {0}";
+    }
+
+    sealed partial class ChoosePlayerNameTranslation
+    {
     }
 
 #pragma warning restore 1591    // Missing XML comment for publicly visible type or member

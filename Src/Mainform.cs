@@ -17,7 +17,7 @@ namespace ExpertSokoban
     /// </summary>
     partial class Mainform : ManagedForm
     {
-        LanguageMainMenuHelper<Translation> translationHelper;
+        private LanguageMenuHelper<Translation> _translationHelper;
 
         #region Startup / shutdown
 
@@ -41,6 +41,9 @@ namespace ExpertSokoban
                 using (var form = new HighscoresForm(false))
                     generator.TranslateControl(form, Program.Tr.Highscores);
 
+                using (var form = new ChoosePlayerNameForm(false))
+                    generator.TranslateControl(form, Program.Tr.ChoosePlayerName);
+
                 generator.TranslateControl(this, Program.Tr.Mainform);
                 generator.TranslateControl(mnuContext, Program.Tr.Context);
             }
@@ -51,9 +54,9 @@ namespace ExpertSokoban
             Lingo.TranslateControl(mnuContext, Program.Tr.Context);
 #endif
 
-            translationHelper = new LanguageMainMenuHelper<Translation>("Expert Sokoban", "ExpSok", Translation.DefaultLanguage, Program.Settings.TranslationFormSettings,
-                Icon, setLanguage, mnuOptionsChangeLanguage, () => Program.Tr.Language);
-            translationHelper.TranslationEditingEnabled = Program.TranslationEnabled;
+            _translationHelper = new LanguageMenuHelper<Translation>("Expert Sokoban", "ExpSok", Translation.DefaultLanguage,
+                Program.Settings.TranslationFormSettings, Icon, setLanguage, () => Program.Tr.Language, mnuOptionsChangeLanguage);
+            _translationHelper.TranslationEditingEnabled = Program.TranslationEnabled;
 
             // Restore saved settings
             mnuOptionsPlayingToolbar.Checked = Program.Settings.DisplayPlayingToolbar;
@@ -70,8 +73,8 @@ namespace ExpertSokoban
             mnuOptionsAnimation.Checked = ctMainArea.AnimationEnabled = Program.Settings.AnimationEnabled;
             mnuOptionsLetterControl.Checked = ctMainArea.LetteringEnabled = Program.Settings.LetteringEnabled;
 
-            if (Program.Settings.PlayerName == null || Program.Settings.PlayerName.Length == 0)
-                Program.Settings.PlayerName = InputBox.GetLine(Program.Tr.Mainform_ChooseName_FirstRun, "", Program.Tr.ProgramName, Program.Tr.Dialogs_btnOK, Program.Tr.Dialogs_btnCancel);
+            if (string.IsNullOrWhiteSpace(Program.Settings.PlayerName))
+                Program.Settings.PlayerName = ChoosePlayerNameForm.GetPlayerName(ChoosePlayerNameForm.FormType.FirstRun, "", _translationHelper);
 
             // Restore the last used level file
             try
@@ -114,11 +117,11 @@ namespace ExpertSokoban
         /// </summary>
         private void formClosing(object sender, FormClosingEventArgs e)
         {
-            if (!translationHelper.MayExitApplication()
+            if (!_translationHelper.MayExitApplication()
                 || !mayDestroyEverything(Program.Tr.Mainform_MessageTitle_Exit))
                 e.Cancel = true;
             else
-                translationHelper.CloseWithoutPrompts();
+                _translationHelper.CloseWithoutPrompts();
         }
 
         #endregion
@@ -315,11 +318,11 @@ namespace ExpertSokoban
             lstLevels.JustSolved();
 
             // If the user hasn't chosen a name for themselves yet, ask them
-            if (Program.Settings.PlayerName == null || Program.Settings.PlayerName.Length == 0)
-                Program.Settings.PlayerName = InputBox.GetLine(Program.Tr.Mainform_ChooseName_SolvedLevel, "", Program.Tr.ProgramName, Program.Tr.Dialogs_btnOK, Program.Tr.Dialogs_btnCancel);
+            if (string.IsNullOrWhiteSpace(Program.Settings.PlayerName))
+                Program.Settings.PlayerName = ChoosePlayerNameForm.GetPlayerName(ChoosePlayerNameForm.FormType.SolvedLevel, "");
 
             // If they still haven't chosen a name, discard the high score
-            if (Program.Settings.PlayerName == null || Program.Settings.PlayerName.Length == 0)
+            if (string.IsNullOrWhiteSpace(Program.Settings.PlayerName))
                 return;
 
             Program.Settings.UpdateHighscore(lstLevels.ActiveLevel.ToString(), ctMainArea.Moves, ctMainArea.Pushes);
@@ -560,13 +563,13 @@ namespace ExpertSokoban
         /// </summary>
         private void changePlayer(object sender, EventArgs e)
         {
-            string result = InputBox.GetLine(Program.Tr.Mainform_ChooseName, Program.Settings.PlayerName, Program.Tr.ProgramName, Program.Tr.Dialogs_btnOK, Program.Tr.Dialogs_btnCancel);
-            if (result == null)
-                return;
-
-            Program.Settings.PlayerName = result;
-            Program.Settings.SaveThreaded();
-            lstLevels.RefreshItems();
+            var newName = ChoosePlayerNameForm.GetPlayerName(ChoosePlayerNameForm.FormType.Standard, Program.Settings.PlayerName);
+            if (newName != null && newName != Program.Settings.PlayerName)
+            {
+                Program.Settings.PlayerName = newName;
+                Program.Settings.SaveThreaded();
+                lstLevels.RefreshItems();
+            }
         }
 
         /// <summary>

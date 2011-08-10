@@ -1,8 +1,9 @@
 using System;
+using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
-using RT.Util.Lingo;
 using RT.Util;
+using RT.Util.Lingo;
 
 namespace ExpertSokoban
 {
@@ -14,13 +15,10 @@ namespace ExpertSokoban
             InitializeComponent();
             Lingo.TranslateControl(this, Program.Tr.AboutBox);
 
-            //  Initialize the AboutBox to display the product information from the assembly information.
-            //  Change assembly information settings for your application through either:
-            //  - Project->Properties->Application->Assembly Information
-            //  - AssemblyInfo.cs
-            this.lblProductName.Text = AssemblyProduct;
-            this.lblVersion.Text = Program.Tr.AboutBox.Version.Fmt(Ut.VersionOfExe());
-            this.lblCopyright.Text = AssemblyCopyright;
+            lblProductName.Text = AssemblyProduct;
+            lblVersion.Text = Program.Tr.AboutBox.Version.Fmt(Ut.VersionOfExe());
+            lblCopyright.Text = AssemblyCopyright;
+            btnOK.Text = Program.Tr.Dialogs_btnOK;
         }
 
 #if DEBUG
@@ -48,7 +46,7 @@ namespace ExpertSokoban
                         return titleAttribute.Title;
                 }
                 // If there was no Title attribute, or if the Title attribute was the empty string, return the .exe name
-                return System.IO.Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().CodeBase);
+                return Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().CodeBase);
             }
         }
 

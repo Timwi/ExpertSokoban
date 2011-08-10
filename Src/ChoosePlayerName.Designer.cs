@@ -1,6 +1,6 @@
 ﻿namespace ExpertSokoban
 {
-    partial class ChoosePlayerName
+    partial class ChoosePlayerNameForm
     {
         /// <summary>
         /// Required designer variable.
@@ -60,7 +60,7 @@
             this.pnlLayout.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.pnlLayout.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.pnlLayout.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.pnlLayout.Size = new System.Drawing.Size(577, 211);
+            this.pnlLayout.Size = new System.Drawing.Size(547, 211);
             this.pnlLayout.TabIndex = 0;
             // 
             // lblLanguage
@@ -68,10 +68,11 @@
             this.lblLanguage.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.lblLanguage.AutoSize = true;
             this.lblLanguage.Location = new System.Drawing.Point(8, 12);
-            this.lblLanguage.Margin = new System.Windows.Forms.Padding(8, 0, 8, 0);
+            this.lblLanguage.Margin = new System.Windows.Forms.Padding(8, 8, 8, 32);
             this.lblLanguage.Name = "lblLanguage";
             this.lblLanguage.Size = new System.Drawing.Size(173, 13);
             this.lblLanguage.TabIndex = 2;
+            this.lblLanguage.Tag = "notranslate";
             this.lblLanguage.Text = "&Language/Sprache/Язык/Lingvo:";
             // 
             // cmbLanguage
@@ -79,11 +80,11 @@
             this.cmbLanguage.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbLanguage.FormattingEnabled = true;
-            this.cmbLanguage.Location = new System.Drawing.Point(192, 8);
-            this.cmbLanguage.Margin = new System.Windows.Forms.Padding(3, 8, 3, 8);
+            this.cmbLanguage.Location = new System.Drawing.Point(197, 8);
+            this.cmbLanguage.Margin = new System.Windows.Forms.Padding(8, 8, 8, 32);
             this.cmbLanguage.Name = "cmbLanguage";
-            this.cmbLanguage.Size = new System.Drawing.Size(382, 21);
-            this.cmbLanguage.TabIndex = 3;
+            this.cmbLanguage.Size = new System.Drawing.Size(342, 21);
+            this.cmbLanguage.TabIndex = 0;
             // 
             // lblFlowButtons
             // 
@@ -96,38 +97,44 @@
             this.lblFlowButtons.Controls.Add(this.btnCancel);
             this.lblFlowButtons.Controls.Add(this.btnOK);
             this.lblFlowButtons.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.lblFlowButtons.Location = new System.Drawing.Point(3, 147);
-            this.lblFlowButtons.Margin = new System.Windows.Forms.Padding(3, 8, 3, 8);
+            this.lblFlowButtons.Location = new System.Drawing.Point(8, 147);
+            this.lblFlowButtons.Margin = new System.Windows.Forms.Padding(8);
             this.lblFlowButtons.Name = "lblFlowButtons";
-            this.lblFlowButtons.Size = new System.Drawing.Size(571, 56);
-            this.lblFlowButtons.TabIndex = 1;
+            this.lblFlowButtons.Size = new System.Drawing.Size(531, 56);
+            this.lblFlowButtons.TabIndex = 2;
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(478, 3);
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnCancel.Location = new System.Drawing.Point(438, 3);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(90, 23);
             this.btnCancel.TabIndex = 1;
+            this.btnCancel.Tag = "notranslate";
             this.btnCancel.Text = "&Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(382, 3);
+            this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.btnOK.Location = new System.Drawing.Point(342, 3);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(90, 23);
             this.btnOK.TabIndex = 0;
+            this.btnOK.Tag = "notranslate";
             this.btnOK.Text = "&OK";
             this.btnOK.UseVisualStyleBackColor = true;
             // 
             // lblPrompt
             // 
+            this.lblPrompt.AutoSize = true;
             this.pnlLayout.SetColumnSpan(this.lblPrompt, 2);
-            this.lblPrompt.Location = new System.Drawing.Point(3, 69);
-            this.lblPrompt.Margin = new System.Windows.Forms.Padding(3, 32, 3, 8);
+            this.lblPrompt.Location = new System.Drawing.Point(8, 69);
+            this.lblPrompt.Margin = new System.Windows.Forms.Padding(8);
             this.lblPrompt.Name = "lblPrompt";
             this.lblPrompt.Size = new System.Drawing.Size(434, 26);
             this.lblPrompt.TabIndex = 4;
+            this.lblPrompt.Tag = "notranslate";
             this.lblPrompt.Text = "Please choose a name which will be used to identify you in highscore tables.\r\nYou" +
                 " can change this name later by selecting “Change player name” from the “Level” m" +
                 "enu.";
@@ -136,22 +143,27 @@
             // 
             this.txtPlayerName.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlLayout.SetColumnSpan(this.txtPlayerName, 2);
-            this.txtPlayerName.Location = new System.Drawing.Point(3, 111);
-            this.txtPlayerName.Margin = new System.Windows.Forms.Padding(3, 8, 3, 8);
+            this.txtPlayerName.Location = new System.Drawing.Point(8, 111);
+            this.txtPlayerName.Margin = new System.Windows.Forms.Padding(8);
             this.txtPlayerName.Name = "txtPlayerName";
-            this.txtPlayerName.Size = new System.Drawing.Size(571, 20);
-            this.txtPlayerName.TabIndex = 5;
+            this.txtPlayerName.Size = new System.Drawing.Size(531, 20);
+            this.txtPlayerName.TabIndex = 1;
             // 
-            // ChoosePlayerName
+            // ChoosePlayerNameForm
             // 
+            this.AcceptButton = this.btnOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(577, 211);
+            this.CancelButton = this.btnCancel;
+            this.ClientSize = new System.Drawing.Size(547, 211);
             this.Controls.Add(this.pnlLayout);
-            this.Name = "ChoosePlayerName";
-            this.Text = "Choose Player Name";
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "ChoosePlayerNameForm";
+            this.Text = "Choose player name";
             this.pnlLayout.ResumeLayout(false);
             this.pnlLayout.PerformLayout();
             this.lblFlowButtons.ResumeLayout(false);

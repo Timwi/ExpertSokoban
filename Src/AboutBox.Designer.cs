@@ -88,11 +88,12 @@ namespace ExpertSokoban
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnOK.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
-            this.btnOK.Location = new System.Drawing.Point(465, 371);
+            this.btnOK.Location = new System.Drawing.Point(406, 358);
             this.btnOK.Margin = new System.Windows.Forms.Padding(0);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(129, 26);
             this.btnOK.TabIndex = 24;
+            this.btnOK.Tag = "notranslate";
             this.btnOK.Text = "OK";
             // 
             // lblProductName
@@ -141,7 +142,7 @@ namespace ExpertSokoban
             this.pnlMain.RowCount = 2;
             this.pnlMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.pnlMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.pnlMain.Size = new System.Drawing.Size(594, 397);
+            this.pnlMain.Size = new System.Drawing.Size(535, 384);
             this.pnlMain.TabIndex = 27;
             this.pnlMain.Tag = "notranslate";
             // 
@@ -206,7 +207,7 @@ namespace ExpertSokoban
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.CancelButton = this.btnOK;
-            this.ClientSize = new System.Drawing.Size(614, 417);
+            this.ClientSize = new System.Drawing.Size(555, 404);
             this.Controls.Add(this.pnlMain);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;

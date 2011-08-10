@@ -37,6 +37,10 @@
       <Translation encoding="c-literal">Dankon al:\r\n    Programado: Timwi, Roman\r\n    Grafikoj: Roman, Timwi\r\n    Testado: Hawthorn\r\n    Traduko al Esperanto: Timwi</Translation>
       <Old encoding="c-literal">Credits:\r\n    Programming: Timwi, Roman\r\n    Graphics: Roman, Timwi\r\n    Testing: Hawthorn</Old>
     </lblCredits>
+    <lblRummage>
+      <Translation>Ĉi tiu ludo protektitas je {Rummage}.</Translation>
+      <Old>This game is protected by {Rummage}.</Old>
+    </lblRummage>
     <btnOK>
       <Translation>OK</Translation>
       <Old>OK</Old>
@@ -46,11 +50,25 @@
       <Old>Version {0}</Old>
     </Version>
   </AboutBox>
+  <ChoosePlayerName>
+    <ChoosePlayerNameForm>
+      <Translation>Elekti ludantan nomon</Translation>
+      <Old>Choose player name</Old>
+    </ChoosePlayerNameForm>
+  </ChoosePlayerName>
   <Mainform>
     <Mainform>
       <Translation>Expert Sokoban</Translation>
       <Old>Expert Sokoban</Old>
     </Mainform>
+    <lblStatusSolved>
+      <Translation>Vi solvis tiun puzlon. Gratulojn!</Translation>
+      <Old>You have solved the level. Congratulations!</Old>
+    </lblStatusSolved>
+    <lblStatusNull>
+      <Translation>Neniuj puzloj elektitaj. Elektu puzlon el la puzlo-listo por ludi.</Translation>
+      <Old>No levels currently selected. Select a level from the level list to play.</Old>
+    </lblStatusNull>
     <mnuMain>
       <Translation>Ĉefa menuo</Translation>
       <Old>Main menu</Old>
@@ -271,14 +289,6 @@
       <Translation>&amp;Pri</Translation>
       <Old>&amp;About</Old>
     </mnuHelpAbout>
-    <lblStatusSolved>
-      <Translation>Vi solvis tiun puzlon. Gratulojn!</Translation>
-      <Old>You have solved the level. Congratulations!</Old>
-    </lblStatusSolved>
-    <lblStatusNull>
-      <Translation>Neniuj puzloj elektitaj. Elektu puzlon el la puzlo-listo por ludi.</Translation>
-      <Old>No levels currently selected. Select a level from the level list to play.</Old>
-    </lblStatusNull>
     <toolEditLevel>
       <Translation>Ilobreto “redakti puzlon”</Translation>
       <Old>Level edit toolbar</Old>

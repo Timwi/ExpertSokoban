@@ -16,6 +16,8 @@ namespace ExpertSokoban
         public ManagedForm.Settings MainFormSettings = new ManagedForm.Settings();
         /// <summary>The settings for the highscores form (size, position, etc.).</summary>
         public ManagedForm.Settings HighscoresFormSettings = new ManagedForm.Settings();
+        /// <summary>The settings for the ChoosePlayerNameForm (size, position, etc.).</summary>
+        public ManagedForm.Settings ChoosePlayerNameFormSettings = new ManagedForm.Settings();
         /// <summary>The settings for the translation form (size, position, etc.).</summary>
         public TranslationForm<Translation>.Settings TranslationFormSettings = new TranslationForm<Translation>.Settings();
 
