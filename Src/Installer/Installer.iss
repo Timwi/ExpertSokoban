@@ -8,6 +8,8 @@
 Source: {#Src}; DestDir: {app}; DestName: ExpSok.exe;
 Source: {#SrcRaw}\Translations\*; DestDir: {app}\Translations;
 Source: {#SrcRaw}\expsok.chm; DestDir: {app}; DestName: ExpSok.chm;
+Source: "..\OriginalLevels.txt"; DestDir: {app};
+Source: "..\Timwi.txt"; DestDir: {app};
 Source: LicenseAgreement.rtf; DestDir: {app};
 Source: dotNetFx40_Client_setup.exe; Flags: dontcopy
 
