@@ -10,7 +10,7 @@ Source: {#SrcRaw}\Translations\*; DestDir: {app}\Translations;
 Source: {#SrcRaw}\expsok.chm; DestDir: {app}; DestName: ExpSok.chm;
 Source: "..\OriginalLevels.txt"; DestDir: {app};
 Source: "..\Timwi.txt"; DestDir: {app};
-Source: LicenseAgreement.rtf; DestDir: {app};
+Source: LicenseAgreement*.rtf; DestDir: {app};
 Source: dotNetFx40_Client_setup.exe; Flags: dontcopy
 
 [InnoIDE_Settings]
@@ -27,7 +27,7 @@ SolidCompression=yes
 Compression=lzma2/max
 InternalCompressLevel=max
 CompressionThreads=1
-ShowLanguageDialog=auto
+ShowLanguageDialog=yes
 DefaultGroupName=Expert Sokoban
 UninstallDisplayName=Expert Sokoban
 AppPublisher=CuteBits
@@ -41,19 +41,24 @@ AppendDefaultDirName=false
 ArchitecturesInstallIn64BitMode=x64
 AllowNoIcons=true
 DefaultDialogFontName=Segoe UI
-LicenseFile=LicenseAgreement.rtf
 AppMutex=Global\ExpSokMutex7FDC0158CF9E
 DirExistsWarning=no
 
 [Icons]
 Name: "{group}\{cm:UninstallProgram, Expert Sokoban}"; Filename: {uninstallexe};
-Name: {group}\Expert Sokoban; Filename: {app}\ExpSok.exe; Comment: "Expert Sokoban is a Sokoban game aimed at the expert.";
+Name: {group}\Expert Sokoban; Filename: {app}\ExpSok.exe; Comment: {cm:ShortcutDescription}; 
+
+[Languages]
+Name: "en"; MessagesFile: "compiler:Default.isl,Translations\English.isl"; LicenseFile: "LicenseAgreementEN.rtf";
+Name: "de"; MessagesFile: "compiler:Languages\German.isl,Translations\German.isl"; LicenseFile: "LicenseAgreementDE.rtf";
+Name: "ru"; MessagesFile: "compiler:Languages\Russian.isl,Translations\Russian.isl"; LicenseFile: "LicenseAgreementRU.rtf";
 
 [Code]
 
 procedure ViewLicenseButtonClick(Sender: TObject);
 var WordpadLoc: String;
-	RetCode: Integer;
+  RetCode: Integer;
+  LicenseFileName: String;
 begin
   RegQueryStringValue(HKLM, 'SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\WORDPAD.EXE', '', WordpadLoc);
 
@@ -62,14 +67,16 @@ begin
   // remove " at begin and end pf string
   StringChange(WordpadLoc, '"', '');
 
+  LicenseFileName := 'LicenseAgreement' + Uppercase(ExpandConstant('{language}')) + '.rtf';
+
   try
-    ExtractTemporaryFile('LicenseAgreement.rtf')
+    ExtractTemporaryFile(LicenseFileName)
   except
-    MsgBox('Cannot extract license file.', mbError, mb_Ok);
+    MsgBox(ExpandConstant('{cm:LicenseExtractFailed}'), mbError, mb_Ok);
   end;
 
-  if not Exec(WordpadLoc, '"' + ExpandConstant('{tmp}\LicenseAgreement.rtf') + '"', '', SW_SHOW, ewNoWait, RetCode) then
-    MsgBox('Cannot display license file.', mbError, mb_Ok);
+  if not Exec(WordpadLoc, '"' + ExpandConstant('{tmp}\' + LicenseFileName) + '"', '', SW_SHOW, ewNoWait, RetCode) then
+    MsgBox(ExpandConstant('{cm:LicenseDisplayFailed}'), mbError, mb_Ok);
 end;
 
 procedure CurPageChanged(CurPageID: Integer);
@@ -77,7 +84,7 @@ var ViewLicenseButton: TButton;
 begin
   if CurPageID = wpLicense then begin
     ViewLicenseButton := TButton.Create(WizardForm.LicenseMemo.Parent);
-    ViewLicenseButton.Caption := '&View in WordPad';
+    ViewLicenseButton.Caption := ExpandConstant('{cm:ViewLicenseInWordpad}');
     ViewLicenseButton.Width := 120;
     ViewLicenseButton.Left := WizardForm.LicenseMemo.Left +
                         WizardForm.LicenseMemo.Width - ViewLicenseButton.Width;
@@ -90,7 +97,7 @@ end;
 
 function IsNetFrameworkV4Installed(): Boolean;
 begin
-  Result :=
+  Result := 
       RegValueExists(HKLM,'Software\Microsoft\NET Framework Setup\NDP\v4\Client', 'Install')
       or
       RegValueExists(HKLM,'Software\Microsoft\NET Framework Setup\NDP\v4\Full', 'Install');
@@ -104,7 +111,7 @@ var
 begin
   Result := True;
   if not IsNetFrameworkV4Installed() then begin
-    if SuppressibleMsgBox('Expert Sokoban requires .NET Framework 4.0 Client Profile or higher. You do not have it installed. Would you like to install it now?', mbConfirmation, MB_YESNO, IDNO) = IDYES then begin
+    if SuppressibleMsgBox(ExpandConstant('{cm:FrameworkNotInstalledPrompt}'), mbConfirmation, MB_YESNO, IDNO) = IDYES then begin
       ExtractTemporaryFile('dotNetFx40_Client_setup.exe');
       Exec(ExpandConstant('{tmp}\dotNetFx40_Client_setup.exe'), '', '', SW_SHOW, ewNoWait, ResultCode);
     end;
@@ -113,7 +120,7 @@ begin
   // "Upgrade" from an NSIS installation
   if RegQueryStringValue(HKCU, 'Software\ExpertSokoban', 'Install location', ExpSokOldPath) then begin
     if FileExists(ExpSokOldPath + '\Uninstall.exe') then begin
-      if SuppressibleMsgBox('An earlier version of Expert Sokoban is installed on your system. It must be uninstalled first.'#13#10#13#10'Don''t worry, all your levels and highscores will be preserved. Proceed?', mbConfirmation, MB_OKCANCEL, IDCANCEL) = IDOK then begin
+      if SuppressibleMsgBox(ExpandConstant('{cm:FoundOldInstallerPropmt}'), mbConfirmation, MB_OKCANCEL, IDCANCEL) = IDOK then begin
         // Copy the settings file
         ForceDirectories(ExpandConstant('{userappdata}\ExpSok\UpgradeFromNSIS'));
         FileCopy(ExpSokOldPath + '\ExpSok.settings.xml', ExpandConstant('{userappdata}\ExpSok\ExpSok.Settings.xml'), True);
