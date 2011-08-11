@@ -196,7 +196,11 @@
   -->
   <Target Name="AfterBuild">
     <ItemGroup>
-      <TranslationFiles Include="Translations\*.xml" />
+      <TranslationFiles Condition=" '$(Configuration)' == 'Debug' "
+                        Include="Translations\*.xml" />
+      <TranslationFiles Condition=" '$(Configuration)' == 'Release' "
+                        Include="Translations\*.xml"
+			Exclude="Translations\*.tlh.xml" />
       <HelpFile Include="Help\expsok.chm" />
     </ItemGroup>
     <Copy SourceFiles="@(TranslationFiles)" DestinationFolder="$(OutputPath)Translations\" />
