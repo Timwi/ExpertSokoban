@@ -34,19 +34,19 @@ namespace ExpertSokoban
             switch (type)
             {
                 case FormType.Standard:
-                    lblLanguage.Visible = false;
+                    imgLanguage.Visible = false;
                     cmbLanguage.Visible = false;
                     lblPrompt.Text = Program.Tr.Mainform_ChooseName;
                     break;
 
                 case FormType.FirstRun:
-                    lblLanguage.Visible = true;
+                    imgLanguage.Visible = true;
                     cmbLanguage.Visible = true;
                     lblPrompt.Text = Program.Tr.Mainform_ChooseName_FirstRun;
                     break;
 
                 case FormType.SolvedLevel:
-                    lblLanguage.Visible = false;
+                    imgLanguage.Visible = false;
                     cmbLanguage.Visible = false;
                     lblPrompt.Text = Program.Tr.Mainform_ChooseName_SolvedLevel;
                     break;

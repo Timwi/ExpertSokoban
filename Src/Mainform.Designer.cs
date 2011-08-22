@@ -1216,6 +1216,7 @@
             // 
             this.mnuOptionsChangeLanguage.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.dummyItemToolStripMenuItem});
+            this.mnuOptionsChangeLanguage.Image = global::ExpertSokoban.Properties.Resources.LanguageIcon_Classic_16px;
             this.mnuOptionsChangeLanguage.Name = "mnuOptionsChangeLanguage";
             this.mnuOptionsChangeLanguage.Size = new System.Drawing.Size(275, 22);
             this.mnuOptionsChangeLanguage.Text = "&Change language";
