@@ -5,10 +5,6 @@
       <Translation>Highscores</Translation>
       <Old>Highscores</Old>
     </HighscoresForm>
-    <btnOK>
-      <Translation>OK</Translation>
-      <Old>OK</Old>
-    </btnOK>
     <Highscores>
       <IsNumber>
         <item>True</item>
@@ -41,10 +37,6 @@
       <Translation>Dieses Spiel wurde mit {Rummage} geschützt.</Translation>
       <Old>This game is protected by {Rummage}.</Old>
     </lblRummage>
-    <btnOK>
-      <Translation>OK</Translation>
-      <Old>OK</Old>
-    </btnOK>
     <Version>
       <Translation>Version {0}</Translation>
       <Old>Version {0}</Old>
@@ -198,15 +190,15 @@
       <Old>Display &amp;level list</Old>
     </mnuOptionsLevelList>
     <mnuOptionsPlayingToolbar>
-      <Translation>S&amp;ymbolleiste “Spielen” anzeigen</Translation>
+      <Translation>S&amp;ymbolleiste „Spielen“ anzeigen</Translation>
       <Old>Display pla&amp;ying toolbar</Old>
     </mnuOptionsPlayingToolbar>
     <mnuOptionsFileToolbars>
-      <Translation>Symbolleisten “Leveldatei &amp;bearbeiten” anzeigen</Translation>
+      <Translation>Symbolleisten „Leveldatei &amp;bearbeiten“ anzeigen</Translation>
       <Old>Display &amp;editing toolbars (level file)</Old>
     </mnuOptionsFileToolbars>
     <mnuOptionsEditLevelToolbar>
-      <Translation>Sy&amp;mbolleiste “Level bearbeiten” anzeigen</Translation>
+      <Translation>Sy&amp;mbolleiste „Level bearbeiten“ anzeigen</Translation>
       <Old>Display editin&amp;g toolbar (level)</Old>
     </mnuOptionsEditLevelToolbar>
     <mnuOptionsStatusBar>
@@ -290,7 +282,7 @@
       <Old>&amp;About</Old>
     </mnuHelpAbout>
     <toolEditLevel>
-      <Translation>Symbolleiste “Level bearbeiten”</Translation>
+      <Translation>Symbolleiste „Level bearbeiten“</Translation>
       <Old>Level edit toolbar</Old>
     </toolEditLevel>
     <btnEditLevelWall>
@@ -318,7 +310,7 @@
       <Old>Cancel editing</Old>
     </btnEditLevelCancel>
     <toolFileEdit>
-      <Translation>Symbolleiste “Leveldatei bearbeiten”</Translation>
+      <Translation>Symbolleiste „Leveldatei bearbeiten“</Translation>
       <Old>File edit toolbar</Old>
     </toolFileEdit>
     <btnFileEditNewLevel>
@@ -338,7 +330,7 @@
       <Old>Delete selected level or comment</Old>
     </btnFileEditDeleteLevel>
     <toolFile>
-      <Translation>Symbolleiste “Leveldatei”</Translation>
+      <Translation>Symbolleiste „Leveldatei“</Translation>
       <Old>File toolbar</Old>
     </toolFile>
     <btnFileNew>
@@ -366,7 +358,7 @@
       <Old>Paste</Old>
     </btnFilePaste>
     <toolPlay>
-      <Translation>Symbolleiste “Spielen”</Translation>
+      <Translation>Symbolleiste „Spielen“</Translation>
       <Old>Playing toolbar</Old>
     </toolPlay>
     <btnPlayOpenLevel>
@@ -593,11 +585,11 @@
     <Old>Please choose a name which will be used to identify you in highscore tables.</Old>
   </Mainform_ChooseName>
   <Mainform_ChooseName_FirstRun>
-    <Translation encoding="c-literal">Bitte geben Sie einen Namen ein, bei dem Sie in Highscore-Tabellen genannt werden möchten.\r\nSie können diesen Namen später ändern, indem Sie “Spielernamen ändern” im Menü “Level” wählen.</Translation>
+    <Translation encoding="c-literal">Bitte geben Sie einen Namen ein, bei dem Sie in Highscore-Tabellen genannt werden möchten.\r\nSie können diesen Namen später ändern, indem Sie „Spielernamen ändern“ im Menü „Level“ wählen.</Translation>
     <Old encoding="c-literal">Please choose a name which will be used to identify you in highscore tables.\nYou can change this name later by selecting “Change player name” from the “Level” menu.</Old>
   </Mainform_ChooseName_FirstRun>
   <Mainform_ChooseName_SolvedLevel>
-    <Translation encoding="c-literal">Herzlichen Glückwunsch! Sie haben das aktuelle Level gelöst.\r\nBitte geben Sie einen Namen ein, bei dem Sie in Highscore-Tabellen genannt werden möchten.\r\nWenn Sie sich jetzt keinen Namen zulegen, wird Ihre Punktzahl für dieses Level nicht gespeichert.\r\nSie können diesen Namen später ändern, indem Sie “Spielernamen ändern” im Menü “Level” wählen.</Translation>
+    <Translation encoding="c-literal">Herzlichen Glückwunsch! Sie haben das aktuelle Level gelöst.\r\nBitte geben Sie einen Namen ein, bei dem Sie in Highscore-Tabellen genannt werden möchten.\r\nWenn Sie sich jetzt keinen Namen zulegen, wird Ihre Punktzahl für dieses Level nicht gespeichert.\r\nSie können diesen Namen später ändern, indem Sie „Spielernamen ändern“ im Menü „Level“ wählen.</Translation>
     <Old encoding="c-literal">Congratulations! You’ve solved the current level.\nPlease choose a name which will be used to identify you in highscore tables.\nIf you do not choose a name now, your score for this level will not be recorded.\nYou can change this name again later by selecting “Change player name” from the “Level” menu.</Old>
   </Mainform_ChooseName_SolvedLevel>
   <Mainform_Validity_CannotOpen>
