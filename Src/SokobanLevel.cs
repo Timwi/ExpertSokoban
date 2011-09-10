@@ -146,12 +146,10 @@ namespace ExpertSokoban
                     {
                         bool xIn = false, yIn = false;
                         for (int x = 0; x <= i; x++)
-                            if (_cells[j * _width + x] == SokobanCell.Wall &&
-                            (x == 0 || _cells[j * _width + x - 1] != SokobanCell.Wall))
+                            if (_cells[j * _width + x] == SokobanCell.Wall && (x == 0 || _cells[j * _width + x - 1] != SokobanCell.Wall))
                                 xIn = !xIn;
                         for (int y = 0; y <= j; y++)
-                            if (_cells[y * _width + i] == SokobanCell.Wall &&
-                            (y == 0 || _cells[(y - 1) * _width + i] != SokobanCell.Wall))
+                            if (_cells[y * _width + i] == SokobanCell.Wall && (y == 0 || _cells[(y - 1) * _width + i] != SokobanCell.Wall))
                                 yIn = !yIn;
                         if (xIn && yIn)
                         {
