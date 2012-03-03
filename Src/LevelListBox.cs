@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using RT.Util;
 using RT.Util.Dialogs;
+using RT.Util.ExtensionMethods;
 
 namespace ExpertSokoban
 {
@@ -142,7 +143,7 @@ namespace ExpertSokoban
         /// </summary>
         private int? editingIndex
         {
-            get { return _state == LevelListBoxState.Editing ? (int?) _activeLevelIndex : null; }
+            get { return _state == LevelListBoxState.Editing ? _activeLevelIndex : null; }
             set { setActiveLevel(value, LevelListBoxState.Editing); }
         }
 
@@ -155,8 +156,7 @@ namespace ExpertSokoban
         {
             get
             {
-                return _state == LevelListBoxState.Playing ? (int?) _activeLevelIndex :
-                       _state == LevelListBoxState.JustSolved ? (int?) _activeLevelIndex : null;
+                return _state == LevelListBoxState.Playing || _state == LevelListBoxState.JustSolved ? _activeLevelIndex : null;
             }
             set { setActiveLevel(value, LevelListBoxState.Playing); }
         }
