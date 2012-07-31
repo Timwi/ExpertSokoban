@@ -17,7 +17,7 @@ namespace ExpertSokoban
     /// </summary>
     partial class Mainform : ManagedForm
     {
-        private LanguageMenuHelper<Translation> _translationHelper;
+        private LanguageHelperWinForms<Translation> _translationHelper;
 
         #region Startup / shutdown
 
@@ -54,9 +54,10 @@ namespace ExpertSokoban
             Lingo.TranslateControl(mnuContext, Program.Tr.Context);
 #endif
 
-            _translationHelper = new LanguageMenuHelper<Translation>("Expert Sokoban", "ExpSok", Translation.DefaultLanguage,
-                Program.Settings.TranslationFormSettings, Icon, setLanguage, () => Program.Tr.Language, mnuOptionsChangeLanguage);
-            _translationHelper.TranslationEditingEnabled = Program.TranslationEnabled;
+            _translationHelper = new LanguageHelperWinForms<Translation>("Expert Sokoban", "ExpSok", Program.TranslationEnabled,
+                Program.Settings.TranslationFormSettings, Icon, () => Program.Tr.Language);
+            _translationHelper.TranslationChanged += translationChanged;
+            _translationHelper.MakeLanguageMenu(mnuOptionsChangeLanguage);
 
             // Restore saved settings
             mnuOptionsPlayingToolbar.Checked = Program.Settings.DisplayPlayingToolbar;
@@ -98,7 +99,7 @@ namespace ExpertSokoban
             Load += (s, e) => pnlLevelList.Width = levelListWidth;
         }
 
-        private void setLanguage(Translation translation)
+        private void translationChanged(Translation translation)
         {
             Program.Settings.Language = translation.Language;
             Program.Tr = translation;

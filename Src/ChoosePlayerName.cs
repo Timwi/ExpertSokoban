@@ -67,24 +67,31 @@ namespace ExpertSokoban
         }
 #endif
 
-        public static string GetPlayerName(FormType type, string defaultValue, LanguageMenuHelper<Translation> translationHelper = null)
+        public static string GetPlayerName(FormType type, string defaultValue, LanguageHelperWinForms<Translation> translationHelper = null)
         {
             using (var dlg = new ChoosePlayerNameForm(type, defaultValue))
             {
                 if (translationHelper != null)
-                    translationHelper.PopulateComboBox(dlg.cmbLanguage, tr =>
-                    {
-                        Lingo.TranslateControl(dlg, tr.ChoosePlayerName);
-                        dlg.lblPrompt.Text = tr.Mainform_ChooseName_FirstRun;
-                        dlg.btnOK.Text = tr.Dialogs_btnOK;
-                        dlg.btnCancel.Text = tr.Dialogs_btnCancel;
-                    });
+                {
+                    translationHelper.TranslationChanged += dlg.translationChanged;
+                    translationHelper.MakeLanguageComboBox(dlg.cmbLanguage);
+                }
 
                 var result = dlg.ShowDialog();
+                if (translationHelper != null)
+                    translationHelper.TranslationChanged -= dlg.translationChanged;
                 if (result == DialogResult.Cancel)
                     return null;
                 return dlg.txtPlayerName.Text;
             }
+        }
+
+        private void translationChanged(Translation tr)
+        {
+            Lingo.TranslateControl(this, tr.ChoosePlayerName);
+            lblPrompt.Text = tr.Mainform_ChooseName_FirstRun;
+            btnOK.Text = tr.Dialogs_btnOK;
+            btnCancel.Text = tr.Dialogs_btnCancel;
         }
     }
 }
