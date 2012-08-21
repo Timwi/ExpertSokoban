@@ -47,8 +47,6 @@ namespace ExpertSokoban
                 generator.TranslateControl(this, Program.Tr.Mainform);
                 generator.TranslateControl(mnuContext, Program.Tr.Context);
             }
-
-            Lingo.WarnOfUnusedStrings(typeof(Translation), Assembly.GetExecutingAssembly());
 #else
             Lingo.TranslateControl(this, Program.Tr.Mainform);
             Lingo.TranslateControl(mnuContext, Program.Tr.Context);
