@@ -105,10 +105,5 @@ namespace ExpertSokoban
         {
             System.Diagnostics.Process.Start(lblURL.Text);
         }
-
-        private void clickRummageUrl(object sender, RT.Util.Controls.LinkEventArgs e)
-        {
-            System.Diagnostics.Process.Start("http://www.aldaray.com/Rummage");
-        }
     }
 }

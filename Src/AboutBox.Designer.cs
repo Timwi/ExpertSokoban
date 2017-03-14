@@ -36,9 +36,8 @@ namespace ExpertSokoban
             this.pnlMain = new System.Windows.Forms.TableLayoutPanel();
             this.pnlFlowRight = new System.Windows.Forms.FlowLayoutPanel();
             this.lblCredits = new System.Windows.Forms.Label();
-            this.lblRummage = new RT.Util.Controls.LabelEx();
             this.pnlFlowLeft = new System.Windows.Forms.FlowLayoutPanel();
-            ((System.ComponentModel.ISupportInitialize) (this.ctLogo)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ctLogo)).BeginInit();
             this.pnlMain.SuspendLayout();
             this.pnlFlowRight.SuspendLayout();
             this.pnlFlowLeft.SuspendLayout();
@@ -60,7 +59,7 @@ namespace ExpertSokoban
             // lblVersion
             // 
             this.lblVersion.AutoSize = true;
-            this.lblVersion.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
+            this.lblVersion.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.lblVersion.Location = new System.Drawing.Point(6, 28);
             this.lblVersion.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblVersion.Name = "lblVersion";
@@ -73,7 +72,7 @@ namespace ExpertSokoban
             // lblCopyright
             // 
             this.lblCopyright.AutoSize = true;
-            this.lblCopyright.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
+            this.lblCopyright.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.lblCopyright.Location = new System.Drawing.Point(6, 55);
             this.lblCopyright.Margin = new System.Windows.Forms.Padding(6, 10, 6, 0);
             this.lblCopyright.Name = "lblCopyright";
@@ -85,9 +84,9 @@ namespace ExpertSokoban
             // 
             // btnOK
             // 
-            this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
+            this.btnOK.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.btnOK.Location = new System.Drawing.Point(406, 358);
             this.btnOK.Margin = new System.Windows.Forms.Padding(0);
             this.btnOK.Name = "btnOK";
@@ -99,7 +98,7 @@ namespace ExpertSokoban
             // lblProductName
             // 
             this.lblProductName.AutoSize = true;
-            this.lblProductName.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
+            this.lblProductName.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.lblProductName.Location = new System.Drawing.Point(6, 10);
             this.lblProductName.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lblProductName.Name = "lblProductName";
@@ -113,7 +112,7 @@ namespace ExpertSokoban
             // 
             this.lblURL.AutoSize = true;
             this.lblURL.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lblURL.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
+            this.lblURL.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.lblURL.ForeColor = System.Drawing.SystemColors.HotTrack;
             this.lblURL.Location = new System.Drawing.Point(6, 72);
             this.lblURL.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
@@ -155,38 +154,25 @@ namespace ExpertSokoban
             this.pnlFlowRight.Controls.Add(this.lblCopyright);
             this.pnlFlowRight.Controls.Add(this.lblURL);
             this.pnlFlowRight.Controls.Add(this.lblCredits);
-            this.pnlFlowRight.Controls.Add(this.lblRummage);
             this.pnlFlowRight.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.pnlFlowRight.Font = new System.Drawing.Font("Arial", 9.75F);
             this.pnlFlowRight.Location = new System.Drawing.Point(159, 3);
             this.pnlFlowRight.Name = "pnlFlowRight";
             this.pnlFlowRight.Padding = new System.Windows.Forms.Padding(0, 10, 10, 10);
-            this.pnlFlowRight.Size = new System.Drawing.Size(247, 197);
+            this.pnlFlowRight.Size = new System.Drawing.Size(213, 171);
             this.pnlFlowRight.TabIndex = 29;
             // 
             // lblCredits
             // 
             this.lblCredits.AutoSize = true;
-            this.lblCredits.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte) (204)));
+            this.lblCredits.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.lblCredits.Location = new System.Drawing.Point(6, 97);
             this.lblCredits.Margin = new System.Windows.Forms.Padding(6, 10, 6, 0);
             this.lblCredits.Name = "lblCredits";
             this.lblCredits.Size = new System.Drawing.Size(191, 64);
             this.lblCredits.TabIndex = 26;
             this.lblCredits.Text = "Credits:\r\n    Programming: Timwi, Roman\r\n    Graphics: Roman, Timwi\r\n    Testing:" +
-                " Hawthorn";
-            // 
-            // lblRummage
-            // 
-            this.lblRummage.Font = new System.Drawing.Font("Arial", 9.75F);
-            this.lblRummage.Location = new System.Drawing.Point(6, 171);
-            this.lblRummage.Margin = new System.Windows.Forms.Padding(6, 10, 6, 0);
-            this.lblRummage.Name = "lblRummage";
-            this.lblRummage.Size = new System.Drawing.Size(225, 16);
-            this.lblRummage.TabIndex = 27;
-            this.lblRummage.TabStop = true;
-            this.lblRummage.Text = "This game is protected by {Rummage}.";
-            this.lblRummage.LinkActivated += new RT.Util.Controls.LinkEventHandler(this.clickRummageUrl);
+    " Hawthorn";
             // 
             // pnlFlowLeft
             // 
@@ -218,7 +204,7 @@ namespace ExpertSokoban
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "About Expert Sokoban";
-            ((System.ComponentModel.ISupportInitialize) (this.ctLogo)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ctLogo)).EndInit();
             this.pnlMain.ResumeLayout(false);
             this.pnlMain.PerformLayout();
             this.pnlFlowRight.ResumeLayout(false);
@@ -242,6 +228,5 @@ namespace ExpertSokoban
         private System.Windows.Forms.Label lblCredits;
         private System.Windows.Forms.FlowLayoutPanel pnlFlowLeft;
         private System.Windows.Forms.FlowLayoutPanel pnlFlowRight;
-        private RT.Util.Controls.LabelEx lblRummage;
     }
 }
