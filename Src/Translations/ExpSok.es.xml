@@ -37,10 +37,6 @@
       <Translation encoding="c-literal">Créditos:\r\n    Programación: Timwi, Roman\r\n    Gráficos: Roman, Timwi\r\n    Test: Hawthorn</Translation>
       <Old encoding="c-literal">Credits:\r\n    Programming: Timwi, Roman\r\n    Graphics: Roman, Timwi\r\n    Testing: Hawthorn</Old>
     </lblCredits>
-    <lblRummage>
-      <Translation>Este juego está protegido por {Rummage}.</Translation>
-      <Old>This game is protected by {Rummage}.</Old>
-    </lblRummage>
   </AboutBox>
   <ChoosePlayerName>
     <ChoosePlayerNameForm>
@@ -66,219 +62,219 @@
       <Old>Main menu</Old>
     </mnuMain>
     <mnuLevel>
-      <Translation>Nivel</Translation>
+      <Translation>&amp;Nivel</Translation>
       <Old>&amp;Level</Old>
     </mnuLevel>
     <mnuLevelNew>
-      <Translation>Nuevo archivo de niveles</Translation>
+      <Translation>&amp;Nuevo archivo de niveles</Translation>
       <Old>&amp;New level file</Old>
     </mnuLevelNew>
     <mnuLevelOpen>
-      <Translation>Abrir niveles...</Translation>
+      <Translation>&amp;Abrir niveles...</Translation>
       <Old>&amp;Open level file...</Old>
     </mnuLevelOpen>
     <mnuLevelSave>
-      <Translation>Guardar niveles</Translation>
+      <Translation>&amp;Guardar niveles</Translation>
       <Old>&amp;Save level file</Old>
     </mnuLevelSave>
     <mnuLevelSaveAs>
-      <Translation>Guardar niveles como...</Translation>
+      <Translation>Guardar niveles &amp;como...</Translation>
       <Old>Save level file &amp;as...</Old>
     </mnuLevelSaveAs>
     <mnuLevelUndo>
-      <Translation>Deshacer movimiento</Translation>
+      <Translation>&amp;Deshacer movimiento</Translation>
       <Old>&amp;Undo move</Old>
     </mnuLevelUndo>
     <mnuLevelRedo>
-      <Translation>Rehacer movimiento</Translation>
+      <Translation>&amp;Rehacer movimiento</Translation>
       <Old>Redo &amp;move</Old>
     </mnuLevelRedo>
     <mnuLevelRetry>
-      <Translation>Empezar de nuevo el nivel</Translation>
+      <Translation>&amp;Empezar de nuevo el nivel</Translation>
       <Old>&amp;Retry level</Old>
     </mnuLevelRetry>
     <mnuLevelHighscores>
-      <Translation>Mostrar mejores resultados</Translation>
+      <Translation>&amp;Mostrar mejores resultados</Translation>
       <Old>Show &amp;highscores</Old>
     </mnuLevelHighscores>
     <mnuLevelPrevious>
-      <Translation>Nivel anterior</Translation>
+      <Translation>Nivel anteri&amp;or</Translation>
       <Old>&amp;Previous level</Old>
     </mnuLevelPrevious>
     <mnuLevelNext>
-      <Translation>Nivel siguiente</Translation>
+      <Translation>Nivel s&amp;iguiente</Translation>
       <Old>N&amp;ext level</Old>
     </mnuLevelNext>
     <mnuLevelPreviousUnsolved>
-      <Translation>Nivel anterior sin resolver</Translation>
+      <Translation>Nivel an&amp;terior sin resolver</Translation>
       <Old>Pre&amp;vious unsolved level</Old>
     </mnuLevelPreviousUnsolved>
     <mnuLevelNextUnsolved>
-      <Translation>Nivel siguiente sin resolver</Translation>
+      <Translation>Nivel siguiente sin resol&amp;ver</Translation>
       <Old>Next unsolve&amp;d level</Old>
     </mnuLevelNextUnsolved>
     <mnuLevelChangePlayer>
-      <Translation>Cambiar nombre de jugador...</Translation>
+      <Translation>Cambiar nombre de &amp;jugador...</Translation>
       <Old>&amp;Change player name...</Old>
     </mnuLevelChangePlayer>
     <mnuLevelExit>
-      <Translation>Salir</Translation>
+      <Translation>&amp;Salir</Translation>
       <Old>E&amp;xit</Old>
     </mnuLevelExit>
     <mnuEdit>
-      <Translation>Editar</Translation>
+      <Translation>&amp;Editar</Translation>
       <Old>&amp;Edit</Old>
     </mnuEdit>
     <mnuEditCreateLevel>
-      <Translation>Crear un nuevo nivel</Translation>
+      <Translation>Crear un &amp;nuevo nivel</Translation>
       <Old>Create &amp;new level</Old>
     </mnuEditCreateLevel>
     <mnuEditEditLevel>
-      <Translation>Editar nivel</Translation>
+      <Translation>&amp;Editar nivel</Translation>
       <Old>&amp;Edit level</Old>
     </mnuEditEditLevel>
     <mnuEditAddComment>
-      <Translation>Añadir comentario</Translation>
+      <Translation>Añadir co&amp;mentario</Translation>
       <Old>Add a co&amp;mment...</Old>
     </mnuEditAddComment>
     <mnuEditDelete>
-      <Translation>Suprimir nivel/comentario</Translation>
+      <Translation>&amp;Suprimir nivel/comentario</Translation>
       <Old>&amp;Delete level/comment</Old>
     </mnuEditDelete>
     <mnuEditCut>
-      <Translation>Cortar</Translation>
+      <Translation>C&amp;ortar</Translation>
       <Old>C&amp;ut</Old>
     </mnuEditCut>
     <mnuEditCopy>
-      <Translation>Copiar</Translation>
+      <Translation>&amp;Copiar</Translation>
       <Old>&amp;Copy</Old>
     </mnuEditCopy>
     <mnuEditPaste>
-      <Translation>Pegar</Translation>
+      <Translation>&amp;Pegar</Translation>
       <Old>&amp;Paste</Old>
     </mnuEditPaste>
     <mnuEditFinish>
-      <Translation>Fin de la edición</Translation>
+      <Translation>&amp;Fin de la edición</Translation>
       <Old>&amp;Finish editing</Old>
     </mnuEditFinish>
     <mnuEditCancel>
-      <Translation>Cancelar edición</Translation>
+      <Translation>Cance&amp;lar edición</Translation>
       <Old>C&amp;ancel editing</Old>
     </mnuEditCancel>
     <mnuEditWall>
-      <Translation>Pared</Translation>
+      <Translation>Pa&amp;red</Translation>
       <Old>&amp;Wall tool</Old>
     </mnuEditWall>
     <mnuEditPiece>
-      <Translation>Caja</Translation>
+      <Translation>C&amp;aja</Translation>
       <Old>P&amp;iece tool</Old>
     </mnuEditPiece>
     <mnuEditTarget>
-      <Translation>Objetivo</Translation>
+      <Translation>O&amp;bjetivo</Translation>
       <Old>&amp;Target tool</Old>
     </mnuEditTarget>
     <mnuEditSokoban>
-      <Translation>Jugador</Translation>
+      <Translation>&amp;Jugador</Translation>
       <Old>&amp;Sokoban tool</Old>
     </mnuEditSokoban>
     <mnuOptions>
-      <Translation>Opciones</Translation>
+      <Translation>&amp;Opciones</Translation>
       <Old>&amp;Options</Old>
     </mnuOptions>
     <mnuOptionsLevelList>
-      <Translation>Lista de niveles</Translation>
+      <Translation>Lista de &amp;niveles</Translation>
       <Old>Display &amp;level list</Old>
     </mnuOptionsLevelList>
     <mnuOptionsPlayingToolbar>
-      <Translation>Herramientas de juego</Translation>
+      <Translation>Herramientas de j&amp;uego</Translation>
       <Old>Display pla&amp;ying toolbar</Old>
     </mnuOptionsPlayingToolbar>
     <mnuOptionsFileToolbars>
-      <Translation>Herramientas de edición</Translation>
+      <Translation>Herramientas de &amp;edición</Translation>
       <Old>Display &amp;editing toolbars (level file)</Old>
     </mnuOptionsFileToolbars>
     <mnuOptionsEditLevelToolbar>
-      <Translation>Herramientas de edición (nivel)</Translation>
+      <Translation>&amp;Herramientas de edición (nivel)</Translation>
       <Old>Display editin&amp;g toolbar (level)</Old>
     </mnuOptionsEditLevelToolbar>
     <mnuOptionsStatusBar>
-      <Translation>Barra de estado</Translation>
+      <Translation>&amp;Barra de estado</Translation>
       <Old>Display stat&amp;us bar</Old>
     </mnuOptionsStatusBar>
     <mnuOptionsMoveNo>
-      <Translation>No mostrar la ruta de desplazamiento</Translation>
+      <Translation>No mostrar la ruta de despla&amp;zamiento</Translation>
       <Old>Don’t display &amp;move path</Old>
     </mnuOptionsMoveNo>
     <mnuOptionsMoveLine>
-      <Translation>Mostrar ruta desplazamiento como línea</Translation>
+      <Translation>Mostrar ruta desplazamiento como &amp;línea</Translation>
       <Old>Display move path as li&amp;ne</Old>
     </mnuOptionsMoveLine>
     <mnuOptionsMoveDots>
-      <Translation>Mostrar ruta desplazamiento como puntos</Translation>
+      <Translation>Mostrar ruta desplazamiento como &amp;puntos</Translation>
       <Old>Display move path as &amp;dots</Old>
     </mnuOptionsMoveDots>
     <mnuOptionsMoveArrows>
-      <Translation>Mostrar ruta desplazamiento como flechas</Translation>
+      <Translation>Mostrar ruta desplazamiento como &amp;flechas</Translation>
       <Old>Display mo&amp;ve path as arrows</Old>
     </mnuOptionsMoveArrows>
     <mnuOptionsPushNo>
-      <Translation>No mostrar la ruta de empuje</Translation>
+      <Translation>No mostrar la ruta de e&amp;mpuje</Translation>
       <Old>Don’t display &amp;push path</Old>
     </mnuOptionsPushNo>
     <mnuOptionsPushLine>
-      <Translation>Mostrar ruta de empuje como línea</Translation>
+      <Translation>M&amp;ostrar ruta de empuje como línea</Translation>
       <Old>Display push path as l&amp;ine</Old>
     </mnuOptionsPushLine>
     <mnuOptionsPushDots>
-      <Translation>Mostrar ruta de empuje como puntos</Translation>
+      <Translation>Mos&amp;trar ruta de empuje como puntos</Translation>
       <Old>Display push path as do&amp;ts</Old>
     </mnuOptionsPushDots>
     <mnuOptionsPushArrows>
-      <Translation>Mostrar ruta de empuje como flechas</Translation>
+      <Translation>Most&amp;rar ruta de empuje como flechas</Translation>
       <Old>Display push path as arro&amp;ws</Old>
     </mnuOptionsPushArrows>
     <mnuOptionsEndPos>
-      <Translation>Mostrar posición final de la caja y el jugador</Translation>
+      <Translation>Mostrar posición final de la caja &amp;y el jugador</Translation>
       <Old>Display end p&amp;osition of Sokoban and piece</Old>
     </mnuOptionsEndPos>
     <mnuOptionsAreaSokoban>
-      <Translation>Mostrar área accesible para el jugador</Translation>
+      <Translation>Mostrar área accesible para el juga&amp;dor</Translation>
       <Old>Display reac&amp;hable area for Sokoban</Old>
     </mnuOptionsAreaSokoban>
     <mnuOptionsAreaPiece>
-      <Translation>Mostrar área accesible para la caja</Translation>
+      <Translation>Mostrar área accesible para la ca&amp;ja</Translation>
       <Old>Display reachable area &amp;for piece</Old>
     </mnuOptionsAreaPiece>
     <mnuOptionsLetterControl>
-      <Translation>Control por letras</Translation>
+      <Translation>&amp;Control por letras</Translation>
       <Old>Enable lette&amp;r control</Old>
     </mnuOptionsLetterControl>
     <mnuOptionsLetterControlNext>
-      <Translation>Grupo de letras siguiente</Translation>
+      <Translation>&amp;Grupo de letras siguiente</Translation>
       <Old>Show ne&amp;xt letter control set</Old>
     </mnuOptionsLetterControlNext>
     <mnuOptionsSound>
-      <Translation>Sonido</Translation>
+      <Translation>&amp;Sonido</Translation>
       <Old>Enable &amp;sound</Old>
     </mnuOptionsSound>
     <mnuOptionsAnimation>
-      <Translation>Animación</Translation>
+      <Translation>&amp;Animación</Translation>
       <Old>Enable &amp;animations</Old>
     </mnuOptionsAnimation>
     <mnuOptionsChangeLanguage>
-      <Translation>Idioma</Translation>
+      <Translation>&amp;Idioma</Translation>
       <Old>&amp;Change language</Old>
     </mnuOptionsChangeLanguage>
     <mnuHelp>
-      <Translation>Ayuda</Translation>
+      <Translation>&amp;Ayuda</Translation>
       <Old>&amp;Help</Old>
     </mnuHelp>
     <mnuHelpHelp>
-      <Translation>Ayuda...</Translation>
+      <Translation>&amp;Ayuda...</Translation>
       <Old>&amp;Help...</Old>
     </mnuHelpHelp>
     <mnuHelpAbout>
-      <Translation>Acerca de...</Translation>
+      <Translation>A&amp;cerca de...</Translation>
       <Old>&amp;About</Old>
     </mnuHelpAbout>
     <toolEditLevel>
@@ -384,43 +380,43 @@
   </Mainform>
   <Context>
     <mnuContextPlay>
-      <Translation>Jugar este nivel</Translation>
+      <Translation>&amp;Jugar este nivel</Translation>
       <Old>Pl&amp;ay this level</Old>
     </mnuContextPlay>
     <mnuContextEdit>
-      <Translation>Editar este nivel</Translation>
+      <Translation>&amp;Editar este nivel</Translation>
       <Old>&amp;Edit this level</Old>
     </mnuContextEdit>
     <mnuContextHighscores>
-      <Translation>Mejores resultados</Translation>
+      <Translation>&amp;Mejores resultados</Translation>
       <Old>Show &amp;highscores</Old>
     </mnuContextHighscores>
     <mnuContextNewLevel>
-      <Translation>Crear aquí un nuevo nivel</Translation>
+      <Translation>Crear aquí un &amp;nuevo nivel</Translation>
       <Old>C&amp;reate a new level here</Old>
     </mnuContextNewLevel>
     <mnuContextNewComment>
-      <Translation>Insertar un comentario</Translation>
+      <Translation>&amp;Insertar un comentario</Translation>
       <Old>&amp;Insert a comment here</Old>
     </mnuContextNewComment>
     <mnuContextCut>
-      <Translation>Cortar</Translation>
+      <Translation>C&amp;ortar</Translation>
       <Old>C&amp;ut</Old>
     </mnuContextCut>
     <mnuContextCopy>
-      <Translation>Copiar</Translation>
+      <Translation>&amp;Copiar</Translation>
       <Old>&amp;Copy</Old>
     </mnuContextCopy>
     <mnuContextPaste>
-      <Translation>Pegar</Translation>
+      <Translation>&amp;Pegar</Translation>
       <Old>&amp;Paste</Old>
     </mnuContextPaste>
     <mnuContextDelete>
-      <Translation>Suprimir</Translation>
+      <Translation>&amp;Suprimir</Translation>
       <Old>&amp;Delete</Old>
     </mnuContextDelete>
     <mnuContextHide>
-      <Translation>Ocultar lista de niveles</Translation>
+      <Translation>Ocultar &amp;lista de niveles</Translation>
       <Old>Hide &amp;level list</Old>
     </mnuContextHide>
   </Context>
@@ -569,7 +565,7 @@
     <Old>Are you sure you wish to delete this level?</Old>
   </LevelList_Message_DeleteLevel_Sure>
   <LevelList_Message_DeleteLevel_btnDelete>
-    <Translation>Suprimir nivel</Translation>
+    <Translation>&amp;Suprimir nivel</Translation>
     <Old>&amp;Delete level</Old>
   </LevelList_Message_DeleteLevel_btnDelete>
   <MainArea_Message_SaveChanges>
@@ -613,7 +609,7 @@
     <Old>You must edit the level in order to address this issue. Would you like to edit the level now?</Old>
   </Mainform_Validity_CannotOpen_Fix>
   <Mainform_Validity_CannotOpen_btnEdit>
-    <Translation>Editar nivel</Translation>
+    <Translation>&amp;Editar nivel</Translation>
     <Old>&amp;Edit level</Old>
   </Mainform_Validity_CannotOpen_btnEdit>
   <Mainform_Validity_CannotSave_Warning>
@@ -621,11 +617,11 @@
     <Old>You cannot play this level until you address this issue. Are you sure you wish to leave the level in this invalid state?</Old>
   </Mainform_Validity_CannotSave_Warning>
   <Mainform_Validity_CannotSave_btnSave>
-    <Translation>Guardar nivel de todos modos</Translation>
+    <Translation>&amp;Guardar nivel de todos modos</Translation>
     <Old>&amp;Save level anyway</Old>
   </Mainform_Validity_CannotSave_btnSave>
   <Mainform_Validity_CannotSave_btnResume>
-    <Translation>Reanudar la edición</Translation>
+    <Translation>&amp;Reanudar la edición</Translation>
     <Old>&amp;Resume editing</Old>
   </Mainform_Validity_CannotSave_btnResume>
   <Mainform_MessageTitle_Exit>
@@ -658,22 +654,22 @@
   </Mainform_Error_HelpFileNotFound>
   <Dialogs_btnOK>
     <Translation>OK</Translation>
-    <Old null="1" />
+    <Old>OK</Old>
   </Dialogs_btnOK>
   <Dialogs_btnCancel>
     <Translation>Cancelar</Translation>
     <Old>Cancel</Old>
   </Dialogs_btnCancel>
   <Dialogs_btnSave>
-    <Translation>Guardar cambios</Translation>
+    <Translation>&amp;Guardar cambios</Translation>
     <Old>&amp;Save changes</Old>
   </Dialogs_btnSave>
   <Dialogs_btnDiscard>
-    <Translation>Desechar cambios</Translation>
+    <Translation>&amp;Desechar cambios</Translation>
     <Old>&amp;Discard changes</Old>
   </Dialogs_btnDiscard>
   <Dialogs_btnGiveUp>
-    <Translation>Abandonar</Translation>
+    <Translation>&amp;Abandonar</Translation>
     <Old>&amp;Give up</Old>
   </Dialogs_btnGiveUp>
 </item>
