@@ -27,6 +27,9 @@ namespace ExpertSokoban
 
             SettingsUtil.LoadSettings(out Settings);
 
+#if DEBUG
+            Lingo.AlsoSaveTranslationsTo = PathUtil.AppPathCombine(@"..\..\Src\Translations");
+#endif
             Tr = Lingo.LoadTranslationOrDefault<Translation>("ExpSok", ref Settings.Language);
 
             Application.Run(new Mainform());

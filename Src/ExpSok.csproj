@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -11,25 +11,28 @@
     <RootNamespace>ExpertSokoban</RootNamespace>
     <AssemblyName>ExpSok</AssemblyName>
     <ApplicationIcon>Resources\ExpertSokoban.ico</ApplicationIcon>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <OutputPath>..\Builds\$(Configuration)</OutputPath>
     <IntermediateOutputPath>..\Builds\$(Configuration)\obj-$(AssemblyName)</IntermediateOutputPath>
     <BaseIntermediateOutputPath>..\Builds\$(Configuration)\obj-$(AssemblyName)</BaseIntermediateOutputPath>
     <StartupObject>
     </StartupObject>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <DefineConstants>TRACE</DefineConstants>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -66,11 +69,14 @@
     <Compile Include="MenuRadioClasses.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="PushFinder.cs" />
     <Compile Include="MoveFinder.cs" />
-    <Compile Include="MainArea.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="MainArea.cs" />
     <Compile Include="LevelListBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -102,14 +108,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Translation.cs">
     </Compile>
     <Compile Include="Translation.g.cs">
@@ -196,11 +197,8 @@
   -->
   <Target Name="AfterBuild">
     <ItemGroup>
-      <TranslationFiles Condition=" '$(Configuration)' == 'Debug' "
-                        Include="Translations\*.xml" />
-      <TranslationFiles Condition=" '$(Configuration)' == 'Release' "
-                        Include="Translations\*.xml"
-			Exclude="Translations\*.tlh.xml" />
+      <TranslationFiles Condition=" '$(Configuration)' == 'Debug' " Include="Translations\*.xml" />
+      <TranslationFiles Condition=" '$(Configuration)' == 'Release' " Include="Translations\*.xml" Exclude="Translations\*.tlh.xml" />
       <HelpFile Include="Help\expsok.chm" />
     </ItemGroup>
     <Copy SourceFiles="@(TranslationFiles)" DestinationFolder="$(OutputPath)Translations\" />
