@@ -39,7 +39,7 @@
       <Old>About Expert Sokoban</Old>
     </AboutBox>
     <lblCredits>
-      <Translation encoding="c-literal">Благодарим:\r\n    Программирование: Timwi, Roman\r\n    Графика: Roman, Timwi\r\n    Тестирование: Hawthorn</Translation>
+      <Translation encoding="c-literal">Благодарим:\r\n    Программирование: Timwi, Roman\r\n    Графика: Roman, Timwi\r\n    Тестирование: Hawthorn\r\n    Русский перевод: Roman</Translation>
       <Old encoding="c-literal">Credits:\r\n    Programming: Timwi, Roman\r\n    Graphics: Roman, Timwi\r\n    Testing: Hawthorn</Old>
     </lblCredits>
   </AboutBox>
