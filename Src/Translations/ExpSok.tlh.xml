@@ -1,14 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <item>
   <Highscores>
-    <HighscoresForm>
-      <Translation>pe''eghmeH tetlh</Translation>
-      <Old>Highscores</Old>
-    </HighscoresForm>
-    <btnOK>
-      <Translation>lu'</Translation>
-      <Old>OK</Old>
-    </btnOK>
     <Highscores>
       <IsNumber>
         <item>True</item>
@@ -27,8 +19,16 @@
         <item>{0} moves, {1} pushes</item>
       </Old>
     </Highscores>
+    <HighscoresForm>
+      <Translation>pe''eghmeH tetlh</Translation>
+      <Old>Highscores</Old>
+    </HighscoresForm>
   </Highscores>
   <AboutBox>
+    <Version>
+      <Translation>Segh {0}</Translation>
+      <Old>Version {0}</Old>
+    </Version>
     <AboutBox>
       <Translation>"Expert Sokoban" lubopbogh De'mey</Translation>
       <Old>About Expert Sokoban</Old>
@@ -37,15 +37,13 @@
       <Translation encoding="c-literal">beq:\r\n    ghunwI'pu': Timwi, Roman\r\n    DIjwI'pu': Roman, Timwi\r\n    waHwI': Hawthorn\r\n    mughwI': Vortarulo</Translation>
       <Old encoding="c-literal">Credits:\r\n    Programming: Timwi, Roman\r\n    Graphics: Roman, Timwi\r\n    Testing: Hawthorn</Old>
     </lblCredits>
-    <btnOK>
-      <Translation>lu'</Translation>
-      <Old>OK</Old>
-    </btnOK>
-    <Version>
-      <Translation>Segh {0}</Translation>
-      <Old>Version {0}</Old>
-    </Version>
   </AboutBox>
+  <ChoosePlayerName>
+    <ChoosePlayerNameForm>
+      <Translation>Choose player name</Translation>
+      <Old null="1" />
+    </ChoosePlayerNameForm>
+  </ChoosePlayerName>
   <Mainform>
     <Mainform>
       <Translation>Expert Sokoban</Translation>

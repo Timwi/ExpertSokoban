@@ -1,10 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <item>
   <Highscores>
-    <HighscoresForm>
-      <Translation>Rekordoj</Translation>
-      <Old>Highscores</Old>
-    </HighscoresForm>
     <Highscores>
       <IsNumber>
         <item>True</item>
@@ -23,8 +19,16 @@
         <item>{0} moves, {1} pushes</item>
       </Old>
     </Highscores>
+    <HighscoresForm>
+      <Translation>Rekordoj</Translation>
+      <Old>Highscores</Old>
+    </HighscoresForm>
   </Highscores>
   <AboutBox>
+    <Version>
+      <Translation>Versio {0}</Translation>
+      <Old>Version {0}</Old>
+    </Version>
     <AboutBox>
       <Translation>Pri Expert Sokoban</Translation>
       <Old>About Expert Sokoban</Old>
@@ -33,14 +37,6 @@
       <Translation encoding="c-literal">Dankon al:\r\n    Programado: Timwi, Roman\r\n    Grafikoj: Roman, Timwi\r\n    Testado: Hawthorn\r\n    Traduko al Esperanto: Timwi</Translation>
       <Old encoding="c-literal">Credits:\r\n    Programming: Timwi, Roman\r\n    Graphics: Roman, Timwi\r\n    Testing: Hawthorn</Old>
     </lblCredits>
-    <lblRummage>
-      <Translation>Ĉi tiu ludo protektitas je {Rummage}.</Translation>
-      <Old>This game is protected by {Rummage}.</Old>
-    </lblRummage>
-    <Version>
-      <Translation>Versio {0}</Translation>
-      <Old>Version {0}</Old>
-    </Version>
   </AboutBox>
   <ChoosePlayerName>
     <ChoosePlayerNameForm>
