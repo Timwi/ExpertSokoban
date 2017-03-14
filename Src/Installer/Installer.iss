@@ -1,26 +1,25 @@
-#define Src "..\..\..\builds\ExpSok\Release-Obfuscated\ExpSok.exe"
-#define SrcRaw "..\..\..\builds\ExpSok\Release-Raw"
-#define FileVerStr GetFileVersion(Src)
+#define SrcDir "..\..\builds\Release"
+#define SrcFile "..\..\builds\Release\ExpSok.exe"
+#define FileVerStr GetFileVersion(SrcFile)
 #define ShortVerStr Copy(FileVerStr, 1, RPos(".", FileVerStr)-1)
 #define UIVerStr Copy(FileVerStr, 1, RPos(".", FileVerStr)-1) + " (" + Copy(FileVerStr, RPos(".", FileVerStr)+1) + ")"
 
 [Files]
-Source: {#Src}; DestDir: {app}; DestName: ExpSok.exe;
-Source: {#SrcRaw}\Translations\*; DestDir: {app}\Translations;
-Source: {#SrcRaw}\expsok.chm; DestDir: {app}; DestName: ExpSok.chm;
+Source: {#SrcFile}; DestDir: {app}; DestName: ExpSok.exe;
+Source: {#SrcDir}\Translations\*; DestDir: {app}\Translations;
+Source: {#SrcDir}\expsok.chm; DestDir: {app}; DestName: ExpSok.chm;
 Source: "..\OriginalLevels.txt"; DestDir: {app};
 Source: "..\Timwi.txt"; DestDir: {app};
-Source: LicenseAgreement*.rtf; DestDir: {app};
 Source: dotNetFx40_Client_setup.exe; Flags: dontcopy
 
 [InnoIDE_Settings]
 UseRelativePaths=true
 
 [Setup]
-AppCopyright=© 2006-2011 CuteBits
+AppCopyright=© 2006-2017 Timwi Heizmann, Roman Starkov
 AppName=Expert Sokoban
 DefaultDirName={code:GetDefaultDirName}
-OutputDir=..\..\..\builds\ExpSok\Installer
+OutputDir=..\..\builds\Installer
 OutputBaseFilename=ExpertSokobanSetup-{#ShortVerStr}
 AppID={{62058A0A-DECE-43A8-9B56-52D161CE0EE7}
 SolidCompression=yes
@@ -49,51 +48,11 @@ Name: "{group}\{cm:UninstallProgram, Expert Sokoban}"; Filename: {uninstallexe};
 Name: {group}\Expert Sokoban; Filename: {app}\ExpSok.exe; Comment: {cm:ShortcutDescription}; 
 
 [Languages]
-Name: "en"; MessagesFile: "compiler:Default.isl,Translations\English.isl"; LicenseFile: "LicenseAgreementEN.rtf";
-Name: "de"; MessagesFile: "compiler:Languages\German.isl,Translations\German.isl"; LicenseFile: "LicenseAgreementDE.rtf";
-Name: "ru"; MessagesFile: "compiler:Languages\Russian.isl,Translations\Russian.isl"; LicenseFile: "LicenseAgreementRU.rtf";
+Name: "en"; MessagesFile: "compiler:Default.isl,Translations\English.isl";
+Name: "de"; MessagesFile: "compiler:Languages\German.isl,Translations\German.isl";
+Name: "ru"; MessagesFile: "compiler:Languages\Russian.isl,Translations\Russian.isl";
 
 [Code]
-
-procedure ViewLicenseButtonClick(Sender: TObject);
-var WordpadLoc: String;
-  RetCode: Integer;
-  LicenseFileName: String;
-begin
-  RegQueryStringValue(HKLM, 'SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\WORDPAD.EXE', '', WordpadLoc);
-
-  // on NT/2000 it's a REG_EXPAND_SZ, so expand constant ProgramFiles
-  StringChange(WordpadLoc, '%ProgramFiles%', ExpandConstant('{pf}'));
-  // remove " at begin and end pf string
-  StringChange(WordpadLoc, '"', '');
-
-  LicenseFileName := 'LicenseAgreement' + Uppercase(ExpandConstant('{language}')) + '.rtf';
-
-  try
-    ExtractTemporaryFile(LicenseFileName)
-  except
-    MsgBox(ExpandConstant('{cm:LicenseExtractFailed}'), mbError, mb_Ok);
-  end;
-
-  if not Exec(WordpadLoc, '"' + ExpandConstant('{tmp}\' + LicenseFileName) + '"', '', SW_SHOW, ewNoWait, RetCode) then
-    MsgBox(ExpandConstant('{cm:LicenseDisplayFailed}'), mbError, mb_Ok);
-end;
-
-procedure CurPageChanged(CurPageID: Integer);
-var ViewLicenseButton: TButton;
-begin
-  if CurPageID = wpLicense then begin
-    ViewLicenseButton := TButton.Create(WizardForm.LicenseMemo.Parent);
-    ViewLicenseButton.Caption := ExpandConstant('{cm:ViewLicenseInWordpad}');
-    ViewLicenseButton.Width := 120;
-    ViewLicenseButton.Left := WizardForm.LicenseMemo.Left +
-                        WizardForm.LicenseMemo.Width - ViewLicenseButton.Width;
-    ViewLicenseButton.Top := WizardForm.LicenseMemo.Top +
-                        WizardForm.LicenseMemo.Height + 16;
-    ViewLicenseButton.OnClick := @ViewLicenseButtonClick;
-    ViewLicenseButton.Parent := WizardForm.LicenseAcceptedRadio.Parent;
-  end;
-end;
 
 function IsNetFrameworkV4Installed(): Boolean;
 begin
