@@ -8,6 +8,7 @@
 Source: {#SrcFile}; DestDir: {app}; DestName: ExpSok.exe;
 Source: {#SrcDir}\Translations\*; DestDir: {app}\Translations;
 Source: {#SrcDir}\expsok.chm; DestDir: {app}; DestName: ExpSok.chm;
+Source: {#SrcDir}\RT.Util.dll; DestDir: {app}; DestName: RT.Util.dll;
 Source: "..\OriginalLevels.txt"; DestDir: {app};
 Source: "..\Timwi.txt"; DestDir: {app};
 Source: dotNetFx40_Client_setup.exe; Flags: dontcopy
@@ -45,7 +46,7 @@ DirExistsWarning=no
 
 [Icons]
 Name: "{group}\{cm:UninstallProgram, Expert Sokoban}"; Filename: {uninstallexe};
-Name: {group}\Expert Sokoban; Filename: {app}\ExpSok.exe; Comment: {cm:ShortcutDescription}; 
+Name: {group}\Expert Sokoban; Filename: {app}\ExpSok.exe; Comment: {cm:ShortcutDescription};
 
 [Languages]
 Name: "en"; MessagesFile: "compiler:Default.isl,Translations\English.isl";
@@ -56,7 +57,7 @@ Name: "ru"; MessagesFile: "compiler:Languages\Russian.isl,Translations\Russian.i
 
 function IsNetFrameworkV4Installed(): Boolean;
 begin
-  Result := 
+  Result :=
       RegValueExists(HKLM,'Software\Microsoft\NET Framework Setup\NDP\v4\Client', 'Install')
       or
       RegValueExists(HKLM,'Software\Microsoft\NET Framework Setup\NDP\v4\Full', 'Install');
