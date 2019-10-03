@@ -1,9 +1,8 @@
-
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29306.81
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpSok", "Src\ExpSok.csproj", "{38275335-5BC2-4327-A70F-CFB48CECEBB1}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Util", "..\RT.Util\Src\RT.Util.csproj", "{8D0FE79C-AD8D-475C-9E6F-9CAE85365B5D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,12 +14,11 @@ Global
 		{38275335-5BC2-4327-A70F-CFB48CECEBB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38275335-5BC2-4327-A70F-CFB48CECEBB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38275335-5BC2-4327-A70F-CFB48CECEBB1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8D0FE79C-AD8D-475C-9E6F-9CAE85365B5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8D0FE79C-AD8D-475C-9E6F-9CAE85365B5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8D0FE79C-AD8D-475C-9E6F-9CAE85365B5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8D0FE79C-AD8D-475C-9E6F-9CAE85365B5D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CB3C7A4F-34B6-461F-81A8-E485FCB58ECA}
 	EndGlobalSection
 EndGlobal
